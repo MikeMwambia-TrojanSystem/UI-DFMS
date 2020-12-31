@@ -1,0 +1,30 @@
+import { NgModule } from "@angular/core";
+
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatButtonModule } from '@angular/material/button';
+
+/**
+ * A Module for all of the Material Modules needed for the app.
+ * Usage: import a module from Material and add the module to the `imports` and `exports` fields below
+ *        and then import this MaterialModule into AppModule at app.module.ts.
+ */
+@NgModule({
+  imports: [
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatButtonModule
+  ],
+  exports: [
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+    MatButtonModule
+  ]
+})
+export class MaterialModule { }

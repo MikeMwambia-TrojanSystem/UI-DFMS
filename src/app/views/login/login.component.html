@@ -1,0 +1,19 @@
+<div class="main">
+  <mat-card class="card">
+    <h1 class="title">Welcome to County Assembly of Meru</h1>
+    <h3 class="subtitle">Digital File Management System</h3>
+    <h2 class="county">{{county}}</h2>
+    <form [formGroup]="form" class="form">
+      <p class="label">Username</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="username" />
+      </mat-form-field>
+      <p class="label">Password</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="password" />
+      </mat-form-field>
+      <mat-checkbox class="check-box" formControlName="isRemember">Keep me logged in</mat-checkbox>
+      <button mat-flat-button class="btn">Login</button>
+    </form>
+  </mat-card>
+</div>
