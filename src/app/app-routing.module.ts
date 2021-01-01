@@ -1,10 +1,25 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { LoginComponent } from 'src/app/views/login/login.component';
+import { LoginComponent } from './views/login/login.component';
+import { CountySignupComponent } from './views/signup/county/county.component';
+import { AccountSignupComponent } from './views/signup/account/account.component';
+import { EmailSignupComponent } from './views/signup/email/email.component';
+import { SuccessSignupComponent } from './views/signup/success/success.component';
 
 const routes: Routes = [
+  // Login route
   { path: 'login', component: LoginComponent },
+
+  // Sign up parent route
+  {
+    path: 'signup', children: [
+      { path: 'county', component: CountySignupComponent },
+      { path: 'account', component: AccountSignupComponent },
+      { path: 'email', component: EmailSignupComponent },
+      { path: 'success', component: SuccessSignupComponent },
+    ]
+  },
 
   // Fallback
   { path: '**', redirectTo: '/login' }

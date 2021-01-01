@@ -10,23 +10,13 @@
 .card {
   display: flex;
   flex-direction: column;
-  align-items: center;
   background-color: white;
   padding: 60px;
   width: 40%;
 }
 
 .title {
-  font-weight: 600;
-}
-
-.subtitle {
-  color: #008000;
-  font-size: 1.1rem;
-}
-
-.county {
-  margin: 20px 0;
+  font-weight: 500;
 }
 
 .form {
@@ -43,6 +33,11 @@
 }
 
 .check-box {
+  margin: 20px 0;
+}
+
+.btn-link {
+  width: 100%;
   margin: 20px 0;
 }
 
@@ -74,7 +69,17 @@
     border-top: none;
   }
 
-  .mat-checkbox-label {
+  .mat-checkbox-label,
+  .mat-select-value {
     color: gray;
+  }
+
+  .mat-select {
+    margin-bottom: 12px;
+  }
+
+  .mat-form-field-prefix {
+    position: relative;
+    bottom: 12px;
   }
 }

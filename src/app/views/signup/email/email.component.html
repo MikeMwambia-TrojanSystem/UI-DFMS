@@ -1,0 +1,41 @@
+<div class="main">
+  <mat-card class="card">
+    <h2 class="title">Enter Recovery email and phone number</h2>
+    <form [formGroup]="form" class="form">
+      <p class="label">Email</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="recoveryEmail" />
+        <mat-error *ngIf="form.get('recoveryEmail').hasError('email')">Please enter valid email</mat-error>
+        <mat-error *ngIf="form.get('recoveryEmail').hasError('required')">Please enter email</mat-error>
+      </mat-form-field>
+      <p class="label">Enter Phone Number</p>
+      <mat-form-field appearance="standard">
+        <span matPrefix>+ &nbsp;</span>
+        <input matInput formControlName="recoveryPhone" type="tel" />
+        <mat-error *ngIf="form.get('recoveryPhone').hasError('required')">Please enter phone numer</mat-error>
+      </mat-form-field>
+      <h2 class="subtitle">Current Email and Phone Number</h2>
+      <div class="info">
+        <span class="info-label">Phone Number: </span>
+        <span class="info-content">+{{phoneNumer}}</span>
+      </div>
+      <div class="info">
+        <span class="info-label">Recovery Number: </span>
+        <!-- Using getter to access form value -->
+        <span class="info-content">+{{recoveryPhone}}</span>
+      </div>
+      <div class="info">
+        <span class="info-label">Email: </span>
+        <span class="info-content">{{email}}</span>
+      </div>
+      <div class="info">
+        <span class="info-label">Recovery Email: </span>
+        <!-- Using getter to access form value -->
+        <span class="info-content">{{recoveryEmail}}</span>
+      </div>
+      <a class="btn-link" [routerLink]="form.valid ? '/signup/success' : null">
+        <button mat-flat-button class="btn" [disabled]="form.invalid">Save</button>
+      </a>
+    </form>
+  </mat-card>
+</div>

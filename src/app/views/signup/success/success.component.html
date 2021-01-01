@@ -1,0 +1,38 @@
+<div class="main">
+  <mat-card class="card">
+    <h2 class="title">Congratulations You have successfully created the account</h2>
+    <div class="info">
+      <span class="info-label">County: </span>
+      <span class="info-content">{{county}}</span>
+    </div>
+    <div class="info">
+      <span class="info-label">Username: </span>
+      <span class="info-content">{{username}}</span>
+    </div>
+    <h2 class="subtitle">You can begin setting up the account by</h2>
+    <div class="setup">
+      <mat-icon class="setup-arrow">east</mat-icon>
+      <div class="setup-content">Set up recovery phone number</div>
+      <mat-icon class="setup-check">check</mat-icon>
+    </div>
+    <div class="setup">
+      <mat-icon class="setup-arrow">east</mat-icon>
+      <div class="setup-content">Set up recovery email</div>
+      <mat-icon class="setup-check">check</mat-icon>
+    </div>
+    <div class="setup">
+      <mat-icon class="setup-arrow">east</mat-icon>
+      <div class="setup-content">Set up system account and role</div>
+      <mat-icon class="setup-error">error_outline</mat-icon>
+    </div>
+    <div class="setup">
+      <mat-icon class="setup-arrow">east</mat-icon>
+      <div class="setup-content">Set up system notifications</div>
+      <mat-icon class="setup-error">error_outline</mat-icon>
+    </div>
+    <a class="btn-link" routerLink="/signup/email">
+      <button mat-flat-button class="btn">Finish Set Up</button>
+    </a>
+    <div class="foot">Set up is <span class="perc">80%</span> complete</div>
+  </mat-card>
+</div>

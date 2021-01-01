@@ -21,12 +21,7 @@
 }
 
 .subtitle {
-  color: #008000;
-  font-size: 1.1rem;
-}
-
-.county {
-  margin: 20px 0;
+  font-size: 1rem;
 }
 
 .form {
@@ -42,7 +37,18 @@
   font-size: 1rem;
 }
 
-.check-box {
+.info {
+  margin: 12px 0;
+
+  &-label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #008000;
+  }
+}
+
+.btn-link {
+  width: 100%;
   margin: 20px 0;
 }
 
@@ -74,7 +80,17 @@
     border-top: none;
   }
 
-  .mat-checkbox-label {
+  .mat-checkbox-label,
+  .mat-select-value {
     color: gray;
+  }
+
+  .mat-select {
+    margin-bottom: 12px;
+  }
+
+  .mat-form-field-prefix {
+    position: relative;
+    bottom: 12px;
   }
 }

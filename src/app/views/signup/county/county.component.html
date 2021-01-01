@@ -1,0 +1,27 @@
+<div class="main">
+  <mat-card class="card">
+    <h1 class="title">Welcome to County Assembly of Meru</h1>
+    <h3 class="subtitle">Digital File Management System</h3>
+    <form [formGroup]="form" class="form">
+      <p class="label">Password</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="password" type="password" />
+        <mat-error *ngIf="form.hasError('required', 'password')">
+          Please enter your new password
+        </mat-error>
+      </mat-form-field>
+      <p class="label">Confirm Password</p>
+      <mat-form-field appearance="standard">
+        <!-- Give the password error state `matcher` into the errorStateMatcher prop -->
+        <input matInput formControlName="repassword" type="password" [errorStateMatcher]="matcher" />
+        <!-- The error type `notSame` is the return error type define in the `checkPassword` function -->
+        <mat-error *ngIf="form.hasError('notSame')">
+          Passwords do not match
+        </mat-error>
+      </mat-form-field>
+      <a class="btn-link" [routerLink]="form.valid ? '/signup/account' : null">
+        <button mat-flat-button class="btn" [disabled]="form.invalid">Set up</button>
+      </a>
+    </form>
+  </mat-card>
+</div>

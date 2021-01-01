@@ -7,13 +7,15 @@
       <p class="label">Username</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="username" />
+        <mat-error *ngIf="form.get('username').hasError('required')">Please enter username</mat-error>
       </mat-form-field>
       <p class="label">Password</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="password" />
+        <input matInput formControlName="password" type="password" />
+        <mat-error *ngIf="form.get('password').hasError('required')">Please enter password</mat-error>
       </mat-form-field>
       <mat-checkbox class="check-box" formControlName="isRemember">Keep me logged in</mat-checkbox>
-      <button mat-flat-button class="btn">Login</button>
+      <button mat-flat-button class="btn" [disabled]="form.invalid">Login</button>
     </form>
   </mat-card>
 </div>
