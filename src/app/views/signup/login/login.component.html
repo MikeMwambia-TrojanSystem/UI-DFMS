@@ -1,0 +1,34 @@
+<div class="main">
+  <mat-card class="card">
+    <h2 class="title">Login to Proceed</h2>
+    <form [formGroup]="form" class="form">
+      <p class="label">Account</p>
+      <mat-form-field appearance="standard">
+        <mat-select formControlName="role">
+          <mat-option value="Clerk">Clerk</mat-option>
+          <mat-option value="Drafter Role">Drafter Role</mat-option>
+          <mat-option value="Speaker of the Assembly">Speaker of the Assembly</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('role').hasError('required')">Please choose a role</mat-error>
+      </mat-form-field>
+      <p class="label">Name</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="name" />
+        <mat-error *ngIf="form.get('name').hasError('required')">Please enter your name</mat-error>
+      </mat-form-field>
+      <p class="label">Password</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="password" type="password" />
+        <mat-error *ngIf="form.get('password').hasError('required')">Please enter password</mat-error>
+      </mat-form-field>
+      <a class="forgot" routerLink="/signup/login">
+        <p>Forgot Password?</p>
+      </a>
+      <mat-checkbox class="check-box" formControlName="isRemember">Keep me logged in</mat-checkbox>
+      <a class="btn-link" [routerLink]="form.valid ? '/signup/email' : null">
+        <button mat-flat-button class="btn" [disabled]="form.invalid">Login</button>
+      </a>
+    </form>
+  </mat-card>
+</div>
+<app-back-button [link]="'/signup/success'"></app-back-button>

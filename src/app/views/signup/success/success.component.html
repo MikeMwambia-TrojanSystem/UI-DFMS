@@ -30,9 +30,10 @@
       <div class="setup-content">Set up system notifications</div>
       <mat-icon class="setup-error">error_outline</mat-icon>
     </div>
-    <a class="btn-link" routerLink="/signup/email">
+    <a class="btn-link" routerLink="/signup/login">
       <button mat-flat-button class="btn">Finish Set Up</button>
     </a>
     <div class="foot">Set up is <span class="perc">80%</span> complete</div>
   </mat-card>
 </div>
+<app-back-button [link]="'/signup/email'"></app-back-button>

@@ -13,6 +13,10 @@ import { CountySignupComponent } from './views/signup/county/county.component';
 import { AccountSignupComponent } from './views/signup/account/account.component';
 import { EmailSignupComponent } from './views/signup/email/email.component';
 import { SuccessSignupComponent } from './views/signup/success/success.component';
+import { LoginSignupComponent } from './views/signup/login/login.component';
+import { BackButtonComponent } from './components/BackButton/back-button.component';
+import { SystemSignupComponent } from './views/signup/system/system.component';
+import { NotificationsSignupComponent } from './views/signup/notifications/notifications.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +25,11 @@ import { SuccessSignupComponent } from './views/signup/success/success.component
     CountySignupComponent,
     AccountSignupComponent,
     EmailSignupComponent,
-    SuccessSignupComponent
+    SuccessSignupComponent,
+    LoginSignupComponent,
+    BackButtonComponent,
+    SystemSignupComponent,
+    NotificationsSignupComponent
   ],
   imports: [
     BrowserModule,

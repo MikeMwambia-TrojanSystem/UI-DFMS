@@ -1,0 +1,131 @@
+.main {
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  position: relative;
+  overflow-y: auto;
+}
+
+.card {
+  background-color: white;
+  padding: 60px;
+  width: 60%;
+  position: absolute;
+  top: 100px;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.title {
+  font-weight: 600;
+  margin: 0 auto;
+  width: fit-content;
+}
+
+.subtitle {
+  font-size: 1rem;
+}
+
+.noti {
+  &-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  & {
+    width: 46%;
+    margin: 30px 2%;
+  }
+
+  &-title {
+    font-size: 1.05rem;
+    font-weight: 500;
+    padding: 10px 0;
+    width: 100%;
+    border-bottom: 1px solid gray;
+    color:#008000;
+  }
+
+  &-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+  }
+}
+
+.label {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.role {
+  margin: 12px 0;
+  display: flex;
+  align-items: center;
+
+  &-icon {
+    color: #008000;
+    margin-right: 10px;
+  }
+}
+
+.note {
+  margin: 30px 0;
+  display: flex;
+
+  &-nb {
+    font-weight: 600;
+    margin-right: 15px;
+  }
+
+  &-content {
+    color: gray;
+    font-weight: 500;
+  }
+}
+
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &-back-link {
+    text-decoration: none;
+    color: #008000;
+    font-weight: 500;
+  }
+}
+
+.btn {
+  color: white;
+  background: #008000;
+  margin: 20px 0;
+  font-size: 1rem;
+  font-weight: 400;
+  padding: 3px 50px;
+  border-radius: 15px;
+}
+
+/**
+  * Selectors to overwrite Material Switch styling.
+  * :host is needed to prevent the style bleeding into other components.
+  * More information can be found at: https://angular.io/guide/component-styles#deprecated-deep--and-ng-deep
+  * Note: This is not a very good way to deal with overwrite Material styling. But it is the shortest and easiest way
+  * For better method I recommend checking Material documentation: https://material.angular.io/guide/theming-your-components
+  */
+:host ::ng-deep {
+  .mat-slide-toggle-content {
+    width: 25px;
+  }
+
+  .mat-slide-toggle.mat-checked .mat-slide-toggle-thumb {
+    background-color: #008000 !important;
+  }
+
+  .mat-slide-toggle.mat-checked .mat-slide-toggle-bar {
+    background-color: rgba(0, 128, 0, 0.25) !important;
+  }
+}

@@ -1,0 +1,27 @@
+<div class="main">
+  <mat-card class="card">
+    <h2 class="title">Account Notifications Settings</h2>
+    <form [formGroup]="" class="form">
+      <div class="noti-container">
+        <div class="noti" *ngFor="let noti of notifications">
+          <div class="noti-title">{{noti.title}}</div>
+          <div class="noti-content" *ngFor="let control of noti.controls">
+            <div class="noti-label">{{control.label}}</div>
+            <mat-slide-toggle [checked]="control.value"
+              (change)="onSwitchChange(noti.title, control.label, !control.value)">
+              {{control.value ? 'On' : 'Off'}}
+            </mat-slide-toggle>
+          </div>
+        </div>
+      </div>
+
+      <div class="foot">
+        <a class="foot-back-link" routerLink="/signup/county">Back to account setup</a>
+        <a class="foot-btn" routerLink="/login">
+          <button mat-flat-button class="btn">Save</button>
+        </a>
+      </div>
+
+    </form>
+  </mat-card>
+</div>

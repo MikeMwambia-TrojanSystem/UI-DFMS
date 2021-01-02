@@ -1,0 +1,12 @@
+.main {
+  position: absolute;
+  top: 15px;
+  left: 50px;
+
+  .link {
+    text-decoration: none;
+    color: white;
+    display: flex;
+    align-items: center;
+  }
+}

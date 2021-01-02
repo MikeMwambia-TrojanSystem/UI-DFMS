@@ -1,7 +1,7 @@
 .main {
   width: 100vw;
   height: 100vh;
-  background-color: #008000;
+  background-color: white;
   position: relative;
   overflow-y: auto;
 }
@@ -21,12 +21,7 @@
 }
 
 .subtitle {
-  color: #008000;
-  font-size: 1.1rem;
-}
-
-.county {
-  margin: 20px 0;
+  font-size: 1rem;
 }
 
 .form {
@@ -42,19 +37,51 @@
   font-size: 1rem;
 }
 
-.btn-link {
-  width: 100%;
-  margin: 20px 0;
+.role {
+  margin: 12px 0;
+  display: flex;
+  align-items: center;
+
+  &-icon {
+    color: #008000;
+    margin-right: 10px;
+  }
+}
+
+.note {
+  margin: 30px 0;
+  display: flex;
+
+  &-nb {
+    font-weight: 600;
+    margin-right: 15px;
+  }
+
+  &-content {
+    color: gray;
+    font-weight: 500;
+  }
+}
+
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &-back-link {
+    text-decoration: none;
+    color: #008000;
+    font-weight: 500;
+  }
 }
 
 .btn {
   color: white;
   background: #008000;
   margin: 20px 0;
-  width: 100%;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-weight: 400;
-  padding: 10px;
+  padding: 3px 50px;
   border-radius: 15px;
 }
 
@@ -75,7 +102,17 @@
     border-top: none;
   }
 
-  .mat-checkbox-label {
+  .mat-checkbox-label,
+  .mat-select-value {
     color: gray;
+  }
+
+  .mat-select {
+    margin-bottom: 12px;
+  }
+
+  .mat-form-field-prefix {
+    position: relative;
+    bottom: 12px;
   }
 }

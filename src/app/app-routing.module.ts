@@ -6,6 +6,9 @@ import { CountySignupComponent } from './views/signup/county/county.component';
 import { AccountSignupComponent } from './views/signup/account/account.component';
 import { EmailSignupComponent } from './views/signup/email/email.component';
 import { SuccessSignupComponent } from './views/signup/success/success.component';
+import { LoginSignupComponent } from './views/signup/login/login.component';
+import { SystemSignupComponent } from './views/signup/system/system.component';
+import { NotificationsSignupComponent } from './views/signup/notifications/notifications.component';
 
 const routes: Routes = [
   // Login route
@@ -18,6 +21,9 @@ const routes: Routes = [
       { path: 'account', component: AccountSignupComponent },
       { path: 'email', component: EmailSignupComponent },
       { path: 'success', component: SuccessSignupComponent },
+      { path: 'login', component: LoginSignupComponent },
+      { path: 'system', component: SystemSignupComponent },
+      { path: 'notifications', component: NotificationsSignupComponent },
     ]
   },
 
