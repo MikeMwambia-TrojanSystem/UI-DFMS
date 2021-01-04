@@ -9,6 +9,8 @@ import { SuccessSignupComponent } from './views/signup/success/success.component
 import { LoginSignupComponent } from './views/signup/login/login.component';
 import { SystemSignupComponent } from './views/signup/system/system.component';
 import { NotificationsSignupComponent } from './views/signup/notifications/notifications.component';
+import { EmailVerificationComponent } from './views/signup/email-verification/email-verification.component';
+import { PhoneVerificationComponent } from './views/signup/phone-verification/phone-verification.component';
 
 const routes: Routes = [
   // Login route
@@ -16,7 +18,8 @@ const routes: Routes = [
 
   // Sign up parent route
   {
-    path: 'signup', children: [
+    path: 'signup',
+    children: [
       { path: 'county', component: CountySignupComponent },
       { path: 'account', component: AccountSignupComponent },
       { path: 'email', component: EmailSignupComponent },
@@ -24,15 +27,17 @@ const routes: Routes = [
       { path: 'login', component: LoginSignupComponent },
       { path: 'system', component: SystemSignupComponent },
       { path: 'notifications', component: NotificationsSignupComponent },
-    ]
+      { path: 'email-verification', component: EmailVerificationComponent },
+      { path: 'phone-verification', component: PhoneVerificationComponent },
+    ],
   },
 
   // Fallback
-  { path: '**', redirectTo: '/login' }
+  { path: '**', redirectTo: '/login' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
