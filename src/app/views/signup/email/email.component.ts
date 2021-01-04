@@ -1,16 +1,21 @@
-import { Component } from "@angular/core";
-import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Component } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+
+import { phoneNumberValidator } from '../../../shared/validators/phone-number';
 
 @Component({
   selector: 'app-signup-email',
   templateUrl: './email.component.html',
-  styleUrls: ['./email.component.scss']
+  styleUrls: ['./email.component.scss'],
 })
 export class EmailSignupComponent {
   form = new FormGroup({
     recoveryEmail: new FormControl('', [Validators.required, Validators.email]),
-    recoveryPhone: new FormControl('', Validators.required),
-  }) // Form group that holds username and password from user input
+    recoveryPhone: new FormControl('', [
+      Validators.required,
+      phoneNumberValidator,
+    ]),
+  }); // Form group that holds username and password from user input
   phoneNumer = '254 4758 955452'; // Current phone number
   email = 'mayusd@example.com'; // Current email
 

@@ -13,6 +13,8 @@
         <span matPrefix>+ &nbsp;</span>
         <input matInput formControlName="recoveryPhone" type="tel" />
         <mat-error *ngIf="form.get('recoveryPhone').hasError('required')">Please enter phone numer</mat-error>
+        <!-- phoneNumber error validation -->
+        <mat-error *ngIf="form.get('recoveryPhone').hasError('phoneNumber')">Please enter valid phone numer</mat-error>
       </mat-form-field>
       <h2 class="subtitle">Current Email and Phone Number</h2>
       <div class="info">

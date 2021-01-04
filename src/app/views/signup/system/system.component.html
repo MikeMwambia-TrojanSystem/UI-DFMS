@@ -12,12 +12,13 @@
       <p class="label">Account Title</p>
       <mat-form-field appearance="standard">
         <mat-select formControlName="role">
-          <mat-option value="Clerk">Clerk</mat-option>
-          <mat-option value="Drafter Role">Drafter Role</mat-option>
-          <mat-option value="Speaker of the Assembly">Speaker of the Assembly</mat-option>
+          <mat-option value="Staff">Drafter of the Assembly</mat-option>
+          <mat-option value="Clerk">Clerk of the Assembly</mat-option>
+          <mat-option value="Speaker">Speaker of the Assembly</mat-option>
         </mat-select>
         <mat-error *ngIf="form.get('role').hasError('required')">Please choose a role</mat-error>
       </mat-form-field>
+      <span *ngIf="!form.get('role').value" class="select-roles">Select the account title to view roles</span>
       <h2 class="subtitle">Roles</h2>
       <div class="role" *ngFor="let role of roles[this.form.get('role').value]">
         <mat-icon class="role-icon">check_circle_outline</mat-icon>
