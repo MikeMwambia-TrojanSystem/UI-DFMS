@@ -12,6 +12,7 @@ import { NotificationsSignupComponent } from './views/signup/notifications/notif
 import { EmailVerificationComponent } from './views/signup/email-verification/email-verification.component';
 import { PhoneVerificationComponent } from './views/signup/phone-verification/phone-verification.component';
 import { CreateCommitteeComponent } from './views/create/committee/create-committee.component';
+import { CreateConstituenciesComponent } from './views/create/constituencies/create-constituencies.component';
 
 const routes: Routes = [
   // Login route
@@ -36,7 +37,10 @@ const routes: Routes = [
   //Create parent route
   {
     path: 'create',
-    children: [{ path: 'committee', component: CreateCommitteeComponent }],
+    children: [
+      { path: 'committee', component: CreateCommitteeComponent },
+      { path: 'constituencies', component: CreateConstituenciesComponent },
+    ],
   },
 
   // Fallback

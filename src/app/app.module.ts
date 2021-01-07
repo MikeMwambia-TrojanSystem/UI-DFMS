@@ -21,6 +21,7 @@ import { NotificationsSignupComponent } from './views/signup/notifications/notif
 import { EmailVerificationComponent } from './views/signup/email-verification/email-verification.component';
 import { PhoneVerificationComponent } from './views/signup/phone-verification/phone-verification.component';
 import { CreateCommitteeComponent } from './views/create/committee/create-committee.component';
+import { CreateConstituenciesComponent } from './views/create/constituencies/create-constituencies.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { CreateCommitteeComponent } from './views/create/committee/create-commit
     EmailVerificationComponent,
     PhoneVerificationComponent,
     CreateCommitteeComponent,
+    CreateConstituenciesComponent,
   ],
   imports: [
     BrowserModule,
