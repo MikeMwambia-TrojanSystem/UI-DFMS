@@ -13,6 +13,7 @@ import { EmailVerificationComponent } from './views/signup/email-verification/em
 import { PhoneVerificationComponent } from './views/signup/phone-verification/phone-verification.component';
 import { CreateCommitteeComponent } from './views/create/committee/create-committee.component';
 import { CreateConstituenciesComponent } from './views/create/constituencies/create-constituencies.component';
+import { CreateDepartmentComponent } from './views/create/department/create-department.component';
 
 const routes: Routes = [
   // Login route
@@ -40,6 +41,7 @@ const routes: Routes = [
     children: [
       { path: 'committee', component: CreateCommitteeComponent },
       { path: 'constituencies', component: CreateConstituenciesComponent },
+      { path: 'department', component: CreateDepartmentComponent },
     ],
   },
 
