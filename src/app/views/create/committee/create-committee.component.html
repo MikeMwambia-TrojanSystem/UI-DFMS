@@ -1,0 +1,30 @@
+<div class="main">
+  <mat-card class="card">
+    <h1 class="title">Create Committee Under the County Assembly of Meru</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Committee Name</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="name" placeholder="Committee on Food Processing and Fishing" />
+        <mat-error *ngIf="form.get('name').hasError('required')">Please enter committee name!</mat-error>
+      </mat-form-field>
+      <p class="label">Date Formed</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="date" type="date" />
+        <mat-error *ngIf="form.get('date').hasError('required')">Please enter date formed!</mat-error>
+      </mat-form-field>
+      <div class="select-container">
+        <span class="select-title">Select Members</span>
+        <mat-icon class="select-icon">add_circle_outline</mat-icon>
+      </div>
+      <span class="members">{{numberOfMembers}} member{{numberOfMembers === 1 ? '' : 's'}}</span>
+      <div class="member-container" *ngFor="let member of members">
+        <mat-icon class="member-icon">person_outline</mat-icon>
+        <span>{{member}}</span>
+      </div>
+      <div class="actions">
+        <button mat-button type="button" class="btn-draft">Save as Draft</button>
+        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save Committee</button>
+      </div>
+    </form>
+  </mat-card>
+</div>

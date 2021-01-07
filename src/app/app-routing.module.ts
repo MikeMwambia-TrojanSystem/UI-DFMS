@@ -11,6 +11,7 @@ import { SystemSignupComponent } from './views/signup/system/system.component';
 import { NotificationsSignupComponent } from './views/signup/notifications/notifications.component';
 import { EmailVerificationComponent } from './views/signup/email-verification/email-verification.component';
 import { PhoneVerificationComponent } from './views/signup/phone-verification/phone-verification.component';
+import { CreateCommitteeComponent } from './views/create/committee/create-committee.component';
 
 const routes: Routes = [
   // Login route
@@ -30,6 +31,12 @@ const routes: Routes = [
       { path: 'email-verification', component: EmailVerificationComponent },
       { path: 'phone-verification', component: PhoneVerificationComponent },
     ],
+  },
+
+  //Create parent route
+  {
+    path: 'create',
+    children: [{ path: 'committee', component: CreateCommitteeComponent }],
   },
 
   // Fallback

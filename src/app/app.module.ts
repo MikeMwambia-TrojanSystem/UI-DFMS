@@ -20,6 +20,7 @@ import { SystemSignupComponent } from './views/signup/system/system.component';
 import { NotificationsSignupComponent } from './views/signup/notifications/notifications.component';
 import { EmailVerificationComponent } from './views/signup/email-verification/email-verification.component';
 import { PhoneVerificationComponent } from './views/signup/phone-verification/phone-verification.component';
+import { CreateCommitteeComponent } from './views/create/committee/create-committee.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { PhoneVerificationComponent } from './views/signup/phone-verification/ph
     NotificationsSignupComponent,
     EmailVerificationComponent,
     PhoneVerificationComponent,
+    CreateCommitteeComponent,
   ],
   imports: [
     BrowserModule,
