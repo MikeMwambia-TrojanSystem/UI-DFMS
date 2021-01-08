@@ -14,6 +14,10 @@ import { PhoneVerificationComponent } from './views/signup/phone-verification/ph
 import { CreateCommitteeComponent } from './views/create/committee/create-committee.component';
 import { CreateConstituenciesComponent } from './views/create/constituencies/create-constituencies.component';
 import { CreateDepartmentComponent } from './views/create/department/create-department.component';
+import { CreateEmployeeComponent } from './views/create/employee/create-employee.component';
+import { CreateMcaComponent } from './views/create/mca/create-mca.component';
+import { CreateSubcountyComponent } from './views/create/subcounty/create-subcounty.component';
+import { CreateWardsComponent } from './views/create/wards/create-wards.component';
 
 const routes: Routes = [
   // Login route
@@ -42,6 +46,10 @@ const routes: Routes = [
       { path: 'committee', component: CreateCommitteeComponent },
       { path: 'constituencies', component: CreateConstituenciesComponent },
       { path: 'department', component: CreateDepartmentComponent },
+      { path: 'employee', component: CreateEmployeeComponent },
+      { path: 'mca', component: CreateMcaComponent },
+      { path: 'subcounty', component: CreateSubcountyComponent },
+      { path: 'wards', component: CreateWardsComponent },
     ],
   },
 

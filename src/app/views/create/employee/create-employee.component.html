@@ -1,0 +1,55 @@
+<div class="main">
+  <mat-card class="card">
+    <h1 class="title">Create Employee Profile</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Name</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="name" placeholder="Committee on Food Processing and Fishing" />
+        <mat-error *ngIf="form.get('name').hasError('required')">Please enter committee name!</mat-error>
+      </mat-form-field>
+      <p class="label">Category</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="category" placeholder="Food Production" />
+        <mat-error *ngIf="form.get('category').hasError('required')">Please enter category!</mat-error>
+      </mat-form-field>
+      <p class="label">Department</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="department" placeholder="Department of Works" />
+        <mat-error *ngIf="form.get('department').hasError('required')">Please enter department!</mat-error>
+      </mat-form-field>
+      <p class="label">Term of Employment</p>
+      <mat-form-field appearance="standard">
+        <mat-select formControlName="term">
+          <mat-option value="Food Production">Food Production</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p class="label">Education Level</p>
+      <mat-form-field appearance="standard">
+        <mat-select formControlName="education">
+          <mat-option value="Master Degree">Master Degree</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div>
+        <span class="label">Enter Phone Number</span>
+        <span class="example">E.g 254 712 345 678</span>
+      </div>
+      <mat-form-field appearance="standard">
+        <span matPrefix>+ &nbsp;</span>
+        <input matInput formControlName="phone" type="tel" />
+        <mat-error *ngIf="form.get('phone').hasError('required')">Please enter phone numer</mat-error>
+        <mat-error *ngIf="form.get('phone').hasError('phoneNumber')">Please enter valid phone numer</mat-error>
+      </mat-form-field>
+      <div class="select-container">
+        <span class="select-title">Upload Profile Picture</span>
+        <label for="employee-profile-pic-upload">
+          <mat-icon class="select-icon">add_circle_outline</mat-icon>
+        </label>
+        <input id="employee-profile-pic-upload" class="upload" type="file" accept="image/*" />
+      </div>
+      <div class="actions">
+        <button mat-button type="button" class="btn-draft">Save as Draft</button>
+        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save Committee</button>
+      </div>
+    </form>
+  </mat-card>
+</div>

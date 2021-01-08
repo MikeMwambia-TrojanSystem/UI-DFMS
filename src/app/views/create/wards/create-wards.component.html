@@ -1,0 +1,25 @@
+<div class="main">
+  <mat-card class="card">
+    <h1 class="title">Create Subcounty of Meru County</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Name</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="name" placeholder="Andrew Mary" />
+        <mat-error *ngIf="form.get('name').hasError('required')">Please enter department name!</mat-error>
+      </mat-form-field>
+      <p class="label">Sub County</p>
+      <mat-form-field appearance="standard">
+        <mat-select formControlName="subCounty">
+          <mat-option value="Food Production">Food Production</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <p class="label">Constituency</p>
+      <mat-form-field appearance="standard">
+        <mat-select formControlName="constituency">
+          <mat-option value="Constituency 2">Constituency 2</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save</button>
+    </form>
+  </mat-card>
+</div>
