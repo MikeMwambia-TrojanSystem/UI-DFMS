@@ -1,0 +1,10 @@
+<div class="main">
+  <mat-card class="card">
+    <h1 class="title">Committee List</h1>
+    <app-search-bar></app-search-bar>
+    <div>
+      <app-list-item *ngFor="let mcaEmployee of mcaEmployees" [title]="mcaEmployee.name" [subtitle]="mcaEmployee.ward"
+        [pic]="mcaEmployee.profilePic"></app-list-item>
+    </div>
+  </mat-card>
+</div>

@@ -1,0 +1,10 @@
+<div class="main">
+  <mat-card class="card">
+    <h1 class="title">Personnel List</h1>
+    <app-search-bar></app-search-bar>
+    <div>
+      <app-list-item *ngFor="let personnel of personnels" [title]="personnel.name" [subtitle]="personnel.department"
+        [pic]="personnel.profilePic"></app-list-item>
+    </div>
+  </mat-card>
+</div>

@@ -1,0 +1,10 @@
+<div class="main">
+  <mat-card class="card">
+    <h1 class="title">Committee List</h1>
+    <app-search-bar></app-search-bar>
+    <div>
+      <app-list-item *ngFor="let committee of committees" [title]="committee.name" [subtitle]="committee.date"
+        [pic]="committee.profilePic" [isSubDate]="true"></app-list-item>
+    </div>
+  </mat-card>
+</div>

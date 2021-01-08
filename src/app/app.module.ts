@@ -27,6 +27,13 @@ import { CreateEmployeeComponent } from './views/create/employee/create-employee
 import { CreateMcaComponent } from './views/create/mca/create-mca.component';
 import { CreateSubcountyComponent } from './views/create/subcounty/create-subcounty.component';
 import { CreateWardsComponent } from './views/create/wards/create-wards.component';
+import { ListCommitteeComponent } from './views/list/committee/list-committee.component';
+import { SearchBarComponent } from './components/SearchBar/search-bar.component';
+import { ListItemComponent } from './components/ListItem/list-item.component';
+import { CommonModule } from '@angular/common';
+import { ListMcaEmployeeComponent } from './views/list/mca-employee/list-mca-employee.component';
+import { ListPersonnelComponent } from './views/list/personnel/list-personnel.component';
+import { ListWardsComponent } from './views/list/wards/list-wards.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +56,12 @@ import { CreateWardsComponent } from './views/create/wards/create-wards.componen
     CreateMcaComponent,
     CreateSubcountyComponent,
     CreateWardsComponent,
+    ListCommitteeComponent,
+    SearchBarComponent,
+    ListItemComponent,
+    ListMcaEmployeeComponent,
+    ListPersonnelComponent,
+    ListWardsComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,6 +70,7 @@ import { CreateWardsComponent } from './views/create/wards/create-wards.componen
     MaterialModule,
     ReactiveFormsModule,
     NgOtpInputModule,
+    CommonModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

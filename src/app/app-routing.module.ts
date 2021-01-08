@@ -18,6 +18,10 @@ import { CreateEmployeeComponent } from './views/create/employee/create-employee
 import { CreateMcaComponent } from './views/create/mca/create-mca.component';
 import { CreateSubcountyComponent } from './views/create/subcounty/create-subcounty.component';
 import { CreateWardsComponent } from './views/create/wards/create-wards.component';
+import { ListCommitteeComponent } from './views/list/committee/list-committee.component';
+import { ListMcaEmployeeComponent } from './views/list/mca-employee/list-mca-employee.component';
+import { ListPersonnelComponent } from './views/list/personnel/list-personnel.component';
+import { ListWardsComponent } from './views/list/wards/list-wards.component';
 
 const routes: Routes = [
   // Login route
@@ -50,6 +54,17 @@ const routes: Routes = [
       { path: 'mca', component: CreateMcaComponent },
       { path: 'subcounty', component: CreateSubcountyComponent },
       { path: 'wards', component: CreateWardsComponent },
+    ],
+  },
+
+  //List parent route
+  {
+    path: 'list',
+    children: [
+      { path: 'committee', component: ListCommitteeComponent },
+      { path: 'mca-employee', component: ListMcaEmployeeComponent },
+      { path: 'personnel', component: ListPersonnelComponent },
+      { path: 'wards', component: ListWardsComponent },
     ],
   },
 
