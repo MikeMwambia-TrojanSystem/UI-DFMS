@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 interface Committee {
   name: string;
@@ -11,7 +12,7 @@ interface Committee {
   templateUrl: './list-committee.component.html',
   styleUrls: ['./list-committee.component.scss'],
 })
-export class ListCommitteeComponent {
+export class ListCommitteeComponent implements OnInit {
   /**
    * Committees mock data
    */
@@ -41,4 +42,11 @@ export class ListCommitteeComponent {
         'https://snappygoat.com/b/b1994f0ceeba40094713fbdd2cb7aa717533fc65',
     },
   ];
+  selectabe = false; // Whether the list is selectable
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.selectabe = this.route.snapshot.queryParams.select || false;
+  }
 }

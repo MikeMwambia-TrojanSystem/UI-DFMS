@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 interface Ward {
   name: string;
@@ -10,7 +11,7 @@ interface Ward {
   templateUrl: './list-wards.component.html',
   styleUrls: ['./list-wards.component.scss'],
 })
-export class ListWardsComponent {
+export class ListWardsComponent implements OnInit {
   wards: Ward[] = [
     {
       name: 'Peach Lovil',
@@ -33,4 +34,11 @@ export class ListWardsComponent {
         'https://snappygoat.com/b/b1994f0ceeba40094713fbdd2cb7aa717533fc65',
     },
   ];
+  selectabe = false; // Whether the list is selectable
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.selectabe = this.route.snapshot.queryParams.select || false;
+  }
 }
