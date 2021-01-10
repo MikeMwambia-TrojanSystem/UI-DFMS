@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 interface McaEmployee {
   name: string;
@@ -11,7 +12,7 @@ interface McaEmployee {
   templateUrl: './list-mca-employee.component.html',
   styleUrls: ['./list-mca-employee.component.scss'],
 })
-export class ListMcaEmployeeComponent {
+export class ListMcaEmployeeComponent implements OnInit {
   /**
    * MCA/Employee mock data
    */
@@ -41,4 +42,11 @@ export class ListMcaEmployeeComponent {
         'https://snappygoat.com/b/b1994f0ceeba40094713fbdd2cb7aa717533fc65',
     },
   ];
+  selectabe = false; // Whether the list is selectable
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.selectabe = this.route.snapshot.queryParams.select || false;
+  }
 }

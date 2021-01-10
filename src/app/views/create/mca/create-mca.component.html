@@ -11,6 +11,7 @@
       <mat-form-field appearance="standard">
         <mat-select formControlName="category">
           <mat-option value="Elected">Elected</mat-option>
+          <mat-option value="Nominated">Nominated</mat-option>
         </mat-select>
       </mat-form-field>
       <div class="term-container">
@@ -52,9 +53,13 @@
           </label>
           <input id="mca-profile-pic-upload" class="upload" type="file" accept="image/*" />
         </div>
-        <a routerLink="/list/wards">
-          <button mat-raised-button type="button" class="select-btn">Select Ward Represented</button>
+        <a routerLink="/list/wards" style="margin-left: 10px">
+          <div class="select-profile-pic">
+            <span class="select-title select-ward">Select Ward Represented</span>
+          </div>
         </a>
+        <!-- <button mat-raised-button type="button" class="select-btn">Select Ward Represented</button> -->
+
       </div>
       <div class="actions">
         <button mat-button type="button" class="btn-draft">Save as Draft</button>

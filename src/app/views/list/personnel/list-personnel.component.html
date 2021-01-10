@@ -4,7 +4,7 @@
     <app-search-bar></app-search-bar>
     <div>
       <app-list-item *ngFor="let personnel of personnels" [title]="personnel.name" [subtitle]="personnel.department"
-        [pic]="personnel.profilePic"></app-list-item>
+        [pic]="personnel.profilePic" [selectable]="selectabe"></app-list-item>
     </div>
   </mat-card>
 </div>
