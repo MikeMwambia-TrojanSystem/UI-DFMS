@@ -22,6 +22,10 @@ import { ListCommitteeComponent } from './views/list/committee/list-committee.co
 import { ListMcaEmployeeComponent } from './views/list/mca-employee/list-mca-employee.component';
 import { ListPersonnelComponent } from './views/list/personnel/list-personnel.component';
 import { ListWardsComponent } from './views/list/wards/list-wards.component';
+import { AccountManagementComponent } from './views/management/account/account-management.component';
+import { AdministrationOathComponent } from './views/management/ad-oath/ad-oath.component';
+import { AddPetitionerComponent } from './views/management/petitioner/add-petitioner.component';
+import { UploadPageComponent } from './views/management/upload/upload-page.component';
 
 const routes: Routes = [
   // Login route
@@ -65,6 +69,17 @@ const routes: Routes = [
       { path: 'mca-employee', component: ListMcaEmployeeComponent },
       { path: 'personnel', component: ListPersonnelComponent },
       { path: 'wards', component: ListWardsComponent },
+    ],
+  },
+
+  //Management parent route
+  {
+    path: 'management',
+    children: [
+      { path: 'accounts', component: AccountManagementComponent },
+      { path: 'oath', component: AdministrationOathComponent },
+      { path: 'petitioners', component: AddPetitionerComponent },
+      { path: 'upload', component: UploadPageComponent },
     ],
   },
 

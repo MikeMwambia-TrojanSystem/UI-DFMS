@@ -1,0 +1,35 @@
+<div class="main">
+  <mat-card class="card">
+    <h1 class="title">Administration of Oath</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Name</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="name" placeholder="Sterys Crystal" />
+        <mat-error *ngIf="form.get('name').hasError('required')">Please enter your name!</mat-error>
+      </mat-form-field>
+      <p class="label">Ward Represented</p>
+      <mat-form-field appearance="standard">
+        <mat-select formControlName="ward">
+          <mat-option value="Maintenance Speel">Maintenance Speel</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('ward').hasError('required')">Please select a ward!</mat-error>
+      </mat-form-field>
+      <p class="label">Upload Passport Picture</p>
+      <mat-form-field appearance="standard">
+        <mat-label>Select file</mat-label>
+        <mat-select formControlName="passport">
+        </mat-select>
+        <mat-error *ngIf="form.get('passport').hasError('required')">Please select a passport picture!</mat-error>
+      </mat-form-field>
+      <p class="label">Political Party</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="party" placeholder="Trust Party" />
+        <mat-error *ngIf="form.get('party').hasError('required')">Please enter political party!</mat-error>
+      </mat-form-field>
+      <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save</button>
+    </form>
+    <div class="divider"></div>
+    <app-management-item *ngFor="let ad of administrations" [title]="ad.name" [subtitle]="ad.ward"
+      [pic]="ad.profilePic"></app-management-item>
+  </mat-card>
+</div>

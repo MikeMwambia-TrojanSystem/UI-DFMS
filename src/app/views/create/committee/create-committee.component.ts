@@ -18,7 +18,7 @@ export class CreateCommitteeComponent {
       ],
       Validators.required
     ), // Predefined members, can be clear later
-  }); // Form group that holds username and password from user input
+  }); // Form group that holds user input
 
   /**
    * Getter to get the number of members
@@ -33,4 +33,6 @@ export class CreateCommitteeComponent {
   get members(): string[] {
     return this.form.get('members').value;
   }
+
+  county = 'Meru'; // Dynamic county name;
 }

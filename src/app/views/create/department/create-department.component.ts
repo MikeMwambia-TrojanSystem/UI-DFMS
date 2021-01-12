@@ -9,5 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 export class CreateDepartmentComponent {
   form = new FormGroup({
     name: new FormControl('', Validators.required),
-  }); // Form group that holds username and password from user input
+  }); // Form group that holds user input
+
+  county = 'Meru'; // Dynamic county name;
 }

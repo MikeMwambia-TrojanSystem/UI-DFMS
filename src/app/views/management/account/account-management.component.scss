@@ -1,0 +1,29 @@
+.main {
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  overflow-y: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.card {
+  background-color: white;
+  padding: 60px;
+  width: 40%;
+  position: absolute;
+  top: 50px;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0;
+  margin-top: 50px;
+
+  &:first-child {
+    margin: 0;
+  }
+}
