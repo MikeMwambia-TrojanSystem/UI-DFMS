@@ -1,0 +1,23 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Generate and File a Motion</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Motion Content</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="content" placeholder="Motion on Sales Entity" />
+        <mat-error *ngIf="form.get('content').hasError('required')">Please enter motion content!</mat-error>
+      </mat-form-field>
+      <p class="label">Subject Matter of the Motion</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="subject" placeholder="Motion on Braerd and Barrrityr" />
+        <mat-error *ngIf="form.get('subject').hasError('required')">Please enter subject matter!</mat-error>
+      </mat-form-field>
+      <app-custom-button [title]="'Select Sponsor'" class="custom-btn standalone">
+      </app-custom-button>
+      <div class="actions">
+        <button mat-button type="button" class="btn-draft">Save as Draft</button>
+        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Bills</button>
+      </div>
+    </form>
+  </app-center-card>
+</app-background>

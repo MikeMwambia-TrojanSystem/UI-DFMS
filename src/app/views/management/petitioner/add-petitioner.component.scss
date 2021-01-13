@@ -1,21 +1,7 @@
 .main {
-  width: 100vw;
-  height: 100vh;
-  background-color: white;
-  overflow-y: auto;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.card {
-  background-color: white;
-  padding: 60px;
-  width: 75%;
-  position: absolute;
-  top: 50px;
-  display: flex;
+  width: 60vw;
+  min-width: 600px;
 }
 
 .left-section {

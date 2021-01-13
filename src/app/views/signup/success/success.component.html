@@ -1,5 +1,5 @@
-<div class="main">
-  <mat-card class="card">
+<app-background [background]="'green'">
+  <app-center-card>
     <h2 class="title">Congratulations You have successfully created the account</h2>
     <div class="info">
       <span class="info-label">County: </span>
@@ -34,6 +34,6 @@
       <button mat-flat-button class="btn">Finish Set Up</button>
     </a>
     <div class="foot">Set up is <span class="perc">80%</span> complete</div>
-  </mat-card>
-</div>
+  </app-center-card>
+</app-background>
 <app-back-button [link]="'/signup/email'"></app-back-button>

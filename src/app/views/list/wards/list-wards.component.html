@@ -1,10 +1,10 @@
-<div class="main">
-  <mat-card class="card">
+<app-background>
+  <app-center-card>
     <h1 class="title">Wards List</h1>
     <app-search-bar></app-search-bar>
     <div>
       <app-list-item *ngFor="let ward of wards" [title]="ward.name" [pic]="ward.profilePic" [selectable]="selectabe">
       </app-list-item>
     </div>
-  </mat-card>
-</div>
+  </app-center-card>
+</app-background>

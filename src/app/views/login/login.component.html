@@ -1,5 +1,5 @@
-<div class="main">
-  <mat-card class="card">
+<app-background [background]="'green'">
+  <app-center-card>
     <h1 class="title">Welcome to County Assembly of Meru</h1>
     <h3 class="subtitle">Digital File Management System</h3>
     <h2 class="county">{{county}}</h2>
@@ -17,5 +17,5 @@
       <mat-checkbox class="check-box" formControlName="isRemember">Keep me logged in</mat-checkbox>
       <button mat-flat-button class="btn" [disabled]="form.invalid">Login</button>
     </form>
-  </mat-card>
-</div>
+  </app-center-card>
+</app-background>

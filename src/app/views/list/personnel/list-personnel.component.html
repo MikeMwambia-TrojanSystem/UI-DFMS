@@ -1,10 +1,10 @@
-<div class="main">
-  <mat-card class="card">
+<app-background>
+  <app-center-card>
     <h1 class="title">Personnel List</h1>
     <app-search-bar></app-search-bar>
     <div>
       <app-list-item *ngFor="let personnel of personnels" [title]="personnel.name" [subtitle]="personnel.department"
         [pic]="personnel.profilePic" [selectable]="selectabe"></app-list-item>
     </div>
-  </mat-card>
-</div>
+  </app-center-card>
+</app-background>

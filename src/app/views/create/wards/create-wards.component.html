@@ -1,5 +1,5 @@
-<div class="main">
-  <mat-card class="card">
+<app-background>
+  <app-center-card>
     <h1 class="title">Create Wards of {{county}} County</h1>
     <form [formGroup]="form" class="form">
       <p class="label">Name</p>
@@ -21,5 +21,5 @@
       </mat-form-field>
       <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save</button>
     </form>
-  </mat-card>
-</div>
+  </app-center-card>
+</app-background>

@@ -39,6 +39,13 @@ import { ManagementItemComponent } from './components/ManagementItem/management-
 import { AdministrationOathComponent } from './views/management/ad-oath/ad-oath.component';
 import { AddPetitionerComponent } from './views/management/petitioner/add-petitioner.component';
 import { UploadPageComponent } from './views/management/upload/upload-page.component';
+import { ActGenerateComponent } from './views/generate/act/act-generate.component';
+import { CustomButtonComponent } from './components/CustomButton/custom-button.component';
+import { BackgroundComponent } from './components/Background/background.component';
+import { CenterCard } from './components/CenterCard/center-card.component';
+import { BillGenerateComponent } from './views/generate/bill/bill-generate.component';
+import { MotionGenerateComponent } from './views/generate/motion/motion-generate.component';
+import { PetitionGenerateComponent } from './views/generate/petition/petition-generate.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +79,13 @@ import { UploadPageComponent } from './views/management/upload/upload-page.compo
     AdministrationOathComponent,
     AddPetitionerComponent,
     UploadPageComponent,
+    ActGenerateComponent,
+    CustomButtonComponent,
+    BackgroundComponent,
+    CenterCard,
+    BillGenerateComponent,
+    MotionGenerateComponent,
+    PetitionGenerateComponent,
   ],
   imports: [
     BrowserModule,

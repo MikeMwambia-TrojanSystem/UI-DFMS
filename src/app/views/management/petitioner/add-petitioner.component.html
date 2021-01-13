@@ -1,42 +1,44 @@
-<div class="main">
-  <mat-card class="card">
-    <div class="left-section">
-      <h2 class="title">Add List of Petitioners</h2>
-      <form [formGroup]="form" class="form">
-        <p class="label">Name</p>
-        <mat-form-field appearance="standard">
-          <input matInput formControlName="name" placeholder="Sterys Crystal" />
-          <mat-error *ngIf="form.get('name').hasError('required')">Please enter your name!</mat-error>
-        </mat-form-field>
-        <p class="label">Phone Number</p>
-        <mat-form-field appearance="standard">
-          <mat-select formControlName="phone">
-            <mat-option value="Maintenance Speel">+25407889078745</mat-option>
-          </mat-select>
-          <mat-error *ngIf="form.get('phone').hasError('required')">Please select a phone number!</mat-error>
-        </mat-form-field>
-        <p class="label">Ward / Region Originating</p>
-        <mat-form-field appearance="standard">
-          <mat-select formControlName="originating">
-            <mat-option value="Nathu Ward">Nathu Ward</mat-option>
-          </mat-select>
-          <mat-error *ngIf="form.get('originating').hasError('required')">Please select a ward / region!</mat-error>
-        </mat-form-field>
-        <p class="label">Upload Picture</p>
-        <mat-form-field appearance="standard">
-          <mat-label>Select File</mat-label>
-          <mat-select formControlName="picture">
-          </mat-select>
-          <mat-error *ngIf="form.get('picture').hasError('required')">Please upload profile!</mat-error>
-        </mat-form-field>
-        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save</button>
-      </form>
-      <div class="divider"></div>
+<app-background>
+  <app-center-card>
+    <div class="main">
+      <div class="left-section">
+        <h2 class="title">Add List of Petitioners</h2>
+        <form [formGroup]="form" class="form">
+          <p class="label">Name</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="name" placeholder="Sterys Crystal" />
+            <mat-error *ngIf="form.get('name').hasError('required')">Please enter your name!</mat-error>
+          </mat-form-field>
+          <p class="label">Phone Number</p>
+          <mat-form-field appearance="standard">
+            <mat-select formControlName="phone">
+              <mat-option value="Maintenance Speel">+25407889078745</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('phone').hasError('required')">Please select a phone number!</mat-error>
+          </mat-form-field>
+          <p class="label">Ward / Region Originating</p>
+          <mat-form-field appearance="standard">
+            <mat-select formControlName="originating">
+              <mat-option value="Nathu Ward">Nathu Ward</mat-option>
+            </mat-select>
+            <mat-error *ngIf="form.get('originating').hasError('required')">Please select a ward / region!</mat-error>
+          </mat-form-field>
+          <p class="label">Upload Picture</p>
+          <mat-form-field appearance="standard">
+            <mat-label>Select File</mat-label>
+            <mat-select formControlName="picture">
+            </mat-select>
+            <mat-error *ngIf="form.get('picture').hasError('required')">Please upload profile!</mat-error>
+          </mat-form-field>
+          <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save</button>
+        </form>
+        <div class="divider"></div>
+      </div>
+      <div class="right-section">
+        <h2 class="title">List of Petitioners</h2>
+        <app-management-item *ngFor="let petitioner of petitioners" [title]="petitioner.name"
+          [subtitle]="petitioner.ward" [pic]="petitioner.profilePic" [noDivider]="true"></app-management-item>
+      </div>
     </div>
-    <div class="right-section">
-      <h2 class="title">List of Petitioners</h2>
-      <app-management-item *ngFor="let petitioner of petitioners" [title]="petitioner.name" [subtitle]="petitioner.ward"
-        [pic]="petitioner.profilePic" [noDivider]="true"></app-management-item>
-    </div>
-  </mat-card>
-</div>
+  </app-center-card>
+</app-background>

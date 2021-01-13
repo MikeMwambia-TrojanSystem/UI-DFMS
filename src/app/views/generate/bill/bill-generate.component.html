@@ -1,0 +1,71 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Generate and File a Bill</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Title of Bill</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="title" placeholder="Acts on Food Reduction and Housing" />
+        <mat-error *ngIf="form.get('title').hasError('required')">Please enter bill title!</mat-error>
+      </mat-form-field>
+      <p class="label">Bill No</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="number" placeholder="NO.172" type="number" />
+        <mat-error *ngIf="form.get('number').hasError('required')">Please enter bill number!</mat-error>
+      </mat-form-field>
+      <div class="custom-btn-container">
+        <app-custom-button [title]="'Select Sponsor'" class="custom-btn"></app-custom-button>
+        <app-custom-button [title]="'Select Concerned Committee'" class="custom-btn"></app-custom-button>
+      </div>
+      <div class="date-container">
+        <div class="date">
+          <p class="label">Date Published</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="datePublished" type="date" />
+            <mat-error *ngIf="form.get('datePublished').hasError('required')">Please enter date published!</mat-error>
+          </mat-form-field>
+        </div>
+        <div class="date">
+          <p class="label">First Reading</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="firstReading" type="date" />
+            <mat-error *ngIf="form.get('firstReading').hasError('required')">Please enter date first reading!
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="date-container">
+        <div class="date">
+        </div>
+        <div class="date">
+          <p class="label">Second Reading</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="secondReading" type="date" />
+            <mat-error *ngIf="form.get('secondReading').hasError('required')">Please enter date second reading!
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="date-container">
+        <div class="date">
+        </div>
+        <div class="date">
+          <p class="label">Date Passed</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="datePassed" type="date" />
+            <mat-error *ngIf="form.get('datePassed').hasError('required')">Please enter date passed!</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+      <app-custom-button [title]="'Attach Bill Report'" class="custom-btn standalone" (buttonClick)="onStartUpload()">
+      </app-custom-button>
+      <app-custom-button [title]="'Upload Bill Soft Copy'" class="custom-btn standalone"
+        (buttonClick)="onStartUpload()">
+      </app-custom-button>
+      <input #fileUpload class="hidden" type="file" />
+      <div class="actions">
+        <button mat-button type="button" class="btn-draft">Save as Draft</button>
+        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Bills</button>
+      </div>
+    </form>
+  </app-center-card>
+</app-background>

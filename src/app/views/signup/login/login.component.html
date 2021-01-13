@@ -1,5 +1,5 @@
-<div class="main">
-  <mat-card class="card">
+<app-background [background]="'green'">
+  <app-center-card>
     <h2 class="title">Login to Proceed</h2>
     <form [formGroup]="form" class="form">
       <p class="label">Account</p>
@@ -29,6 +29,6 @@
         <button mat-flat-button class="btn" [disabled]="form.invalid">Login</button>
       </a>
     </form>
-  </mat-card>
-</div>
+  </app-center-card>
+</app-background>
 <app-back-button [link]="'/signup/success'"></app-back-button>

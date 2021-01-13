@@ -1,0 +1,76 @@
+<app-background>
+  <app-center-card>
+    <div class="main">
+      <h1 class="title">Generate and File a Petition</h1>
+      <form [formGroup]="form" class="form">
+        <p class="label">Fill in the Issues that make up this petition</p>
+        <mat-form-field appearance="standard">
+          <input matInput formControlName="issues" placeholder="Petition on housing and food" />
+          <mat-error *ngIf="form.get('issues').hasError('required')">Please fill in issues!</mat-error>
+        </mat-form-field>
+        <p class="label">Petition concerning with sector(s)</p>
+        <mat-form-field appearance="standard">
+          <input matInput formControlName="sector" placeholder="Food and Water" />
+          <mat-error *ngIf="form.get('sector').hasError('required')">Please enter concerning sector!</mat-error>
+        </mat-form-field>
+        <div class="input-container">
+          <div class="input">
+            <p class="label">Date Provided to the Assembly by Petitioner</p>
+            <mat-form-field appearance="standard">
+              <input matInput formControlName="dateProvided" type="date" />
+              <mat-error *ngIf="form.get('dateProvided').hasError('required')">Please enter date provided!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="input">
+            <p class="label">Date Set for petition discussions by assembly</p>
+            <mat-form-field appearance="standard">
+              <input matInput formControlName="dateSet" type="date" />
+              <mat-error *ngIf="form.get('dateSet').hasError('required')">Please enter date set!
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="input-container">
+          <div class="input">
+            <p class="label">Petition Number</p>
+            <mat-form-field appearance="standard">
+              <input matInput formControlName="number" type="number" />
+              <mat-error *ngIf="form.get('number').hasError('required')">Please enter petition number!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="input">
+            <p class="label">Concerned Committee</p>
+            <mat-form-field appearance="standard">
+              <input matInput formControlName="concernedCommittee" />
+              <mat-error *ngIf="form.get('concernedCommittee').hasError('required')">Please enter concerned committee!
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="input-container">
+          <div class="input">
+            <p class="label">Due date of Response by Committee</p>
+            <mat-form-field appearance="standard">
+              <input matInput formControlName="dueDate" type="date" />
+              <mat-error *ngIf="form.get('dueDate').hasError('required')">Please enter due date!</mat-error>
+            </mat-form-field>
+          </div>
+          <div class="input">
+          </div>
+        </div>
+        <div class="custom-btn-container">
+          <app-custom-button [title]="'Sponsored By'" class="custom-btn"></app-custom-button>
+          <app-custom-button [title]="'Add Petitioner'" class="custom-btn"></app-custom-button>
+        </div>
+        <app-custom-button [title]="'Upload Soft copy of the petition'" class="custom-btn standalone"
+          (buttonClick)="onStartUpload()">
+        </app-custom-button>
+        <input #fileUpload class="hidden" type="file" />
+        <div class="actions">
+          <button mat-button type="button" class="btn-draft">Save as Draft</button>
+          <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Petition</button>
+        </div>
+      </form>
+    </div>
+  </app-center-card>
+</app-background>

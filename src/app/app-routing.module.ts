@@ -26,6 +26,10 @@ import { AccountManagementComponent } from './views/management/account/account-m
 import { AdministrationOathComponent } from './views/management/ad-oath/ad-oath.component';
 import { AddPetitionerComponent } from './views/management/petitioner/add-petitioner.component';
 import { UploadPageComponent } from './views/management/upload/upload-page.component';
+import { ActGenerateComponent } from './views/generate/act/act-generate.component';
+import { BillGenerateComponent } from './views/generate/bill/bill-generate.component';
+import { MotionGenerateComponent } from './views/generate/motion/motion-generate.component';
+import { PetitionGenerateComponent } from './views/generate/petition/petition-generate.component';
 
 const routes: Routes = [
   // Login route
@@ -80,6 +84,17 @@ const routes: Routes = [
       { path: 'oath', component: AdministrationOathComponent },
       { path: 'petitioners', component: AddPetitionerComponent },
       { path: 'upload', component: UploadPageComponent },
+    ],
+  },
+
+  //Generate parent route
+  {
+    path: 'generate',
+    children: [
+      { path: 'act', component: ActGenerateComponent },
+      { path: 'bill', component: BillGenerateComponent },
+      { path: 'motion', component: MotionGenerateComponent },
+      { path: 'petition', component: PetitionGenerateComponent },
     ],
   },
 

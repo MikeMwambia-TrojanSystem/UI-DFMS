@@ -1,19 +1,6 @@
-.main {
-  width: 100vw;
-  height: 100vh;
-  background-color: white;
-  position: relative;
-  overflow-y: auto;
-}
-
 .card {
-  background-color: white;
-  padding: 60px;
   width: 60%;
-  position: absolute;
-  top: 100px;
-  left: 50%;
-  transform: translate(-50%);
+  margin: 0 auto;
 }
 
 .title {
@@ -44,7 +31,7 @@
     padding: 10px 0;
     width: 100%;
     border-bottom: 1px solid gray;
-    color:#008000;
+    color: #008000;
   }
 
   &-content {

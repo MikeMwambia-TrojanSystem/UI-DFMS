@@ -1,0 +1,39 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Generate and File an Act</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Title of Acts</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="title" placeholder="Acts on Food and Babies" />
+        <mat-error *ngIf="form.get('title').hasError('required')">Please enter acts title!</mat-error>
+      </mat-form-field>
+      <p class="label">Acts No</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="number" placeholder="172" type="number" />
+        <mat-error *ngIf="form.get('number').hasError('required')">Please enter acts number!</mat-error>
+      </mat-form-field>
+      <p class="label">Date Published</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="date" type="date" />
+        <mat-error *ngIf="form.get('date').hasError('required')">Please enter date published!</mat-error>
+      </mat-form-field>
+      <div class="custom-btn-container">
+        <app-custom-button [title]="'Select Sponsor'" class="custom-btn"></app-custom-button>
+        <app-custom-button [title]="'Select Concerned Committee'" class="custom-btn"></app-custom-button>
+      </div>
+      <app-custom-button [title]="'Select Originating Bill No'" class="custom-btn standalone"></app-custom-button>
+      <p class="label">Fill in Sector Concerned</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="sector" placeholder="Agriculture" />
+        <mat-error *ngIf="form.get('sector').hasError('required')">Please fill in sector concerned!</mat-error>
+      </mat-form-field>
+      <app-custom-button [title]="'Upload Act File'" class="custom-btn standalone" (buttonClick)="onStartUpload()">
+      </app-custom-button>
+      <input #fileUpload class="hidden" type="file" />
+      <div class="actions">
+        <button mat-button type="button" class="btn-draft">Save as Draft</button>
+        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Acts</button>
+      </div>
+    </form>
+  </app-center-card>
+</app-background>

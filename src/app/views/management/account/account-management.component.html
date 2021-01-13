@@ -1,5 +1,5 @@
-<div class="main">
-  <mat-card class="card">
+<app-background>
+  <app-center-card>
     <h2 class="title">Accounts</h2>
     <app-management-item *ngFor="let account of accounts" [title]="account.name" [subtitle]="account.department"
       [selectable]="true" [pic]="account.profilePic"></app-management-item>
@@ -8,5 +8,5 @@
     </app-management-item>
     <h2 class="title">Committee</h2>
     <app-management-item *ngFor="let com of committee" [title]="com" [selectable]="true"></app-management-item>
-  </mat-card>
-</div>
+  </app-center-card>
+</app-background>

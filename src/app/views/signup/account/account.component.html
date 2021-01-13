@@ -1,5 +1,5 @@
-<div class="main">
-  <mat-card class="card">
+<app-background [background]="'green'">
+  <app-center-card>
     <h2 class="title">To begin using the system. Create an account using the relevant account group</h2>
     <form [formGroup]="form" class="form">
       <p class="label">Account Title</p>
@@ -36,5 +36,5 @@
         <button mat-flat-button class="btn" [disabled]="form.invalid">Create an account</button>
       </a>
     </form>
-  </mat-card>
-</div>
+  </app-center-card>
+</app-background>

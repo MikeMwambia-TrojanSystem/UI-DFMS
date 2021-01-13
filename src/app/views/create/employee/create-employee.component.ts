@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { phoneNumberValidator } from '../../../shared/validators/phone-number';
@@ -9,6 +9,7 @@ import { phoneNumberValidator } from '../../../shared/validators/phone-number';
   styleUrls: ['./create-employee.component.scss'],
 })
 export class CreateEmployeeComponent {
+  @ViewChild('fileUpload') fileUpload: ElementRef<HTMLInputElement>;
   form = new FormGroup({
     name: new FormControl('', Validators.required),
     category: new FormControl('', Validators.required),
@@ -18,4 +19,8 @@ export class CreateEmployeeComponent {
     phone: new FormControl('', [Validators.required, phoneNumberValidator]),
     profilePic: new FormControl(null),
   });
+
+  onStartUpload(): void {
+    this.fileUpload.nativeElement.click();
+  }
 }

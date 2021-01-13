@@ -1,5 +1,5 @@
-<div class="main">
-  <mat-card class="card">
+<app-background [background]="'green'">
+  <app-center-card>
     <h2 class="title">Enter Recovery email and phone number</h2>
     <form [formGroup]="form" class="form">
       <p class="label">Email</p>
@@ -39,6 +39,6 @@
         <button mat-flat-button class="btn" [disabled]="form.invalid">Save</button>
       </a>
     </form>
-  </mat-card>
-</div>
+  </app-center-card>
+</app-background>
 <app-back-button [link]="'/signup/phone-verification'"></app-back-button>

@@ -1,5 +1,5 @@
-<div class="main">
-  <mat-card class="card">
+<app-background>
+  <app-center-card>
     <h1 class="title">Create Employee Profile</h1>
     <form [formGroup]="form" class="form">
       <p class="label">Name</p>
@@ -43,17 +43,12 @@
         <mat-error *ngIf="form.get('phone').hasError('required')">Please enter phone numer</mat-error>
         <mat-error *ngIf="form.get('phone').hasError('phoneNumber')">Please enter valid phone numer</mat-error>
       </mat-form-field>
-      <div class="select-container">
-        <span class="select-title">Upload Profile Picture</span>
-        <label for="employee-profile-pic-upload">
-          <mat-icon class="select-icon">add_circle_outline</mat-icon>
-        </label>
-        <input id="employee-profile-pic-upload" class="upload" type="file" accept="image/*" />
-      </div>
+      <app-custom-button [title]="'Upload Profile Picture'" (buttonClick)="onStartUpload()"></app-custom-button>
+      <input #fileUpload class="upload" type="file" accept="image/*" />
       <div class="actions">
         <button mat-button type="button" class="btn-draft">Save as Draft</button>
         <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save Committee</button>
       </div>
     </form>
-  </mat-card>
-</div>
+  </app-center-card>
+</app-background>

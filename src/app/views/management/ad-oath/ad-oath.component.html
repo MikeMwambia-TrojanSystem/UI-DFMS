@@ -1,5 +1,5 @@
-<div class="main">
-  <mat-card class="card">
+<app-background>
+  <app-center-card>
     <h1 class="title">Administration of Oath</h1>
     <form [formGroup]="form" class="form">
       <p class="label">Name</p>
@@ -31,5 +31,5 @@
     <div class="divider"></div>
     <app-management-item *ngFor="let ad of administrations" [title]="ad.name" [subtitle]="ad.ward"
       [pic]="ad.profilePic"></app-management-item>
-  </mat-card>
-</div>
+  </app-center-card>
+</app-background>

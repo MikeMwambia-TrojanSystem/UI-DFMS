@@ -1,19 +1,21 @@
-<div class="main">
-  <mat-card class="card">
-    <h1 class="title">Upload File</h1>
-    <label for="management-upload-file" class="zone" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
-      <mat-icon class="icon">cloud_upload</mat-icon>
-      <span class="label">Select File or Drag file Here</span>
-    </label>
-    <input id="management-upload-file" type="file" accept="image/*" (change)="onUpload($event)" />
-    <div class="info">
-      <span class="info-title">File Category: </span>
-      <span>{{file && file.name}}</span>
+<app-background>
+  <app-center-card>
+    <div class="main">
+      <h1 class="title">Upload File</h1>
+      <label for="management-upload-file" class="zone" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+        <mat-icon class="icon">cloud_upload</mat-icon>
+        <span class="label">Select File or Drag file Here</span>
+      </label>
+      <input id="management-upload-file" type="file" accept="image/*" (change)="onUpload($event)" />
+      <div class="info">
+        <span class="info-title">File Category: </span>
+        <span>{{file && file.name}}</span>
+      </div>
+      <div class="info">
+        <span class="info-title">File Category: </span>
+        <span class="info-category">Acts</span>
+      </div>
+      <button mat-raised-button class="btn-upload" [disabled]="!file">Upload File</button>
     </div>
-    <div class="info">
-      <span class="info-title">File Category: </span>
-      <span class="info-category">Acts</span>
-    </div>
-    <button mat-raised-button class="btn-upload" [disabled]="!file">Upload File</button>
-  </mat-card>
-</div>
+  </app-center-card>
+</app-background>
