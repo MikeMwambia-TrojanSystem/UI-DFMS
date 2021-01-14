@@ -1,0 +1,10 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Motions</h1>
+    <app-search-bar></app-search-bar>
+    <div>
+      <app-motion-item *ngFor="let motion of motions" [title]="motion.title" [date]="motion.date"
+        [subjects]="motion.subjects" [sponsored]="motion.sponsored" [ward]="motion.ward" class="item"></app-motion-item>
+    </div>
+  </app-center-card>
+</app-background>

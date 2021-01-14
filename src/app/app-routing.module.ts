@@ -30,6 +30,9 @@ import { ActGenerateComponent } from './views/generate/act/act-generate.componen
 import { BillGenerateComponent } from './views/generate/bill/bill-generate.component';
 import { MotionGenerateComponent } from './views/generate/motion/motion-generate.component';
 import { PetitionGenerateComponent } from './views/generate/petition/petition-generate.component';
+import { ListMotionComponent } from './views/list/motion/list-motion.component';
+import { MotionItemComponent } from './components/MotionItem/motion-item.component';
+import { IntroComponent } from './views/intro/intro.component';
 
 const routes: Routes = [
   // Login route
@@ -73,6 +76,7 @@ const routes: Routes = [
       { path: 'mca-employee', component: ListMcaEmployeeComponent },
       { path: 'personnel', component: ListPersonnelComponent },
       { path: 'wards', component: ListWardsComponent },
+      { path: 'motion', component: ListMotionComponent },
     ],
   },
 
@@ -96,6 +100,12 @@ const routes: Routes = [
       { path: 'motion', component: MotionGenerateComponent },
       { path: 'petition', component: PetitionGenerateComponent },
     ],
+  },
+
+  //Intro
+  {
+    path: 'intro',
+    component: IntroComponent,
   },
 
   // Fallback

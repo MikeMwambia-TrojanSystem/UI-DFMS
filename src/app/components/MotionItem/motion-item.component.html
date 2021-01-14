@@ -1,0 +1,9 @@
+<div class="info">
+  <span class="title">Motion on {{title}}</span>
+  <span class="date">Published on <span class="highlight">{{date | date:'dd MMMM, yyyy'}}</span></span>
+  <span class="related">Related to <span class="highlight" *ngFor="let sub of subjects; let i = index">{{(i === 0 ? '' :
+      (i + 1 ===
+      subjects.length ? ' and ' : ', ')) + sub}}</span></span>
+  <span class="sponsored">Sponsored by <span class="highlight">{{sponsored}}({{ward}})</span></span>
+</div>
+<mat-icon class="icon">task_alt</mat-icon>

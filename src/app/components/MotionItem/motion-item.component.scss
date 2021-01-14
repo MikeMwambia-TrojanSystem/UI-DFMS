@@ -1,0 +1,49 @@
+:host {
+  padding: 25px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.date {
+  font-size: 13px;
+  margin: 10px 0;
+
+  .highlight {
+    color: #008000;
+  }
+}
+
+.related {
+  margin-bottom: 10px;
+
+  .highlight {
+    font-weight: 500;
+  }
+}
+
+.sponsored {
+  .highlight {
+    font-weight: 500;
+  }
+}
+
+.icon {
+  color: #008000;
+  margin-right: 20px;
+  font-size: 35px;
+  height: 35px;
+  width: 35px;
+  cursor: pointer;
+}

@@ -1,0 +1,24 @@
+<span class="title">{{title}}</span>
+<div class="container">
+  <div class="content">
+    <a class="action-link" [href]="action.url" *ngFor="let action of actions">{{action.label}}</a>
+  </div>
+  <div class="footer">
+    <span>Notifications</span>
+    <div class="number" *ngIf="notifications">
+      <div>{{notifications.length}}</div>
+    </div>
+    <mat-icon class="icon" (click)="onExpand()">{{expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</mat-icon>
+  </div>
+  <div class="notification-container" *ngIf="expanded">
+    <div class="notification" *ngFor="let noti of notifications">
+      <div class="top">
+        <span>{{noti.label}}</span>
+        <a [href]="noti.url" class="view">View</a>
+      </div>
+      <div class="bottom">
+        {{getTimeDiff(noti.date)}}
+      </div>
+    </div>
+  </div>
+</div>

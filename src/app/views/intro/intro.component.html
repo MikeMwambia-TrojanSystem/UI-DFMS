@@ -1,0 +1,13 @@
+<app-background>
+  <app-center-card>
+    <p>
+      Hello {{user}},
+    </p>
+    <p>
+      Today the {{date | date:'dd MMMM yyyy'}} under the {{county}} county digital file management system, you can
+      perform the following tasks
+    </p>
+    <app-intro-item *ngFor="let item of introItems" [title]="item.label" [actions]="item.actions"
+      [notifications]="item.notifications"></app-intro-item>
+  </app-center-card>
+</app-background>
