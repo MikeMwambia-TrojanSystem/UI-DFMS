@@ -12,7 +12,9 @@
         <input matInput formControlName="date" type="date" />
         <mat-error *ngIf="form.get('date').hasError('required')">Please enter date formed!</mat-error>
       </mat-form-field>
-      <app-custom-button [title]="'Select Members'"></app-custom-button>
+      <a [routerLink]="['/list/mca-employee']" [queryParams]="{select: true}">
+        <app-custom-button [title]="'Select Members'"></app-custom-button>
+      </a>
       <span class="members">{{numberOfMembers}} member{{numberOfMembers === 1 ? '' : 's'}}</span>
       <div class="member-container" *ngFor="let member of members">
         <mat-icon class="member-icon">person_outline</mat-icon>
