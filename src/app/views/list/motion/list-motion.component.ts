@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 interface Motion {
   title: string;
@@ -13,7 +14,7 @@ interface Motion {
   styleUrls: ['./list-motion.component.scss'],
   templateUrl: './list-motion.component.html',
 })
-export class ListMotionComponent {
+export class ListMotionComponent implements OnInit {
   /**
    * Predefined motions data
    */
@@ -47,4 +48,11 @@ export class ListMotionComponent {
       ward: 'MCA Nathu Ward',
     },
   ];
+  selectabe: boolean;
+
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.selectabe = this.route.snapshot.queryParams.select || false;
+  }
 }

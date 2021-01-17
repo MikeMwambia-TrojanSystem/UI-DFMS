@@ -35,18 +35,12 @@
       </div>
       <div class="date-container">
         <div class="date">
-        </div>
-        <div class="date">
           <p class="label">Second Reading</p>
           <mat-form-field appearance="standard">
             <input matInput formControlName="secondReading" type="date" />
             <mat-error *ngIf="form.get('secondReading').hasError('required')">Please enter date second reading!
             </mat-error>
           </mat-form-field>
-        </div>
-      </div>
-      <div class="date-container">
-        <div class="date">
         </div>
         <div class="date">
           <p class="label">Date Passed</p>

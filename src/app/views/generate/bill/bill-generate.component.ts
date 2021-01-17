@@ -15,6 +15,10 @@ export class BillGenerateComponent {
     firstReading: new FormControl('', Validators.required),
     secondReading: new FormControl('', Validators.required),
     datePassed: new FormControl('', Validators.required),
+    sponsor: new FormControl(null, Validators.required),
+    concernedCommitee: new FormControl(null, Validators.required),
+    billReport: new FormControl(null, Validators.required),
+    softCopyUrl: new FormControl(null, Validators.required),
   });
 
   onStartUpload() {

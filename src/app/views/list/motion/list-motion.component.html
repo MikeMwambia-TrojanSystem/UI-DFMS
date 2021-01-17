@@ -4,7 +4,8 @@
     <app-search-bar></app-search-bar>
     <div>
       <app-motion-item *ngFor="let motion of motions" [title]="motion.title" [date]="motion.date"
-        [subjects]="motion.subjects" [sponsored]="motion.sponsored" [ward]="motion.ward" class="item"></app-motion-item>
+        [subjects]="motion.subjects" [sponsored]="motion.sponsored" [ward]="motion.ward" class="item"
+        [selectable]="selectabe"></app-motion-item>
     </div>
   </app-center-card>
 </app-background>

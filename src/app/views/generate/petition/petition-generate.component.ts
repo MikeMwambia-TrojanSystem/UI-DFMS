@@ -16,6 +16,9 @@ export class PetitionGenerateComponent {
     number: new FormControl('', Validators.required),
     concernedCommittee: new FormControl('', Validators.required),
     dueDate: new FormControl('', Validators.required),
+    sponsor: new FormControl(null, Validators.required),
+    petitioner: new FormControl(null, Validators.required),
+    softCopyUrl: new FormControl(null, Validators.required),
   });
 
   onStartUpload() {

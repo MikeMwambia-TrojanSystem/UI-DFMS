@@ -11,25 +11,20 @@
           </mat-form-field>
           <p class="label">Phone Number</p>
           <mat-form-field appearance="standard">
-            <mat-select formControlName="phone">
-              <mat-option value="Maintenance Speel">+25407889078745</mat-option>
-            </mat-select>
-            <mat-error *ngIf="form.get('phone').hasError('required')">Please select a phone number!</mat-error>
+            <span matPrefix>+ &nbsp;</span>
+            <input matInput formControlName="phone" type="tel" />
+            <mat-error *ngIf="form.get('phone').hasError('required')">Please enter phone numer</mat-error>
+            <mat-error *ngIf="form.get('phone').hasError('phoneNumber')">Please enter valid phone numer</mat-error>
           </mat-form-field>
           <p class="label">Ward / Region Originating</p>
           <mat-form-field appearance="standard">
             <mat-select formControlName="originating">
-              <mat-option value="Nathu Ward">Nathu Ward</mat-option>
+              <mat-option value="Nathu Ward" *ngFor="let ward of wards">{{ward.name}}</mat-option>
             </mat-select>
             <mat-error *ngIf="form.get('originating').hasError('required')">Please select a ward / region!</mat-error>
           </mat-form-field>
-          <p class="label">Upload Picture</p>
-          <mat-form-field appearance="standard">
-            <mat-label>Select File</mat-label>
-            <mat-select formControlName="picture">
-            </mat-select>
-            <mat-error *ngIf="form.get('picture').hasError('required')">Please upload profile!</mat-error>
-          </mat-form-field>
+          <app-custom-button [title]="'Upload Picture'" (buttonClick)="onStartUpload()"></app-custom-button>
+          <input class="hidden" type="file" #fileUpload accept="image/*" />
           <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save</button>
         </form>
         <div class="divider"></div>

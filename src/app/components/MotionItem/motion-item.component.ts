@@ -11,4 +11,5 @@ export class MotionItemComponent {
   @Input() subjects: string[] = [];
   @Input() sponsored: string;
   @Input() ward: string;
+  @Input() selectable: boolean;
 }

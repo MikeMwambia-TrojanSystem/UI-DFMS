@@ -13,6 +13,10 @@ export class ActGenerateComponent {
     number: new FormControl('', Validators.required),
     date: new FormControl('', Validators.required),
     sector: new FormControl('', Validators.required),
+    sponsor: new FormControl(null, Validators.required),
+    concernedCommittee: new FormControl(null, Validators.required),
+    billNumber: new FormControl(null, Validators.required),
+    actFileUrl: new FormControl(null, Validators.required),
   });
 
   onStartUpload() {

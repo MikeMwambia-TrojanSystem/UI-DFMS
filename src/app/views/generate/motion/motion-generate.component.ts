@@ -10,5 +10,6 @@ export class MotionGenerateComponent {
   form = new FormGroup({
     content: new FormControl('', Validators.required),
     subject: new FormControl('', Validators.required),
+    sponsor: new FormControl('', Validators.required),
   });
 }

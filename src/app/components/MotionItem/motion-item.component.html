@@ -6,4 +6,5 @@
       subjects.length ? ' and ' : ', ')) + sub}}</span></span>
   <span class="sponsored">Sponsored by <span class="highlight">{{sponsored}}({{ward}})</span></span>
 </div>
-<mat-icon class="icon">task_alt</mat-icon>
+<mat-icon class="icon" *ngIf="!selectable">task_alt</mat-icon>
+<button mat-button *ngIf="selectable" class="btn">Select</button>
