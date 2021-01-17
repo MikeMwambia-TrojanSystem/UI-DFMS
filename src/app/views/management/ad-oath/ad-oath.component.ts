@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 interface Administration {
@@ -13,6 +13,7 @@ interface Administration {
   styleUrls: ['./ad-oath.component.scss'],
 })
 export class AdministrationOathComponent {
+  @ViewChild('fileUpload') fileUpload: ElementRef<HTMLInputElement>;
   form = new FormGroup({
     name: new FormControl('', Validators.required),
     ward: new FormControl('', Validators.required),
@@ -49,4 +50,8 @@ export class AdministrationOathComponent {
         'https://upload.wikimedia.org/wikipedia/commons/5/5c/Portrait_of_young_Marilyn_Monroe%2C_black_and_white.jpg',
     },
   ];
+
+  onStartUpload(): void {
+    this.fileUpload.nativeElement.click();
+  }
 }

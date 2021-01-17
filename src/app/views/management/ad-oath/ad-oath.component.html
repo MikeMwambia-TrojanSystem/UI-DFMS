@@ -14,13 +14,8 @@
         </mat-select>
         <mat-error *ngIf="form.get('ward').hasError('required')">Please select a ward!</mat-error>
       </mat-form-field>
-      <p class="label">Upload Passport Picture</p>
-      <mat-form-field appearance="standard">
-        <mat-label>Select file</mat-label>
-        <mat-select formControlName="passport">
-        </mat-select>
-        <mat-error *ngIf="form.get('passport').hasError('required')">Please select a passport picture!</mat-error>
-      </mat-form-field>
+      <app-custom-button [title]="'Upload Passport Picture'" (buttonClick)="onStartUpload()"></app-custom-button>
+      <input class="hidden" type="file" accept="image/*" #fileUpload />
       <p class="label">Political Party</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="party" placeholder="Trust Party" />
