@@ -13,4 +13,6 @@ export class CreateWardsComponent {
     constituency: new FormControl('', Validators.required),
   });
   county = 'Meru'; // Dynamic county name
+  subCounties = ['Food Production']; // Dynamic sub counties
+  constituencies = ['Constituency 2']; // Dynamic constituencies
 }

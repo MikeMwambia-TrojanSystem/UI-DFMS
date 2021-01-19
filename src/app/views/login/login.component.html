@@ -1,8 +1,11 @@
 <app-background [background]="'green'">
   <app-center-card>
-    <h1 class="title">Welcome to County Assembly of Meru</h1>
+    <div class="logo-container">
+      <img class="logo" src="/assets/logo.png" alt="logo" width="100" />
+    </div>
+    <h1 class="title">Welcome to County Assembly of {{county}}</h1>
     <h3 class="subtitle">Digital File Management System</h3>
-    <h2 class="county">{{county}}</h2>
+    <h2 class="county">County Assemblies of {{county}}</h2>
     <form [formGroup]="form" class="form">
       <p class="label">Username</p>
       <mat-form-field appearance="standard">

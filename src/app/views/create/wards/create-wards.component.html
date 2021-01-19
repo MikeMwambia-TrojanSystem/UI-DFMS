@@ -10,14 +10,16 @@
       <p class="label">Sub County</p>
       <mat-form-field appearance="standard">
         <mat-select formControlName="subCounty">
-          <mat-option value="Food Production">Food Production</mat-option>
+          <mat-option *ngFor="let sub of subCounties" [value]="sub">{{sub}}</mat-option>
         </mat-select>
+        <mat-error>Please select a sub county!</mat-error>
       </mat-form-field>
       <p class="label">Constituency</p>
       <mat-form-field appearance="standard">
         <mat-select formControlName="constituency">
-          <mat-option value="Constituency 2">Constituency 2</mat-option>
+          <mat-option *ngFor="let cons of constituencies" [value]="cons">{{cons}}</mat-option>
         </mat-select>
+        <mat-error>Please select a constituency!</mat-error>
       </mat-form-field>
       <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save</button>
     </form>

@@ -1,7 +1,10 @@
 <app-background [background]="'green'">
   <app-center-card>
-    <h1 class="title">Welcome to County Assembly of Meru</h1>
-    <h3 class="subtitle">Digital File Management System</h3>
+    <div class="logo-container">
+      <img class="logo" src="/assets/logo.png" alt="logo" width="100" />
+    </div>
+    <h1 class="title">Set Up Login Password for</h1>
+    <h3 class="subtitle">The {{county}} County Assembly</h3>
     <form [formGroup]="form" class="form">
       <p class="label">Password</p>
       <mat-form-field appearance="standard">

@@ -1,6 +1,12 @@
-import { Component } from "@angular/core";
-import { FormGroup, FormControl, Validators, FormGroupDirective, NgForm } from "@angular/forms";
-import { ErrorStateMatcher } from "@angular/material/core";
+import { Component } from '@angular/core';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  FormGroupDirective,
+  NgForm,
+} from '@angular/forms';
+import { ErrorStateMatcher } from '@angular/material/core';
 
 /**
  * The following implementation of validation for matching password can be found here:
@@ -11,25 +17,36 @@ import { ErrorStateMatcher } from "@angular/material/core";
  * This error state matcher can be import from a separate file in shared/ folder if needed
  */
 class PasswordErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+  isErrorState(
+    control: FormControl | null,
+    form: FormGroupDirective | NgForm | null
+  ): boolean {
     const invalidCtrl = !!(control && control.invalid && control.parent.dirty);
-    const invalidParent = !!(control && control.parent && control.parent.invalid && control.parent.dirty);
+    const invalidParent = !!(
+      control &&
+      control.parent &&
+      control.parent.invalid &&
+      control.parent.dirty
+    );
 
-    return (invalidCtrl || invalidParent);
+    return invalidCtrl || invalidParent;
   }
 }
 
 @Component({
   selector: 'app-signup-county',
   templateUrl: './county.component.html',
-  styleUrls: ['./county.component.scss']
+  styleUrls: ['./county.component.scss'],
 })
 export class CountySignupComponent {
-  county = 'The Meru County Assembly'; // Field for dynamic county
-  form = new FormGroup({
-    password: new FormControl('', Validators.required),
-    repassword: new FormControl(''),
-  }, { validators: this.checkPassword }) // Form group that holds password from user input
+  county = 'Meru'; // Field for dynamic county
+  form = new FormGroup(
+    {
+      password: new FormControl('', Validators.required),
+      repassword: new FormControl(''),
+    },
+    { validators: this.checkPassword }
+  ); // Form group that holds password from user input
   matcher = new PasswordErrorStateMatcher(); // Initialize a new instance of the matcher
 
   /**
@@ -40,6 +57,6 @@ export class CountySignupComponent {
     const password = group.get('password').value;
     const repassword = group.get('repassword').value;
 
-    return password === repassword ? null : { notSame: true }
+    return password === repassword ? null : { notSame: true };
   }
 }

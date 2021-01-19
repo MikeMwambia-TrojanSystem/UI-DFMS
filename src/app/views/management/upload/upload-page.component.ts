@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 })
 export class UploadPageComponent {
   file: File;
+  category;
 
   onUpload(event) {
     this.file = event.target.files[0];
