@@ -10,7 +10,7 @@
       <p class="label">Ward Represented</p>
       <mat-form-field appearance="standard">
         <mat-select formControlName="ward">
-          <mat-option value="Maintenance Speel">Maintenance Speel</mat-option>
+          <mat-option *ngFor="let ward of wards" [value]="ward">{{ward}}</mat-option>
         </mat-select>
         <mat-error *ngIf="form.get('ward').hasError('required')">Please select a ward!</mat-error>
       </mat-form-field>

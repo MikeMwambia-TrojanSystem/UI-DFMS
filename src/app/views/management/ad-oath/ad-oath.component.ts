@@ -20,6 +20,7 @@ export class AdministrationOathComponent {
     passport: new FormControl('', Validators.required),
     party: new FormControl('', Validators.required),
   }); // Form group that holds user input
+  wards = ['Maintenance Speel']; // Dynamic wards
 
   /**
    * Predefined administration data

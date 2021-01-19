@@ -31,7 +31,6 @@ import { BillGenerateComponent } from './views/generate/bill/bill-generate.compo
 import { MotionGenerateComponent } from './views/generate/motion/motion-generate.component';
 import { PetitionGenerateComponent } from './views/generate/petition/petition-generate.component';
 import { ListMotionComponent } from './views/list/motion/list-motion.component';
-import { MotionItemComponent } from './components/MotionItem/motion-item.component';
 import { IntroComponent } from './views/intro/intro.component';
 
 const routes: Routes = [

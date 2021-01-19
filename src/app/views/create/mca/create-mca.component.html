@@ -48,8 +48,8 @@
       <div class="select-container">
         <app-custom-button [title]="'Upload Profile Picture'" (buttonClick)="onStartUpload()"></app-custom-button>
         <input #fileUpload class="upload" type="file" accept="image/*" />
-        <a routerLink="/list/wards" style="margin-left: 10px">
-          <app-custom-button [title]="'Select Ward Represented'" [unClickable]="true"></app-custom-button>
+        <a routerLink="/list/wards" [queryParams]="{select: true}" style="margin-left: 10px">
+          <app-custom-button [title]="'Select Ward Represented'"></app-custom-button>
         </a>
         <!-- <button mat-raised-button type="button" class="select-btn">Select Ward Represented</button> -->
 
