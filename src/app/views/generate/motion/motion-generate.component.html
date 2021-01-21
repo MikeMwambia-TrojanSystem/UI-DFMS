@@ -12,8 +12,12 @@
         <input matInput formControlName="subject" placeholder="Motion on Braerd and Barrrityr" />
         <mat-error *ngIf="form.get('subject').hasError('required')">Please enter subject matter!</mat-error>
       </mat-form-field>
-      <app-custom-button [title]="'Select Sponsor'" class="custom-btn standalone">
-      </app-custom-button>
+      <div class="buttons-container">
+        <app-custom-button [title]="'Select Sponsor'" class="custom-btn standalone"></app-custom-button>
+        <app-custom-button [title]="'Upload Soft Copy of Motion'" class="custom-btn standalone"
+          style="margin-left: 10px" (buttonClick)="onStartUpload()"></app-custom-button>
+        <input class="hidden" type="file" #fileUpload />
+      </div>
       <div class="actions">
         <button mat-button type="button" class="btn-draft">Save as Draft</button>
         <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Bills</button>

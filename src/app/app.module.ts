@@ -50,6 +50,7 @@ import { ListMotionComponent } from './views/list/motion/list-motion.component';
 import { MotionItemComponent } from './components/MotionItem/motion-item.component';
 import { IntroComponent } from './views/intro/intro.component';
 import { IntroItemComponent } from './components/IntroItem/intro-item.component';
+import { ResetPasswordComponent } from './views/signup/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { IntroItemComponent } from './components/IntroItem/intro-item.component'
     MotionItemComponent,
     IntroComponent,
     IntroItemComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,

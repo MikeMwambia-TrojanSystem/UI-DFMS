@@ -1,37 +1,7 @@
 import { Component } from '@angular/core';
-import {
-  FormGroup,
-  FormControl,
-  Validators,
-  FormGroupDirective,
-  NgForm,
-} from '@angular/forms';
-import { ErrorStateMatcher } from '@angular/material/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
-/**
- * The following implementation of validation for matching password can be found here:
- * https://stackoverflow.com/questions/51605737/confirm-password-validation-in-angular-6
- */
-
-/**
- * This error state matcher can be import from a separate file in shared/ folder if needed
- */
-class PasswordErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
-    const invalidCtrl = !!(control && control.invalid && control.parent.dirty);
-    const invalidParent = !!(
-      control &&
-      control.parent &&
-      control.parent.invalid &&
-      control.parent.dirty
-    );
-
-    return invalidCtrl || invalidParent;
-  }
-}
+import { PasswordErrorStateMatcher } from '../../../shared/validators/password-matcher';
 
 @Component({
   selector: 'app-signup-county',

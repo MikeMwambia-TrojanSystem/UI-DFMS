@@ -32,6 +32,7 @@ import { MotionGenerateComponent } from './views/generate/motion/motion-generate
 import { PetitionGenerateComponent } from './views/generate/petition/petition-generate.component';
 import { ListMotionComponent } from './views/list/motion/list-motion.component';
 import { IntroComponent } from './views/intro/intro.component';
+import { ResetPasswordComponent } from './views/signup/reset-password/reset-password.component';
 
 const routes: Routes = [
   // Login route
@@ -50,6 +51,7 @@ const routes: Routes = [
       { path: 'notifications', component: NotificationsSignupComponent },
       { path: 'email-verification', component: EmailVerificationComponent },
       { path: 'phone-verification', component: PhoneVerificationComponent },
+      { path: 'reset-password', component: ResetPasswordComponent },
     ],
   },
 
