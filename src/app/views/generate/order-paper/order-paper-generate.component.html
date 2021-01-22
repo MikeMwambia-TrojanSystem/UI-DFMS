@@ -1,0 +1,35 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Generate an Order Paper</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Order Paper No</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="number" placeholder="192" />
+        <mat-error *ngIf="form.get('number').hasError('required')">Please enter order paper no!</mat-error>
+      </mat-form-field>
+      <p class="label">Sitting</p>
+      <mat-form-field appearance="standard">
+        <mat-select formControlName="sitting">
+          <mat-option value="Morning">Morning</mat-option>
+          <mat-option value="Afternoon">Afternoon</mat-option>
+          <mat-option value="Night">Night</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('sitting').hasError('required')">Please select sitting!</mat-error>
+      </mat-form-field>
+      <p class="label">Assembly Session</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="session" placeholder="Session 1" />
+        <mat-error *ngIf="form.get('session').hasError('required')">Please enter assembly session!</mat-error>
+      </mat-form-field>
+      <p class="label">Starting Page on the Order Paper</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="startingPage" placeholder="Paper 1" />
+        <mat-error *ngIf="form.get('startingPage').hasError('required')">Please enter starting page!</mat-error>
+      </mat-form-field>
+      <div class="actions">
+        <button mat-button type="button" class="btn-draft">Save as Draft</button>
+        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Generate Content</button>
+      </div>
+    </form>
+  </app-center-card>
+</app-background>

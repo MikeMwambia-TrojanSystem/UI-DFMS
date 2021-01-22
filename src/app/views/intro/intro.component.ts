@@ -1,15 +1,17 @@
 import { Component } from '@angular/core';
 import * as moment from 'moment';
 
-import {
-  IntroAction,
-  IntroNotification,
-} from 'src/app/components/IntroItem/intro-item.component';
+import { MenuNotification } from 'src/app/components/MenuContainer/menu-container.component';
+
+export interface Action {
+  label: string;
+  url?: string;
+}
 
 interface IntroItem {
   label: string;
-  actions: IntroAction[];
-  notifications: IntroNotification[];
+  actions: Action[];
+  notifications: MenuNotification[];
 }
 
 @Component({

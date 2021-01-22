@@ -1,0 +1,28 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Generate Report</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Report Title</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="title" placeholder="Report on Food Stability and Availability" />
+        <mat-error *ngIf="form.get('title').hasError('required')">Please enter report title!</mat-error>
+      </mat-form-field>
+      <app-custom-button [title]="'Select Author Concerned Committee'"></app-custom-button>
+      <p class="label">Due Date</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="dueDate" type="date" />
+        <mat-error *ngIf="form.get('dueDate').hasError('required')">Please enter due date!</mat-error>
+      </mat-form-field>
+      <p class="label">Originating Document</p>
+      <div class="buttons-container">
+        <app-custom-button [title]="'Add Editors'" class="custom-btn"></app-custom-button>
+        <app-custom-button [title]="'Remove Editor'" class="custom-btn" style="margin-left: 10px">
+        </app-custom-button>
+      </div>
+      <div class="actions">
+        <button mat-button type="button" class="btn-draft">Save as Draft</button>
+        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Generate Content</button>
+      </div>
+    </form>
+  </app-center-card>
+</app-background>

@@ -1,0 +1,28 @@
+import { Component, ElementRef, ViewChild } from '@angular/core';
+import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+
+@Component({
+  selector: 'app-upload-report',
+  templateUrl: './report-upload.component.html',
+  styleUrls: ['./report-upload.component.scss'],
+})
+export class ReportUploadComponent {
+  @ViewChild('fileUpload') fileUpload: ElementRef<HTMLInputElement>;
+  form = new FormGroup({
+    title: new FormControl('', Validators.required),
+    authorConcerned: new FormControl('', Validators.required),
+    dueDate: new FormControl('', Validators.required),
+    editors: new FormArray(
+      [new FormControl('King Topsy'), new FormControl('Lawrence Mike')],
+      Validators.required
+    ),
+  });
+
+  onStartUpload() {
+    this.fileUpload.nativeElement.click();
+  }
+
+  get editors(): string[] {
+    return this.form.get('editors').value;
+  }
+}

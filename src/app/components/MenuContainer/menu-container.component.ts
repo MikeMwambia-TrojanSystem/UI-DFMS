@@ -1,26 +1,20 @@
 import { Component, Input } from '@angular/core';
 import * as moment from 'moment';
 
-export interface IntroAction {
-  label: string;
-  url?: string;
-}
-
-export interface IntroNotification {
+export interface MenuNotification {
   label: string;
   date: string | moment.Moment | Date;
   url?: string;
 }
 
 @Component({
-  selector: 'app-intro-item',
-  templateUrl: './intro-item.component.html',
-  styleUrls: ['./intro-item.component.scss'],
+  selector: 'app-menu-container',
+  templateUrl: './menu-container.component.html',
+  styleUrls: ['./menu-container.component.scss'],
 })
-export class IntroItemComponent {
+export class MenuContainerComponent {
   @Input() title: string;
-  @Input() actions: IntroAction[];
-  @Input() notifications: IntroNotification[];
+  @Input() notifications: MenuNotification[];
   expanded = false;
 
   getTimeDiff(date: string | moment.Moment | Date): string {

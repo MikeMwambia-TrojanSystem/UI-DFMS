@@ -33,6 +33,12 @@ import { PetitionGenerateComponent } from './views/generate/petition/petition-ge
 import { ListMotionComponent } from './views/list/motion/list-motion.component';
 import { IntroComponent } from './views/intro/intro.component';
 import { ResetPasswordComponent } from './views/signup/reset-password/reset-password.component';
+import { ReportGenerateComponent } from './views/generate/report/report-generate.component';
+import { OrderPaperGenerateComponent } from './views/generate/order-paper/order-paper-generate.component';
+import { ReportMethodsComponent } from './views/report-methods/report-methods.component';
+import { StatementUploadComponent } from './views/upload/statement/statement-upload.component';
+import { ReportUploadComponent } from './views/upload/report/report-upload.component';
+import { PaperContentGenerateComponent } from './views/generate/paper-content/paper-content-generate.component';
 
 const routes: Routes = [
   // Login route
@@ -100,8 +106,23 @@ const routes: Routes = [
       { path: 'bill', component: BillGenerateComponent },
       { path: 'motion', component: MotionGenerateComponent },
       { path: 'petition', component: PetitionGenerateComponent },
+      { path: 'report', component: ReportGenerateComponent },
+      { path: 'order-paper', component: OrderPaperGenerateComponent },
+      { path: 'paper-content', component: PaperContentGenerateComponent },
     ],
   },
+
+  //Upload parent route
+  {
+    path: 'upload',
+    children: [
+      { path: 'statement', component: StatementUploadComponent },
+      { path: 'report', component: ReportUploadComponent },
+    ],
+  },
+
+  //Report Methods
+  { path: 'report-methods', component: ReportMethodsComponent },
 
   //Intro
   {

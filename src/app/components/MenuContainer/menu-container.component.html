@@ -1,7 +1,7 @@
-<span class="title">{{title}}</span>
+<span class="title" *ngIf="title">{{title}}</span>
 <div class="container">
   <div class="content">
-    <a class="action-link" [href]="action.url" *ngFor="let action of actions">{{action.label}}</a>
+    <ng-content></ng-content>
   </div>
   <div class="footer">
     <span>Notifications</span>

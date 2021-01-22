@@ -49,8 +49,14 @@ import { PetitionGenerateComponent } from './views/generate/petition/petition-ge
 import { ListMotionComponent } from './views/list/motion/list-motion.component';
 import { MotionItemComponent } from './components/MotionItem/motion-item.component';
 import { IntroComponent } from './views/intro/intro.component';
-import { IntroItemComponent } from './components/IntroItem/intro-item.component';
 import { ResetPasswordComponent } from './views/signup/reset-password/reset-password.component';
+import { ReportGenerateComponent } from './views/generate/report/report-generate.component';
+import { OrderPaperGenerateComponent } from './views/generate/order-paper/order-paper-generate.component';
+import { ReportMethodsComponent } from './views/report-methods/report-methods.component';
+import { StatementUploadComponent } from './views/upload/statement/statement-upload.component';
+import { ReportUploadComponent } from './views/upload/report/report-upload.component';
+import { PaperContentGenerateComponent } from './views/generate/paper-content/paper-content-generate.component';
+import { MenuContainerComponent } from './components/MenuContainer/menu-container.component';
 
 @NgModule({
   declarations: [
@@ -94,8 +100,14 @@ import { ResetPasswordComponent } from './views/signup/reset-password/reset-pass
     ListMotionComponent,
     MotionItemComponent,
     IntroComponent,
-    IntroItemComponent,
     ResetPasswordComponent,
+    ReportGenerateComponent,
+    OrderPaperGenerateComponent,
+    ReportMethodsComponent,
+    StatementUploadComponent,
+    ReportUploadComponent,
+    PaperContentGenerateComponent,
+    MenuContainerComponent,
   ],
   imports: [
     BrowserModule,

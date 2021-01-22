@@ -1,0 +1,68 @@
+.title {
+  text-align: center;
+  font-weight: 600;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 50px 0;
+}
+
+.label {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.buttons-container {
+  display: flex;
+}
+
+.actions {
+  margin: 15px 0;
+  margin-top: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-draft {
+  color: #008000;
+}
+
+.btn-save {
+  background: #008000;
+  color: white;
+  font-weight: 400;
+  padding: 3px 25px;
+  border-radius: 10px;
+}
+
+/**
+  * Selectors to overwrite Material Input styling.
+  * :host is needed to prevent the style bleeding into other components.
+  * More information can be found at: https://angular.io/guide/component-styles#deprecated-deep--and-ng-deep
+  * Note: This is not a very good way to deal with overwrite Material styling. But it is the shortest and easiest way
+  * For better method I recommend checking Material documentation: https://material.angular.io/guide/theming-your-components
+  */
+:host ::ng-deep {
+  .mat-form-field {
+    width: 100%;
+  }
+
+  .mat-input-element {
+    margin-bottom: 12px;
+    color: gray;
+  }
+
+  .mat-form-field-infix {
+    border-top: none;
+  }
+
+  .mat-form-field-prefix {
+    position: relative;
+    bottom: 12px;
+  }
+}

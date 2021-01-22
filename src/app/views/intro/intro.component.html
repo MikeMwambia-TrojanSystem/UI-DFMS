@@ -7,7 +7,8 @@
       Today the {{date | date:'dd MMMM yyyy'}} under the {{county}} county digital file management system, you can
       perform the following tasks
     </p>
-    <app-intro-item *ngFor="let item of introItems" [title]="item.label" [actions]="item.actions"
-      [notifications]="item.notifications"></app-intro-item>
+    <app-menu-container *ngFor="let item of introItems" [title]="item.label" [notifications]="item.notifications">
+      <a class="action-link" [href]="action.url" *ngFor="let action of item.actions">{{action.label}}</a>
+    </app-menu-container>
   </app-center-card>
 </app-background>

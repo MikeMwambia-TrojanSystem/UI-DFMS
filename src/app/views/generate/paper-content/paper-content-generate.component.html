@@ -1,0 +1,11 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Generate an Order Paper</h1>
+    <app-menu-container *ngFor="let content of paperContents; let i = index" [notifications]="content.notifications">
+      <div class="content">
+        <span>{{i + 1 | number: '2.0-0'}}</span>
+        <span>{{content.label}}</span>
+      </div>
+    </app-menu-container>
+  </app-center-card>
+</app-background>
