@@ -1,0 +1,26 @@
+:host {
+  display: flex;
+  align-items: baseline;
+  margin: 0 10px;
+
+  .dot {
+    border-radius: 100%;
+    background-color: #008000;
+    width: 10px;
+    height: 10px;
+    margin-right: 5px;
+  }
+
+  .label {
+    font-size: 13px;
+    color: gray;
+  }
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+}

@@ -39,6 +39,9 @@ import { ReportMethodsComponent } from './views/report-methods/report-methods.co
 import { StatementUploadComponent } from './views/upload/statement/statement-upload.component';
 import { ReportUploadComponent } from './views/upload/report/report-upload.component';
 import { PaperContentGenerateComponent } from './views/generate/paper-content/paper-content-generate.component';
+import { VotebookGenerateComponent } from './views/generate/votebook/votebook-generate.component';
+import { OrderPaperViewComponent } from './views/view/order-paper/order-paper-view.component';
+import { EditTitleComponent } from './views/view/order-paper/edit-title/edit-title.component';
 
 const routes: Routes = [
   // Login route
@@ -109,6 +112,16 @@ const routes: Routes = [
       { path: 'report', component: ReportGenerateComponent },
       { path: 'order-paper', component: OrderPaperGenerateComponent },
       { path: 'paper-content', component: PaperContentGenerateComponent },
+      { path: 'votebook', component: VotebookGenerateComponent },
+    ],
+  },
+
+  //View parent route
+  {
+    path: 'view',
+    children: [
+      { path: 'order-paper/:id', component: OrderPaperViewComponent },
+      { path: 'order-paper/:id/edit-title', component: EditTitleComponent },
     ],
   },
 

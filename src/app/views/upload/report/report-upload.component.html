@@ -14,6 +14,9 @@
         <mat-error *ngIf="form.get('dueDate').hasError('required')">Please enter due date!</mat-error>
       </mat-form-field>
       <p class="label">Originating Document</p>
+      <div class="originating-container">
+        <app-originating-point *ngFor="let originating of originatings" [label]="originating"></app-originating-point>
+      </div>
       <div class="buttons-container">
         <app-custom-button [title]="'Add Editors'" class="custom-btn"></app-custom-button>
         <app-custom-button [title]="'Upload Document'" class="custom-btn" style="margin-left: 10px"

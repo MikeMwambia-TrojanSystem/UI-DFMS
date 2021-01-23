@@ -3,7 +3,7 @@ import * as moment from 'moment';
 
 import { MenuNotification } from 'src/app/components/MenuContainer/menu-container.component';
 
-interface PaperContent {
+interface Item {
   label: string;
   select?: string;
   generate?: string;
@@ -16,12 +16,10 @@ interface PaperContent {
   styleUrls: ['./paper-content-generate.component.scss'],
 })
 export class PaperContentGenerateComponent {
-  now = moment();
-
   /**
    * Predefined data
    */
-  paperContents: PaperContent[] = [
+  items: Item[] = [
     {
       label: 'Administration of Oath',
       select: '/',

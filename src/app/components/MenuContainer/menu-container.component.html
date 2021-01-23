@@ -3,7 +3,7 @@
   <div class="content">
     <ng-content></ng-content>
   </div>
-  <div class="footer">
+  <div class="footer" *ngIf="notifications">
     <span>Notifications</span>
     <div class="number" *ngIf="notifications">
       <div>{{notifications.length}}</div>

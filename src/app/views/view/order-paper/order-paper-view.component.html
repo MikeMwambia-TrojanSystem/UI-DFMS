@@ -1,0 +1,54 @@
+<app-background>
+  <app-center-card>
+    <div class="title-container">
+      <h1 class="title">Order Paper on the {{orderPaper.title}}</h1>
+      <a routerLink="edit-title">
+        <button mat-button class="btn">Edit Title</button>
+      </a>
+    </div>
+    <div class="hr"></div>
+    <div class="nav-container">
+      <div class="nav">
+        <div class="nav-direction" (click)="toPage(currentPage - 1)">
+          <mat-icon class="nav-icon">keyboard_arrow_left</mat-icon>
+          <span class="nav-label">Prev</span>
+        </div>
+        <span class="nav-page">Page {{currentPage + 1}} of {{orderPaper.pages.length}}</span>
+        <div class="nav-direction" (click)="toPage(currentPage + 1)">
+          <span class="nav-label">Next</span>
+          <mat-icon class="nav-icon">keyboard_arrow_right</mat-icon>
+        </div>
+      </div>
+      <div class="jump">
+        <input matInput class="jump-input" type="number" placeholder="Page No" [value]="gotoPage"
+          (keyup)="onGotoChange($event)" />
+        <button mat-button class="btn" (click)="toPage(gotoPage - 1)">Goto Page</button>
+      </div>
+    </div>
+    <div class="hr"></div>
+    <div class="content">
+      {{orderPaper.pages[currentPage]}}
+    </div>
+    <div class="foot">
+      <div class="line">
+        <span class="label">Editied By {{' '}}</span>
+        <span class="value">{{orderPaper.editedBy}}</span>
+      </div>
+      <div class="line">
+        <span class="label">From {{' '}}</span>
+        <span class="value">{{orderPaper.from}}</span>
+      </div>
+      <div class="line">
+        <span class="label">Published on {{' '}}</span>
+        <span class="value">{{orderPaper.publish | date: 'MM/dd/yy'}}</span>
+      </div>
+    </div>
+    <div class="actions">
+      <button mat-button class="btn-draft">Request Changes</button>
+      <div class="submit-actions">
+        <button mat-raised-button class="btn-edit">Edit Page</button>
+        <button mat-raised-button class="btn-save">Publish to Cleark</button>
+      </div>
+    </div>
+  </app-center-card>
+</app-background>

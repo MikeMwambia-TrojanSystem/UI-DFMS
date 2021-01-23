@@ -57,6 +57,10 @@ import { StatementUploadComponent } from './views/upload/statement/statement-upl
 import { ReportUploadComponent } from './views/upload/report/report-upload.component';
 import { PaperContentGenerateComponent } from './views/generate/paper-content/paper-content-generate.component';
 import { MenuContainerComponent } from './components/MenuContainer/menu-container.component';
+import { VotebookGenerateComponent } from './views/generate/votebook/votebook-generate.component';
+import { OrderPaperViewComponent } from './views/view/order-paper/order-paper-view.component';
+import { EditTitleComponent } from './views/view/order-paper/edit-title/edit-title.component';
+import { OriginatingPointComponent } from './components/OriginatingPoint/originating-point.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +112,10 @@ import { MenuContainerComponent } from './components/MenuContainer/menu-containe
     ReportUploadComponent,
     PaperContentGenerateComponent,
     MenuContainerComponent,
+    VotebookGenerateComponent,
+    OrderPaperViewComponent,
+    EditTitleComponent,
+    OriginatingPointComponent,
   ],
   imports: [
     BrowserModule,

@@ -18,6 +18,8 @@ export class ReportUploadComponent {
     ),
   });
 
+  originatings = ['Petitions', 'Statements', 'Bills'];
+
   onStartUpload() {
     this.fileUpload.nativeElement.click();
   }

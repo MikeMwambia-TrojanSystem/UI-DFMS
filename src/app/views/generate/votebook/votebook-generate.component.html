@@ -1,17 +1,14 @@
 <app-background>
   <app-center-card>
-    <h1 class="title">Generate an Order Paper</h1>
-    <app-menu-container *ngFor="let item of items; let i = index" [notifications]="item.notifications">
+    <h1 class="title">On this page you can generate votebook based on the Order Paper No.42</h1>
+    <app-menu-container *ngFor="let item of items; let i = index">
       <div class="content">
         <div class="info">
           <span>{{i + 1 | number: '2.0-0'}}</span>
           <span class="label">{{item.label}}</span>
         </div>
         <div class="buttons-container">
-          <a class="btn-container" *ngIf="item.select" [routerLink]="[item.select]">
-            <button mat-stroked-button class="btn">Select</button>
-          </a>
-          <a class="btn-container" *ngIf="item.generate" [routerLink]="[item.generate]">
+          <a class="btn-container" [routerLink]="[item.generate]">
             <button mat-stroked-button class="btn">Generate</button>
           </a>
         </div>
@@ -19,7 +16,7 @@
     </app-menu-container>
     <div class="actions">
       <button mat-button type="button" class="btn-draft">Save as Draft</button>
-      <button mat-raised-button type="submit" class="btn-save">Publish Order Paper</button>
+      <button mat-raised-button type="submit" class="btn-save">Publish Votebook</button>
     </div>
   </app-center-card>
 </app-background>

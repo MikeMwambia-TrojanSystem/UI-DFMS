@@ -13,4 +13,6 @@ export class ReportGenerateComponent {
     dueDate: new FormControl('', Validators.required),
     editors: new FormArray([], Validators.required),
   });
+
+  originatings = ['Petitions', 'Statements', 'Bills'];
 }
