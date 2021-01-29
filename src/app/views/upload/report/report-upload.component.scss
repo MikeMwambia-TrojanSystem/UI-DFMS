@@ -19,7 +19,11 @@
 .originating-container {
   display: flex;
   align-items: center;
-  margin: 10px 0;
+  margin: 10px -5px;
+
+  .originating {
+    margin: 0 5px;
+  }
 }
 
 .buttons-container {
@@ -98,5 +102,16 @@
   .mat-form-field-prefix {
     position: relative;
     bottom: 12px;
+  }
+
+  .mat-radio-inner-circle,
+  .mat-radio-outer-circle,
+  .mat-radio-container {
+    width: 10px;
+    height: 10px;
+  }
+
+  .mat-radio-checked .mat-radio-inner-circle {
+    transform: scale(1);
   }
 }

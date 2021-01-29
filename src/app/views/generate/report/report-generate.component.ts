@@ -11,8 +11,16 @@ export class ReportGenerateComponent {
     title: new FormControl('', Validators.required),
     authorConcerned: new FormControl('', Validators.required),
     dueDate: new FormControl('', Validators.required),
-    editors: new FormArray([], Validators.required),
+    editors: new FormArray(
+      [new FormControl('King Topsy'), new FormControl('Lawrence Mike')],
+      Validators.required
+    ),
+    originating: new FormControl('', Validators.required),
   });
 
   originatings = ['Petitions', 'Statements', 'Bills'];
+
+  get editors(): string[] {
+    return this.form.get('editors').value;
+  }
 }

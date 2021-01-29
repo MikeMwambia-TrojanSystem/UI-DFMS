@@ -16,6 +16,7 @@ export class ReportUploadComponent {
       [new FormControl('King Topsy'), new FormControl('Lawrence Mike')],
       Validators.required
     ),
+    originating: new FormControl('', Validators.required),
   });
 
   originatings = ['Petitions', 'Statements', 'Bills'];

@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatRadioModule } from '@angular/material/radio';
 
 /**
  * A Module for all of the Material Modules needed for the app.
@@ -24,6 +25,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatSelectModule,
     MatIconModule,
     MatSlideToggleModule,
+    MatRadioModule,
   ],
   exports: [
     MatCardModule,
@@ -34,6 +36,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatSelectModule,
     MatIconModule,
     MatSlideToggleModule,
+    MatRadioModule,
   ],
 })
 export class MaterialModule {}

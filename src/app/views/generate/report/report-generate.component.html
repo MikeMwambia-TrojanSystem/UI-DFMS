@@ -14,12 +14,25 @@
         <mat-error *ngIf="form.get('dueDate').hasError('required')">Please enter due date!</mat-error>
       </mat-form-field>
       <p class="label">Originating Document</p>
-      <div class="originating-container">
-        <app-originating-point *ngFor="let originating of originatings" [label]="originating"></app-originating-point>
-      </div>
+      <mat-form-field appearance="standard">
+        <mat-select formControlName="originating">
+          <mat-option *ngFor="let originating of originatings" [value]="originating">{{originating}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <app-custom-button [title]="'Add Originating ' + form.get('originating').value"
+        *ngIf="form.get('originating').value"></app-custom-button>
       <div class="buttons-container">
         <app-custom-button [title]="'Add Editors'" class="custom-btn"></app-custom-button>
-        <app-custom-button [title]="'Remove Editor'" class="custom-btn" style="margin-left: 10px">
+      </div>
+      <div class="buttons-container">
+        <div class="editors-container">
+          <p class="editors">{{editors.length}} Editors</p>
+          <div *ngFor="let editor of editors" class="editor">
+            <mat-icon class="icon">person_outline</mat-icon>
+            <span>{{editor}}</span>
+          </div>
+        </div>
+        <app-custom-button [title]="'Remove Editor'" class="custom-btn">
         </app-custom-button>
       </div>
       <div class="actions">

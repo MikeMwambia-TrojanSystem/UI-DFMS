@@ -56,4 +56,6 @@ export class VotebookGenerateComponent {
       generate: '/',
     },
   ];
+
+  orderNo = 42; // Dynamic order no
 }
