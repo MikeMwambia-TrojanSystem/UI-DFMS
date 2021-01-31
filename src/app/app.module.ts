@@ -64,6 +64,7 @@ import { OriginatingPointComponent } from './components/OriginatingPoint/origina
 import { SearchBarComponent } from './components/SearchBar/search-bar.component';
 import { ListItemComponent } from './components/ListItem/list-item.component';
 import { EditPaperComponent } from './views/edit/edit-paper.component';
+import { PreviewComponent } from './views/edit/preview/preview.component';
 
 @NgModule({
   declarations: [
@@ -120,6 +121,7 @@ import { EditPaperComponent } from './views/edit/edit-paper.component';
     EditTitleComponent,
     OriginatingPointComponent,
     EditPaperComponent,
+    PreviewComponent,
   ],
   imports: [
     BrowserModule,

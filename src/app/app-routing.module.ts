@@ -43,6 +43,7 @@ import { VotebookGenerateComponent } from './views/generate/votebook/votebook-ge
 import { OrderPaperViewComponent } from './views/view/order-paper/order-paper-view.component';
 import { EditTitleComponent } from './views/view/order-paper/edit-title/edit-title.component';
 import { EditPaperComponent } from './views/edit/edit-paper.component';
+import { PreviewComponent } from './views/edit/preview/preview.component';
 
 const routes: Routes = [
   // Login route
@@ -131,7 +132,7 @@ const routes: Routes = [
     path: 'edit',
     children: [
       { path: ':id', component: EditPaperComponent },
-      { path: ':id/review', component: EditPaperComponent },
+      { path: ':id/preview', component: PreviewComponent },
     ],
   },
 
