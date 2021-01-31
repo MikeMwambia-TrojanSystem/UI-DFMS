@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { NgOtpInputModule } from 'ng-otp-input';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { QuillModule } from 'ngx-quill';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -62,6 +63,7 @@ import { MenuContainerComponent } from './components/MenuContainer/menu-containe
 import { OriginatingPointComponent } from './components/OriginatingPoint/originating-point.component';
 import { SearchBarComponent } from './components/SearchBar/search-bar.component';
 import { ListItemComponent } from './components/ListItem/list-item.component';
+import { EditPaperComponent } from './views/edit/edit-paper.component';
 
 @NgModule({
   declarations: [
@@ -117,6 +119,7 @@ import { ListItemComponent } from './components/ListItem/list-item.component';
     OrderPaperViewComponent,
     EditTitleComponent,
     OriginatingPointComponent,
+    EditPaperComponent,
   ],
   imports: [
     BrowserModule,
@@ -127,6 +130,20 @@ import { ListItemComponent } from './components/ListItem/list-item.component';
     NgOtpInputModule,
     CommonModule,
     FormsModule,
+    QuillModule.forRoot({
+      modules: {
+        toolbar: [
+          [{ size: ['small', 'normal', 'large'] }],
+          ['bold', 'italic'],
+          [{ indent: '-1' }, { indent: '+1' }],
+          ['underline'],
+          [{ header: 1 }, { header: 2 }],
+          ['blockquote'],
+          [{ list: 'ordered' }, { list: 'bullet' }],
+          ['link'],
+        ],
+      },
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

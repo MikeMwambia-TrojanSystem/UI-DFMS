@@ -42,6 +42,7 @@ import { PaperContentGenerateComponent } from './views/generate/paper-content/pa
 import { VotebookGenerateComponent } from './views/generate/votebook/votebook-generate.component';
 import { OrderPaperViewComponent } from './views/view/order-paper/order-paper-view.component';
 import { EditTitleComponent } from './views/view/order-paper/edit-title/edit-title.component';
+import { EditPaperComponent } from './views/edit/edit-paper.component';
 
 const routes: Routes = [
   // Login route
@@ -122,6 +123,15 @@ const routes: Routes = [
     children: [
       { path: 'order-paper/:id', component: OrderPaperViewComponent },
       { path: 'order-paper/:id/edit-title', component: EditTitleComponent },
+    ],
+  },
+
+  //Edit parent route
+  {
+    path: 'edit',
+    children: [
+      { path: ':id', component: EditPaperComponent },
+      { path: ':id/review', component: EditPaperComponent },
     ],
   },
 
