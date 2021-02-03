@@ -1,5 +1,10 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  ActivatedRoute,
+  ActivatedRouteSnapshot,
+  Router,
+} from '@angular/router';
 
 interface Administration {
   name: string;
@@ -7,13 +12,14 @@ interface Administration {
   profilePic: string;
 }
 
+type State = 'Draft' | 'Publicly Published' | 'Privately Published';
+
 @Component({
   selector: 'app-ad-oath',
   templateUrl: './ad-oath.component.html',
   styleUrls: ['./ad-oath.component.scss'],
 })
-export class AdministrationOathComponent {
-  @ViewChild('fileUpload') fileUpload: ElementRef<HTMLInputElement>;
+export class AdministrationOathComponent implements OnInit {
   form = new FormGroup({
     name: new FormControl('', Validators.required),
     ward: new FormControl('', Validators.required),
@@ -52,7 +58,25 @@ export class AdministrationOathComponent {
     },
   ];
 
-  onStartUpload(): void {
-    this.fileUpload.nativeElement.click();
+  state: State;
+
+  constructor(private router: Router, private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    const stateQuery = this.route.snapshot.queryParams.state;
+    if (stateQuery) {
+      this.state =
+        stateQuery === 'draft'
+          ? 'Draft'
+          : stateQuery === 'public'
+          ? 'Publicly Published'
+          : stateQuery === 'private'
+          ? 'Privately Published'
+          : undefined;
+    }
+  }
+
+  onUpload(): void {
+    this.router.navigate(['/', 'management', 'upload']);
   }
 }

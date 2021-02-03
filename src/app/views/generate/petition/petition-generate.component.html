@@ -59,11 +59,13 @@
           </div>
         </div>
         <div class="custom-btn-container">
-          <app-custom-button [title]="'Sponsored By'" class="custom-btn"></app-custom-button>
-          <app-custom-button [title]="'Add Petitioner'" class="custom-btn"></app-custom-button>
+          <app-custom-button [title]="'Sponsored By'" class="custom-btn" [url]="['/', 'management', 'upload']">
+          </app-custom-button>
+          <app-custom-button [title]="'Add Petitioner'" class="custom-btn" [url]="['/', 'management', 'petitioners']">
+          </app-custom-button>
         </div>
         <app-custom-button [title]="'Upload Soft copy of the petition'" class="custom-btn standalone"
-          (buttonClick)="onStartUpload()">
+          [url]="['/', 'list', 'mca-employee']" [query]="{ select: true }">
         </app-custom-button>
         <input #fileUpload class="hidden" type="file" />
         <div class="actions">

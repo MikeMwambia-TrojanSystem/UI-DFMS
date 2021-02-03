@@ -21,14 +21,13 @@
         <input matInput formControlName="password" type="password" />
         <mat-error *ngIf="form.get('password').hasError('required')">Please enter password</mat-error>
       </mat-form-field>
-      <a class="forgot" routerLink="/signup/login">
+      <a class="forgot" routerLink="/signup/reset-password">
         <p>Forgot Password?</p>
       </a>
       <mat-checkbox class="check-box" formControlName="isRemember">Keep me logged in</mat-checkbox>
-      <a class="btn-link" [routerLink]="form.valid ? '/signup/email' : null">
+      <a class="btn-link" [routerLink]="form.valid ? '/intro' : null">
         <button mat-flat-button class="btn" [disabled]="form.invalid">Login</button>
       </a>
     </form>
   </app-center-card>
 </app-background>
-<app-back-button [link]="'/signup/success'"></app-back-button>

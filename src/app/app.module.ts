@@ -52,19 +52,31 @@ import { PaperContentGenerateComponent } from './views/generate/paper-content/pa
 import { VotebookGenerateComponent } from './views/generate/votebook/votebook-generate.component';
 import { OrderPaperViewComponent } from './views/view/order-paper/order-paper-view.component';
 import { EditTitleComponent } from './views/view/order-paper/edit-title/edit-title.component';
+import { EditPaperComponent } from './views/edit/paper/edit-paper.component';
+import { ContentPreviewComponent } from './views/edit/content/preview/preview.component';
+import { ListActComponent } from './views/list/act/list-act.component';
+import { ListBillComponent } from './views/list/bill/list-bill.component';
+import { ListPetitionComponent } from './views/list/petition/list-petition.component';
+import { ListReportComponent } from './views/list/report/list-report.component';
+import { ListOrderPaperComponent } from './views/list/order-paper/list-order-paper.component';
+import { ListVoteBookComponent } from './views/list/votebook/votebook.component';
+import { EditVotebookComponent } from './views/edit/votebook/edit-votebook.component';
+import { EditContentComponent } from './views/edit/content/edit-content.component';
+import { VotebookPreviewComponent } from './views/edit/votebook/preview/preview.component';
+import { PaperPreviewComponent } from './views/edit/paper/preview/preview.component';
+import { ListCommunicationComponent } from './views/list/communication/list-communication.component';
 
 import { AppComponent } from './app.component';
 import { BackButtonComponent } from './components/BackButton/back-button.component';
 import { ManagementItemComponent } from './components/ManagementItem/management-item.component';
 import { BackgroundComponent } from './components/Background/background.component';
 import { CenterCard } from './components/CenterCard/center-card.component';
-import { MotionItemComponent } from './components/MotionItem/motion-item.component';
+import { InfoItemComponent } from './components/InfoItem/info-item.component';
 import { MenuContainerComponent } from './components/MenuContainer/menu-container.component';
 import { OriginatingPointComponent } from './components/OriginatingPoint/originating-point.component';
 import { SearchBarComponent } from './components/SearchBar/search-bar.component';
 import { ListItemComponent } from './components/ListItem/list-item.component';
-import { EditPaperComponent } from './views/edit/edit-paper.component';
-import { PreviewComponent } from './views/edit/preview/preview.component';
+import { OathContentComponent } from './components/OathContent/oath-content.component';
 
 @NgModule({
   declarations: [
@@ -106,7 +118,7 @@ import { PreviewComponent } from './views/edit/preview/preview.component';
     MotionGenerateComponent,
     PetitionGenerateComponent,
     ListMotionComponent,
-    MotionItemComponent,
+    InfoItemComponent,
     IntroComponent,
     ResetPasswordComponent,
     ReportGenerateComponent,
@@ -121,7 +133,19 @@ import { PreviewComponent } from './views/edit/preview/preview.component';
     EditTitleComponent,
     OriginatingPointComponent,
     EditPaperComponent,
-    PreviewComponent,
+    ListActComponent,
+    ListBillComponent,
+    ListPetitionComponent,
+    ListReportComponent,
+    ListOrderPaperComponent,
+    ListVoteBookComponent,
+    EditVotebookComponent,
+    OathContentComponent,
+    EditContentComponent,
+    ContentPreviewComponent,
+    VotebookPreviewComponent,
+    PaperPreviewComponent,
+    ListCommunicationComponent,
   ],
   imports: [
     BrowserModule,
@@ -136,13 +160,13 @@ import { PreviewComponent } from './views/edit/preview/preview.component';
       modules: {
         toolbar: [
           [{ size: ['small', 'normal', 'large'] }],
-          ['bold', 'italic'],
-          [{ indent: '-1' }, { indent: '+1' }],
-          ['underline'],
-          [{ header: 1 }, { header: 2 }],
-          ['blockquote'],
-          [{ list: 'ordered' }, { list: 'bullet' }],
-          ['link'],
+          // ['bold', 'italic'],
+          // [{ indent: '-1' }, { indent: '+1' }],
+          // ['underline'],
+          // [{ header: 1 }, { header: 2 }],
+          // ['blockquote'],
+          // [{ list: 'ordered' }, { list: 'bullet' }],
+          // ['link'],
         ],
       },
     }),

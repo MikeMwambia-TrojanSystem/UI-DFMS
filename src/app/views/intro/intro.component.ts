@@ -6,6 +6,7 @@ import { MenuNotification } from 'src/app/components/MenuContainer/menu-containe
 export interface Action {
   label: string;
   url?: string;
+  query?: Record<string, string>;
 }
 
 interface IntroItem {
@@ -33,19 +34,28 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Oath',
-          url: 'http://localhost:4200/',
+          url: '/management/oath',
         },
         {
           label: 'View Oath in Draft Status',
-          url: 'http://localhost:4200/',
+          url: '/management/oath',
+          query: {
+            state: 'draft',
+          },
         },
         {
           label: 'View Privately Published Oath',
-          url: 'http://localhost:4200/',
+          url: '/management/oath',
+          query: {
+            state: 'private',
+          },
         },
         {
           label: 'View Published Oath',
-          url: 'http://localhost:4200/',
+          url: '/management/oath',
+          query: {
+            state: 'public',
+          },
         },
       ],
       notifications: [
@@ -61,19 +71,22 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Communication',
-          url: 'http://localhost:4200/',
+          url: '/edit/content/1',
         },
         {
           label: 'View Communication in draft status',
-          url: 'http://localhost:4200/',
+          url: '/list/communication',
+          query: { state: 'draft' },
         },
         {
           label: 'View Privately Published Communication',
-          url: 'http://localhost:4200/',
+          url: '/list/communication',
+          query: { state: 'private' },
         },
         {
           label: 'View Published Communications',
-          url: 'http://localhost:4200/',
+          url: '/list/communication',
+          query: { state: 'public' },
         },
       ],
       notifications: [
@@ -122,7 +135,7 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Petition',
-          url: 'http://localhost:4200/',
+          url: '/generate/petition',
         },
         {
           label: 'View Petition in draft status',
@@ -150,7 +163,7 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Reports',
-          url: 'http://localhost:4200/',
+          url: '/report-methods',
         },
         {
           label: 'View Reports in draft status',

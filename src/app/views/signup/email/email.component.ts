@@ -16,7 +16,7 @@ export class EmailSignupComponent {
       phoneNumberValidator,
     ]),
   }); // Form group that holds username and password from user input
-  phoneNumer = '254 4758 955452'; // Current phone number
+  phoneNumer = '254 475 895 545'; // Current phone number
   email = 'mayusd@example.com'; // Current email
 
   /**

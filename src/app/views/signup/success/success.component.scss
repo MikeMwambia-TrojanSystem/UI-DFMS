@@ -57,6 +57,14 @@
   &-check {
     color: #008000;
   }
+
+  .link {
+    text-decoration: underline;
+
+    &:hover {
+      color: #008000;
+    }
+  }
 }
 
 .btn-link {

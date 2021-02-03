@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-petition-generate',
@@ -21,7 +22,19 @@ export class PetitionGenerateComponent {
     softCopyUrl: new FormControl(null, Validators.required),
   });
 
-  onStartUpload() {
-    this.fileUpload.nativeElement.click();
+  constructor(private router: Router) {}
+
+  onUpload() {
+    this.router.navigate(['/', 'management', 'upload']);
+  }
+
+  onSponsor() {
+    this.router.navigate(['/', 'list', 'mca-employee'], {
+      queryParams: { select: true },
+    });
+  }
+
+  onPetitioner() {
+    this.router.navigate(['/', 'management', 'petitioners']);
   }
 }

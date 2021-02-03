@@ -1,0 +1,25 @@
+<app-background>
+  <app-center-card>
+    <div class="main">
+      <form [formGroup]="form">
+        <h1 class="title">Generate Content Page</h1>
+        <span class="words">Words Per Page: <span class="limit">1400</span></span>
+        <quill-editor formControlName="content"></quill-editor>
+        <div class="pages">
+          <div class="previous">
+            <span>Previous page: <span class="page">{{previousPage}}</span></span>
+          </div>
+          <div class="current">
+            <span>Currently writing page: <span class="page">{{currentPage}}</span></span>
+          </div>
+        </div>
+        <div class="actions">
+          <button mat-button type="button" class="btn-draft">Save as Draft</button>
+          <a [routerLink]="form.invalid ? [] : ['preview']">
+            <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Preview Pages</button>
+          </a>
+        </div>
+      </form>
+    </div>
+  </app-center-card>
+</app-background>

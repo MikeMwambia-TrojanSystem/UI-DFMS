@@ -104,14 +104,7 @@
     bottom: 12px;
   }
 
-  .mat-radio-inner-circle,
-  .mat-radio-outer-circle,
-  .mat-radio-container {
-    width: 10px;
-    height: 10px;
-  }
-
-  .mat-radio-checked .mat-radio-inner-circle {
-    transform: scale(1);
+  .mat-select {
+    margin-bottom: 12px;
   }
 }

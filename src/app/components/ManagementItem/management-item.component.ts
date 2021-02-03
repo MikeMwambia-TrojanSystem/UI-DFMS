@@ -11,4 +11,5 @@ export class ManagementItemComponent {
   @Input() subtitle: string;
   @Input() selectable: boolean;
   @Input() noDivider: boolean;
+  @Input() state: string;
 }

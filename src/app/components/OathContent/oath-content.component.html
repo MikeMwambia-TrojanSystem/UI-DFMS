@@ -1,0 +1,10 @@
+<p class="content">
+  {{content[currentPage - 1]}}
+</p>
+<div class="nav">
+  <mat-icon class="arrow" (click)="onChangePage(currentPage - 1)">arrow_left</mat-icon>
+  <div class="page" *ngFor="let page of content; let i = index" [ngClass]="{active: currentPage === i + 1}"
+    (click)="onChangePage(i + 1)"><span>{{i +
+      1}}</span></div>
+  <mat-icon class="arrow" (click)="onChangePage(currentPage + 1)">arrow_right</mat-icon>
+</div>

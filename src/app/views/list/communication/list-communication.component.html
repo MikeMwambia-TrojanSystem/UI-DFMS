@@ -1,0 +1,11 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Communications</h1>
+    <app-search-bar></app-search-bar>
+    <div>
+      <app-info-item *ngFor="let com of communications" [title]="com.title" [date]="com.date" [subjects]="com.subjects"
+        [sponsored]="com.sponsored" [ward]="com.ward" class="item" [selectable]="selectabe" [sub]="'Communication on'">
+      </app-info-item>
+    </div>
+  </app-center-card>
+</app-background>

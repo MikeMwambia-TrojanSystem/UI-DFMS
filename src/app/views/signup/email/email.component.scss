@@ -20,6 +20,24 @@
   font-size: 1rem;
 }
 
+.field-container {
+  width: 100%;
+  display: flex;
+
+  .field {
+    flex: 1 1 auto;
+    margin-right: 10px;
+  }
+
+  .btn {
+    width: 150px;
+    padding: 5px;
+    font-size: 12px;
+    white-space: initial;
+    line-height: initial;
+  }
+}
+
 .info {
   margin: 12px 0;
 

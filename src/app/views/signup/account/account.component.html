@@ -32,7 +32,7 @@
         <!-- phoneNumber error validation -->
         <mat-error *ngIf="form.get('phone').hasError('phoneNumber')">Please enter valid phone number</mat-error>
       </mat-form-field>
-      <a class="btn-link" [routerLink]="form.valid ? '/signup/email-verification' : null">
+      <a class="btn-link" [routerLink]="form.valid ? '/signup/login' : null">
         <button mat-flat-button class="btn" [disabled]="form.invalid">Create an account</button>
       </a>
     </form>

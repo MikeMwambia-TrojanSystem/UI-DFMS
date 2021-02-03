@@ -7,7 +7,8 @@
         <input matInput formControlName="title" placeholder="Report on Food Stability and Availability" />
         <mat-error *ngIf="form.get('title').hasError('required')">Please enter report title!</mat-error>
       </mat-form-field>
-      <app-custom-button [title]="'Select Author Concerned Committee'"></app-custom-button>
+      <app-custom-button [title]="'Select Author Concerned Committee'" [url]="['/', 'list', 'committee']"
+        [query]="{select: true}"></app-custom-button>
       <p class="label">Due Date</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="dueDate" type="date" />
@@ -20,9 +21,10 @@
         </mat-select>
       </mat-form-field>
       <app-custom-button [title]="'Add Originating ' + form.get('originating').value"
-        *ngIf="form.get('originating').value"></app-custom-button>
+        *ngIf="form.get('originating').value" [url]="url" [query]="{select: true}"></app-custom-button>
       <div class="buttons-container">
-        <app-custom-button [title]="'Add Editors'" class="custom-btn"></app-custom-button>
+        <app-custom-button [title]="'Add Editors'" class="custom-btn" [url]="['/', 'list', 'personnel']"
+          [query]="{select: true}"></app-custom-button>
       </div>
       <div class="buttons-container">
         <div class="editors-container">
@@ -32,7 +34,8 @@
             <span>{{editor}}</span>
           </div>
         </div>
-        <app-custom-button [title]="'Remove Editor'" class="custom-btn">
+        <app-custom-button [title]="'Remove Editor'" class="custom-btn" [url]="['/', 'list', 'personnel']"
+          [query]="{select: true}">
         </app-custom-button>
       </div>
       <div class="actions">

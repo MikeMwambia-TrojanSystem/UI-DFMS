@@ -8,7 +8,8 @@
       perform the following tasks
     </p>
     <app-menu-container *ngFor="let item of introItems" [title]="item.label" [notifications]="item.notifications">
-      <a class="action-link" [href]="action.url" *ngFor="let action of item.actions">{{action.label}}</a>
+      <a class="action-link" [routerLink]="[action.url]" [queryParams]="action.query"
+        *ngFor="let action of item.actions">{{action.label}}</a>
     </app-menu-container>
   </app-center-card>
 </app-background>

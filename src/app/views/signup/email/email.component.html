@@ -3,19 +3,26 @@
     <h2 class="title">Enter Recovery email and phone number</h2>
     <form [formGroup]="form" class="form">
       <p class="label">Email</p>
-      <mat-form-field appearance="standard">
-        <input matInput formControlName="recoveryEmail" />
-        <mat-error *ngIf="form.get('recoveryEmail').hasError('email')">Please enter valid email</mat-error>
-        <mat-error *ngIf="form.get('recoveryEmail').hasError('required')">Please enter email</mat-error>
-      </mat-form-field>
+      <div class="field-container">
+        <mat-form-field appearance="standard" class="field">
+          <input matInput formControlName="recoveryEmail" />
+          <mat-error *ngIf="form.get('recoveryEmail').hasError('email')">Please enter valid email</mat-error>
+          <mat-error *ngIf="form.get('recoveryEmail').hasError('required')">Please enter email</mat-error>
+        </mat-form-field>
+        <button mat-button type="button" class="btn">Send Verfication Code</button>
+      </div>
       <p class="label">Enter Phone Number</p>
-      <mat-form-field appearance="standard">
-        <span matPrefix>+ &nbsp;</span>
-        <input matInput formControlName="recoveryPhone" type="tel" />
-        <mat-error *ngIf="form.get('recoveryPhone').hasError('required')">Please enter phone numer</mat-error>
-        <!-- phoneNumber error validation -->
-        <mat-error *ngIf="form.get('recoveryPhone').hasError('phoneNumber')">Please enter valid phone numer</mat-error>
-      </mat-form-field>
+      <div class="field-container">
+        <mat-form-field appearance="standard" class="field">
+          <span matPrefix>+ &nbsp;</span>
+          <input matInput formControlName="recoveryPhone" type="tel" />
+          <mat-error *ngIf="form.get('recoveryPhone').hasError('required')">Please enter phone numer</mat-error>
+          <!-- phoneNumber error validation -->
+          <mat-error *ngIf="form.get('recoveryPhone').hasError('phoneNumber')">Please enter valid phone numer
+          </mat-error>
+        </mat-form-field>
+        <button mat-button type="button" class="btn">Send Verfication Code</button>
+      </div>
       <h2 class="subtitle">Current Email and Phone Number</h2>
       <div class="info">
         <span class="info-label">Phone Number: </span>
@@ -35,10 +42,10 @@
         <!-- Using getter to access form value -->
         <span class="info-content">{{recoveryEmail}}</span>
       </div>
-      <a class="btn-link" [routerLink]="form.valid ? '/signup/success' : null">
+      <a class="btn-link" [routerLink]="form.valid ? '/signup/email-verification' : null">
         <button mat-flat-button class="btn" [disabled]="form.invalid">Save</button>
       </a>
     </form>
   </app-center-card>
 </app-background>
-<app-back-button [link]="'/signup/phone-verification'"></app-back-button>
+<app-back-button [link]="'/signup/county'"></app-back-button>

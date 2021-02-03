@@ -14,17 +14,20 @@
         </mat-select>
         <mat-error *ngIf="form.get('ward').hasError('required')">Please select a ward!</mat-error>
       </mat-form-field>
-      <app-custom-button [title]="'Upload Passport Picture'" (buttonClick)="onStartUpload()"></app-custom-button>
-      <input class="hidden" type="file" accept="image/*" #fileUpload />
+      <app-custom-button [title]="'Upload Passport Picture'" [url]="['/', 'management', 'upload']"></app-custom-button>
       <p class="label">Political Party</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="party" placeholder="Trust Party" />
         <mat-error *ngIf="form.get('party').hasError('required')">Please enter political party!</mat-error>
       </mat-form-field>
-      <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save</button>
+      <div class="actions">
+        <button mat-button type="button" class="btn-draft">Save as Draft</button>
+        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save</button>
+      </div>
     </form>
     <div class="divider"></div>
-    <app-management-item *ngFor="let ad of administrations" [title]="ad.name" [subtitle]="ad.ward"
-      [pic]="ad.profilePic"></app-management-item>
+    <h2 class="list-title" *ngIf="state">Previous Administration of Oaths</h2>
+    <app-management-item *ngFor="let ad of administrations" [title]="ad.name" [subtitle]="ad.ward" [pic]="ad.profilePic"
+      [state]="state"></app-management-item>
   </app-center-card>
 </app-background>

@@ -1,0 +1,11 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Acts</h1>
+    <app-search-bar></app-search-bar>
+    <div>
+      <app-info-item *ngFor="let act of acts" [title]="act.title" [date]="act.date" [subjects]="act.subjects"
+        [sponsored]="act.sponsored" [ward]="act.ward" class="item" [selectable]="selectabe" [sub]="'Act on'">
+      </app-info-item>
+    </div>
+  </app-center-card>
+</app-background>

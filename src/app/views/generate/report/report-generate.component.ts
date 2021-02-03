@@ -23,4 +23,17 @@ export class ReportGenerateComponent {
   get editors(): string[] {
     return this.form.get('editors').value;
   }
+
+  get url(): string[] {
+    switch (this.form.get('originating').value) {
+      case 'Petitions':
+        return ['/', 'list', 'petition'];
+      case 'Statements':
+        return ['/', 'list', 'statement'];
+      case 'Bills':
+        return ['/', 'list', 'bill'];
+      default:
+        return ['/'];
+    }
+  }
 }

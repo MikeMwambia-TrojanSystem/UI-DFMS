@@ -9,8 +9,12 @@ export class CustomButtonComponent {
   @Output() buttonClick = new EventEmitter<void>();
   @Input() title: string;
   @Input() unClickable: boolean;
+  @Input() url: string[];
+  @Input() query: Record<string, string>;
 
   onIconClick(): void {
-    this.buttonClick.emit();
+    if (!this.url) {
+      this.buttonClick.emit();
+    }
   }
 }

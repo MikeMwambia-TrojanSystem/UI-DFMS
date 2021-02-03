@@ -1,0 +1,33 @@
+.content {
+  font-size: 16px;
+  line-height: 150%;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+
+  .arrow {
+    cursor: pointer;
+  }
+
+  .page {
+    padding: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.25);
+    margin: 0 5px;
+
+    span {
+      position: absolute;
+    }
+
+    &.active {
+      color: #008000;
+    }
+  }
+}

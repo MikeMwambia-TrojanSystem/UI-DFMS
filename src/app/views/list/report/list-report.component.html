@@ -1,0 +1,12 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Reports</h1>
+    <app-search-bar></app-search-bar>
+    <div>
+      <app-info-item *ngFor="let report of reports" [title]="report.title" [date]="report.date"
+        [subjects]="report.subjects" [sponsored]="report.sponsored" [ward]="report.ward" class="item"
+        [selectable]="selectabe" [sub]="'Report on'">
+      </app-info-item>
+    </div>
+  </app-center-card>
+</app-background>

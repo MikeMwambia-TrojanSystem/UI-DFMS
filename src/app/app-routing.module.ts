@@ -42,8 +42,19 @@ import { PaperContentGenerateComponent } from './views/generate/paper-content/pa
 import { VotebookGenerateComponent } from './views/generate/votebook/votebook-generate.component';
 import { OrderPaperViewComponent } from './views/view/order-paper/order-paper-view.component';
 import { EditTitleComponent } from './views/view/order-paper/edit-title/edit-title.component';
-import { EditPaperComponent } from './views/edit/edit-paper.component';
-import { PreviewComponent } from './views/edit/preview/preview.component';
+import { EditPaperComponent } from './views/edit/paper/edit-paper.component';
+import { ContentPreviewComponent } from './views/edit/content/preview/preview.component';
+import { ListActComponent } from './views/list/act/list-act.component';
+import { ListBillComponent } from './views/list/bill/list-bill.component';
+import { ListPetitionComponent } from './views/list/petition/list-petition.component';
+import { ListReportComponent } from './views/list/report/list-report.component';
+import { ListOrderPaperComponent } from './views/list/order-paper/list-order-paper.component';
+import { ListVoteBookComponent } from './views/list/votebook/votebook.component';
+import { EditVotebookComponent } from './views/edit/votebook/edit-votebook.component';
+import { EditContentComponent } from './views/edit/content/edit-content.component';
+import { VotebookPreviewComponent } from './views/edit/votebook/preview/preview.component';
+import { PaperPreviewComponent } from './views/edit/paper/preview/preview.component';
+import { ListCommunicationComponent } from './views/list/communication/list-communication.component';
 
 const routes: Routes = [
   // Login route
@@ -89,6 +100,13 @@ const routes: Routes = [
       { path: 'personnel', component: ListPersonnelComponent },
       { path: 'wards', component: ListWardsComponent },
       { path: 'motion', component: ListMotionComponent },
+      { path: 'act', component: ListActComponent },
+      { path: 'bill', component: ListBillComponent },
+      { path: 'petition', component: ListPetitionComponent },
+      { path: 'report', component: ListReportComponent },
+      { path: 'order-paper', component: ListOrderPaperComponent },
+      { path: 'votebook', component: ListVoteBookComponent },
+      { path: 'communication', component: ListCommunicationComponent },
     ],
   },
 
@@ -131,8 +149,24 @@ const routes: Routes = [
   {
     path: 'edit',
     children: [
-      { path: ':id', component: EditPaperComponent },
-      { path: ':id/preview', component: PreviewComponent },
+      {
+        path: 'votebook/:id',
+        component: EditVotebookComponent,
+      },
+      {
+        path: 'votebook/:id/preview',
+        component: VotebookPreviewComponent,
+      },
+      { path: 'paper/:id', component: EditPaperComponent },
+      {
+        path: 'paper/:id/preview',
+        component: PaperPreviewComponent,
+      },
+      { path: 'content/:id', component: EditContentComponent },
+      {
+        path: 'content/:id/preview',
+        component: ContentPreviewComponent,
+      },
     ],
   },
 

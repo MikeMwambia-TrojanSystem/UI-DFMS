@@ -1,0 +1,12 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Order Papers</h1>
+    <app-search-bar></app-search-bar>
+    <div>
+      <app-info-item *ngFor="let orderPaper of orderPapers" [title]="orderPaper.title" [date]="orderPaper.date"
+        [subjects]="orderPaper.subjects" [sponsored]="orderPaper.sponsored" [ward]="orderPaper.ward" class="item"
+        [selectable]="selectabe" [sub]="'Order Paper on'">
+      </app-info-item>
+    </div>
+  </app-center-card>
+</app-background>

@@ -9,6 +9,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatChipsModule } from '@angular/material/chips';
 
 /**
  * A Module for all of the Material Modules needed for the app.
@@ -26,6 +27,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatIconModule,
     MatSlideToggleModule,
     MatRadioModule,
+    MatChipsModule,
   ],
   exports: [
     MatCardModule,
@@ -37,6 +39,7 @@ import { MatRadioModule } from '@angular/material/radio';
     MatIconModule,
     MatSlideToggleModule,
     MatRadioModule,
+    MatChipsModule,
   ],
 })
 export class MaterialModule {}

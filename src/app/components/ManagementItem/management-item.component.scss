@@ -29,7 +29,7 @@
   }
 
   .subtitle {
-    margin-top: 10px;
+    margin: 5px 0;
     transition: color 0.1s ease-in-out;
   }
 }
@@ -50,4 +50,13 @@
 .image {
   border-radius: 100%;
   object-fit: cover;
+}
+
+.state {
+  display: flex;
+  align-items: center;
+
+  span {
+    margin-right: 5px;
+  }
 }

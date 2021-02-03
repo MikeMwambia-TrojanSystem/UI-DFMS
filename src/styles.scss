@@ -30,6 +30,12 @@ textarea {
   font-size: 14px;
 }
 
+.hr {
+  width: 100%;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.25);
+}
+
 // Material Overriding CSS
 .mat-radio-button.mat-accent .mat-radio-inner-circle,
 .mat-radio-button.mat-accent
@@ -42,4 +48,18 @@ textarea {
 
 .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle {
   border-color: #008000;
+}
+
+mat-chip.state-chip {
+  padding: 0 15px;
+  min-height: 22px;
+  font-weight: 400;
+  color: #008000 !important;
+  background-color: rgba(#008000, 0.25) !important;
+}
+
+//Quill Editor Overriding CSS
+.ql-container {
+  min-width: 800px;
+  min-height: 500px;
 }
