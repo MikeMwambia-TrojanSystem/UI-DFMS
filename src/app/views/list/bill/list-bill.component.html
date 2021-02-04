@@ -4,7 +4,8 @@
     <app-search-bar></app-search-bar>
     <div>
       <app-info-item *ngFor="let bill of bills" [title]="bill.title" [date]="bill.date" [subjects]="bill.subjects"
-        [sponsored]="bill.sponsored" [ward]="bill.ward" class="item" [selectable]="selectabe" [sub]="'Bill on'">
+        [ward]="bill.ward" class="item" [selectable]="selectable" [sub]="'Bill on'" [status]="bill.status"
+        [state]="state">
       </app-info-item>
     </div>
   </app-center-card>

@@ -1,0 +1,48 @@
+:host {
+  padding: 25px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.date {
+  font-size: 13px;
+  margin: 10px 0;
+  color: #008000;
+}
+
+.btn {
+  margin-left: auto;
+}
+
+.state {
+  display: flex;
+  align-items: center;
+
+  .dot {
+    padding: 4px;
+    border-radius: 100%;
+    background: gray;
+    margin-right: 5px;
+  }
+
+  .label {
+    font-style: italic;
+  }
+}

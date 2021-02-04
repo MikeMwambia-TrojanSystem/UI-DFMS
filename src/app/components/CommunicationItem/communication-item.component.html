@@ -1,0 +1,15 @@
+<div class="main">
+  <div class="info">
+    <span class="title">{{sub}} {{title}}</span>
+    <span class="date">Published on {{date | date:'dd MMMM, yyyy'}}</span>
+    <div class="state">
+      <div class="dot"></div>
+      <span class="label">{{state}}</span>
+    </div>
+  </div>
+  <button mat-button *ngIf="selectable" class="btn">Select</button>
+</div>
+<div class="list-actions" *ngIf="!selectable">
+  <button mat-button class="list-actions-btn edit">Edit</button>
+  <button mat-button class="list-actions-btn delete">Delete</button>
+</div>

@@ -13,4 +13,6 @@ export class InfoItemComponent {
   @Input() ward: string;
   @Input() selectable: boolean;
   @Input() sub: string;
+  @Input() status: string;
+  @Input() state: string;
 }

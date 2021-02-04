@@ -1,0 +1,105 @@
+:host {
+  padding: 25px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.date {
+  font-size: 13px;
+  margin: 5px 0;
+
+  .highlight {
+    color: #008000;
+  }
+}
+
+.related {
+  margin-bottom: 10px;
+
+  .highlight {
+    font-weight: 500;
+  }
+}
+
+.sponsored {
+  .highlight {
+    font-weight: 500;
+  }
+}
+
+.icon {
+  color: #008000;
+  margin-right: 20px;
+  font-size: 35px;
+  height: 35px;
+  width: 35px;
+  cursor: pointer;
+}
+
+.btn {
+  margin-left: auto;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  span {
+    margin-right: 5px;
+  }
+}
+
+.state {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+
+  .dot {
+    padding: 4px;
+    border-radius: 100%;
+    background: gray;
+    margin-right: 5px;
+  }
+
+  .label {
+    font-style: italic;
+  }
+}
+
+.views {
+  display: flex;
+  align-items: center;
+
+  .icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+    color: black;
+    position: relative;
+    bottom: 1px;
+  }
+
+  .view {
+    color: #008000;
+    font-weight: 500;
+  }
+}

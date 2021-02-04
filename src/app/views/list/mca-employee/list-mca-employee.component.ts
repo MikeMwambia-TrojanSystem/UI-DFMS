@@ -5,6 +5,7 @@ interface McaEmployee {
   name: string;
   ward: string;
   profilePic: string;
+  subcounty: string;
 }
 
 @Component({
@@ -22,24 +23,28 @@ export class ListMcaEmployeeComponent implements OnInit {
       ward: 'Nathu Ward',
       profilePic:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJq7OdjXycWLNzlE_iQH0k6al3VWOsHGJzDA&usqp=CAU',
+      subcounty: 'Main Gate Subcounty',
     },
     {
       name: 'Paul Ansa',
       ward: 'Nathu Ward',
       profilePic:
         'https://snappygoat.com/b/d1bed93330681e35898ef1c2778b46e7534e3c2c',
+      subcounty: 'Township Subcounty',
     },
     {
       name: 'Abelina King',
       ward: 'Nathu Ward',
       profilePic:
         'https://upload.wikimedia.org/wikipedia/commons/2/22/Master_Teacher_Portrait.jpg',
+      subcounty: 'Township Subcounty',
     },
     {
       name: 'Sampson Faith',
       ward: 'Nathu Ward',
       profilePic:
         'https://snappygoat.com/b/b1994f0ceeba40094713fbdd2cb7aa717533fc65',
+      subcounty: 'Township Subcounty',
     },
   ];
   selectabe = false; // Whether the list is selectable

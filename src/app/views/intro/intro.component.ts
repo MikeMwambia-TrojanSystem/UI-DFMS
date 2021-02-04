@@ -387,6 +387,34 @@ export class IntroComponent {
       ],
     },
     {
+      label: 'Votebook',
+      actions: [
+        {
+          label: 'Generation Votebook',
+          url: 'http://localhost:4200/',
+        },
+        {
+          label: 'View Votebook in draft status',
+          url: 'http://localhost:4200/',
+        },
+        {
+          label: 'View Privately Published Papers',
+          url: 'http://localhost:4200/',
+        },
+        {
+          label: 'View Published Papers',
+          url: 'http://localhost:4200/',
+        },
+      ],
+      notifications: [
+        {
+          label: 'The report on land reforms was published',
+          date: moment().subtract(3, 'hours'),
+          url: 'http://localhost:4200/',
+        },
+      ],
+    },
+    {
       label: 'System',
       actions: [
         {

@@ -5,7 +5,7 @@
     <div>
       <app-info-item *ngFor="let motion of motions" [title]="motion.title" [date]="motion.date"
         [subjects]="motion.subjects" [sponsored]="motion.sponsored" [ward]="motion.ward" class="item"
-        [selectable]="selectabe" [sub]="'Motion on'"></app-info-item>
+        [selectable]="selectable" [sub]="'Motion on'" [state]="state"></app-info-item>
     </div>
   </app-center-card>
 </app-background>

@@ -1,0 +1,26 @@
+<div class="main">
+  <div class="info">
+    <span class="title">{{sub}} No {{number}}</span>
+    <span class="date">{{date | date:'EEEE, d MMMM, yyyy h:mm:ss a'}}</span>
+    <div class="views">
+      <mat-icon class="icon" size>
+        visibility
+      </mat-icon>
+      <span class="view">{{views}}</span>
+    </div>
+    <div class="state">
+      <div class="dot"></div>
+      <span class="label">{{state}}</span>
+    </div>
+  </div>
+  <button mat-button *ngIf="selectable" class="btn">Select</button>
+  <button mat-icon-button *ngIf="!selectable" class="btn">
+    <mat-icon>
+      keyboard_arrow_right
+    </mat-icon>
+  </button>
+</div>
+<div class="list-actions" *ngIf="!selectable">
+  <button mat-button class="list-actions-btn edit">Edit</button>
+  <button mat-button class="list-actions-btn delete">Delete</button>
+</div>

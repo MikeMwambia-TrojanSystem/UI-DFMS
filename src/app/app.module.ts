@@ -77,6 +77,8 @@ import { OriginatingPointComponent } from './components/OriginatingPoint/origina
 import { SearchBarComponent } from './components/SearchBar/search-bar.component';
 import { ListItemComponent } from './components/ListItem/list-item.component';
 import { OathContentComponent } from './components/OathContent/oath-content.component';
+import { CommunicationItemComponent } from './components/CommunicationItem/communication-item.component';
+import { OrderPaperItemComponent } from './components/OrderPaperItem/order-paper-item.component';
 
 @NgModule({
   declarations: [
@@ -146,6 +148,8 @@ import { OathContentComponent } from './components/OathContent/oath-content.comp
     VotebookPreviewComponent,
     PaperPreviewComponent,
     ListCommunicationComponent,
+    CommunicationItemComponent,
+    OrderPaperItemComponent,
   ],
   imports: [
     BrowserModule,
