@@ -55,6 +55,11 @@ import { EditContentComponent } from './views/edit/content/edit-content.componen
 import { VotebookPreviewComponent } from './views/edit/votebook/preview/preview.component';
 import { PaperPreviewComponent } from './views/edit/paper/preview/preview.component';
 import { ListCommunicationComponent } from './views/list/communication/list-communication.component';
+import { ListConstituencyComponent } from './views/list/constituency/list-constituency.component';
+import { ListMessageComponent } from './views/list/message/list-message.component';
+import { ListStatementComponent } from './views/list/statement/list-statement.component';
+import { ListTentativeBusinesssComponent } from './views/list/tentative-business/list-tentative-business.component';
+import { ListSubcountyComponent } from './views/list/subcounty/list-subcounty.component';
 
 const routes: Routes = [
   // Login route
@@ -107,6 +112,17 @@ const routes: Routes = [
       { path: 'order-paper', component: ListOrderPaperComponent },
       { path: 'votebook', component: ListVoteBookComponent },
       { path: 'communication', component: ListCommunicationComponent },
+      { path: 'constituency', component: ListConstituencyComponent },
+      { path: 'message', component: ListMessageComponent },
+      { path: 'statement', component: ListStatementComponent },
+      {
+        path: 'tentative-business',
+        component: ListTentativeBusinesssComponent,
+      },
+      {
+        path: 'subcounty',
+        component: ListSubcountyComponent,
+      },
     ],
   },
 

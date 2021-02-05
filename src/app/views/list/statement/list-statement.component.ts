@@ -1,45 +1,54 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-interface Act {
+interface Statement {
   title: string;
   date: string;
-  subjects: string[];
+  soughts: string[];
+  requested: string;
+  ward: string;
   state: string;
 }
 
 @Component({
-  selector: 'app-list-act',
-  templateUrl: './list-act.component.html',
-  styleUrls: ['./list-act.component.scss'],
+  templateUrl: './list-statement.component.html',
+  styleUrls: ['./list-statement.component.scss'],
 })
-export class ListActComponent implements OnInit {
+export class ListStatementComponent implements OnInit {
   /**
-   * Acts mock data
+   * Statements mock data
    */
-  acts: Act[] = [
+  statements: Statement[] = [
     {
-      title: 'Development of Tanks',
+      title: 'Food Drinks Live',
       date: '9/3/2008',
-      subjects: ['Lands', 'Housing', 'Agriculture', 'GMOs'],
+      soughts: ['Employment', 'Youth', 'Fomo'],
+      requested: 'Maariu Nicholas',
+      ward: 'MCA Nathu Ward',
       state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
     },
     {
-      title: 'Development of Tanks',
+      title: 'Drug',
       date: '9/3/2008',
-      subjects: ['Lands', 'Housing', 'Agriculture', 'GMOs'],
+      soughts: ['Employment', 'Youth', 'Fomo'],
+      requested: 'Maariu Nicholas',
+      ward: 'MCA Nathu Ward',
       state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
     },
     {
-      title: 'Development of Tanks',
+      title: 'Health Facility',
       date: '9/3/2008',
-      subjects: ['Lands', 'Housing', 'Agriculture', 'GMOs'],
+      soughts: ['Employment', 'Youth', 'Fomo'],
+      requested: 'Maariu Nicholas',
+      ward: 'MCA Nathu Ward',
       state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
     },
     {
-      title: 'Development of Tanks',
+      title: 'Live Matters',
       date: '9/3/2008',
-      subjects: ['Lands', 'Housing', 'Agriculture', 'GMOs'],
+      soughts: ['Employment', 'Youth', 'Fomo'],
+      requested: 'Maariu Nicholas',
+      ward: 'MCA Nathu Ward',
       state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
     },
   ];

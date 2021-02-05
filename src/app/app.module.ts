@@ -65,6 +65,11 @@ import { EditContentComponent } from './views/edit/content/edit-content.componen
 import { VotebookPreviewComponent } from './views/edit/votebook/preview/preview.component';
 import { PaperPreviewComponent } from './views/edit/paper/preview/preview.component';
 import { ListCommunicationComponent } from './views/list/communication/list-communication.component';
+import { ListConstituencyComponent } from './views/list/constituency/list-constituency.component';
+import { ListMessageComponent } from './views/list/message/list-message.component';
+import { ListStatementComponent } from './views/list/statement/list-statement.component';
+import { ListTentativeBusinesssComponent } from './views/list/tentative-business/list-tentative-business.component';
+import { ListSubcountyComponent } from './views/list/subcounty/list-subcounty.component';
 
 import { AppComponent } from './app.component';
 import { BackButtonComponent } from './components/BackButton/back-button.component';
@@ -79,6 +84,9 @@ import { ListItemComponent } from './components/ListItem/list-item.component';
 import { OathContentComponent } from './components/OathContent/oath-content.component';
 import { CommunicationItemComponent } from './components/CommunicationItem/communication-item.component';
 import { OrderPaperItemComponent } from './components/OrderPaperItem/order-paper-item.component';
+import { ReportItemComponent } from './components/ReportItem/report-item.component';
+import { VerifyButtonComponent } from './components/VerifyButton/verify-button.component';
+import { StatementItemComponent } from './components/StatementItem/statement-item.component';
 
 @NgModule({
   declarations: [
@@ -150,6 +158,14 @@ import { OrderPaperItemComponent } from './components/OrderPaperItem/order-paper
     ListCommunicationComponent,
     CommunicationItemComponent,
     OrderPaperItemComponent,
+    ReportItemComponent,
+    VerifyButtonComponent,
+    ListConstituencyComponent,
+    ListMessageComponent,
+    StatementItemComponent,
+    ListStatementComponent,
+    ListTentativeBusinesssComponent,
+    ListSubcountyComponent,
   ],
   imports: [
     BrowserModule,

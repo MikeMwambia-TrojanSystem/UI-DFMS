@@ -1,0 +1,22 @@
+<div class="main">
+  <div class="info">
+    <span class="title">{{sub}} {{title}}</span>
+    <span class="date">Published on <span class="highlight">{{date | date:'dd MMMM, yyyy'}}</span></span>
+    <span class="concerning">Concerning <span class="highlight" *ngFor="let con of concerning; let i = index">{{(i === 0
+        ? ''
+        :
+        (i + 1 ===
+        concerning.length ? ' and ' : ', ')) + con}}</span></span>
+    <span class="submitted" *ngIf="submitted">Submitted by <span class="highlight">{{submitted}}({{ward}})</span></span>
+    <span class="response" *ngIf="response">In response to <span class="highlight">{{response}}</span></span>
+    <div class="state">
+      <div class="dot"></div>
+      <span class="label">{{state}}</span>
+    </div>
+  </div>
+  <button mat-button *ngIf="selectable" class="btn">Select</button>
+</div>
+<div class="list-actions" *ngIf="!selectable">
+  <button mat-button class="list-actions-btn edit">Edit</button>
+  <button mat-button class="list-actions-btn delete">Delete</button>
+</div>

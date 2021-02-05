@@ -1,45 +1,39 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-interface Act {
+interface Message {
   title: string;
   date: string;
-  subjects: string[];
   state: string;
 }
 
 @Component({
-  selector: 'app-list-act',
-  templateUrl: './list-act.component.html',
-  styleUrls: ['./list-act.component.scss'],
+  templateUrl: './list-message.component.html',
+  styleUrls: ['./list-message.component.scss'],
 })
-export class ListActComponent implements OnInit {
+export class ListMessageComponent implements OnInit {
   /**
-   * Acts mock data
+   * Messages mock data
    */
-  acts: Act[] = [
+  messages: Message[] = [
     {
-      title: 'Development of Tanks',
+      title: 'development of Food',
       date: '9/3/2008',
-      subjects: ['Lands', 'Housing', 'Agriculture', 'GMOs'],
       state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
     },
     {
-      title: 'Development of Tanks',
+      title: 'development of Food',
       date: '9/3/2008',
-      subjects: ['Lands', 'Housing', 'Agriculture', 'GMOs'],
       state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
     },
     {
-      title: 'Development of Tanks',
+      title: 'development of Food',
       date: '9/3/2008',
-      subjects: ['Lands', 'Housing', 'Agriculture', 'GMOs'],
       state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
     },
     {
-      title: 'Development of Tanks',
+      title: 'development of Food',
       date: '9/3/2008',
-      subjects: ['Lands', 'Housing', 'Agriculture', 'GMOs'],
       state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
     },
   ];

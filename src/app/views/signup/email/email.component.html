@@ -8,8 +8,8 @@
           <input matInput formControlName="recoveryEmail" />
           <mat-error *ngIf="form.get('recoveryEmail').hasError('email')">Please enter valid email</mat-error>
           <mat-error *ngIf="form.get('recoveryEmail').hasError('required')">Please enter email</mat-error>
+          <app-verify-button (click)="onVerifyEmail()">Send Verfication Code</app-verify-button>
         </mat-form-field>
-        <button mat-button type="button" class="btn">Send Verfication Code</button>
       </div>
       <p class="label">Enter Phone Number</p>
       <div class="field-container">
@@ -20,8 +20,8 @@
           <!-- phoneNumber error validation -->
           <mat-error *ngIf="form.get('recoveryPhone').hasError('phoneNumber')">Please enter valid phone numer
           </mat-error>
+          <app-verify-button (click)="onVerifyPhone()">Send Verfication Code</app-verify-button>
         </mat-form-field>
-        <button mat-button type="button" class="btn">Send Verfication Code</button>
       </div>
       <h2 class="subtitle">Current Email and Phone Number</h2>
       <div class="info">

@@ -7,6 +7,7 @@ interface Item {
   label: string;
   select?: string;
   generate?: string;
+  skip?: string;
   notifications?: MenuNotification[];
 }
 
@@ -24,6 +25,7 @@ export class PaperContentGenerateComponent {
       label: 'Administration of Oath',
       select: '/',
       generate: '/',
+      skip: '/',
       notifications: [
         { label: 'New Notification', date: moment().subtract(3, 'hours') },
       ],
@@ -32,6 +34,7 @@ export class PaperContentGenerateComponent {
       label: 'Communication from Chair',
       select: '/',
       generate: '/',
+      skip: '/',
       notifications: [
         { label: 'New Notification', date: moment().subtract(3, 'hours') },
       ],
@@ -40,6 +43,7 @@ export class PaperContentGenerateComponent {
       label: 'Messages',
       select: '/',
       generate: '/',
+      skip: '/',
       notifications: [
         { label: 'New Notification', date: moment().subtract(3, 'hours') },
       ],
@@ -48,6 +52,7 @@ export class PaperContentGenerateComponent {
       label: 'Petitions',
       select: '/',
       generate: '/',
+      skip: '/',
       notifications: [
         { label: 'New Notification', date: moment().subtract(3, 'hours') },
       ],
@@ -56,6 +61,7 @@ export class PaperContentGenerateComponent {
       label: 'Papers',
       select: '/',
       generate: '/',
+      skip: '/',
       notifications: [
         { label: 'New Notification', date: moment().subtract(3, 'hours') },
       ],
@@ -64,6 +70,7 @@ export class PaperContentGenerateComponent {
       label: 'Notice of Motions',
       select: '/',
       generate: '/',
+      skip: '/',
       notifications: [
         { label: 'New Notification', date: moment().subtract(3, 'hours') },
       ],
@@ -72,6 +79,7 @@ export class PaperContentGenerateComponent {
       label: 'Statements',
       select: '/',
       generate: '/',
+      skip: '/',
       notifications: [
         { label: 'New Notification', date: moment().subtract(3, 'hours') },
       ],
@@ -80,6 +88,7 @@ export class PaperContentGenerateComponent {
       label: 'Motions',
       select: '/',
       generate: '/',
+      skip: '/',
       notifications: [
         { label: 'New Notification', date: moment().subtract(3, 'hours') },
       ],
@@ -88,6 +97,7 @@ export class PaperContentGenerateComponent {
       label: 'Bills',
       select: '/',
       generate: '/',
+      skip: '/',
       notifications: [
         { label: 'New Notification', date: moment().subtract(3, 'hours') },
       ],
@@ -95,6 +105,7 @@ export class PaperContentGenerateComponent {
     {
       label: 'Adjournment',
       generate: '/',
+      skip: '/',
       notifications: [
         { label: 'New Notification', date: moment().subtract(3, 'hours') },
       ],

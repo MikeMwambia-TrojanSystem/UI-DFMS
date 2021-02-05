@@ -23,29 +23,19 @@
 
 .date {
   font-size: 13px;
-  margin: 5px 0;
+  margin: 10px 0;
 
   .highlight {
     color: #008000;
   }
-
-  .time {
-    font-weight: 500;
-  }
 }
 
-.related {
+.concerning {
   margin-bottom: 10px;
-
-  .highlight {
-    font-weight: 500;
-  }
 }
 
-.sponsored {
-  .highlight {
-    font-weight: 500;
-  }
+.submitted {
+  margin-bottom: 10px;
 }
 
 .icon {
@@ -61,20 +51,9 @@
   margin-left: auto;
 }
 
-.status {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-
-  span {
-    margin-right: 5px;
-  }
-}
-
 .state {
   display: flex;
   align-items: center;
-  margin-top: 5px;
 
   .dot {
     padding: 4px;
@@ -88,22 +67,10 @@
   }
 }
 
-.views {
-  display: flex;
-  align-items: center;
+.response {
+  margin-bottom: 10px;
+}
 
-  .icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
-    margin-right: 5px;
-    color: black;
-    position: relative;
-    bottom: 1px;
-  }
-
-  .view {
-    color: #008000;
-    font-weight: 500;
-  }
+.highlight {
+  font-weight: 500;
 }

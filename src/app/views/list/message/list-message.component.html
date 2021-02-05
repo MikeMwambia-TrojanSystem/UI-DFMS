@@ -1,0 +1,11 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Message List</h1>
+    <app-search-bar></app-search-bar>
+    <div>
+      <app-communication-item *ngFor="let message of messages" [title]="message.title" [date]="message.date"
+        class="item" [selectable]="selectabe" [state]="message.state" [sub]="'Message from Chair for'" [state]="state">
+      </app-communication-item>
+    </div>
+  </app-center-card>
+</app-background>

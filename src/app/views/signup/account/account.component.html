@@ -23,14 +23,15 @@
       </mat-form-field>
       <div>
         <span class="label">Enter Phone Number</span>
-        <span class="example">E.g 254 712 345 678</span>
+        <!-- <span class="example">E.g 254 712 345 678</span> -->
       </div>
       <mat-form-field appearance="standard">
         <span matPrefix>+ &nbsp;</span>
-        <input matInput formControlName="phone" type="tel" />
+        <input matInput formControlName="phone" type="tel" placeholder="254 712 345 678" />
         <mat-error *ngIf="form.get('phone').hasError('required')">Please enter phone number</mat-error>
         <!-- phoneNumber error validation -->
         <mat-error *ngIf="form.get('phone').hasError('phoneNumber')">Please enter valid phone number</mat-error>
+        <app-verify-button (click)="onVerify()">Send Verification Code</app-verify-button>
       </mat-form-field>
       <a class="btn-link" [routerLink]="form.valid ? '/signup/login' : null">
         <button mat-flat-button class="btn" [disabled]="form.invalid">Create an account</button>

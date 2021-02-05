@@ -23,29 +23,19 @@
 
 .date {
   font-size: 13px;
-  margin: 5px 0;
+  margin: 10px 0;
 
   .highlight {
     color: #008000;
   }
-
-  .time {
-    font-weight: 500;
-  }
 }
 
-.related {
+.sought {
   margin-bottom: 10px;
-
-  .highlight {
-    font-weight: 500;
-  }
 }
 
-.sponsored {
-  .highlight {
-    font-weight: 500;
-  }
+.requested {
+  margin-bottom: 5px;
 }
 
 .icon {
@@ -88,22 +78,6 @@
   }
 }
 
-.views {
-  display: flex;
-  align-items: center;
-
-  .icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
-    margin-right: 5px;
-    color: black;
-    position: relative;
-    bottom: 1px;
-  }
-
-  .view {
-    color: #008000;
-    font-weight: 500;
-  }
+.highlight {
+  font-weight: 500;
 }

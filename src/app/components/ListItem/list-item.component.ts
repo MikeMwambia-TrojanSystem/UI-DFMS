@@ -12,6 +12,7 @@ export class ListItemComponent implements OnInit {
   @Input() isSubDate: boolean;
   @Input() selectable: boolean;
   @Input() subcounty: string;
+  @Input() dateSub: string;
   dateObj: Date;
 
   ngOnInit() {

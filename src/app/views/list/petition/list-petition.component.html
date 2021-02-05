@@ -5,7 +5,7 @@
     <div>
       <app-info-item *ngFor="let petition of petitions" [title]="petition.title" [date]="petition.date"
         [subjects]="petition.subjects" [sponsored]="petition.sponsored" [ward]="petition.ward" class="item"
-        [selectable]="selectabe" [sub]="'Petition on'">
+        [selectable]="selectabe" [sub]="'Petition on'" [state]="state">
       </app-info-item>
     </div>
   </app-center-card>

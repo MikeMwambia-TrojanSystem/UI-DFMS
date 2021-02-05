@@ -15,4 +15,10 @@ export class AccountSignupComponent {
     password: new FormControl('', Validators.required),
     phone: new FormControl('', [Validators.required, phoneNumberValidator]),
   }); // Form group that holds username and password from user input
+
+  onVerify(): void {
+    if (this.form.get('phone').valid) {
+      // Code for sending verify code to phone number here
+    }
+  }
 }

@@ -1,0 +1,10 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Constituency List</h1>
+    <app-search-bar></app-search-bar>
+    <div>
+      <app-list-item *ngFor="let con of constituencies" [title]="con.name" [subtitle]="con.subcounty"
+        [pic]="con.profilePic" [selectable]="selectabe"></app-list-item>
+    </div>
+  </app-center-card>
+</app-background>

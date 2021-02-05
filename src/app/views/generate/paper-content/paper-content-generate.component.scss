@@ -8,6 +8,10 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
+
+  .info {
+    margin-right: 20px;
+  }
 }
 
 .label {
@@ -21,7 +25,7 @@
 }
 
 .btn-container {
-  margin: 0 10px;
+  margin: 0 5px;
 
   &:first-child {
     margin-left: 0;
@@ -36,7 +40,9 @@
   border-color: #008000;
   color: #008000;
   border-radius: 10px;
-  width: 100px;
+  padding: 0;
+  width: 85px;
+  line-height: 30px;
 }
 
 .actions {

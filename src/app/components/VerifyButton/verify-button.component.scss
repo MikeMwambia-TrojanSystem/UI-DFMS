@@ -1,0 +1,11 @@
+:host {
+  position: absolute;
+  right: 0px;
+  top: calc(50% - 10px);
+  transform: translateY(-50%);
+}
+
+button {
+  color: #008000;
+  text-decoration: underline;
+}

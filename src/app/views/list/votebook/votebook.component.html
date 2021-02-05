@@ -3,10 +3,10 @@
     <h1 class="title">Votebooks</h1>
     <app-search-bar></app-search-bar>
     <div>
-      <app-info-item *ngFor="let votebook of votebooks" [title]="votebook.title" [date]="votebook.date"
-        [subjects]="votebook.subjects" [sponsored]="votebook.sponsored" [ward]="votebook.ward" class="item"
-        [selectable]="selectabe" [sub]="'Votebook on'">
-      </app-info-item>
+      <app-order-paper-item *ngFor="let votebook of votebooks" [number]="votebook.number" [date]="votebook.date"
+        [views]="votebook.views" class="item" [selectable]="selectabe" [sub]="'Vote Book for Order Paper'"
+        [state]="state">
+      </app-order-paper-item>
     </div>
   </app-center-card>
 </app-background>

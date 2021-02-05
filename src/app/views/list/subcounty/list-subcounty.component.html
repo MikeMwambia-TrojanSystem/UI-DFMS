@@ -1,0 +1,11 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Personnel List</h1>
+    <app-search-bar></app-search-bar>
+    <div>
+      <app-list-item *ngFor="let subcounty of subcounties" [title]="subcounty.name" [subtitle]="subcounty.date"
+        [pic]="subcounty.profilePic" [isSubDate]="true" [dateSub]="'Published'" [selectable]="selectabe">
+      </app-list-item>
+    </div>
+  </app-center-card>
+</app-background>

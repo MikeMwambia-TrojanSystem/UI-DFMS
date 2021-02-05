@@ -29,4 +29,16 @@ export class EmailSignupComponent {
   get recoveryPhone(): string {
     return this.form.get('recoveryPhone').value;
   }
+
+  onVerifyPhone(): void {
+    if (this.form.get('recoveryPhone').valid) {
+      // Code for sending verify code to phone number here
+    }
+  }
+
+  onVerifyEmail(): void {
+    if (this.form.get('recoveryEmail').valid) {
+      // Code for sending verify code to email here
+    }
+  }
 }
