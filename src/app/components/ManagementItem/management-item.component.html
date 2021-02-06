@@ -3,11 +3,9 @@
   <div class="info-container" [ngStyle]="{'margin-left': pic ? '20px' : '0'}">
     <span class="title" [ngClass]="{'bold': subtitle}">{{title}}</span>
     <span class="subtitle" *ngIf="subtitle">{{subtitle}}</span>
-    <div class="state" *ngIf="state">
-      <span>State:</span>
-      <mat-chip-list>
-        <mat-chip class="state-chip">{{state}}</mat-chip>
-      </mat-chip-list>
+    <div class="state">
+      <div class="dot"></div>
+      <span class="label">{{state}}</span>
     </div>
   </div>
   <button mat-raised-button class="btn" *ngIf="selectable">Disabled</button>

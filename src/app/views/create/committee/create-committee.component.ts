@@ -18,6 +18,7 @@ export class CreateCommitteeComponent {
       ],
       Validators.required
     ), // Predefined members, can be clear later
+    department: new FormControl('', Validators.required),
   }); // Form group that holds user input
 
   /**

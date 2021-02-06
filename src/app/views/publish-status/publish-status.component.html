@@ -1,0 +1,15 @@
+<app-background>
+  <app-center-card>
+    <div class="main">
+      <h1 class="title">
+        Select Publishing Status
+      </h1>
+      <mat-radio-group [(ngModel)]="status" class="radio-group">
+        <mat-radio-button value="public">Publicly Published</mat-radio-button>
+        <mat-radio-button value="private">Privately Published</mat-radio-button>
+        <mat-radio-button value="draft">Save in Draft</mat-radio-button>
+      </mat-radio-group>
+      <button mat-raised-button class="publish" [disabled]="!status">Publish</button>
+    </div>
+  </app-center-card>
+</app-background>

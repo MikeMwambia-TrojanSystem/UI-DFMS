@@ -1,0 +1,28 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  margin: 0 auto;
+
+  .title {
+    margin-bottom: 30px;
+    font-weight: bold;
+    font-size: 22px;
+  }
+
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+
+    mat-radio-button {
+      margin: 5px 0;
+    }
+  }
+}
+
+.publish {
+  margin-left: auto;
+  color: white;
+  background-color: #008000;
+  margin-top: 80px;
+}

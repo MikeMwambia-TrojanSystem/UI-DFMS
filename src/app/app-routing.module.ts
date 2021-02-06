@@ -60,6 +60,7 @@ import { ListMessageComponent } from './views/list/message/list-message.componen
 import { ListStatementComponent } from './views/list/statement/list-statement.component';
 import { ListTentativeBusinesssComponent } from './views/list/tentative-business/list-tentative-business.component';
 import { ListSubcountyComponent } from './views/list/subcounty/list-subcounty.component';
+import { PublishStatusComponent } from './views/publish-status/publish-status.component';
 
 const routes: Routes = [
   // Login route
@@ -202,6 +203,12 @@ const routes: Routes = [
   {
     path: 'intro',
     component: IntroComponent,
+  },
+
+  //Publish Status
+  {
+    path: 'publish-status/:id',
+    component: PublishStatusComponent,
   },
 
   // Fallback

@@ -55,8 +55,16 @@
 .state {
   display: flex;
   align-items: center;
+  margin-top: 5px;
 
-  span {
+  .dot {
+    padding: 4px;
+    border-radius: 100%;
+    background: gray;
     margin-right: 5px;
+  }
+
+  .label {
+    font-style: italic;
   }
 }
