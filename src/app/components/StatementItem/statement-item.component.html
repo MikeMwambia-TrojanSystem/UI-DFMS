@@ -7,7 +7,7 @@
         (i + 1 ===
         soughts.length ? ' and ' : ', ')) + sought}}</span></span>
     <span class="requested" *ngIf="requested">Requested by <span class="highlight">{{requested}}({{ward}})</span></span>
-    <div class="state">
+    <div class="state" *ngIf="state">
       <div class="dot"></div>
       <span class="label">{{state}}</span>
     </div>

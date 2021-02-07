@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-votebook',
@@ -8,20 +9,30 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './edit-votebook.component.html',
 })
 export class EditVotebookComponent implements OnInit {
+  private wordSub: Subscription;
+
   form = new FormGroup({
     content: new FormControl('', Validators.required),
   });
 
   id: string;
 
+  words = 0;
+  previousPage = 34;
+  currentPage = 35;
+
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.id = this.route.snapshot.queryParams.id;
-  }
 
-  previousPage = 34;
-  currentPage = 35;
+    // Subscription to the form content to count the number of words
+    this.wordSub = this.form
+      .get('content')
+      .valueChanges.subscribe((content: string) => {
+        this.words = ((content && content.match(/ /g)) || []).length;
+      });
+  }
 
   oathContent = [
     'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',

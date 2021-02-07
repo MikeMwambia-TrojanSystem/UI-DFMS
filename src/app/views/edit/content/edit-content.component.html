@@ -3,7 +3,7 @@
     <div class="main">
       <form [formGroup]="form">
         <h1 class="title">Generate Content Page</h1>
-        <span class="words">Words Per Page: <span class="limit">1400</span></span>
+        <span class="words">Words Per Page: <span class="limit">{{words}}</span></span>
         <quill-editor formControlName="content"></quill-editor>
         <div class="pages">
           <div class="previous">
@@ -15,7 +15,7 @@
         </div>
         <div class="actions">
           <button mat-button type="button" class="btn-draft">Save as Draft</button>
-          <a [routerLink]="form.invalid ? [] : ['preview']">
+          <a [routerLink]="form.invalid ? [] : ['preview']" [queryParamsHandling]="'preserve'">
             <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Preview Pages</button>
           </a>
         </div>

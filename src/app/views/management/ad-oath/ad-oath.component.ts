@@ -10,6 +10,7 @@ interface Administration {
   name: string;
   ward: string;
   profilePic: string;
+  state: string;
 }
 
 type State = 'Draft' | 'Publicly Published' | 'Privately Published';
@@ -37,24 +38,28 @@ export class AdministrationOathComponent implements OnInit {
       ward: 'Nathu Ward',
       profilePic:
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJq7OdjXycWLNzlE_iQH0k6al3VWOsHGJzDA&usqp=CAU',
+      state: 'Draft',
     },
     {
       name: 'Paul Ansa',
       ward: 'Nathu Ward',
       profilePic:
         'https://upload.wikimedia.org/wikipedia/commons/5/5c/Portrait_of_young_Marilyn_Monroe%2C_black_and_white.jpg',
+      state: 'Draft',
     },
     {
       name: 'Abelina King',
       ward: 'Nathu Ward',
       profilePic:
         'https://upload.wikimedia.org/wikipedia/commons/2/22/Master_Teacher_Portrait.jpg',
+      state: 'Draft',
     },
     {
       name: 'Sampson Faith',
       ward: 'Nathu Ward',
       profilePic:
         'https://upload.wikimedia.org/wikipedia/commons/5/5c/Portrait_of_young_Marilyn_Monroe%2C_black_and_white.jpg',
+      state: 'Draft',
     },
   ];
 

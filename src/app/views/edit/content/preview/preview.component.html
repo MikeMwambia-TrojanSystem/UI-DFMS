@@ -2,7 +2,7 @@
   <app-center-card>
     <div class="main">
       <h1 class="title">Edit {{page}}</h1>
-      <quill-editor [(ngModel)]="content" [readOnly]="true"></quill-editor>
+      <quill-editor [formControl]="content"></quill-editor>
       <div class="words">
         <div class="line">
           <span>No of Words: <span class="word">{{wordsNumber}}</span></span>
@@ -16,7 +16,7 @@
       </div>
       <div class="actions">
         <button mat-button type="button" class="btn-draft">Save as Changes</button>
-        <a [routerLink]="['/', 'list', 'communication']">
+        <a [routerLink]="return || '/intro'">
           <button mat-raised-button type="submit" class="btn-save">Complete</button>
         </a>
       </div>

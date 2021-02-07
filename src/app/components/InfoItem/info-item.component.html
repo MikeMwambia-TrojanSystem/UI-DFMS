@@ -13,7 +13,7 @@
         <mat-chip class="state-chip">{{status}}</mat-chip>
       </mat-chip-list>
     </div>
-    <div class="state">
+    <div class="state" *ngIf="state">
       <div class="dot"></div>
       <span class="label">{{state}}</span>
     </div>

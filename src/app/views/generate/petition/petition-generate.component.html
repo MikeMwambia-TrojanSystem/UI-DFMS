@@ -39,12 +39,7 @@
             </mat-form-field>
           </div>
           <div class="input">
-            <p class="label">Concerned Committee</p>
-            <mat-form-field appearance="standard">
-              <input matInput formControlName="concernedCommittee" />
-              <mat-error *ngIf="form.get('concernedCommittee').hasError('required')">Please enter concerned committee!
-              </mat-error>
-            </mat-form-field>
+            <app-custom-button [title]="'Select concerned Committee'"></app-custom-button>
           </div>
         </div>
         <div class="input-container">

@@ -70,7 +70,7 @@ export class ListReportComponent implements OnInit {
     /**
      * These lines are just for dynamic state example and should be deleted when implementing a fetch request to backend.
      */
-    const state = this.route.snapshot.queryParams.state || 'draft';
+    const state = this.route.snapshot.queryParams.state;
 
     if (state === 'draft') {
       this.state = 'Draft';

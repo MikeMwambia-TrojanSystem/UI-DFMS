@@ -62,7 +62,7 @@ export class IntroComponent {
         {
           label: 'The report on land reforms was published',
           date: moment().subtract(3, 'hours'),
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
     },
@@ -72,6 +72,7 @@ export class IntroComponent {
         {
           label: 'Generation Communication',
           url: '/edit/content/1',
+          query: { return: '/list/communication' },
         },
         {
           label: 'View Communication in draft status',
@@ -93,12 +94,12 @@ export class IntroComponent {
         {
           label: 'The report on land reforms was published',
           date: moment().subtract(3, 'hours'),
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'The report on land reforms was published',
           date: moment().subtract(3, 'hours'),
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
     },
@@ -107,26 +108,38 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Messages',
-          url: 'http://localhost:4200/',
+          url: '/edit/content/1',
+          query: {
+            return: '/list/message',
+          },
         },
         {
           label: 'View Messages in draft status',
-          url: 'http://localhost:4200/',
+          url: '/list/message',
+          query: {
+            state: 'draft',
+          },
         },
         {
           label: 'View Privately Published Messages',
-          url: 'http://localhost:4200/',
+          url: '/list/message',
+          query: {
+            state: 'private',
+          },
         },
         {
           label: 'View Published Messages',
-          url: 'http://localhost:4200/',
+          url: '/list/message',
+          query: {
+            state: 'public',
+          },
         },
       ],
       notifications: [
         {
           label: 'The report on land reforms was published',
           date: moment().subtract(3, 'hours'),
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
     },
@@ -139,22 +152,22 @@ export class IntroComponent {
         },
         {
           label: 'View Petition in draft status',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Privately Published Petition',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Published Petition',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
       notifications: [
         {
           label: 'The report on land reforms was published',
           date: moment().subtract(3, 'hours'),
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
     },
@@ -167,26 +180,26 @@ export class IntroComponent {
         },
         {
           label: 'View Reports in draft status',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Privately Published Reports',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Published Reports',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'Manage Reports',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
       notifications: [
         {
           label: 'The report on land reforms was published',
           date: moment().subtract(3, 'hours'),
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
     },
@@ -195,26 +208,26 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Notice of Motion',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Notice of Motion in draft status',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Privately Published Notice of Motion',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Published Notice of Motion',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
       notifications: [
         {
           label: 'The report on land reforms was published',
           date: moment().subtract(3, 'hours'),
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
     },
@@ -223,26 +236,26 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Statements',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Statements in draft status',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Privately Published Statements',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Published Statements',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
       notifications: [
         {
           label: 'The report on land reforms was published',
           date: moment().subtract(3, 'hours'),
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
     },
@@ -251,26 +264,26 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Motion',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Motion in draft status',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Privately Published Motion',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Published Motion',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
       notifications: [
         {
           label: 'The report on land reforms was published',
           date: moment().subtract(3, 'hours'),
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
     },
@@ -279,26 +292,26 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Bills',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Bills in draft status',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Privately Published Bills',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Published Bills',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
       notifications: [
         {
           label: 'The report on land reforms was published',
           date: moment().subtract(3, 'hours'),
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
     },
@@ -307,26 +320,26 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Acts',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Acts in draft status',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Privately Published Acts',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Published Acts',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
       notifications: [
         {
           label: 'The report on land reforms was published',
           date: moment().subtract(3, 'hours'),
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
     },
@@ -335,26 +348,26 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Tentative Businesses',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Tentative Businesses in draft status',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Privately Published Tentative Businesses',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Published Tentative Businesses',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
       notifications: [
         {
           label: 'The report on land reforms was published',
           date: moment().subtract(3, 'hours'),
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
     },
@@ -363,26 +376,26 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Order Papers',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Order Papers in draft status',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Privately Published Order Papers',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Published Order Papers',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
       notifications: [
         {
           label: 'The report on land reforms was published',
           date: moment().subtract(3, 'hours'),
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
     },
@@ -391,26 +404,26 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Votebook',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Votebook in draft status',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Privately Published Papers',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'View Published Papers',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
       notifications: [
         {
           label: 'The report on land reforms was published',
           date: moment().subtract(3, 'hours'),
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
     },
@@ -419,26 +432,26 @@ export class IntroComponent {
       actions: [
         {
           label: 'Accounts',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'Wards',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'Constituencies',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
         {
           label: 'Departments',
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
       notifications: [
         {
           label: 'The report on land reforms was published',
           date: moment().subtract(3, 'hours'),
-          url: 'http://localhost:4200/',
+          url: '/',
         },
       ],
     },

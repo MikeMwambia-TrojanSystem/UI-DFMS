@@ -3,7 +3,7 @@
   <div class="info-container" [ngStyle]="{'margin-left': pic ? '20px' : '0'}">
     <span class="title" [ngClass]="{'bold': subtitle}">{{title}}</span>
     <span class="subtitle" *ngIf="subtitle">{{subtitle}}</span>
-    <div class="state">
+    <div class="state" *ngIf="state">
       <div class="dot"></div>
       <span class="label">{{state}}</span>
     </div>

@@ -9,7 +9,7 @@
         concerning.length ? ' and ' : ', ')) + con}}</span></span>
     <span class="submitted" *ngIf="submitted">Submitted by <span class="highlight">{{submitted}}({{ward}})</span></span>
     <span class="response" *ngIf="response">In response to <span class="highlight">{{response}}</span></span>
-    <div class="state">
+    <div class="state" *ngIf="state">
       <div class="dot"></div>
       <span class="label">{{state}}</span>
     </div>

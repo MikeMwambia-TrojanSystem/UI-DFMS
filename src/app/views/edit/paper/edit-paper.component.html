@@ -2,7 +2,7 @@
   <app-center-card>
     <div class="main">
       <form [formGroup]="form">
-        <span class="words">Words Per Page: <span class="limit">1400</span></span>
+        <span class="words">Words Per Page: <span class="limit">{{words}}</span></span>
         <quill-editor formControlName="content"></quill-editor>
         <app-custom-button [title]="'Add Annexus'"></app-custom-button>
         <div class="pages">
