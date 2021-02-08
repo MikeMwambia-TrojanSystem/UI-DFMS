@@ -13,8 +13,10 @@
         <mat-error *ngIf="form.get('number').hasError('required')">Please enter bill number!</mat-error>
       </mat-form-field>
       <div class="custom-btn-container">
-        <app-custom-button [title]="'Select Sponsor'" class="custom-btn"></app-custom-button>
-        <app-custom-button [title]="'Select Concerned Committee'" class="custom-btn"></app-custom-button>
+        <app-custom-button [title]="'Select Sponsor'" class="custom-btn" [url]="['/list/mca-employee']"
+          [query]="{select: true}"></app-custom-button>
+        <app-custom-button [title]="'Select Concerned Committee'" class="custom-btn" [url]="['/list/commitee']"
+          [query]="{select: true}"></app-custom-button>
       </div>
       <div class="date-container">
         <div class="date">
@@ -50,15 +52,19 @@
           </mat-form-field>
         </div>
       </div>
-      <app-custom-button [title]="'Attach Bill Report'" class="custom-btn standalone" (buttonClick)="onStartUpload()">
+      <app-custom-button [title]="'Select Bill Report'" class="custom-btn standalone" [url]="['/list/report']"
+        [query]="{select: true}">
       </app-custom-button>
-      <app-custom-button [title]="'Upload Bill Soft Copy'" class="custom-btn standalone"
-        (buttonClick)="onStartUpload()">
+      <app-custom-button [title]="'Upload Bill Soft Copy'" class="custom-btn standalone" [url]="['/management/upload']">
       </app-custom-button>
-      <input #fileUpload class="hidden" type="file" />
+      <!-- <input #fileUpload class="hidden" type="file" /> -->
       <div class="actions">
-        <button mat-button type="button" class="btn-draft">Save as Draft</button>
-        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Bills</button>
+        <a [routerLink]="['/list/bill']" [queryParams]="{state: 'draft'}">
+          <button mat-button type="button" class="btn-draft">Save as Draft</button>
+        </a>
+        <a [routerLink]="form.valid ? ['/list/bill'] : null">
+          <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Bills</button>
+        </a>
       </div>
     </form>
   </app-center-card>

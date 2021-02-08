@@ -14,7 +14,12 @@
       </mat-form-field>
       <p class="label">Department</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="department" placeholder="Department of Works" />
+        <!-- <input matInput formControlName="department" placeholder="Department of Works" /> -->
+        <mat-select formControlName="department">
+          <mat-option *ngFor="let department of departments" [value]="department">
+            {{department}}
+          </mat-option>
+        </mat-select>
         <mat-error *ngIf="form.get('department').hasError('required')">Please enter department!</mat-error>
       </mat-form-field>
       <p class="label">Term of Employment</p>
@@ -42,6 +47,7 @@
         <input matInput formControlName="phone" type="tel" />
         <mat-error *ngIf="form.get('phone').hasError('required')">Please enter phone numer</mat-error>
         <mat-error *ngIf="form.get('phone').hasError('phoneNumber')">Please enter valid phone numer</mat-error>
+        <app-verify-button>Send Verification Code</app-verify-button>
       </mat-form-field>
       <app-custom-button [title]="'Upload Profile Picture'" (buttonClick)="onStartUpload()"></app-custom-button>
       <input #fileUpload class="upload" type="file" accept="image/*" />

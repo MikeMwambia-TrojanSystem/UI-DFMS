@@ -31,6 +31,11 @@
         <input class="hidden" type="file" #fileUpload />
       </div>
       <div class="buttons-container">
+        <app-custom-button [title]="'Remove Editors'" class="custom-btn" [url]="['/', 'list', 'personnel']"
+          [query]="{select: true}"></app-custom-button>
+        <div style="margin-left: 10px; width: 50%"></div>
+      </div>
+      <div class="buttons-container">
         <div class="editors-container">
           <p class="editors">{{editors.length}} Editors</p>
           <div *ngFor="let editor of editors" class="editor">

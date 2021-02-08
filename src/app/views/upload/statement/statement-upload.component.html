@@ -37,11 +37,14 @@
         <input matInput formControlName="department" placeholder="Department of Food" />
         <mat-error *ngIf="form.get('department').hasError('required')">Please enter a department!</mat-error>
       </mat-form-field>
-      <app-custom-button [title]="'Upload Statement'" (buttonClick)="onStartUpload()"></app-custom-button>
-      <input type="file" class="hidden" #fileUpload />
+      <app-custom-button [title]="'Upload Statement'" [url]="['/management/upload']"></app-custom-button>
       <div class="actions">
-        <button mat-button type="button" class="btn-draft">Save as Draft</button>
-        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Statement</button>
+        <a [routerLink]="['/list/statement']" [queryParams]="{state: 'draft'}">
+          <button mat-button type="button" class="btn-draft">Save as Draft</button>
+        </a>
+        <a [routerLink]="form.valid ? ['/list/statement'] : null">
+          <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Statement</button>
+        </a>
       </div>
     </form>
   </app-center-card>

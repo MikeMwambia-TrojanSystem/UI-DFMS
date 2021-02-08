@@ -13,14 +13,18 @@
         <mat-error *ngIf="form.get('subject').hasError('required')">Please enter subject matter!</mat-error>
       </mat-form-field>
       <div class="buttons-container">
-        <app-custom-button [title]="'Select Sponsor'" class="custom-btn standalone"></app-custom-button>
+        <app-custom-button [title]="'Select Sponsor'" class="custom-btn standalone" [url]="['/list/mca-employee']"
+          [query]="{select: true}"></app-custom-button>
         <app-custom-button [title]="'Upload Soft Copy of Motion'" class="custom-btn standalone"
-          style="margin-left: 10px" (buttonClick)="onStartUpload()"></app-custom-button>
-        <input class="hidden" type="file" #fileUpload />
+          style="margin-left: 10px" [url]="['/management/upload']"></app-custom-button>
       </div>
       <div class="actions">
-        <button mat-button type="button" class="btn-draft">Save as Draft</button>
-        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Bills</button>
+        <a [routerLink]="['/list/motion']" [queryParams]="{state: 'draft'}">
+          <button mat-button type="button" class="btn-draft">Save as Draft</button>
+        </a>
+        <a [routerLink]="form.valid ? ['/list/motion'] : null">
+          <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Bills</button>
+        </a>
       </div>
     </form>
   </app-center-card>

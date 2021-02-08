@@ -2,7 +2,7 @@
   <app-center-card>
     <div class="main">
       <h1 class="title">Edit {{page}}</h1>
-      <quill-editor [formControl]="content"></quill-editor>
+      <quill-editor [formControl]="content" [readOnly]="true"></quill-editor>
       <div class="words">
         <div class="line">
           <span>No of Words: <span class="word">{{wordsNumber}}</span></span>

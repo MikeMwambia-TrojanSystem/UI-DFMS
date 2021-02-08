@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
@@ -7,7 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./bill-generate.component.scss'],
 })
 export class BillGenerateComponent {
-  @ViewChild('fileUpload') fileUpload: ElementRef<HTMLInputElement>;
+  // @ViewChild('fileUpload') fileUpload: ElementRef<HTMLInputElement>;
   form = new FormGroup({
     title: new FormControl('', Validators.required),
     number: new FormControl('', Validators.required),
@@ -21,7 +21,7 @@ export class BillGenerateComponent {
     softCopyUrl: new FormControl(null, Validators.required),
   });
 
-  onStartUpload() {
-    this.fileUpload.nativeElement.click();
-  }
+  // onStartUpload() {
+  //   this.fileUpload.nativeElement.click();
+  // }
 }

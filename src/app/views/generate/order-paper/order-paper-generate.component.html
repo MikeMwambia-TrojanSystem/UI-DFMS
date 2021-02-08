@@ -27,8 +27,12 @@
         <mat-error *ngIf="form.get('startingPage').hasError('required')">Please enter starting page!</mat-error>
       </mat-form-field>
       <div class="actions">
-        <button mat-button type="button" class="btn-draft">Save as Draft</button>
-        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Generate Content</button>
+        <a [routerLink]="['/list/order-paper']" [queryParams]="{state: 'draft'}">
+          <button mat-button type="button" class="btn-draft">Save as Draft</button>
+        </a>
+        <a [routerLink]="form.valid ? ['/generate/paper-content'] : null">
+          <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Generate Content</button>
+        </a>
       </div>
     </form>
   </app-center-card>

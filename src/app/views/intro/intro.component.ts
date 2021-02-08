@@ -152,15 +152,24 @@ export class IntroComponent {
         },
         {
           label: 'View Petition in draft status',
-          url: '/',
+          url: '/list/petition',
+          query: {
+            state: 'draft',
+          },
         },
         {
           label: 'View Privately Published Petition',
-          url: '/',
+          url: '/list/petition',
+          query: {
+            state: 'private',
+          },
         },
         {
           label: 'View Published Petition',
-          url: '/',
+          url: '/list/petition',
+          query: {
+            state: 'public',
+          },
         },
       ],
       notifications: [
@@ -180,15 +189,24 @@ export class IntroComponent {
         },
         {
           label: 'View Reports in draft status',
-          url: '/',
+          url: '/list/report',
+          query: {
+            state: 'draft',
+          },
         },
         {
           label: 'View Privately Published Reports',
-          url: '/',
+          url: '/list/report',
+          query: {
+            state: 'private',
+          },
         },
         {
           label: 'View Published Reports',
-          url: '/',
+          url: '/list/report',
+          query: {
+            state: 'public',
+          },
         },
         {
           label: 'Manage Reports',
@@ -208,19 +226,28 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Notice of Motion',
-          url: '/',
+          url: '/generate/motion',
         },
         {
           label: 'View Notice of Motion in draft status',
-          url: '/',
+          url: '/list/motion',
+          query: {
+            state: 'draft',
+          },
         },
         {
           label: 'View Privately Published Notice of Motion',
-          url: '/',
+          url: '/list/motion',
+          query: {
+            state: 'private',
+          },
         },
         {
           label: 'View Published Notice of Motion',
-          url: '/',
+          url: '/list/motion',
+          query: {
+            state: 'public',
+          },
         },
       ],
       notifications: [
@@ -236,19 +263,28 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Statements',
-          url: '/',
+          url: '/upload/statement',
         },
         {
           label: 'View Statements in draft status',
-          url: '/',
+          url: '/list/statement',
+          query: {
+            state: 'draft',
+          },
         },
         {
           label: 'View Privately Published Statements',
-          url: '/',
+          url: '/list/statement',
+          query: {
+            state: 'private',
+          },
         },
         {
           label: 'View Published Statements',
-          url: '/',
+          url: '/list/statement',
+          query: {
+            state: 'public',
+          },
         },
       ],
       notifications: [
@@ -264,19 +300,28 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Motion',
-          url: '/',
+          url: '/generate/motion',
         },
         {
           label: 'View Motion in draft status',
-          url: '/',
+          url: '/list/motion',
+          query: {
+            state: 'draft',
+          },
         },
         {
           label: 'View Privately Published Motion',
-          url: '/',
+          url: '/list/motion',
+          query: {
+            state: 'private',
+          },
         },
         {
           label: 'View Published Motion',
-          url: '/',
+          url: '/list/motion',
+          query: {
+            state: 'public',
+          },
         },
       ],
       notifications: [
@@ -292,19 +337,28 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Bills',
-          url: '/',
+          url: '/generate/bill',
         },
         {
           label: 'View Bills in draft status',
-          url: '/',
+          url: '/list/bill',
+          query: {
+            state: 'draft',
+          },
         },
         {
           label: 'View Privately Published Bills',
-          url: '/',
+          url: '/list/bill',
+          query: {
+            state: 'private',
+          },
         },
         {
           label: 'View Published Bills',
-          url: '/',
+          url: '/list/bill',
+          query: {
+            state: 'public',
+          },
         },
       ],
       notifications: [
@@ -320,19 +374,28 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Acts',
-          url: '/',
+          url: '/generate/act',
         },
         {
           label: 'View Acts in draft status',
-          url: '/',
+          url: '/list/act',
+          query: {
+            state: 'draft',
+          },
         },
         {
           label: 'View Privately Published Acts',
-          url: '/',
+          url: '/list/act',
+          query: {
+            state: 'private',
+          },
         },
         {
           label: 'View Published Acts',
-          url: '/',
+          url: '/list/act',
+          query: {
+            state: 'public',
+          },
         },
       ],
       notifications: [
@@ -348,19 +411,31 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Tentative Businesses',
-          url: '/',
+          url: '/edit/content/1',
+          query: {
+            return: '/list/tentative-business',
+          },
         },
         {
           label: 'View Tentative Businesses in draft status',
-          url: '/',
+          url: '/list/tentative-business',
+          query: {
+            state: 'draft',
+          },
         },
         {
           label: 'View Privately Published Tentative Businesses',
-          url: '/',
+          url: '/list/tentative-business',
+          query: {
+            state: 'private',
+          },
         },
         {
           label: 'View Published Tentative Businesses',
-          url: '/',
+          url: '/list/tentative-business',
+          query: {
+            state: 'public',
+          },
         },
       ],
       notifications: [
@@ -376,19 +451,28 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Order Papers',
-          url: '/',
+          url: '/generate/order-paper',
         },
         {
           label: 'View Order Papers in draft status',
-          url: '/',
+          url: '/list/order-paper',
+          query: {
+            state: 'draft',
+          },
         },
         {
           label: 'View Privately Published Order Papers',
-          url: '/',
+          url: '/list/order-paper',
+          query: {
+            state: 'private',
+          },
         },
         {
           label: 'View Published Order Papers',
-          url: '/',
+          url: '/list/order-paper',
+          query: {
+            state: 'public',
+          },
         },
       ],
       notifications: [

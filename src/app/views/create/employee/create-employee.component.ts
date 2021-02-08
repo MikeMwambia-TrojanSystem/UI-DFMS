@@ -20,6 +20,8 @@ export class CreateEmployeeComponent {
     profilePic: new FormControl(null),
   });
 
+  departments = ['Department of Works']; // List of availabe departments
+
   onStartUpload(): void {
     this.fileUpload.nativeElement.click();
   }

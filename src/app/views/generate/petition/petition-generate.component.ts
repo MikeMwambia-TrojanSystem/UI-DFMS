@@ -23,18 +23,4 @@ export class PetitionGenerateComponent {
   });
 
   constructor(private router: Router) {}
-
-  onUpload() {
-    this.router.navigate(['/', 'management', 'upload']);
-  }
-
-  onSponsor() {
-    this.router.navigate(['/', 'list', 'mca-employee'], {
-      queryParams: { select: true },
-    });
-  }
-
-  onPetitioner() {
-    this.router.navigate(['/', 'management', 'petitioners']);
-  }
 }

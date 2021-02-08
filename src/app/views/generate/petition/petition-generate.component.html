@@ -5,7 +5,7 @@
       <form [formGroup]="form" class="form">
         <p class="label">Fill in the Issues that make up this petition</p>
         <mat-form-field appearance="standard">
-          <input matInput formControlName="issues" placeholder="Petition on housing and food" />
+          <textarea matInput formControlName="issues" placeholder="Petition on housing and food"></textarea>
           <mat-error *ngIf="form.get('issues').hasError('required')">Please fill in issues!</mat-error>
         </mat-form-field>
         <p class="label">Petition concerning with sector(s)</p>
@@ -39,7 +39,8 @@
             </mat-form-field>
           </div>
           <div class="input">
-            <app-custom-button [title]="'Select concerned Committee'"></app-custom-button>
+            <app-custom-button [title]="'Select Concerned Committee'" [url]="['/list/committee']"
+              [query]="{select: true}"></app-custom-button>
           </div>
         </div>
         <div class="input-container">
@@ -54,18 +55,23 @@
           </div>
         </div>
         <div class="custom-btn-container">
-          <app-custom-button [title]="'Sponsored By'" class="custom-btn" [url]="['/', 'management', 'upload']">
+          <app-custom-button [title]="'Sponsored By'" class="custom-btn" [url]="['/', 'list', 'mca-employee']"
+            [query]="{select: true}">
           </app-custom-button>
           <app-custom-button [title]="'Add Petitioner'" class="custom-btn" [url]="['/', 'management', 'petitioners']">
           </app-custom-button>
         </div>
         <app-custom-button [title]="'Upload Soft copy of the petition'" class="custom-btn standalone"
-          [url]="['/', 'list', 'mca-employee']" [query]="{ select: true }">
+          [url]="['/', 'management', 'upload']">
         </app-custom-button>
         <input #fileUpload class="hidden" type="file" />
         <div class="actions">
-          <button mat-button type="button" class="btn-draft">Save as Draft</button>
-          <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Petition</button>
+          <a routerLink="/list/petition">
+            <button mat-button type="button" class="btn-draft">Save as Draft</button>
+          </a>
+          <a [routerLink]="form.valid ? ['/list/petition'] : null">
+            <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Petition</button>
+          </a>
         </div>
       </form>
     </div>
