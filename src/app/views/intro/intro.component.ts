@@ -488,19 +488,28 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Votebook',
-          url: '/',
+          url: '/generate/votebook',
         },
         {
           label: 'View Votebook in draft status',
-          url: '/',
+          url: '/list/votebook',
+          query: {
+            state: 'draft',
+          },
         },
         {
           label: 'View Privately Published Papers',
-          url: '/',
+          url: '/list/votebook',
+          query: {
+            state: 'private',
+          },
         },
         {
           label: 'View Published Papers',
-          url: '/',
+          url: '/list/votebook',
+          query: {
+            state: 'public',
+          },
         },
       ],
       notifications: [
@@ -516,19 +525,55 @@ export class IntroComponent {
       actions: [
         {
           label: 'Accounts',
-          url: '/',
-        },
-        {
-          label: 'Wards',
-          url: '/',
-        },
-        {
-          label: 'Constituencies',
-          url: '/',
+          url: '/management/accounts',
         },
         {
           label: 'Departments',
-          url: '/',
+          url: '/management/accounts',
+        },
+        {
+          label: 'Committees',
+          url: '/management/accounts',
+        },
+        {
+          label: 'Wards',
+          url: '/list/wards',
+        },
+        {
+          label: 'Constituencies',
+          url: '/list/constituency',
+        },
+        {
+          label: 'Subcounties',
+          url: '/list/subcounty',
+        },
+        {
+          label: 'Create Committee',
+          url: '/create/committee',
+        },
+        {
+          label: 'Create Constituencies',
+          url: '/create/constituencies',
+        },
+        {
+          label: 'Create Department',
+          url: '/create/department',
+        },
+        {
+          label: 'Create SubCounty',
+          url: '/create/subcounty',
+        },
+        {
+          label: 'Create Wards',
+          url: '/create/wards',
+        },
+        {
+          label: 'Create Employee Profile',
+          url: '/create/employee',
+        },
+        {
+          label: 'Create MCA Profile',
+          url: '/create/mca',
         },
       ],
       notifications: [

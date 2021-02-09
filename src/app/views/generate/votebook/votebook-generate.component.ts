@@ -1,8 +1,13 @@
 import { Component } from '@angular/core';
 
+interface Url {
+  url: string;
+  query?: Record<string, string>;
+}
+
 interface Item {
   label: string;
-  generate: string;
+  generate: Url;
 }
 
 @Component({
@@ -17,43 +22,85 @@ export class VotebookGenerateComponent {
   items: Item[] = [
     {
       label: 'Administration of Oath',
-      generate: '/',
+      generate: {
+        url: '/edit/content/1',
+        query: {
+          return: '/management/oath',
+        },
+      },
     },
     {
       label: 'Communication from Chair',
-      generate: '/',
+      generate: {
+        url: '/edit/content/1',
+        query: { return: '/list/communication' },
+      },
     },
     {
       label: 'Messages',
-      generate: '/',
+      generate: {
+        url: '/edit/content/1',
+        query: {
+          return: '/list/message',
+        },
+      },
     },
     {
       label: 'Petitions',
-      generate: '/',
+      generate: {
+        url: '/edit/content/1',
+        query: {
+          return: '/list/petition',
+        },
+      },
     },
     {
       label: 'Papers',
-      generate: '/',
+      generate: {
+        url: '/edit/paper/1',
+      },
     },
     {
       label: 'Notice of Motions',
-      generate: '/',
+      generate: {
+        url: '/edit/paper/1',
+        query: {
+          return: '/list/motion',
+        },
+      },
     },
     {
       label: 'Statements',
-      generate: '/',
+      generate: {
+        url: '/edit/paper/1',
+        query: {
+          return: '/list/statement',
+        },
+      },
     },
     {
       label: 'Motions',
-      generate: '/',
+      generate: {
+        url: '/edit/paper/1',
+        query: {
+          return: '/list/motion',
+        },
+      },
     },
     {
       label: 'Bills',
-      generate: '/',
+      generate: {
+        url: '/edit/paper/1',
+        query: {
+          return: '/list/bill',
+        },
+      },
     },
     {
       label: 'Adjournment',
-      generate: '/',
+      generate: {
+        url: '/edit/paper/1',
+      },
     },
   ];
 

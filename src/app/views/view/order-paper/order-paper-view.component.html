@@ -31,7 +31,7 @@
     </div>
     <div class="foot">
       <div class="line">
-        <span class="label">Editied By {{' '}}</span>
+        <span class="label">Edited By {{' '}}</span>
         <span class="value">{{orderPaper.editedBy}}</span>
       </div>
       <div class="line">
@@ -44,11 +44,12 @@
       </div>
     </div>
     <div class="actions">
-      <button mat-button class="btn btn-draft">Request Changes</button>
-      <div class="submit-actions">
+      <a [routerLink]="['/edit/paper/1']">
         <button mat-raised-button class="btn-edit">Edit Page</button>
+      </a>
+      <a [routerLink]="['/list/order-paper']" [queryParams]="{state: 'public'}">
         <button mat-raised-button class="btn-save">Publish to Cleark</button>
-      </div>
+      </a>
     </div>
   </app-center-card>
 </app-background>

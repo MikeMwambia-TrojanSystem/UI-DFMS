@@ -49,11 +49,13 @@
         <mat-error *ngIf="form.get('phone').hasError('phoneNumber')">Please enter valid phone numer</mat-error>
         <app-verify-button>Send Verification Code</app-verify-button>
       </mat-form-field>
-      <app-custom-button [title]="'Upload Profile Picture'" (buttonClick)="onStartUpload()"></app-custom-button>
-      <input #fileUpload class="upload" type="file" accept="image/*" />
+      <app-custom-button [title]="'Upload Profile Picture'" [url]="['/management/upload']"></app-custom-button>
+      <!-- <input #fileUpload class="upload" type="file" accept="image/*" /> -->
       <div class="actions">
         <button mat-button type="button" class="btn-draft">Save as Draft</button>
-        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save Committee</button>
+        <a [routerLink]="['/signup/phone-verification']" [queryParams]="{redirect: '/list/personnel'}">
+          <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save Profile</button>
+        </a>
       </div>
     </form>
   </app-center-card>

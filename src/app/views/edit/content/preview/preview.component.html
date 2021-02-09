@@ -16,7 +16,7 @@
       </div>
       <div class="actions">
         <button mat-button type="button" class="btn-draft">Save as Changes</button>
-        <a [routerLink]="return || '/intro'">
+        <a [routerLink]="return || '/intro'" [queryParams]="{state: state}">
           <button mat-raised-button type="submit" class="btn-save">Complete</button>
         </a>
       </div>

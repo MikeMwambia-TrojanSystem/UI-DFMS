@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { phoneNumberValidator } from '../../../shared/validators/phone-number';
@@ -9,7 +9,7 @@ import { phoneNumberValidator } from '../../../shared/validators/phone-number';
   styleUrls: ['./create-employee.component.scss'],
 })
 export class CreateEmployeeComponent {
-  @ViewChild('fileUpload') fileUpload: ElementRef<HTMLInputElement>;
+  // @ViewChild('fileUpload') fileUpload: ElementRef<HTMLInputElement>;
   form = new FormGroup({
     name: new FormControl('', Validators.required),
     category: new FormControl('', Validators.required),
@@ -22,7 +22,7 @@ export class CreateEmployeeComponent {
 
   departments = ['Department of Works']; // List of availabe departments
 
-  onStartUpload(): void {
-    this.fileUpload.nativeElement.click();
-  }
+  // onStartUpload(): void {
+  //   this.fileUpload.nativeElement.click();
+  // }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -21,10 +22,19 @@ export class PaperPreviewComponent implements OnInit {
   wordsPara = 1400;
   wordsPage = 1400;
 
+  return: string;
+  state: string;
+
+  constructor(private route: ActivatedRoute) {}
+
   ngOnInit(): void {
     // Subscription to the form content to count the number of words
     this.wordSub = this.content.valueChanges.subscribe((content: string) => {
       this.wordsNumber = ((content && content.match(/ /g)) || []).length;
     });
+
+    // Get url, state to navigate to when complete button is clicked from current url
+    this.return = this.route.snapshot.queryParams.return;
+    this.state = this.route.snapshot.queryParams.state;
   }
 }

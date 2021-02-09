@@ -8,21 +8,25 @@
           <span class="label">{{item.label}}</span>
         </div>
         <div class="buttons-container">
-          <a class="btn-container" *ngIf="item.select" [routerLink]="[item.select]">
+          <a class="btn-container" *ngIf="item.select" [routerLink]="[item.select.url]"
+            [queryParams]="item.select.query">
             <button mat-stroked-button class="btn">Select</button>
           </a>
-          <a class="btn-container" *ngIf="item.generate" [routerLink]="[item.generate]">
+          <a class="btn-container" *ngIf="item.generate" [routerLink]="[item.generate.url]"
+            [queryParams]="item.generate.query">
             <button mat-stroked-button class="btn">Generate</button>
           </a>
-          <a class="btn-container" *ngIf="item.skip" [routerLink]="[item.skip]">
-            <button mat-stroked-button class="btn">Skip</button>
-          </a>
+          <button mat-stroked-button class="btn">Skip</button>
         </div>
       </div>
     </app-menu-container>
     <div class="actions">
-      <button mat-button type="button" class="btn-draft">Save as Draft</button>
-      <button mat-raised-button type="submit" class="btn-save">Publish Order Paper</button>
+      <a [routerLink]="['/list/order-paper']" [queryParams]="{state: 'draft'}">
+        <button mat-button type="button" class="btn-draft">Save as Draft</button>
+      </a>
+      <a [routerLink]="['/view/order-paper/1']">
+        <button mat-raised-button type="submit" class="btn-save">Publish Order Paper</button>
+      </a>
     </div>
   </app-center-card>
 </app-background>

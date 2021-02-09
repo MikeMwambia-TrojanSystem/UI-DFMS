@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { phoneNumberValidator } from 'src/app/shared/validators/phone-number';
@@ -9,10 +9,11 @@ import { phoneNumberValidator } from 'src/app/shared/validators/phone-number';
   styleUrls: ['./create-mca.component.scss'],
 })
 export class CreateMcaComponent {
-  @ViewChild('fileUpload') fileUpload: ElementRef<HTMLInputElement>;
+  // @ViewChild('fileUpload') fileUpload: ElementRef<HTMLInputElement>;
   form = new FormGroup({
     name: new FormControl('', Validators.required),
     category: new FormControl('', Validators.required),
+    position: new FormControl('', Validators.required),
     termStart: new FormControl('', Validators.required),
     termEnd: new FormControl('', Validators.required),
     politicalParty: new FormControl('', Validators.required),
@@ -20,7 +21,7 @@ export class CreateMcaComponent {
     profilePic: new FormControl(null),
   });
 
-  onStartUpload() {
-    this.fileUpload.nativeElement.click();
-  }
+  // onStartUpload() {
+  //   this.fileUpload.nativeElement.click();
+  // }
 }

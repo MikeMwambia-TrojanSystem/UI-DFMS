@@ -8,7 +8,7 @@
           <span class="label">{{item.label}}</span>
         </div>
         <div class="buttons-container">
-          <a class="btn-container" [routerLink]="[item.generate]">
+          <a class="btn-container" [routerLink]="[item.generate.url]" [queryParams]="item.generate.query">
             <button mat-stroked-button class="btn">Generate</button>
           </a>
         </div>

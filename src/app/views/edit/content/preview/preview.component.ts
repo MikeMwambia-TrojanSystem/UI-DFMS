@@ -23,6 +23,7 @@ export class ContentPreviewComponent implements OnInit {
   wordsPage = 1400;
 
   return: string;
+  state: string;
 
   constructor(private route: ActivatedRoute) {}
 
@@ -32,7 +33,8 @@ export class ContentPreviewComponent implements OnInit {
       this.wordsNumber = ((content && content.match(/ /g)) || []).length;
     });
 
-    // Get url to navigate to when complete button is clicked from current url
+    // Get url, state to navigate to when complete button is clicked from current url
     this.return = this.route.snapshot.queryParams.return;
+    this.state = this.route.snapshot.queryParams.state;
   }
 }
