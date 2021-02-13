@@ -5,6 +5,7 @@ import { NgOtpInputModule } from 'ng-otp-input';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuillModule } from 'ngx-quill';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -192,6 +193,7 @@ import { StatementItemComponent } from './components/StatementItem/statement-ite
         ],
       },
     }),
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

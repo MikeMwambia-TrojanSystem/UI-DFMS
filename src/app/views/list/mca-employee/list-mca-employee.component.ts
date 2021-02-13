@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CacheService } from 'src/app/services/cache.service';
 
 interface McaEmployee {
+  _id: string;
   name: string;
   ward: string;
   profilePic: string;
@@ -19,6 +21,7 @@ export class ListMcaEmployeeComponent implements OnInit {
    */
   mcaEmployees: McaEmployee[] = [
     {
+      _id: '2c283c71a028f8235d01',
       name: 'Kabutha Evelyn',
       ward: 'Nathu Ward',
       profilePic:
@@ -26,6 +29,7 @@ export class ListMcaEmployeeComponent implements OnInit {
       subcounty: 'Main Gate Subcounty',
     },
     {
+      _id: '2c283c71a028f8235d02',
       name: 'Paul Ansa',
       ward: 'Nathu Ward',
       profilePic:
@@ -33,6 +37,7 @@ export class ListMcaEmployeeComponent implements OnInit {
       subcounty: 'Township Subcounty',
     },
     {
+      _id: '2c283c71a028f8235d03',
       name: 'Abelina King',
       ward: 'Nathu Ward',
       profilePic:
@@ -40,6 +45,7 @@ export class ListMcaEmployeeComponent implements OnInit {
       subcounty: 'Township Subcounty',
     },
     {
+      _id: '2c283c71a028f8235d04',
       name: 'Sampson Faith',
       ward: 'Nathu Ward',
       profilePic:
@@ -49,9 +55,18 @@ export class ListMcaEmployeeComponent implements OnInit {
   ];
   selectabe = false; // Whether the list is selectable
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private cacheService: CacheService
+  ) {}
 
   ngOnInit(): void {
     this.selectabe = this.route.snapshot.queryParams.select || false;
+  }
+
+  onSelect(employee: McaEmployee): void {
+    if (this.cacheService.event) {
+      this.cacheService.event.emit({ _id: employee._id, name: employee.name });
+    }
   }
 }

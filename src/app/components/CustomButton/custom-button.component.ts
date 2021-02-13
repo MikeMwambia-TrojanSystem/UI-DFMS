@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { CacheService } from 'src/app/services/cache.service';
 
 @Component({
   selector: 'app-custom-button',
@@ -11,6 +13,9 @@ export class CustomButtonComponent {
   @Input() unClickable: boolean;
   @Input() url: string[];
   @Input() query: Record<string, string>;
+  @Input() form: FormGroup | FormControl;
+
+  constructor(private cacheService: CacheService) {}
 
   onIconClick(): void {
     if (!this.url) {

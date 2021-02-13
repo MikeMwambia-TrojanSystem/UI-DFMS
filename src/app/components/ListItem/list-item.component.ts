@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-list-item',
@@ -13,11 +13,16 @@ export class ListItemComponent implements OnInit {
   @Input() selectable: boolean;
   @Input() subcounty: string;
   @Input() dateSub: string;
+  @Output() select = new EventEmitter<void>();
   dateObj: Date;
 
   ngOnInit() {
     if (this.isSubDate) {
       this.dateObj = new Date(this.subtitle);
     }
+  }
+
+  onSelect() {
+    this.select.emit();
   }
 }

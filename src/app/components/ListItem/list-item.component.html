@@ -1,9 +1,14 @@
 <img [src]="pic" class="profile-pic" width="100" height="100" />
 <div class="info">
-  <div mat-line class="info-title">{{title}}</div>
-  <div mat-line class="info-subtitle" *ngIf="isSubDate">{{dateSub || 'Formed'}} on {{dateObj | date:'dd MMMM, yyyy'}}
+  <div mat-line class="info-title">{{ title }}</div>
+  <div mat-line class="info-subtitle" *ngIf="isSubDate">
+    {{ dateSub || "Formed" }} on {{ dateObj | date: "dd MMMM, yyyy" }}
   </div>
-  <div mat-line class="info-subtitle hover" *ngIf="!isSubDate">{{subtitle}}</div>
-  <div mat-line class="info-subtitle" *ngIf="subcounty">{{subcounty}}</div>
+  <div mat-line class="info-subtitle hover" *ngIf="!isSubDate">
+    {{ subtitle }}
+  </div>
+  <div mat-line class="info-subtitle" *ngIf="subcounty">{{ subcounty }}</div>
 </div>
-<button mat-button *ngIf="selectable" class="btn">Select</button>
+<button mat-button *ngIf="selectable" class="btn" (click)="onSelect()">
+  Select
+</button>
