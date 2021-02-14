@@ -1,14 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
 
-interface Motion {
-  title: string;
-  date: string;
-  subjects: string[];
-  sponsored: string;
-  ward: string;
-  state: string;
-}
+import { Motion } from 'src/app/shared/types/motion';
 
 @Component({
   selector: 'app-list-motion',
@@ -19,45 +13,12 @@ export class ListMotionComponent implements OnInit {
   /**
    * Predefined motions data
    */
-  motions: Motion[] = [
-    {
-      title: 'Food Drinks Live',
-      date: '9/3/2008',
-      subjects: ['Employment', 'Youth', 'Fomo'],
-      sponsored: 'Maariu Nicholas',
-      ward: 'MCA Nathu Ward',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      title: 'Drug',
-      date: '9/3/2008',
-      subjects: ['Employment', 'Youth', 'Fomo'],
-      sponsored: 'Maariu Nicholas',
-      ward: 'MCA Nathu Ward',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      title: 'Health Facility',
-      date: '9/3/2008',
-      subjects: ['Employment', 'Youth', 'Fomo'],
-      sponsored: 'Maariu Nicholas',
-      ward: 'MCA Nathu Ward',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      title: 'Live Matters',
-      date: '9/3/2008',
-      subjects: ['Employment', 'Youth', 'Fomo'],
-      sponsored: 'Maariu Nicholas',
-      ward: 'MCA Nathu Ward',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-  ];
+  motions: Motion[];
 
   selectable: boolean;
   state: string; // This props is just for example and should be deleted when implementing a fetch request to backend.
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
 
   ngOnInit(): void {
     this.selectable = this.route.snapshot.queryParams.select || false;
@@ -77,5 +38,10 @@ export class ListMotionComponent implements OnInit {
       this.state = 'Privately Published';
     }
     //=====================================================================
+
+    // Fetch Motions from API
+    this.apiService.getMotions().subscribe(({ message }) => {
+      this.motions = message;
+    });
   }
 }

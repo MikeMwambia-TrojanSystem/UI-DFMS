@@ -10,7 +10,7 @@ export class CommitteePost {
   approverId: string;
   account: string;
   datePublished: string;
-  published: boolean;
+  published: string;
   assemblyId: string;
 }
 

@@ -5,9 +5,19 @@
       <p class="label">Name</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="name" placeholder="Andrew Mary" />
-        <mat-error *ngIf="form.get('name').hasError('required')">Please enter department name!</mat-error>
+        <mat-error *ngIf="form.get('name').hasError('required')"
+          >Please enter department name!</mat-error
+        >
       </mat-form-field>
-      <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save</button>
+      <button
+        mat-raised-button
+        type="submit"
+        class="btn-save"
+        [disabled]="form.invalid"
+        (click)="onSave()"
+      >
+        Save
+      </button>
     </form>
   </app-center-card>
 </app-background>

@@ -3,9 +3,16 @@
     <h1 class="title">Motions</h1>
     <app-search-bar></app-search-bar>
     <div>
-      <app-info-item *ngFor="let motion of motions" [title]="motion.title" [date]="motion.date"
-        [subjects]="motion.subjects" [sponsored]="motion.sponsored" [ward]="motion.ward" class="item"
-        [selectable]="selectable" [sub]="'Motion on'" [state]="state"></app-info-item>
+      <app-info-item
+        *ngFor="let motion of motions"
+        [title]="motion.department"
+        [date]="motion.datePublished"
+        [subjects]="[motion.relatedTo]"
+        [sponsored]="motion.sponsoredBy.sponsorName"
+        class="item"
+        [selectable]="selectable"
+        [state]="state"
+      ></app-info-item>
     </div>
   </app-center-card>
 </app-background>

@@ -4,7 +4,9 @@ import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { Committee, CommitteePost } from '../shared/types/committee';
-import { Motion } from '../shared/types/motion';
+import { DepartmentPost } from '../shared/types/department';
+import { Motion, MotionPost } from '../shared/types/motion';
+import { WardConSubPost } from '../shared/types/ward-con-sub';
 
 interface ApiResponse<T> {
   message: T;
@@ -21,16 +23,40 @@ export class ApiService {
   constructor(private http: HttpClient) {}
 
   // POSTs
-  createCommittee(commitee: CommitteePost) {
+  createCommittee(committee: CommitteePost) {
     return this.http
-      .post(this.baseUrl + 'commitee/create', commitee)
+      .post(this.baseUrl + 'commitee/create', undefined, {
+        params: {
+          ...committee,
+        },
+      })
       .pipe(catchError((error: HttpErrorResponse) => throwError(error)));
   }
 
-  createMotion(motion: Motion) {
+  createMotion(motion: MotionPost) {
     return this.http
-      .post(this.baseUrl + 'motion/create', motion)
+      .post(this.baseUrl + 'motion/create', undefined, {
+        params: {
+          ...motion,
+        },
+      })
       .pipe(catchError((error: HttpErrorResponse) => throwError(error)));
+  }
+
+  createWardConSub(data: WardConSubPost) {
+    return this.http.post(this.baseUrl + 'wardsConSub/create', undefined, {
+      params: {
+        ...data,
+      },
+    });
+  }
+
+  createDepartment(department: DepartmentPost) {
+    return this.http.post(this.baseUrl + 'department/create', undefined, {
+      params: {
+        ...department,
+      },
+    });
   }
 
   // GETs
@@ -42,7 +68,7 @@ export class ApiService {
 
   getMotions() {
     return this.http
-      .get(this.baseUrl + 'motion/getAllMotions')
+      .get<ApiResponse<Motion[]>>(this.baseUrl + 'motion/getAllMotions')
       .pipe(catchError((error: HttpErrorResponse) => throwError(error)));
   }
 }

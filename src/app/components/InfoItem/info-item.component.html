@@ -1,21 +1,31 @@
 <div class="main">
   <div class="info">
-    <span class="title">{{sub}} {{title}}</span>
-    <span class="date">Published on <span class="highlight">{{date | date:'dd MMMM, yyyy'}}</span></span>
-    <span class="related">Related to <span class="highlight" *ngFor="let sub of subjects; let i = index">{{(i === 0 ? ''
-        :
-        (i + 1 ===
-        subjects.length ? ' and ' : ', ')) + sub}}</span></span>
-    <span class="sponsored" *ngIf="sponsored">Sponsored by <span class="highlight">{{sponsored}}({{ward}})</span></span>
+    <span class="title">{{ sub }} {{ title }}</span>
+    <span class="date"
+      >Published on
+      <span class="highlight">{{ date | date: "dd MMMM, yyyy" }}</span></span
+    >
+    <span class="related"
+      >Related to
+      <span class="highlight" *ngFor="let sub of subjects; let i = index">{{
+        (i === 0 ? "" : i + 1 === subjects.length ? " and " : ", ") + sub
+      }}</span></span
+    >
+    <span class="sponsored" *ngIf="sponsored"
+      >Sponsored by
+      <span class="highlight"
+        >{{ sponsored }}{{ ward ? "(" + ward + ")" : null }}</span
+      ></span
+    >
     <div class="status" *ngIf="status">
       <span>Status</span>
       <mat-chip-list>
-        <mat-chip class="state-chip">{{status}}</mat-chip>
+        <mat-chip class="state-chip">{{ status }}</mat-chip>
       </mat-chip-list>
     </div>
     <div class="state" *ngIf="state">
       <div class="dot"></div>
-      <span class="label">{{state}}</span>
+      <span class="label">{{ state }}</span>
     </div>
   </div>
   <button mat-button *ngIf="selectable" class="btn">Select</button>
