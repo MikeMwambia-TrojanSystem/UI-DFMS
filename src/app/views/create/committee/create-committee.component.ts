@@ -29,8 +29,6 @@ export class CreateCommitteeComponent implements OnInit {
     committeesMembers: new FormArray([], Validators.required),
     departmentInExecutive: new FormControl('', Validators.required),
     approverId: new FormControl('2c82d1f29d2f1ce', Validators.required),
-    account: new FormControl('speaker', Validators.required),
-    datePublished: new FormControl('', Validators.required),
     published: new FormControl(false, Validators.required),
     assemblyId: new FormControl('2c82d1f29d2f1ce', Validators.required),
   }); // Form group that holds user input
@@ -204,21 +202,32 @@ export class CreateCommitteeComponent implements OnInit {
   }
 
   onSave(): void {
-    const value = this.form.value;
+    this.cacheService.cache<FormGroup, boolean>(
+      'CREATE_COMMITTEE',
+      this.form,
+      null,
+      (cachedForm, selected) => {
+        const value = this.form.value;
 
-    value.published = true; // Set published to true
-    value.committeesMembers = (value.committeesMembers as string[]).reduce(
-      (result, currentID) => {
-        if (result.length) {
-          return `${result}&&&${currentID}`;
-        }
-        return currentID;
-      },
-      ''
-    ); // Change the array of IDs to a single string for POST request
+        value.published = selected; // Set published to selected mode
+        value.committeesMembers = (value.committeesMembers as string[]).reduce(
+          (result, currentID) => {
+            if (result.length) {
+              return `${result}&&&${currentID}`;
+            }
+            return currentID;
+          },
+          ''
+        ); // Change the array of IDs to a single string for POST request
 
-    this.apiService.createCommittee(value).subscribe(() => {
-      this.router.navigate(['/list/committee']);
-    });
+        this.apiService.createCommittee(value).subscribe(() => {
+          this.router.navigate(['/list/committee']);
+        });
+
+        return cachedForm;
+      }
+    );
+
+    this.router.navigate(['/publish-status/committee']);
   }
 }

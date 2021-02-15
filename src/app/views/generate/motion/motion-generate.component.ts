@@ -64,13 +64,24 @@ export class MotionGenerateComponent implements OnInit {
   }
 
   onSave() {
-    const value = this.form.value;
+    this.cacheService.cache<FormGroup, boolean>(
+      'GENERATE_MOTION',
+      this.form,
+      null,
+      (cachedData, selected) => {
+        const value = this.form.value;
 
-    value.datePublished = new Date().toISOString();
-    value.published = true;
+        value.datePublished = new Date().toISOString();
+        value.published = selected;
 
-    this.apiService.createMotion(value).subscribe(() => {
-      this.router.navigate(['/list/motion']);
-    });
+        this.apiService.createMotion(value).subscribe(() => {
+          this.router.navigate(['/list/motion']);
+        });
+
+        return cachedData;
+      }
+    );
+
+    this.router.navigate(['/publish-status/motion']);
   }
 }

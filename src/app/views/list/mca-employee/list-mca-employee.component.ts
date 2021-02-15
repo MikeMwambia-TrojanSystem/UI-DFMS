@@ -65,8 +65,6 @@ export class ListMcaEmployeeComponent implements OnInit {
   }
 
   onSelect(employee: McaEmployee): void {
-    if (this.cacheService.event) {
-      this.cacheService.event.emit({ _id: employee._id, name: employee.name });
-    }
+    this.cacheService.emit({ _id: employee._id, name: employee.name });
   }
 }

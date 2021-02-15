@@ -1,5 +1,4 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 
@@ -20,17 +19,6 @@ export class CacheService {
   private _id: string; // ID of the cached form data. Helps prevent duplicated or wrong rehydrate form data.
 
   constructor(private router: Router) {}
-
-  /**
-   * Get the event to emit when the user's selected the element
-   *
-   * @Usage Example:
-   *
-   * this.cacheService.event.emit('some data');
-   */
-  get event(): EventEmitter<any> {
-    return this._selected;
-  }
 
   /**
    * Caching method, accepts formId, form data, return url and a callback function.
@@ -60,7 +48,9 @@ export class CacheService {
 
       this._data = newData; // Replace the old data with the new data after handling in callback.
 
-      this.router.navigate([returnUrl]);
+      if (returnUrl) {
+        this.router.navigate([returnUrl]);
+      }
     });
   }
 
@@ -78,5 +68,18 @@ export class CacheService {
       }
     }
     return null;
+  }
+
+  /**
+   * Emit the event when the user's selected the element
+   *
+   * @Usage Example:
+   *
+   * this.cacheService.event.emit('some data');
+   */
+  emit<T>(data: T) {
+    if (this._selected) {
+      this._selected.emit(data);
+    }
   }
 }
