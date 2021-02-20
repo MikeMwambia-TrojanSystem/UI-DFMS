@@ -1,14 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CacheService } from 'src/app/services/cache.service';
+import { take } from 'rxjs/operators';
+import _ from 'lodash';
 
-interface McaEmployee {
-  _id: string;
-  name: string;
-  ward: string;
-  profilePic: string;
-  subcounty: string;
-}
+import { CacheService } from 'src/app/services/cache.service';
+import { McaEmployee } from 'src/app/shared/types/mca-employee';
 
 @Component({
   selector: 'app-list-mca-employee',
@@ -16,44 +12,8 @@ interface McaEmployee {
   styleUrls: ['./list-mca-employee.component.scss'],
 })
 export class ListMcaEmployeeComponent implements OnInit {
-  /**
-   * MCA/Employee mock data
-   */
-  mcaEmployees: McaEmployee[] = [
-    {
-      _id: '2c283c71a028f8235d01',
-      name: 'Kabutha Evelyn',
-      ward: 'Nathu Ward',
-      profilePic:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJq7OdjXycWLNzlE_iQH0k6al3VWOsHGJzDA&usqp=CAU',
-      subcounty: 'Main Gate Subcounty',
-    },
-    {
-      _id: '2c283c71a028f8235d02',
-      name: 'Paul Ansa',
-      ward: 'Nathu Ward',
-      profilePic:
-        'https://snappygoat.com/b/d1bed93330681e35898ef1c2778b46e7534e3c2c',
-      subcounty: 'Township Subcounty',
-    },
-    {
-      _id: '2c283c71a028f8235d03',
-      name: 'Abelina King',
-      ward: 'Nathu Ward',
-      profilePic:
-        'https://upload.wikimedia.org/wikipedia/commons/2/22/Master_Teacher_Portrait.jpg',
-      subcounty: 'Township Subcounty',
-    },
-    {
-      _id: '2c283c71a028f8235d04',
-      name: 'Sampson Faith',
-      ward: 'Nathu Ward',
-      profilePic:
-        'https://snappygoat.com/b/b1994f0ceeba40094713fbdd2cb7aa717533fc65',
-      subcounty: 'Township Subcounty',
-    },
-  ];
-  selectabe = false; // Whether the list is selectable
+  mcaEmployees: McaEmployee[] = [];
+  selectable = false; // Whether the list is selectable
 
   constructor(
     private route: ActivatedRoute,
@@ -61,7 +21,15 @@ export class ListMcaEmployeeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.selectabe = this.route.snapshot.queryParams.select || false;
+    // Get selectable state from query url
+    this.selectable = this.route.snapshot.queryParams.select || false;
+
+    // Get Mca-Employees data from resolver
+    this.route.data
+      .pipe(take(1))
+      .subscribe(({ mcaEmployees }: { mcaEmployees: McaEmployee[] }) => {
+        this.mcaEmployees = _.orderBy(mcaEmployees, 'createdAt', 'desc');
+      });
   }
 
   onSelect(employee: McaEmployee): void {

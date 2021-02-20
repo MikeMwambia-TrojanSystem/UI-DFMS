@@ -1,0 +1,10 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Department List</h1>
+    <app-search-bar></app-search-bar>
+    <div>
+      <app-list-item *ngFor="let department of departments" [title]="department.name" [subtitle]="department.county"
+        [subcounty]="department.subCounty" [selectable]="selectable" (select)="onSelect(department)"></app-list-item>
+    </div>
+  </app-center-card>
+</app-background>

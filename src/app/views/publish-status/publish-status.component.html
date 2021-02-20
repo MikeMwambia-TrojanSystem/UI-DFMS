@@ -7,12 +7,7 @@
         <mat-radio-button value="private">Privately Published</mat-radio-button>
         <mat-radio-button value="draft">Save in Draft</mat-radio-button>
       </mat-radio-group>
-      <button
-        mat-raised-button
-        class="publish"
-        [disabled]="!status"
-        (click)="onPublish()"
-      >
+      <button mat-raised-button class="publish" [disabled]="!status" (click)="onPublish()">
         Publish
       </button>
     </div>

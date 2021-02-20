@@ -4,14 +4,9 @@
     <form [formGroup]="form" class="form">
       <p class="label">Motion Content</p>
       <mat-form-field appearance="standard">
-        <textarea
-          matInput
-          formControlName="content"
-          placeholder="Motion on Sales Entity"
-        ></textarea>
-        <mat-error *ngIf="form.get('content').hasError('required')"
-          >Please enter motion content!</mat-error
-        >
+        <textarea matInput formControlName="content" placeholder="Motion on Sales Entity" cdkTextareaAutosize
+          cdkAutosizeMinRows="1"></textarea>
+        <mat-error *ngIf="form.get('content').hasError('required')">Please enter motion content!</mat-error>
       </mat-form-field>
       <!-- <p class="label">Subject Matter of the Motion</p>
       <mat-form-field appearance="standard">
@@ -23,48 +18,26 @@
       <p class="label">Related To</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="relatedTo" />
-        <mat-error *ngIf="form.get('relatedTo').hasError('required')"
-          >Please enter related to!</mat-error
-        >
+        <mat-error *ngIf="form.get('relatedTo').hasError('required')">Please enter related to!</mat-error>
       </mat-form-field>
-      <p class="label">Department</p>
-      <mat-form-field appearance="standard">
-        <input matInput formControlName="department" />
-        <mat-error *ngIf="form.get('department').hasError('required')"
-          >Please enter department!</mat-error
-        >
-      </mat-form-field>
-      <div class="buttons-container">
-        <app-custom-button
-          [title]="
-            form.get('sponsorName').value.length
-              ? form.get('sponsorName').value
-              : 'Select Sponsor'
-          "
-          class="custom-btn standalone"
-          (buttonClick)="onSelectSponsor()"
-        ></app-custom-button>
-        <app-custom-button
-          [title]="'Upload Soft Copy of Motion'"
-          class="custom-btn standalone"
-          style="margin-left: 10px"
-          [url]="['/management/upload']"
-        ></app-custom-button>
-      </div>
+      <app-custom-button [title]="
+          form.get('department').value.length
+            ? form.get('department').value
+            : 'Select Department'
+        " class="custom-btn standalone" (buttonClick)="onSelectDepartment()"></app-custom-button>
+      <app-custom-button [title]="
+          form.get('sponsorName').value.length
+            ? form.get('sponsorName').value
+            : 'Select Sponsor'
+        " class="custom-btn standalone" (buttonClick)="onSelectSponsor()"></app-custom-button>
       <div class="actions">
         <a [routerLink]="['/list/motion']" [queryParams]="{ state: 'draft' }">
-          <button mat-button type="button" class="btn-draft">
+          <button mat-button type="button" class="btn-draft" [disabled]="form.invalid" (click)="onSave(false)">
             Save as Draft
           </button>
         </a>
-        <button
-          mat-raised-button
-          type="submit"
-          class="btn-save"
-          [disabled]="form.invalid"
-          (click)="onSave()"
-        >
-          Publish Bills
+        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid" (click)="onSave(true)">
+          Publish Motion
         </button>
       </div>
     </form>

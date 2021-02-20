@@ -6,73 +6,44 @@
     <form [formGroup]="form" class="form">
       <p class="label">Committee Name</p>
       <mat-form-field appearance="standard">
-        <input
-          matInput
-          formControlName="name"
-          placeholder="Committee on Food Processing and Fishing"
-        />
-        <mat-error *ngIf="form.get('name').hasError('required')"
-          >Please enter committee name!</mat-error
-        >
+        <input matInput formControlName="name" placeholder="Committee on Food Processing and Fishing" />
+        <mat-error *ngIf="form.get('name').hasError('required')">Please enter committee name!</mat-error>
       </mat-form-field>
       <p class="label">Date Formed</p>
       <mat-form-field appearance="standard">
         <input matInput type="date" />
-        <!-- <mat-error *ngIf="form.get('datePublished').hasError('required')"
-          >Please enter date formed!</mat-error
-        > -->
       </mat-form-field>
       <p class="label">Department sighted over Executive</p>
-      <mat-form-field appearance="standard">
-        <input matInput formControlName="departmentInExecutive" />
-        <mat-error
-          *ngIf="form.get('departmentInExecutive').hasError('required')"
-          >Please enter department!</mat-error
-        >
-      </mat-form-field>
-      <div class="buttons-container">
-        <app-custom-button
-          [title]="chairmanName.length ? chairmanName : 'Select Chairman'"
-          (buttonClick)="onSelectChairman()"
-        >
-        </app-custom-button>
-        <app-custom-button
-          [title]="
-            viceChairName.length ? viceChairName : 'Select Vice Chairman'
-          "
-          (buttonClick)="onSelectViceChairman()"
-          style="margin-left: 10px"
-        >
-        </app-custom-button>
-      </div>
-      <app-custom-button
-        [title]="'Select Members'"
-        (buttonClick)="onSelectMember()"
-      >
+      <app-custom-button [title]="departmentInExcecutive.length ? departmentInExcecutive : 'Select Department'"
+        (buttonClick)="onSelectDepartment()">
       </app-custom-button>
-      <span class="members"
-        >{{ membersName.length }} member{{
-          membersName.length === 1 ? "" : "s"
-        }}</span
-      >
-      <div class="member-container" *ngFor="let name of membersName">
-        <mat-icon class="member-icon">person_outline</mat-icon>
-        <span>{{ name }}</span>
+      <div class="buttons-container">
+        <app-custom-button [title]="chairmanName.length ? chairmanName : 'Select Chairman'"
+          (buttonClick)="onSelectChairman()">
+        </app-custom-button>
+        <app-custom-button [title]="
+            viceChairName.length ? viceChairName : 'Select Vice Chairman'
+          " (buttonClick)="onSelectViceChairman()" style="margin-left: 10px">
+        </app-custom-button>
       </div>
-      <div class="actions">
-        <button mat-button type="button" class="btn-draft">
-          Save as Draft
-        </button>
-        <button
-          mat-raised-button
-          type="submit"
-          class="btn-save"
-          [disabled]="form.invalid"
-          (click)="onSave()"
-        >
-          Save Committee
-        </button>
-      </div>
+      <app-custom-button [title]="'Select Members'" (buttonClick)="onSelectMember()">
+      </app-custom-button>
+      <span class="members">{{ membersName.length }} member{{
+        membersName.length <= 1 ? "" : "s" }}</span>
+          <div class="member-container" *ngFor="let member of membersName">
+            <mat-icon class="member-icon">person_outline</mat-icon>
+            <span>{{ member.name }}</span>
+            <button mat-button color="warn" class="btn-delete" type="button"
+              (click)="onMemberDelete(member._id)">Delete</button>
+          </div>
+          <div class="actions">
+            <button mat-button type="button" class="btn-draft" [disabled]="form.invalid" (click)="onSave(false)">
+              Save as Draft
+            </button>
+            <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid" (click)="onSave(true)">
+              Save Committee
+            </button>
+          </div>
     </form>
   </app-center-card>
 </app-background>

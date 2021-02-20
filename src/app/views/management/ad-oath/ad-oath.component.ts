@@ -68,17 +68,7 @@ export class AdministrationOathComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    const stateQuery = this.route.snapshot.queryParams.state;
-    if (stateQuery) {
-      this.state =
-        stateQuery === 'draft'
-          ? 'Draft'
-          : stateQuery === 'public'
-          ? 'Publicly Published'
-          : stateQuery === 'private'
-          ? 'Privately Published'
-          : undefined;
-    }
+    this.state = this.route.snapshot.queryParams.state;
   }
 
   onUpload(): void {

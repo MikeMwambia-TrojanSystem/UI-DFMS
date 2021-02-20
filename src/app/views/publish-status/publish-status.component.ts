@@ -13,6 +13,6 @@ export class PublishStatusComponent {
   constructor(private cacheServie: CacheService) {}
 
   onPublish() {
-    this.cacheServie.emit<boolean>(status !== 'draft');
+    this.cacheServie.emit<PublishStatus>(this.status as PublishStatus);
   }
 }

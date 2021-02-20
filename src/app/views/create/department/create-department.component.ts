@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+
 import { ApiService } from 'src/app/services/api.service';
+import { DepartmentService } from 'src/app/services/department.service';
 
 @Component({
   selector: 'app-create-department',
@@ -15,9 +18,14 @@ export class CreateDepartmentComponent {
 
   county = 'Meru'; // Dynamic county name;
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private departmentService: DepartmentService,
+    private router: Router
+  ) {}
 
   onSave() {
-    this.apiService.createDepartment(this.form.value).subscribe(() => {});
+    this.departmentService.postDepartment(this.form.value).subscribe(() => {
+      this.router.navigate(['/list/department']);
+    });
   }
 }

@@ -3,16 +3,8 @@
     <h1 class="title">Committee List</h1>
     <app-search-bar></app-search-bar>
     <div>
-      <app-list-item
-        *ngFor="let committee of committees"
-        [title]="committee.name"
-        [subtitle]="committee.datePublished"
-        [pic]="
-          'https://i.pinimg.com/originals/c9/4e/c8/c94ec8295d677ad20c26ef2d56c1f111.jpg'
-        "
-        [isSubDate]="true"
-        [selectable]="selectabe"
-      ></app-list-item>
+      <app-list-item *ngFor="let committee of committees" [title]="committee.name" [subtitle]="committee.createdAt"
+        [isSubDate]="true" [selectable]="selectable" (select)="onSelect(committee)"></app-list-item>
     </div>
   </app-center-card>
 </app-background>

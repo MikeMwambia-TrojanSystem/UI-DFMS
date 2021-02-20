@@ -5,28 +5,14 @@
       <p class="label">Name</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="name" placeholder="Andrew Mary" />
-        <mat-error *ngIf="form.get('name').hasError('required')"
-          >Please enter constituencies name!</mat-error
-        >
+        <mat-error *ngIf="form.get('name').hasError('required')">Please enter constituencies name!</mat-error>
       </mat-form-field>
-      <p class="label">Sub County</p>
-      <mat-form-field appearance="standard">
-        <input
-          matInput
-          formControlName="subCounty"
-          placeholder="Food Production"
-        />
-        <mat-error *ngIf="form.get('subCounty').hasError('required')"
-          >Please enter sub county!</mat-error
-        >
-      </mat-form-field>
-      <button
-        mat-raised-button
-        type="submit"
-        class="btn-save"
-        [disabled]="form.invalid"
-        (click)="onSave()"
-      >
+      <app-custom-button [title]="
+          form.get('subCounty').value.length
+            ? form.get('subCounty').value
+            : 'Select SubCounty'
+        " (buttonClick)="onSelectSubCounty()"></app-custom-button>
+      <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid" (click)="onSave()">
         Save
       </button>
     </form>

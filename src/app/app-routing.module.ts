@@ -61,6 +61,17 @@ import { ListStatementComponent } from './views/list/statement/list-statement.co
 import { ListTentativeBusinesssComponent } from './views/list/tentative-business/list-tentative-business.component';
 import { ListSubcountyComponent } from './views/list/subcounty/list-subcounty.component';
 import { PublishStatusComponent } from './views/publish-status/publish-status.component';
+import { ListDepartmentComponent } from './views/list/department/list-department.component';
+
+import { MotionResolver } from './shared/resolver/motion/motion.resolver';
+import { CanActivateMotion } from './shared/guard/motion/motion.guard';
+import { ListMotionResolver } from './shared/resolver/motion/list-motion.resolver';
+import { ListDepartmentResolver } from './shared/resolver/department/list-department.resolver';
+import { ListSubCountyResolver } from './shared/resolver/ward-con-sub/list-subcounty.resolver';
+import { ListWardResolver } from './shared/resolver/ward-con-sub/list-ward.resolver';
+import { ListConstituencyResolver } from './shared/resolver/ward-con-sub/list-constituency.resolver';
+import { ListCommitteeResolver } from './shared/resolver/committee/list-committee.resolver';
+import { ListMcaEmployeeResolver } from './shared/resolver/mca-employee/list-mca-employee.resolver';
 
 const routes: Routes = [
   // Login route
@@ -101,11 +112,35 @@ const routes: Routes = [
   {
     path: 'list',
     children: [
-      { path: 'committee', component: ListCommitteeComponent },
-      { path: 'mca-employee', component: ListMcaEmployeeComponent },
+      {
+        path: 'committee',
+        component: ListCommitteeComponent,
+        resolve: {
+          committees: ListCommitteeResolver,
+        },
+      },
+      {
+        path: 'mca-employee',
+        component: ListMcaEmployeeComponent,
+        resolve: {
+          mcaEmployees: ListMcaEmployeeResolver,
+        },
+      },
       { path: 'personnel', component: ListPersonnelComponent },
-      { path: 'wards', component: ListWardsComponent },
-      { path: 'motion', component: ListMotionComponent },
+      {
+        path: 'wards',
+        component: ListWardsComponent,
+        resolve: {
+          wards: ListWardResolver,
+        },
+      },
+      {
+        path: 'motion',
+        component: ListMotionComponent,
+        resolve: {
+          motions: ListMotionResolver,
+        },
+      },
       { path: 'act', component: ListActComponent },
       { path: 'bill', component: ListBillComponent },
       { path: 'petition', component: ListPetitionComponent },
@@ -113,7 +148,13 @@ const routes: Routes = [
       { path: 'order-paper', component: ListOrderPaperComponent },
       { path: 'votebook', component: ListVoteBookComponent },
       { path: 'communication', component: ListCommunicationComponent },
-      { path: 'constituency', component: ListConstituencyComponent },
+      {
+        path: 'constituency',
+        component: ListConstituencyComponent,
+        resolve: {
+          constituencies: ListConstituencyResolver,
+        },
+      },
       { path: 'message', component: ListMessageComponent },
       { path: 'statement', component: ListStatementComponent },
       {
@@ -123,6 +164,16 @@ const routes: Routes = [
       {
         path: 'subcounty',
         component: ListSubcountyComponent,
+        resolve: {
+          subCounties: ListSubCountyResolver,
+        },
+      },
+      {
+        path: 'department',
+        component: ListDepartmentComponent,
+        resolve: {
+          departments: ListDepartmentResolver,
+        },
       },
     ],
   },
@@ -144,7 +195,18 @@ const routes: Routes = [
     children: [
       { path: 'act', component: ActGenerateComponent },
       { path: 'bill', component: BillGenerateComponent },
-      { path: 'motion', component: MotionGenerateComponent },
+      {
+        path: 'motion',
+        component: MotionGenerateComponent,
+      },
+      {
+        path: 'motion/:id',
+        component: MotionGenerateComponent,
+        canActivate: [CanActivateMotion],
+        resolve: {
+          motion: MotionResolver,
+        },
+      },
       { path: 'petition', component: PetitionGenerateComponent },
       { path: 'report', component: ReportGenerateComponent },
       { path: 'order-paper', component: OrderPaperGenerateComponent },
@@ -206,6 +268,10 @@ const routes: Routes = [
   },
 
   //Publish Status
+  {
+    path: 'publish-status',
+    component: PublishStatusComponent,
+  },
   {
     path: 'publish-status/:id',
     component: PublishStatusComponent,

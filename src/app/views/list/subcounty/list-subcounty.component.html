@@ -3,8 +3,8 @@
     <h1 class="title">Subcounty List</h1>
     <app-search-bar></app-search-bar>
     <div>
-      <app-list-item *ngFor="let subcounty of subcounties" [title]="subcounty.name" [subtitle]="subcounty.date"
-        [pic]="subcounty.profilePic" [isSubDate]="true" [dateSub]="'Published'" [selectable]="selectabe">
+      <app-list-item *ngFor="let subcounty of subCounties" [title]="subcounty.name" [subtitle]="subcounty.date"
+        [isSubDate]="true" [dateSub]="'Published'" [selectable]="selectable" (select)="onSelect(subcounty)">
       </app-list-item>
     </div>
   </app-center-card>

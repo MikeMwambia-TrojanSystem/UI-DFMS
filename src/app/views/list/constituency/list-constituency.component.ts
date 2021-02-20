@@ -1,52 +1,38 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { take } from 'rxjs/operators';
+import _ from 'lodash';
 
-interface Constituency {
-  name: string;
-  subcounty: string;
-  profilePic: string;
-}
+import { Constituency } from 'src/app/shared/types/ward-con-sub';
+import { CacheService } from 'src/app/services/cache.service';
 
 @Component({
   templateUrl: './list-constituency.component.html',
   styleUrls: ['./list-constituency.component.scss'],
 })
 export class ListConstituencyComponent implements OnInit {
-  /**
-   * Constituencies mock data
-   */
-  constituencies: Constituency[] = [
-    {
-      name: 'Ikenme North',
-      subcounty: 'Ntonyiri Subcounty',
-      profilePic:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJq7OdjXycWLNzlE_iQH0k6al3VWOsHGJzDA&usqp=CAU',
-    },
-    {
-      name: 'Paul Ansa',
-      subcounty: 'Ntonyiri Subcounty',
-      profilePic:
-        'https://snappygoat.com/b/d1bed93330681e35898ef1c2778b46e7534e3c2c',
-    },
-    {
-      name: 'Abelina King',
-      subcounty: 'Ntonyiri Subcounty',
-      profilePic:
-        'https://upload.wikimedia.org/wikipedia/commons/2/22/Master_Teacher_Portrait.jpg',
-    },
-    {
-      name: 'Sampson Faith',
-      subcounty: 'Ntonyiri Subcounty',
-      profilePic:
-        'https://snappygoat.com/b/b1994f0ceeba40094713fbdd2cb7aa717533fc65',
-    },
-  ];
+  constituencies: Constituency[] = [];
 
-  selectabe = false; // Whether the list is selectable
+  selectable = false; // Whether the list is selectable
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private cacheService: CacheService
+  ) {}
 
   ngOnInit(): void {
-    this.selectabe = this.route.snapshot.queryParams.select || false;
+    // Get selectable state from url query
+    this.selectable = this.route.snapshot.queryParams.select || false;
+
+    // Get Constituency data from resolver
+    this.route.data
+      .pipe(take(1))
+      .subscribe(({ constituencies }: { constituencies: Constituency[] }) => {
+        this.constituencies = _.orderBy(constituencies, 'createdAt', 'desc');
+      });
+  }
+
+  onSelect({ name, _id }: Constituency) {
+    this.cacheService.emit({ name, _id });
   }
 }

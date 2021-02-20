@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ApiService } from 'src/app/services/api.service';
+import _ from 'lodash-es';
+import { take } from 'rxjs/operators';
 
+import { MotionService } from 'src/app/services/motion.service';
 import { Motion } from 'src/app/shared/types/motion';
 
 @Component({
@@ -18,7 +20,10 @@ export class ListMotionComponent implements OnInit {
   selectable: boolean;
   state: string; // This props is just for example and should be deleted when implementing a fetch request to backend.
 
-  constructor(private route: ActivatedRoute, private apiService: ApiService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private motionService: MotionService
+  ) {}
 
   ngOnInit(): void {
     this.selectable = this.route.snapshot.queryParams.select || false;
@@ -26,22 +31,20 @@ export class ListMotionComponent implements OnInit {
     /**
      * These lines are just for dynamic state example and should be deleted when implementing a fetch request to backend.
      */
-    const state = this.route.snapshot.queryParams.state;
-
-    if (state === 'draft') {
-      this.state = 'Draft';
-    }
-    if (state === 'public') {
-      this.state = 'Publicly Published';
-    }
-    if (state === 'private') {
-      this.state = 'Privately Published';
-    }
+    this.state = this.route.snapshot.queryParams.state;
     //=====================================================================
 
-    // Fetch Motions from API
-    this.apiService.getMotions().subscribe(({ message }) => {
-      this.motions = message;
+    // Get Motions data from resolver
+    this.route.data
+      .pipe(take(1))
+      .subscribe(({ motions }: { motions: Motion[] }) => {
+        this.motions = _.orderBy(motions, 'createdAt', 'desc');
+      });
+  }
+
+  onDelete(id: string) {
+    this.motionService.deleteMotion(id).subscribe(() => {
+      window.location.reload(); // Reload page when successfully deleting motion
     });
   }
 }

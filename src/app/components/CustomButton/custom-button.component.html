@@ -2,4 +2,4 @@
 <a [routerLink]="url" *ngIf="url" [queryParams]="query">
   <mat-icon class="icon" (click)="onIconClick()" *ngIf="!unClickable">add_circle_outline</mat-icon>
 </a>
-<mat-icon class="icon" (click)="onIconClick()" *ngIf="!unClickable && !url">add_circle_outline</mat-icon>
+<mat-icon class="icon" (click)="onIconClick()" *ngIf="!unClickable && !url" tabindex=0>add_circle_outline</mat-icon>

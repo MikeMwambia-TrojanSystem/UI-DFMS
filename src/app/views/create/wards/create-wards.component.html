@@ -5,35 +5,19 @@
       <p class="label">Name</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="name" placeholder="Andrew Mary" />
-        <mat-error *ngIf="form.get('name').hasError('required')"
-          >Please enter department name!</mat-error
-        >
+        <mat-error *ngIf="form.get('name').hasError('required')">Please enter ward name!</mat-error>
       </mat-form-field>
-      <p class="label">Constituency</p>
-      <mat-form-field appearance="standard">
-        <mat-select formControlName="constituency">
-          <mat-option *ngFor="let cons of constituencies" [value]="cons">{{
-            cons
-          }}</mat-option>
-        </mat-select>
-        <mat-error>Please select a constituency!</mat-error>
-      </mat-form-field>
-      <p class="label">Sub County</p>
-      <mat-form-field appearance="standard">
-        <mat-select formControlName="subCounty">
-          <mat-option *ngFor="let sub of subCounties" [value]="sub">{{
-            sub
-          }}</mat-option>
-        </mat-select>
-        <mat-error>Please select a sub county!</mat-error>
-      </mat-form-field>
-      <button
-        mat-raised-button
-        type="submit"
-        class="btn-save"
-        [disabled]="form.invalid"
-        (click)="onSave()"
-      >
+      <app-custom-button [title]="
+          form.get('constituency').value.length
+            ? form.get('constituency').value
+            : 'Select Constituency'
+        " (buttonClick)="onSelectConstituency()"></app-custom-button>
+      <app-custom-button [title]="
+        form.get('subCounty').value.length
+          ? form.get('subCounty').value
+          : 'Select Sub County'
+      " (buttonClick)="onSelectSubCounty()"></app-custom-button>
+      <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid" (click)="onSave()">
         Save
       </button>
     </form>

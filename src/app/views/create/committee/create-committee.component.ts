@@ -1,13 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
 import { Router } from '@angular/router';
+import { combineLatest, merge, Observable, Subject } from 'rxjs';
+import { combineAll, map, take, takeLast, takeUntil } from 'rxjs/operators';
 
 import { ApiService } from 'src/app/services/api.service';
 import { CacheService } from 'src/app/services/cache.service';
+import { CommitteeService } from 'src/app/services/committee.service';
+import { McaEmployeeService } from 'src/app/services/mca-employee.service';
+import { CommitteePost } from 'src/app/shared/types/committee';
 
-interface CacheData {
-  form: FormGroup;
-  membersName: string[];
+interface CommitteeForm {
+  committeeSignature: string;
+  name: string;
+  Chairname: string;
+  chairId: string;
+  viceChair: string;
+  viceChairId: string;
+  committesMembers: string[];
+  departmentInExcecutive: string;
+  approverId: string;
+  published: boolean;
+  assemblyId: string;
 }
 
 @Component({
@@ -17,7 +31,7 @@ interface CacheData {
 })
 export class CreateCommitteeComponent implements OnInit {
   form = new FormGroup({
-    committeeSignature: new FormControl(
+    commiteeSignature: new FormControl(
       'e3ee3r9j5j5jgnonr5t46yg668h',
       Validators.required
     ),
@@ -26,30 +40,36 @@ export class CreateCommitteeComponent implements OnInit {
     chairId: new FormControl('', Validators.required),
     viceChair: new FormControl('', Validators.required),
     viceChairId: new FormControl('', Validators.required),
-    committeesMembers: new FormArray([], Validators.required),
-    departmentInExecutive: new FormControl('', Validators.required),
+    committesMembers: new FormArray([], Validators.required),
+    departmentInExcecutive: new FormControl('', Validators.required),
     approverId: new FormControl('2c82d1f29d2f1ce', Validators.required),
-    published: new FormControl(false, Validators.required),
+    published: new FormControl(false),
     assemblyId: new FormControl('2c82d1f29d2f1ce', Validators.required),
+    account: new FormControl('Speaker', Validators.required),
+    datePublished: new FormControl(''),
   }); // Form group that holds user input
 
-  membersName: string[] = []; // Committees Memebers name.
+  membersName: { name: string; _id: string }[] = []; // Committees Memebers name.
 
   constructor(
     private cacheService: CacheService,
     private router: Router,
-    private apiService: ApiService
+    private committeeService: CommitteeService,
+    private mcaEmployeeService: McaEmployeeService
   ) {}
 
   ngOnInit(): void {
-    const data = this.cacheService.rehydrate<CacheData>('CREATE_COMMITTEE');
+    // Rehydrate cached form data if there's any
+    const cachedForm = this.cacheService.rehydrate<FormGroup>(
+      'CREATE_COMMITTEE'
+    );
 
-    if (data) {
-      const { form, membersName } = data;
-
-      this.form = form;
-      this.membersName = membersName;
+    if (cachedForm) {
+      this.form = cachedForm;
     }
+
+    // Update members name from form committesMembers ids
+    this.updateMembersList();
   }
 
   county = 'Meru'; // Dynamic county name;
@@ -62,119 +82,120 @@ export class CreateCommitteeComponent implements OnInit {
     return this.form.get('viceChair').value;
   }
 
+  get departmentInExcecutive(): string {
+    return this.form.get('departmentInExcecutive').value;
+  }
+
+  updateMembersList() {
+    const names: { name: string; _id: string }[] = [];
+    const {
+      committesMembers,
+      chairId,
+      viceChair,
+      Chairname,
+      viceChairId,
+    } = this.form.value as CommitteeForm;
+
+    committesMembers
+      .filter((memberId) => memberId !== chairId && memberId !== viceChairId)
+      .forEach((memberId) => {
+        this.mcaEmployeeService
+          .getMcaEmployee(memberId)
+          .pipe(
+            take(1),
+            map((employee) => employee.name)
+          )
+          .subscribe((name) => {
+            names.push({
+              name,
+              _id: memberId,
+            });
+          });
+      });
+
+    if (Chairname) {
+      this.membersName.push({
+        name: Chairname,
+        _id: chairId,
+      });
+    }
+    if (viceChair) {
+      this.membersName.push({
+        name: viceChair,
+        _id: viceChairId,
+      });
+    }
+
+    this.membersName = this.membersName.concat(names);
+  }
+
+  /**
+   * This function get called when 'Select Chairman' button is clicked.
+   * Caching the form and then redirect the user to '/list/mca-employee?select=true'.
+   * After the user had selected the employee, a callback function will get called and update the cached data with the selected information.
+   */
   onSelectChairman() {
-    this.cacheService.cache<CacheData, { _id: string; name: string }>(
+    // Caching and select callback handling
+    this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
-      { form: this.form, membersName: this.membersName },
+      this.form,
       '/create/committee',
-      (data, { _id, name }) => {
-        const newData = {
-          ...data,
-        }; // A copy of the cached data.
-        const membersControl = newData.form.get(
-          'committeesMembers'
-        ) as FormArray; // Get the committeesMembers control
-
-        newData.membersName = [
-          ...newData.membersName.filter(
-            (name) => name !== newData.form.get('Chairname').value
-          ),
-          name,
-        ]; // Replace the old chairman name with the new chairnam name.
-
-        const members = [
-          ...(membersControl.value as string[]).filter(
-            (id) => id !== newData.form.get('chairId').value
-          ),
-          _id,
-        ]; /* Create a new array that will be used to replace the cached form.
-          Remove the old chairID and replace it with the new chairID */
-
-        membersControl.clear(); // Clear all the cached member IDs.
-
-        for (const member of members) {
-          membersControl.push(new FormControl(member));
-        } // Set the committeesMembers control to the new array.
-
-        newData.form.patchValue({
+      (form, { _id, name }) => {
+        form.patchValue({
           Chairname: name,
           chairId: _id,
         }); // Patch cached form with new chairman information.
 
-        return newData;
+        return form;
       }
     );
 
+    // Navigate the user to '/list/mca-employee?select=true'
     this.router.navigate(['/list/mca-employee'], {
       queryParams: { select: true },
     });
   }
 
+  /**
+   * This function get called when 'Select Vice Chairman' button is clicked.
+   * Caching the form and then redirect the user to '/list/mca-employee?select=true'.
+   * After the user had selected the employee, a callback function will get called and update the cached data with the selected information.
+   */
   onSelectViceChairman() {
-    this.cacheService.cache<CacheData, { _id: string; name: string }>(
+    // Caching and select callback handling
+    this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
-      { form: this.form, membersName: this.membersName },
+      this.form,
       '/create/committee',
-      (data, { _id, name }) => {
-        const newData = {
-          ...data,
-        }; // A copy of the cached data.
-        const membersControl = newData.form.get(
-          'committeesMembers'
-        ) as FormArray; // Get the committeesMembers control
-
-        newData.membersName = [
-          ...newData.membersName.filter(
-            (name) => name !== newData.form.get('viceChair').value
-          ),
-          name,
-        ]; // Replace the old vice chairman name with the new vice chairnam name.
-
-        const members = [
-          ...(membersControl.value as string[]).filter(
-            (id) => id !== newData.form.get('viceChairId').value
-          ),
-          _id,
-        ]; /* Create a new array that will be used to replace the cached form.
-          Remove the old viceChairID and replace it with the new viceChairID */
-
-        membersControl.clear(); // Clear all the cached member IDs.
-
-        for (const member of members) {
-          membersControl.push(new FormControl(member));
-        } // Set the committeesMembers control to the new array.
-
-        newData.form.patchValue({
+      (form, { _id, name }) => {
+        form.patchValue({
           viceChair: name,
           viceChairId: _id,
         }); // Patch cached form with new vice chairman information.
 
-        return newData;
+        return form;
       }
     );
 
+    // Navigate the user to '/list/mca-employee?select=true'
     this.router.navigate(['/list/mca-employee'], {
       queryParams: { select: true },
     });
   }
 
+  /**
+   * This function get called when 'Select Members' button is clicked.
+   * Caching the form and then redirect the user to '/list/mca-employee?select=true'.
+   * After the user had selected the employee, a callback function will get called and update the cached data with the selected information.
+   */
   onSelectMember() {
-    this.cacheService.cache<CacheData, { _id: string; name: string }>(
+    // Caching and select callback handling
+    this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
-      { form: this.form, membersName: this.membersName },
+      this.form,
       '/create/committee',
-      (data, { _id, name }) => {
-        const newData = {
-          ...data,
-        }; // A copy of the cached data.
-        const membersControl = newData.form.get(
-          'committeesMembers'
-        ) as FormArray; // Get the committeesMembers control
-
-        newData.membersName = [
-          ...newData.membersName.filter((memberName) => memberName !== name),
-          name,
-        ]; // Prevent duplication in name
+      (form, { _id, name }) => {
+        const membersControl = form.get('committesMembers') as FormArray; // Get the committesMembers control
 
         const members = [
           ...(membersControl.value as string[]).filter((id) => id !== _id),
@@ -185,49 +206,89 @@ export class CreateCommitteeComponent implements OnInit {
 
         for (const member of members) {
           membersControl.push(new FormControl(member));
-        } // Set the committeesMembers control to the new array.
+        } // Set the committesMembers control to the new array.
 
-        newData.form.patchValue({
-          viceChair: name,
-          viceChairId: _id,
-        }); // Patch cached form with new members information.
-
-        return newData;
+        return form;
       }
     );
 
+    // Navigate the user to '/list/mca-employee?select=true'
     this.router.navigate(['/list/mca-employee'], {
       queryParams: { select: true },
     });
   }
 
-  onSave(): void {
-    this.cacheService.cache<FormGroup, boolean>(
+  /**
+   * This function get called when 'Select Department' button is clicked.
+   * Caching the form and then redirect the user to '/list/department?select=true'.
+   * After the user had selected the department, a callback function will get called and update the cached data with the selected information.
+   */
+  onSelectDepartment() {
+    // Caching and select callback handling
+    this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
       this.form,
-      null,
-      (cachedForm, selected) => {
-        const value = this.form.value;
+      '/create/committee',
+      (form, { _id, name }) => {
+        form.patchValue({
+          departmentInExcecutive: name,
+        }); // Patch cached form with new department information.
 
-        value.published = selected; // Set published to selected mode
-        value.committeesMembers = (value.committeesMembers as string[]).reduce(
-          (result, currentID) => {
-            if (result.length) {
-              return `${result}&&&${currentID}`;
-            }
-            return currentID;
-          },
-          ''
-        ); // Change the array of IDs to a single string for POST request
-
-        this.apiService.createCommittee(value).subscribe(() => {
-          this.router.navigate(['/list/committee']);
-        });
-
-        return cachedForm;
+        return form;
       }
     );
 
-    this.router.navigate(['/publish-status/committee']);
+    // Navigate the user to '/list/department?select=true'
+    this.router.navigate(['/list/department'], {
+      queryParams: { select: true },
+    });
+  }
+
+  /**
+   * This function get called when 'Save Committee' or 'Save as Draft' buttons is clicked.
+   */
+  onSave(published: boolean): void {
+    this.form.get('published').setValue(published);
+    this.form.get('datePublished').setValue(new Date().toISOString());
+
+    const value = this.form.value as CommitteePost;
+
+    // Transform form committesMembers ID array into a single ID string for API parameter.
+    value.committesMembers =
+      `${value.chairId}&&&${value.viceChairId}` +
+      ((value.committesMembers as unknown) as string[]).reduce(
+        (result, currentMemberId) => `${result}&&&${currentMemberId}`,
+        ''
+      );
+
+    this.committeeService.postCommittee(value).subscribe(() => {
+      this.router.navigate(['/list/committee']);
+    });
+  }
+
+  /**
+   * This function get called when 'Delete' button at member list is clicked
+   */
+  onMemberDelete(memberId: string) {
+    const { chairId, viceChairId, committesMembers } = this.form
+      .value as CommitteeForm;
+
+    if (memberId === chairId) {
+      this.form.get('chairId').setValue('');
+      this.form.get('Chairname').setValue('');
+    }
+
+    if (memberId === viceChairId) {
+      this.form.get('viceChairId').setValue('');
+      this.form.get('viceChair').setValue('');
+    }
+
+    const formIndex = committesMembers.findIndex((id) => id === memberId);
+    (this.form.get('committesMembers') as FormArray).removeAt(formIndex);
+
+    const index = this.membersName.findIndex(
+      (member) => member._id === memberId
+    );
+    this.membersName.splice(index, 1);
   }
 }

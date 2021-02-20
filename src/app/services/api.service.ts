@@ -1,12 +1,12 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, timeout } from 'rxjs/operators';
 
 import { Committee, CommitteePost } from '../shared/types/committee';
-import { DepartmentPost } from '../shared/types/department';
+import { Department, DepartmentPost } from '../shared/types/department';
 import { Motion, MotionPost } from '../shared/types/motion';
-import { WardConSubPost } from '../shared/types/ward-con-sub';
+import { WardConSub, WardConSubPost } from '../shared/types/ward-con-sub';
 
 interface ApiResponse<T> {
   message: T;
@@ -18,57 +18,88 @@ interface ApiResponse<T> {
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl = 'https://web.jonikisecurity.com/';
+  private _baseUrl = 'https://web.jonikisecurity.com/';
+  private _timeout = 15000;
 
   constructor(private http: HttpClient) {}
 
   // POSTs
-  createCommittee(committee: CommitteePost) {
+  private _postRequest<T, U>(endpoint: string, data: T) {
     return this.http
-      .post(this.baseUrl + 'commitee/create', undefined, {
+      .post<ApiResponse<U>>(this._baseUrl + endpoint, undefined, {
         params: {
-          ...committee,
+          ...(data as any),
         },
       })
-      .pipe(catchError((error: HttpErrorResponse) => throwError(error)));
+      .pipe(
+        timeout(this._timeout),
+        catchError((error: HttpErrorResponse) => throwError(error))
+      );
+  }
+
+  createCommittee(committee: CommitteePost) {
+    return this._postRequest<CommitteePost, Committee>(
+      'commitee/create',
+      committee
+    );
   }
 
   createMotion(motion: MotionPost) {
-    return this.http
-      .post(this.baseUrl + 'motion/create', undefined, {
-        params: {
-          ...motion,
-        },
-      })
-      .pipe(catchError((error: HttpErrorResponse) => throwError(error)));
+    return this._postRequest<MotionPost, Motion>('motion/create', motion);
   }
 
   createWardConSub(data: WardConSubPost) {
-    return this.http.post(this.baseUrl + 'wardsConSub/create', undefined, {
-      params: {
-        ...data,
-      },
-    });
+    return this._postRequest<WardConSubPost, WardConSub>(
+      'wardsConSub/create',
+      data
+    );
   }
 
   createDepartment(department: DepartmentPost) {
-    return this.http.post(this.baseUrl + 'department/create', undefined, {
-      params: {
-        ...department,
-      },
-    });
+    return this._postRequest<DepartmentPost, Department>(
+      'department/create',
+      department
+    );
   }
 
   // GETs
+  private _getRequest<T>(endpoint: string) {
+    return this.http.get<ApiResponse<T[]>>(this._baseUrl + endpoint).pipe(
+      timeout(this._timeout),
+      catchError((error: HttpErrorResponse) => throwError(error))
+    );
+  }
+
   getCommittees() {
-    return this.http
-      .get<ApiResponse<Committee[]>>(this.baseUrl + 'commitee/getAllCommitees')
-      .pipe(catchError((error: HttpErrorResponse) => throwError(error)));
+    return this._getRequest<Committee>('commitee/getAllCommitees');
   }
 
   getMotions() {
+    return this._getRequest<Motion>('motion/getAllMotions');
+  }
+
+  getDepartments() {
+    return this._getRequest<Department>('department/getAllDepartments');
+  }
+
+  getWardConSub() {
+    return this._getRequest<WardConSub>('wardsConSub/getAllGovInfo');
+  }
+
+  //DELETEs
+  deleteMotion(id: string) {
     return this.http
-      .get<ApiResponse<Motion[]>>(this.baseUrl + 'motion/getAllMotions')
-      .pipe(catchError((error: HttpErrorResponse) => throwError(error)));
+      .delete<ApiResponse<Motion>>(
+        this._baseUrl + 'motion/deleteSpecificMotion',
+        {
+          params: {
+            id,
+          },
+        }
+      )
+      .pipe(
+        timeout(this._timeout),
+        catchError((error: HttpErrorResponse) => throwError(error))
+      );
   }
 }

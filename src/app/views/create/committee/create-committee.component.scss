@@ -45,6 +45,12 @@
   justify-content: space-between;
 }
 
+.btn-delete {
+  margin-left: 10px;
+  line-height: 25px;
+  padding: 0 6px;
+}
+
 .btn-draft {
   color: #008000;
 }
@@ -67,7 +73,7 @@
 :host ::ng-deep {
   .mat-input-element {
     margin-bottom: 12px;
-    color: gray;
+    color: black;
   }
 
   .mat-form-field-infix {

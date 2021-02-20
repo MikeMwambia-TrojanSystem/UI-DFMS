@@ -5,8 +5,8 @@ export class CommitteePost {
   chairId: string;
   viceChair: string;
   viceChairId: string;
-  committeesMembers: string;
-  departmentInExecutive: string;
+  committesMembers: string;
+  departmentInExcecutive: string;
   approverId: string;
   account: string;
   datePublished: string;
@@ -15,7 +15,7 @@ export class CommitteePost {
 }
 
 export class Committee {
-  committeesMembers: string[];
+  committesMembers: string[];
   _id: string;
   commiteeSignature: string;
   name: string;
@@ -27,7 +27,7 @@ export class Committee {
     name: string;
     id: string;
   };
-  departmentInExecutive: string;
+  departmentInExcecutive: string;
   approvingAccount: {
     approverId: string;
     account: string;

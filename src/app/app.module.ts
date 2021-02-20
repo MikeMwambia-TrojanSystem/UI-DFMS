@@ -89,6 +89,7 @@ import { OrderPaperItemComponent } from './components/OrderPaperItem/order-paper
 import { ReportItemComponent } from './components/ReportItem/report-item.component';
 import { VerifyButtonComponent } from './components/VerifyButton/verify-button.component';
 import { StatementItemComponent } from './components/StatementItem/statement-item.component';
+import { ListDepartmentComponent } from './views/list/department/list-department.component';
 
 @NgModule({
   declarations: [
@@ -169,6 +170,7 @@ import { StatementItemComponent } from './components/StatementItem/statement-ite
     ListTentativeBusinesssComponent,
     ListSubcountyComponent,
     PublishStatusComponent,
+    ListDepartmentComponent,
   ],
   imports: [
     BrowserModule,
