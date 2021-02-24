@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import _ from 'lodash';
 
@@ -12,17 +12,23 @@ import { McaEmployee } from 'src/app/shared/types/mca-employee';
   styleUrls: ['./list-mca-employee.component.scss'],
 })
 export class ListMcaEmployeeComponent implements OnInit {
+  private _cacheId: string;
+  private _state: string;
   mcaEmployees: McaEmployee[] = [];
   selectable = false; // Whether the list is selectable
 
   constructor(
     private route: ActivatedRoute,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    // Get selectable state from query url
-    this.selectable = this.route.snapshot.queryParams.select || false;
+    // Get selectable state, cache emit id, state from query url
+    const queryParams = this.route.snapshot.queryParams;
+    this.selectable = queryParams.select || false;
+    this._cacheId = queryParams.id;
+    this._state = queryParams.state;
 
     // Get Mca-Employees data from resolver
     this.route.data
@@ -32,7 +38,58 @@ export class ListMcaEmployeeComponent implements OnInit {
       });
   }
 
-  onSelect(employee: McaEmployee): void {
-    this.cacheService.emit({ _id: employee._id, name: employee.name });
+  onSelect({ _id, name }: McaEmployee): void {
+    if (this._cacheId) {
+      this.cacheService.emit(this._cacheId, {
+        _id,
+        name,
+      });
+    }
+  }
+
+  onCreateNewEmployee() {
+    this.cacheService.cache(
+      'LIST_NEW_EMPLOYEE',
+      null,
+      this.router.createUrlTree(['/list/mca-employee'], {
+        queryParams: {
+          select: this.selectable,
+          id: this._cacheId,
+          state: this._state,
+        },
+      }),
+      () => {
+        return null;
+      }
+    );
+
+    this.router.navigate(['/create/employee'], {
+      queryParams: {
+        id: 'LIST_NEW_EMPLOYEE',
+      },
+    });
+  }
+
+  onCreateNewMca() {
+    this.cacheService.cache(
+      'LIST_NEW_MCA',
+      null,
+      this.router.createUrlTree(['/list/mca-employee'], {
+        queryParams: {
+          select: this.selectable,
+          id: this._cacheId,
+          state: this._state,
+        },
+      }),
+      () => {
+        return null;
+      }
+    );
+
+    this.router.navigate(['/create/mca'], {
+      queryParams: {
+        id: 'LIST_NEW_MCA',
+      },
+    });
   }
 }

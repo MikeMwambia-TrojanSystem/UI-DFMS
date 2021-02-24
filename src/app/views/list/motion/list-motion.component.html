@@ -2,11 +2,17 @@
   <app-center-card>
     <h1 class="title">Motions</h1>
     <app-search-bar></app-search-bar>
-    <div>
-      <app-info-item *ngFor="let motion of motions" [title]="motion.department" [date]="motion.datePublished"
-        [subjects]="[motion.relatedTo]" [sponsored]="motion.sponsoredBy.sponsorName" class="item"
-        [selectable]="selectable" [state]="state" [editUrl]="'/generate/motion/' + motion._id"
-        (delete)="onDelete(motion._id)"></app-info-item>
+    <div *ngIf="motions.length">
+      <app-info-item *ngFor="let motion of motions" [title]="motion.content" [date]="motion.datePublished"
+        [subjects]="[motion.relatedTo]" [department]="motion.department" [sponsored]="motion.sponsoredBy.sponsorName"
+        class="item" [selectable]="selectable" [state]="motion.publishState"
+        [editUrl]="'/generate/motion/' + motion._id" (delete)="onDelete(motion._id)"></app-info-item>
+    </div>
+    <div *ngIf="!motions.length" class="list-no-value">
+      <p>No Motions Listed!</p>
+      <p (click)="onCreateNew()" class="new">
+        Create Motion
+      </p>
     </div>
   </app-center-card>
 </app-background>

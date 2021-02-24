@@ -13,16 +13,30 @@ export class ListItemComponent implements OnInit {
   @Input() selectable: boolean;
   @Input() subcounty: string;
   @Input() dateSub: string;
+  @Input() published: boolean;
+  @Input() editUrl: string;
+  @Output() delete = new EventEmitter<void>();
   @Output() select = new EventEmitter<void>();
   dateObj: Date;
+  stateExpanded: string;
 
   ngOnInit() {
-    if (this.isSubDate) {
+    if (this.isSubDate && this.subtitle) {
       this.dateObj = new Date(this.subtitle);
+    }
+
+    if (this.published) {
+      this.stateExpanded = 'Published';
+    } else {
+      this.stateExpanded = 'Draft';
     }
   }
 
   onSelect() {
     this.select.emit();
+  }
+
+  onDelete() {
+    this.delete.emit();
   }
 }

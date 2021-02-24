@@ -28,7 +28,7 @@ export class DepartmentService {
         iif(
           () => this._fetched,
           of(departments),
-          this.fetchDepartments().pipe(map(({ message }) => message))
+          this.fetchDepartments().pipe(map((result) => result))
         )
       )
     );
@@ -41,9 +41,7 @@ export class DepartmentService {
           () => this._fetched,
           of(departments.find((department) => department._id === id)),
           this.fetchDepartments().pipe(
-            map(({ message }) =>
-              message.find((department) => department._id === id)
-            )
+            map((result) => result.find((department) => department._id === id))
           )
         )
       )
@@ -53,9 +51,12 @@ export class DepartmentService {
   fetchDepartments() {
     return this.apiService.getDepartments().pipe(
       tap(({ message }) => {
-        this._fetched = true;
-        this.departments.next(message);
-      })
+        if (Array.isArray(message)) {
+          this._fetched = true;
+          this.departments.next(message);
+        }
+      }),
+      map(({ message }) => (Array.isArray(message) ? message : []))
     );
   }
 

@@ -6,7 +6,11 @@
     <span class="related">Related to
       <span class="highlight" *ngFor="let sub of subjects; let i = index">{{
         (i === 0 ? "" : i + 1 === subjects.length ? " and " : ", ") + sub
-        }}</span></span>
+        }}</span>
+    </span>
+    <span class="department" *ngIf="department">Department
+      <span class="highlight">{{department}}</span>
+    </span>
     <span class="sponsored" *ngIf="sponsored">Sponsored by
       <span class="highlight">{{ sponsored }}{{ ward ? "(" + ward + ")" : null }}</span></span>
     <div class="status" *ngIf="status">

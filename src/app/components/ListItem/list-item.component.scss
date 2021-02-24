@@ -3,7 +3,7 @@
   width: 100%;
   padding: 15px 20px;
   display: flex;
-  align-items: center;
+  flex-direction: column;
   margin: 30px 0;
 
   &:first-child {
@@ -22,9 +22,15 @@
     }
 
     .btn {
-      color:#008000;
+      color: #008000;
     }
   }
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
 .profile-pic {
@@ -33,6 +39,9 @@
 }
 
 .info {
+  display: flex;
+  flex-direction: column;
+
   &-title {
     font-size: 16px;
     font-weight: 600;
@@ -46,4 +55,21 @@
 
 .btn {
   margin-left: auto;
+}
+
+.state {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+
+  .dot {
+    padding: 4px;
+    border-radius: 100%;
+    background: gray;
+    margin-right: 5px;
+  }
+
+  .label {
+    font-style: italic;
+  }
 }

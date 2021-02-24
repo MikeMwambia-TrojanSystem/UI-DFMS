@@ -5,7 +5,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { CommitteeService } from 'src/app/services/committee.service';
 import { Committee } from 'src/app/shared/types/committee';
 
@@ -22,6 +22,14 @@ export class ListCommitteeResolver implements Resolve<Committee[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Committee[]> | Promise<Committee[]> | Committee[] {
-    return this.commiteeService.getCommittees().pipe(take(1));
+    const queryState = route.queryParams.state;
+    const published = queryState ? queryState === 'published' : true;
+
+    return this.commiteeService.getCommittees().pipe(
+      take(1),
+      map((committees) =>
+        committees.filter((committee) => committee.published === published)
+      )
+    );
   }
 }

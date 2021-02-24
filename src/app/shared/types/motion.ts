@@ -24,14 +24,13 @@ export class Motion {
   department: string;
   resolution: string;
   relatedTo: string;
-  orderPaperId: string;
   assemblyId: string;
   approvingAccount: {
     name: string;
     id: string;
   };
   datePublished: string;
-  published: true;
+  publishState: 'public' | 'private' | 'draft';
   createdAt: string;
   updatedAt: string;
 }

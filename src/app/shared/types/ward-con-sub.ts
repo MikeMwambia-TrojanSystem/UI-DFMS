@@ -7,6 +7,7 @@ export class WardConSub {
   assemblyId: string;
   type: 'subcounty' | 'constituency' | 'ward';
   date: string;
+  published: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -18,6 +19,7 @@ export class WardConSubPost {
   assemblyId: string;
   subCounty?: string;
   constituency?: string;
+  published: boolean;
 }
 
 export class Ward extends WardConSub {

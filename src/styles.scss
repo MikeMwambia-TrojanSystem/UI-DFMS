@@ -41,13 +41,22 @@ textarea {
   margin-top: 10px;
 
   &-btn {
-    color :#008000;
+    color: #008000;
     width: 80px;
     border-radius: 8px;
   }
 
   .edit {
     background: rgba(#008000, 0.1);
+  }
+}
+
+.list-no-value {
+  text-align: center;
+
+  .new {
+    color: #008000;
+    cursor: pointer;
   }
 }
 

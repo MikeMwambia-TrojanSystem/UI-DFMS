@@ -12,6 +12,9 @@ import { Motion } from 'src/app/shared/types/motion';
   styleUrls: ['./motion-generate.component.scss'],
 })
 export class MotionGenerateComponent implements OnInit {
+  private _cacheId: string;
+  private _mode: 'editing' | 'creating';
+  private _motionId: string;
   form = new FormGroup({
     motionSignature: new FormControl(''),
     content: new FormControl('', Validators.required),
@@ -35,15 +38,12 @@ export class MotionGenerateComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Rehydrate the cached form data if there's any
-    const cached = this.cacheService.rehydrate<FormGroup>('GENERATE_MOTION');
-
-    if (cached) {
-      this.form = cached;
-    }
-
     // Populate motion data from resolver using param motionId
-    if (this.route.snapshot.params['id']) {
+    const motionId = this.route.snapshot.params.id;
+    if (motionId) {
+      this._mode = 'editing';
+      this._motionId = motionId;
+
       this.route.data
         .pipe(take(1))
         .subscribe(({ motion }: { motion: Motion }) => {
@@ -54,7 +54,19 @@ export class MotionGenerateComponent implements OnInit {
             sponsorId,
           });
         });
+    } else {
+      this._mode = 'creating';
     }
+
+    // Rehydrate the cached form data if there's any
+    const cached = this.cacheService.rehydrate<FormGroup>('GENERATE_MOTION');
+
+    if (cached) {
+      this.form = cached;
+    }
+
+    // Get cache id from query url
+    this._cacheId = this.route.snapshot.queryParams.id;
   }
 
   /**
@@ -67,7 +79,11 @@ export class MotionGenerateComponent implements OnInit {
     this.cacheService.cache<FormGroup, { name: string; _id: string }>(
       'GENERATE_MOTION',
       this.form,
-      '/generate/motion',
+      this.router.createUrlTree(['/generate/motion', this._motionId], {
+        queryParams: {
+          id: this._cacheId,
+        },
+      }),
       (form, { name, _id }) => {
         form.patchValue({
           sponsorName: name,
@@ -82,6 +98,8 @@ export class MotionGenerateComponent implements OnInit {
     this.router.navigate(['/list/mca-employee'], {
       queryParams: {
         select: true,
+        id: 'GENERATE_MOTION',
+        state: 'published',
       },
     });
   }
@@ -96,8 +114,13 @@ export class MotionGenerateComponent implements OnInit {
     this.cacheService.cache<FormGroup, { name: string; _id: string }>(
       'GENERATE_MOTION',
       this.form,
-      '/generate/motion',
+      this.router.createUrlTree(['/generate/motion', this._motionId], {
+        queryParams: {
+          id: this._cacheId,
+        },
+      }),
       (form, { name, _id }) => {
+        console.log(name);
         form.patchValue({
           department: name,
         }); // Patch form with selected department
@@ -110,6 +133,8 @@ export class MotionGenerateComponent implements OnInit {
     this.router.navigate(['/list/department'], {
       queryParams: {
         select: true,
+        id: 'GENERATE_MOTION',
+        state: 'published',
       },
     });
   }
@@ -132,17 +157,34 @@ export class MotionGenerateComponent implements OnInit {
     const post = (state: 'public' | 'private' | 'draft') => {
       const value = this.form.value;
 
-      value.datePublished = new Date().toISOString();
-      value.published = state === 'public';
-      value.motionSignature = new Date().toISOString();
+      value.published = state;
 
-      this.motionService.postMotion(value).subscribe(() => {
-        this.router.navigate(['/list/motion'], {
-          queryParams: {
-            state: state,
-          },
+      if (this._mode === 'creating') {
+        value.datePublished = new Date().toISOString();
+        value.motionSignature = new Date().toISOString();
+
+        this.motionService.postMotion(value).subscribe(() => {
+          if (this._cacheId) {
+            this.cacheService.emit(this._cacheId, null);
+          } else {
+            this.router.navigate(['/list/motion'], {
+              queryParams: {
+                state: state,
+              },
+            });
+          }
         });
-      });
+      } else {
+        value.id = this._motionId;
+
+        this.motionService.updateMotion(value).subscribe(() => {
+          this.router.navigate(['/list/motion'], {
+            queryParams: {
+              state: state,
+            },
+          });
+        });
+      }
     };
 
     // If 'Publish' is clicked
@@ -160,7 +202,11 @@ export class MotionGenerateComponent implements OnInit {
       );
 
       // Navigate the user to '/publish-status'
-      this.router.navigate(['/publish-status']);
+      this.router.navigate(['/publish-status'], {
+        queryParams: {
+          id: 'GENERATE_MOTION',
+        },
+      });
     } else {
       // If 'Save as Draft' is clicked
       post('draft');

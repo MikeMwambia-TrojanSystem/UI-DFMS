@@ -7,6 +7,7 @@ export class Department {
   assemblyId: string;
   type: string;
   date: string;
+  published: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -14,4 +15,5 @@ export class Department {
 export class DepartmentPost {
   name: string;
   assemblyId: string;
+  published: boolean;
 }

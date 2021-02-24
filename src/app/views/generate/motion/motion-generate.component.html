@@ -31,11 +31,9 @@
             : 'Select Sponsor'
         " class="custom-btn standalone" (buttonClick)="onSelectSponsor()"></app-custom-button>
       <div class="actions">
-        <a [routerLink]="['/list/motion']" [queryParams]="{ state: 'draft' }">
-          <button mat-button type="button" class="btn-draft" [disabled]="form.invalid" (click)="onSave(false)">
-            Save as Draft
-          </button>
-        </a>
+        <button mat-button type="button" class="btn-draft" [disabled]="form.invalid" (click)="onSave(false)">
+          Save as Draft
+        </button>
         <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid" (click)="onSave(true)">
           Publish Motion
         </button>

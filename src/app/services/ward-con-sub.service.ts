@@ -44,8 +44,8 @@ export class WardConSubService {
           of(wards),
           this.fetchWardConSubs().pipe(
             map(
-              ({ message }) =>
-                message.filter((item) => item.type === 'ward') as Ward[]
+              (result) =>
+                result.filter((item) => item.type === 'ward') as Ward[]
             )
           )
         )
@@ -60,10 +60,8 @@ export class WardConSubService {
           () => this._fetched,
           of(subCounties),
           this.fetchWardConSubs().pipe(
-            map(({ message }) => {
-              console.log(message);
-              console.log(message.filter((item) => item.type === 'subcounty'));
-              return message.filter(
+            map((result) => {
+              return result.filter(
                 (item) => item.type === 'subcounty'
               ) as SubCounty[];
             })
@@ -81,10 +79,54 @@ export class WardConSubService {
           of(constituencies),
           this.fetchWardConSubs().pipe(
             map(
-              ({ message }) =>
-                message.filter(
+              (result) =>
+                result.filter(
                   (item) => item.type === 'constituency'
                 ) as Constituency[]
+            )
+          )
+        )
+      )
+    );
+  }
+
+  getWard(id: string): Observable<Ward> {
+    return this._wards.pipe(
+      switchMap((wards) =>
+        iif(
+          () => this._fetched,
+          of(wards.find((ward) => ward._id === id)),
+          this.fetchWardConSubs().pipe(
+            map((result) => result.find((item) => item._id === id) as Ward)
+          )
+        )
+      )
+    );
+  }
+
+  getSubCounty(id: string): Observable<SubCounty> {
+    return this._subCounties.pipe(
+      switchMap((subCounties) =>
+        iif(
+          () => this._fetched,
+          of(subCounties.find((subCounty) => subCounty._id === id)),
+          this.fetchWardConSubs().pipe(
+            map((result) => result.find((item) => item._id === id) as SubCounty)
+          )
+        )
+      )
+    );
+  }
+
+  getConstituency(id: string): Observable<Constituency> {
+    return this._constituencies.pipe(
+      switchMap((constituencies) =>
+        iif(
+          () => this._fetched,
+          of(constituencies.find((constituency) => constituency._id === id)),
+          this.fetchWardConSubs().pipe(
+            map(
+              (result) => result.find((item) => item._id === id) as Constituency
             )
           )
         )
@@ -95,22 +137,25 @@ export class WardConSubService {
   fetchWardConSubs() {
     return this.apiService.getWardConSub().pipe(
       tap(({ message }) => {
-        this._fetched = true;
+        if (Array.isArray(message)) {
+          this._fetched = true;
 
-        let filtered = {
-          ward: [],
-          subcounty: [],
-          constituency: [],
-        };
+          let filtered = {
+            ward: [],
+            subcounty: [],
+            constituency: [],
+          };
 
-        for (const item of message) {
-          filtered[item.type].push(item);
+          for (const item of message) {
+            filtered[item.type].push(item);
+          }
+
+          this._wards.next(filtered.ward);
+          this._subCounties.next(filtered.subcounty);
+          this._constituencies.next(filtered.constituency);
         }
-
-        this._wards.next(filtered.ward);
-        this._subCounties.next(filtered.subcounty);
-        this._constituencies.next(filtered.constituency);
-      })
+      }),
+      map(({ message }) => (Array.isArray(message) ? message : []))
     );
   }
 

@@ -5,7 +5,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { MotionService } from 'src/app/services/motion.service';
 import { Motion } from 'src/app/shared/types/motion';
 
@@ -22,6 +22,12 @@ export class ListMotionResolver implements Resolve<Motion[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Motion[]> | Promise<Motion[]> | Motion[] {
-    return this.motionService.getMotions().pipe(take(1));
+    const publishState = route.queryParams.state || 'public';
+    return this.motionService.getMotions().pipe(
+      take(1),
+      map((motions) =>
+        motions.filter((motion) => motion.publishState === publishState)
+      )
+    );
   }
 }

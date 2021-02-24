@@ -28,7 +28,7 @@ export class CommitteeService {
         iif(
           () => this._fetched,
           of(committees),
-          this.fetchCommittees().pipe(map(({ message }) => message))
+          this.fetchCommittees().pipe(map((result) => result))
         )
       )
     );
@@ -41,9 +41,7 @@ export class CommitteeService {
           () => this._fetched,
           of(committees.find((committee) => committee._id === id)),
           this.fetchCommittees().pipe(
-            map(({ message }) =>
-              message.find((committee) => committee._id === id)
-            )
+            map((result) => result.find((committee) => committee._id === id))
           )
         )
       )
@@ -53,9 +51,12 @@ export class CommitteeService {
   fetchCommittees() {
     return this.apiService.getCommittees().pipe(
       tap(({ message }) => {
-        this._fetched = true;
-        this._committees.next(message);
-      })
+        if (Array.isArray(message)) {
+          this._fetched = true;
+          this._committees.next(message);
+        }
+      }),
+      map(({ message }) => (Array.isArray(message) ? message : []))
     );
   }
 

@@ -1,10 +1,11 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { throwError } from 'rxjs';
-import { catchError, timeout } from 'rxjs/operators';
+import { of, throwError } from 'rxjs';
+import { catchError, map, tap, timeout } from 'rxjs/operators';
 
 import { Committee, CommitteePost } from '../shared/types/committee';
 import { Department, DepartmentPost } from '../shared/types/department';
+import { McaEmployee } from '../shared/types/mca-employee';
 import { Motion, MotionPost } from '../shared/types/motion';
 import { WardConSub, WardConSubPost } from '../shared/types/ward-con-sub';
 
@@ -14,12 +15,17 @@ interface ApiResponse<T> {
   status: number;
 }
 
+const errorHandler = (error: HttpErrorResponse) => {
+  alert('ERROR');
+  return throwError(error);
+};
+
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
   private _baseUrl = 'https://web.jonikisecurity.com/';
-  private _timeout = 15000;
+  private _timeout = 60 * 1000;
 
   constructor(private http: HttpClient) {}
 
@@ -31,10 +37,7 @@ export class ApiService {
           ...(data as any),
         },
       })
-      .pipe(
-        timeout(this._timeout),
-        catchError((error: HttpErrorResponse) => throwError(error))
-      );
+      .pipe(timeout(this._timeout), catchError(errorHandler));
   }
 
   createCommittee(committee: CommitteePost) {
@@ -64,10 +67,9 @@ export class ApiService {
 
   // GETs
   private _getRequest<T>(endpoint: string) {
-    return this.http.get<ApiResponse<T[]>>(this._baseUrl + endpoint).pipe(
-      timeout(this._timeout),
-      catchError((error: HttpErrorResponse) => throwError(error))
-    );
+    return this.http
+      .get<ApiResponse<T[] | string>>(this._baseUrl + endpoint)
+      .pipe(timeout(this._timeout), catchError(errorHandler));
   }
 
   getCommittees() {
@@ -86,6 +88,10 @@ export class ApiService {
     return this._getRequest<WardConSub>('wardsConSub/getAllGovInfo');
   }
 
+  getMcaEmployee() {
+    return this._getRequest<McaEmployee>('mcaProfile/getAllMca');
+  }
+
   //DELETEs
   deleteMotion(id: string) {
     return this.http
@@ -97,9 +103,22 @@ export class ApiService {
           },
         }
       )
-      .pipe(
-        timeout(this._timeout),
-        catchError((error: HttpErrorResponse) => throwError(error))
-      );
+      .pipe(timeout(this._timeout), catchError(errorHandler));
+  }
+
+  //UPDATEs
+  private _updateRequest<T, U>(endpoint: string, data: T) {
+    return this.http
+      .put<ApiResponse<U>>(this._baseUrl + endpoint, undefined, {
+        params: data as any,
+      })
+      .pipe(timeout(this._timeout), catchError(errorHandler));
+  }
+
+  updateMotion(motion: MotionPost) {
+    return this._updateRequest<MotionPost, Motion>(
+      'motion/updateSpecificMotion',
+      motion
+    ).pipe(map(({ message }) => message));
   }
 }

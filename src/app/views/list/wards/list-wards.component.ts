@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import _ from 'lodash';
 
 import { Ward } from 'src/app/shared/types/ward-con-sub';
+import { CacheService } from 'src/app/services/cache.service';
 
 @Component({
   selector: 'app-list-wards',
@@ -11,18 +12,48 @@ import { Ward } from 'src/app/shared/types/ward-con-sub';
   styleUrls: ['./list-wards.component.scss'],
 })
 export class ListWardsComponent implements OnInit {
+  private _cacheId: string;
   wards: Ward[] = [];
   selectable = false; // Whether the list is selectable
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private cacheService: CacheService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // Get selectable state from url query
-    this.selectable = this.route.snapshot.queryParams.select || false;
+    // Get selectable state, cache emit id, return url from query url
+    const queryParams = this.route.snapshot.queryParams;
+    this.selectable = queryParams.select || false;
+    this._cacheId = queryParams.id;
 
     // Get Wards data from resolver
     this.route.data.pipe(take(1)).subscribe(({ wards }: { wards: Ward[] }) => {
       this.wards = _.orderBy(wards, 'createdAt', 'desc');
+    });
+  }
+
+  onSelect({ _id, name }: Ward) {
+    this.cacheService.emit(this._cacheId, { _id, name });
+  }
+
+  onCreateNew() {
+    this.cacheService.cache(
+      'LIST_NEW_WARD',
+      null,
+      this.router.createUrlTree(['/list/wards'], {
+        queryParams: { select: this.selectable, id: this._cacheId },
+      }),
+      () => {
+        return null;
+      }
+    );
+
+    this.router.navigate(['/create/wards'], {
+      queryParams: {
+        id: 'LIST_NEW_WARD',
+      },
     });
   }
 }

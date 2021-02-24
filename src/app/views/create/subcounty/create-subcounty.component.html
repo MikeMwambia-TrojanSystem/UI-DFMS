@@ -7,9 +7,14 @@
         <input matInput formControlName="name" placeholder="Andrew Mary" />
         <mat-error *ngIf="form.get('name').hasError('required')">Please enter subcounty name!</mat-error>
       </mat-form-field>
-      <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid" (click)="onSave()">
-        Save
-      </button>
+      <div class="actions">
+        <button mat-button type="button" class="btn-draft" [disabled]="form.invalid" (click)="onSave(false)">
+          Save as Draft
+        </button>
+        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid" (click)="onSave(true)">
+          Save
+        </button>
+      </div>
     </form>
   </app-center-card>
 </app-background>

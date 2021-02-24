@@ -16,6 +16,7 @@ export class InfoItemComponent implements OnInit {
   @Input() status: string;
   @Input() state: string;
   @Input() editUrl: string;
+  @Input() department: string;
   @Output() delete = new EventEmitter<void>();
   stateExpanded: string;
 

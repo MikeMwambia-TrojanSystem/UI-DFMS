@@ -2,10 +2,17 @@
   <app-center-card>
     <h1 class="title">Subcounty List</h1>
     <app-search-bar></app-search-bar>
-    <div>
+    <div *ngIf="subCounties.length">
       <app-list-item *ngFor="let subcounty of subCounties" [title]="subcounty.name" [subtitle]="subcounty.date"
-        [isSubDate]="true" [dateSub]="'Published'" [selectable]="selectable" (select)="onSelect(subcounty)">
+        [isSubDate]="true" [dateSub]="'Published'" [selectable]="selectable" (select)="onSelect(subcounty)"
+        [editUrl]="'/create/subcounty/' + subcounty._id">
       </app-list-item>
+    </div>
+    <div *ngIf="!subCounties.length" class="list-no-value">
+      <p>No Sub Counties Listed!</p>
+      <p (click)="onCreateNew()" class="new">
+        Create Sub County
+      </p>
     </div>
   </app-center-card>
 </app-background>

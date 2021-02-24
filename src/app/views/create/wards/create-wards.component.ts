@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 
-import { ApiService } from 'src/app/services/api.service';
 import { CacheService } from 'src/app/services/cache.service';
 import { WardConSubService } from 'src/app/services/ward-con-sub.service';
+import { Ward } from 'src/app/shared/types/ward-con-sub';
 
 @Component({
   selector: 'app-create-wards',
@@ -12,6 +13,9 @@ import { WardConSubService } from 'src/app/services/ward-con-sub.service';
   styleUrls: ['./create-wards.component.scss'],
 })
 export class CreateWardsComponent implements OnInit {
+  private _cacheId: string;
+  private _mode: 'creating' | 'editing';
+  private _wardId: string;
   form = new FormGroup({
     name: new FormControl('', Validators.required),
     constituency: new FormControl('', Validators.required),
@@ -25,7 +29,8 @@ export class CreateWardsComponent implements OnInit {
   constructor(
     private wardConSubService: WardConSubService,
     private router: Router,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -35,20 +40,51 @@ export class CreateWardsComponent implements OnInit {
     if (cachedForm) {
       this.form = cachedForm;
     }
+
+    // Populate ward data from resolver using param id
+    const wardId = this.route.snapshot.params.id;
+
+    if (wardId) {
+      this._mode = 'editing';
+      this._wardId = wardId;
+
+      this.route.data.pipe(take(1)).subscribe(({ ward }: { ward: Ward }) => {
+        this.form.patchValue({
+          ...ward,
+        });
+      });
+    } else {
+      this._mode = 'creating';
+    }
+
+    // Get cached id from query url
+    this._cacheId = this.route.snapshot.queryParams.id;
   }
 
   /**
    * This function get called when 'Save' button is clicked.
    * Post the ward form data to backend.
    */
-  onSave() {
+  onSave(published: boolean) {
     const value = this.form.value;
 
-    value.date = new Date().toISOString();
+    value.published = published;
 
-    this.wardConSubService.postWardConSub(value, 'ward').subscribe(() => {
-      this.router.navigate(['/list/wards']);
-    });
+    if (this._mode === 'creating') {
+      value.date = new Date().toISOString();
+
+      this.wardConSubService.postWardConSub(value, 'ward').subscribe(() => {
+        if (this._cacheId) {
+          this.cacheService.emit(this._cacheId, null);
+        } else {
+          this.router.navigate(['/list/wards'], {
+            queryParams: {
+              state: published ? 'published' : 'draft',
+            },
+          });
+        }
+      });
+    }
   }
 
   /**
@@ -61,7 +97,11 @@ export class CreateWardsComponent implements OnInit {
     this.cacheService.cache<FormGroup, { name: string; _id: string }>(
       'CREATE_WARD',
       this.form,
-      '/create/wards',
+      this.router.createUrlTree(['/create/wards', this._wardId], {
+        queryParams: {
+          id: this._cacheId,
+        },
+      }),
       (form, { name, _id }) => {
         form.patchValue({
           constituency: name,
@@ -75,6 +115,7 @@ export class CreateWardsComponent implements OnInit {
     this.router.navigate(['/list/constituency'], {
       queryParams: {
         select: true,
+        id: 'CREATE_WARD',
       },
     });
   }
@@ -89,7 +130,11 @@ export class CreateWardsComponent implements OnInit {
     this.cacheService.cache<FormGroup, { name: string; _id: string }>(
       'CREATE_WARD',
       this.form,
-      '/create/wards',
+      this.router.createUrlTree(['/create/wards', this._wardId], {
+        queryParams: {
+          id: this._cacheId,
+        },
+      }),
       (form, { name, _id }) => {
         form.patchValue({
           subCounty: name,
@@ -103,6 +148,7 @@ export class CreateWardsComponent implements OnInit {
     this.router.navigate(['/list/subcounty'], {
       queryParams: {
         select: true,
+        id: 'CREATE_WARD',
       },
     });
   }

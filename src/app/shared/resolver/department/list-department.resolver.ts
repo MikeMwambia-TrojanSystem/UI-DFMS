@@ -5,7 +5,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { DepartmentService } from 'src/app/services/department.service';
 import { Department } from 'src/app/shared/types/department';
 
@@ -22,6 +22,14 @@ export class ListDepartmentResolver implements Resolve<Department[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Department[]> | Promise<Department[]> | Department[] {
-    return this.departmentService.getDepartments().pipe(take(1));
+    const queryState = route.queryParams.state;
+    const published = queryState ? queryState === 'published' : true;
+
+    return this.departmentService.getDepartments().pipe(
+      take(1)
+      // map((departments) =>
+      //   departments.filter((department) => department.published === published)
+      // )
+    );
   }
 }

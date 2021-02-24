@@ -2,10 +2,19 @@
   <app-center-card>
     <h1 class="title">MCA Lists</h1>
     <app-search-bar></app-search-bar>
-    <div>
-      <app-list-item *ngFor="let mcaEmployee of mcaEmployees" [title]="mcaEmployee.name" [subtitle]="mcaEmployee.ward"
-        [pic]="mcaEmployee.profilePic" [selectable]="selectable" [subcounty]="mcaEmployee.subcounty"
-        (select)="onSelect(mcaEmployee)"></app-list-item>
+    <div *ngIf="mcaEmployees.length">
+      <app-list-item *ngFor="let mcaEmployee of mcaEmployees" [title]="mcaEmployee.name"
+        [subtitle]="mcaEmployee.ward.wardName" [pic]="mcaEmployee.profilePic" [selectable]="selectable"
+        (select)="onSelect(mcaEmployee)" [editUrl]="'/'"></app-list-item>
+    </div>
+    <div *ngIf="!mcaEmployees.length" class="list-no-value">
+      <p>No Employees Listed!</p>
+      <p (click)="onCreateNewEmployee()" class="new">
+        Create Employee
+      </p>
+      <p (click)="onCreateNewMca()" class="new">
+        Create Mca
+      </p>
     </div>
   </app-center-card>
 </app-background>

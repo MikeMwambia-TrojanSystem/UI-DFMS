@@ -72,6 +72,15 @@ import { ListWardResolver } from './shared/resolver/ward-con-sub/list-ward.resol
 import { ListConstituencyResolver } from './shared/resolver/ward-con-sub/list-constituency.resolver';
 import { ListCommitteeResolver } from './shared/resolver/committee/list-committee.resolver';
 import { ListMcaEmployeeResolver } from './shared/resolver/mca-employee/list-mca-employee.resolver';
+import { CanActivateCommittee } from './shared/guard/committee/committee.guard';
+import { CommitteeResolver } from './shared/resolver/committee/committee.resolver';
+import { CanActivateConstituency } from './shared/guard/constituency/constituency.guard';
+import { ConstituencyResolver } from './shared/resolver/ward-con-sub/constituency.resolver';
+import { CanActivateDepartment } from './shared/guard/department/department.guard';
+import { DepartmentResolver } from './shared/resolver/department/department.resolver';
+import { CanActivateSubcounty } from './shared/guard/subcounty/subcounty.guard';
+import { CanActivateWard } from './shared/guard/ward/ward.guard';
+import { WardResolver } from './shared/resolver/ward-con-sub/ward.resolver';
 
 const routes: Routes = [
   // Login route
@@ -99,12 +108,55 @@ const routes: Routes = [
     path: 'create',
     children: [
       { path: 'committee', component: CreateCommitteeComponent },
-      { path: 'constituencies', component: CreateConstituenciesComponent },
+      {
+        path: 'committee/:id',
+        component: CreateCommitteeComponent,
+        canActivate: [CanActivateCommittee],
+        resolve: {
+          committee: CommitteeResolver,
+        },
+      },
+      {
+        path: 'constituencies',
+        component: CreateConstituenciesComponent,
+      },
+      {
+        path: 'constituencies/:id',
+        component: CreateConstituenciesComponent,
+        canActivate: [CanActivateConstituency],
+        resolve: {
+          constituency: ConstituencyResolver,
+        },
+      },
       { path: 'department', component: CreateDepartmentComponent },
+      {
+        path: 'department/:id',
+        component: CreateDepartmentComponent,
+        canActivate: [CanActivateDepartment],
+        resolve: {
+          constituency: DepartmentResolver,
+        },
+      },
       { path: 'employee', component: CreateEmployeeComponent },
       { path: 'mca', component: CreateMcaComponent },
       { path: 'subcounty', component: CreateSubcountyComponent },
+      {
+        path: 'subcounty/:id',
+        component: CreateSubcountyComponent,
+        canActivate: [CanActivateSubcounty],
+        resolve: {
+          constituency: DepartmentResolver,
+        },
+      },
       { path: 'wards', component: CreateWardsComponent },
+      {
+        path: 'wards/:id',
+        component: CreateWardsComponent,
+        canActivate: [CanActivateWard],
+        resolve: {
+          constituency: WardResolver,
+        },
+      },
     ],
   },
 

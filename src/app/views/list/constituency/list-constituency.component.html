@@ -2,9 +2,16 @@
   <app-center-card>
     <h1 class="title">Constituency List</h1>
     <app-search-bar></app-search-bar>
-    <div>
+    <div *ngIf="constituencies.length">
       <app-list-item *ngFor="let con of constituencies" [title]="con.name" [subtitle]="con.subCounty"
-        [selectable]="selectable" (select)="onSelect(con)"></app-list-item>
+        [selectable]="selectable" (select)="onSelect(con)" [editUrl]="'/create/constituencies/' + con._id">
+      </app-list-item>
+    </div>
+    <div *ngIf="!constituencies.length" class="list-no-value">
+      <p>No Constituencies Listed!</p>
+      <p (click)="onCreateNew()" class="new">
+        Create Constituency
+      </p>
     </div>
   </app-center-card>
 </app-background>

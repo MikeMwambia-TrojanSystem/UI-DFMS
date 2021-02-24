@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import _ from 'lodash';
 
@@ -11,17 +11,23 @@ import { Department } from 'src/app/shared/types/department';
   styleUrls: ['./list-department.component.scss'],
 })
 export class ListDepartmentComponent implements OnInit {
+  private _cacheId: string;
+  private _state: string;
   departments: Department[] = [];
   selectable: boolean;
 
   constructor(
     private route: ActivatedRoute,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    // Get selectable state from query url
-    this.selectable = this.route.snapshot.queryParams.select || false;
+    // Get selectable state, cache emit id, state from query url
+    const queryParams = this.route.snapshot.queryParams;
+    this.selectable = queryParams.select || false;
+    this._cacheId = queryParams.id;
+    this._state = queryParams.state;
 
     // Get departments data from resolver
     this.route.data
@@ -32,6 +38,32 @@ export class ListDepartmentComponent implements OnInit {
   }
 
   onSelect(department: Department): void {
-    this.cacheService.emit({ _id: department._id, name: department.name });
+    if (this._cacheId) {
+      const selected = { _id: department._id, name: department.name };
+      this.cacheService.emit(this._cacheId, selected);
+    }
+  }
+
+  onCreateNew() {
+    this.cacheService.cache(
+      'LIST_NEW_DEPARTMENT',
+      null,
+      this.router.createUrlTree(['/list/department'], {
+        queryParams: {
+          select: this.selectable,
+          id: this._cacheId,
+          state: this._state,
+        },
+      }),
+      () => {
+        return null;
+      }
+    );
+
+    this.router.navigate(['/create/department'], {
+      queryParams: {
+        id: 'LIST_NEW_DEPARTMENT',
+      },
+    });
   }
 }

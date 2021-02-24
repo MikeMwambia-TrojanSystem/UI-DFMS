@@ -1,7 +1,24 @@
 export class McaEmployee {
   _id: string;
+  assemblyId: string;
+  commiteesInvolved: string[];
+  group: string;
   name: string;
-  ward: string;
+  phoneNumber: {
+    number: string;
+    verified: string;
+  };
+  politicalParty: string;
+  positionStatus: string;
   profilePic: string;
-  subcounty: string;
+  signature: string;
+  status: boolean;
+  termOfService: string;
+  dateCreated: string;
+  ward: {
+    wardId: string;
+    wardName: string;
+  };
+  createdAt: string;
+  updatedAt: string;
 }

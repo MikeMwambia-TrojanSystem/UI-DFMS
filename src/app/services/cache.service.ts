@@ -1,8 +1,14 @@
 import { EventEmitter, Injectable } from '@angular/core';
-import { Router } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { Router, UrlTree } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
 
 type CachedCallback<T, U> = (cachedForm: T, selected: U) => T;
+
+interface CachedData {
+  data: any;
+  subscription: Subscription;
+}
 
 /**
  * Caching service use for caching form data in order to navigate to other page to select other element.
@@ -14,9 +20,8 @@ type CachedCallback<T, U> = (cachedForm: T, selected: U) => T;
   providedIn: 'root',
 })
 export class CacheService {
-  private _data: any; // Form Data to be cached.
-  private _selected = new EventEmitter<any>(); // Event will be emitted when user select a element from navigated select page.
-  private _id: string; // ID of the cached form data. Helps prevent duplicated or wrong rehydrate form data.
+  private _data: Record<string, CachedData> = {}; // Data to be cached.
+  private _selected = new EventEmitter<{ id: string; selected: any }>(); // Event will be emitted when user select a element from navigated select page.
 
   constructor(private router: Router) {}
 
@@ -37,21 +42,32 @@ export class CacheService {
   cache<T, U>(
     id: string,
     data: T,
-    returnUrl: string,
+    returnUrl: UrlTree,
     callback: CachedCallback<T, U>
   ) {
-    this._id = id;
-    this._data = data;
+    this._data = {
+      ...this._data,
+      [id]: {
+        data,
+        subscription: this._selected
+          .pipe(
+            filter(({ id }) => id === id),
+            take(1)
+          )
+          .subscribe(({ selected }: { selected: U }) => {
+            const newData = callback(data, selected);
 
-    this._selected.pipe(take(1)).subscribe((value: U) => {
-      const newData = callback(data, value);
+            this._data[id] = {
+              data: newData,
+              subscription: null,
+            }; // Replace the old data with the new data after handling in callback.
 
-      this._data = newData; // Replace the old data with the new data after handling in callback.
-
-      if (returnUrl) {
-        this.router.navigate([returnUrl]);
-      }
-    });
+            if (returnUrl) {
+              this.router.navigateByUrl(returnUrl);
+            }
+          }),
+      },
+    };
   }
 
   /**
@@ -62,10 +78,12 @@ export class CacheService {
    * @Generic T is for Data Type being cached.
    */
   rehydrate<T>(id: string): T {
-    if (id === this._id) {
-      if (this._data) {
-        return this._data;
+    const cachedData = this._data[id];
+    if (cachedData) {
+      if (cachedData.subscription && !cachedData.subscription.closed) {
+        cachedData.subscription.unsubscribe();
       }
+      return cachedData.data;
     }
     return null;
   }
@@ -77,9 +95,7 @@ export class CacheService {
    *
    * this.cacheService.event.emit('some data');
    */
-  emit<T>(data: T) {
-    if (this._selected) {
-      this._selected.emit(data);
-    }
+  emit<T>(id: string, selected: T) {
+    this._selected.emit({ id, selected });
   }
 }

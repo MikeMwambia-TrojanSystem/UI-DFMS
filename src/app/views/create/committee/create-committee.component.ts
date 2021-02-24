@@ -1,14 +1,12 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import { Router } from '@angular/router';
-import { combineLatest, merge, Observable, Subject } from 'rxjs';
-import { combineAll, map, take, takeLast, takeUntil } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, take } from 'rxjs/operators';
 
-import { ApiService } from 'src/app/services/api.service';
 import { CacheService } from 'src/app/services/cache.service';
 import { CommitteeService } from 'src/app/services/committee.service';
 import { McaEmployeeService } from 'src/app/services/mca-employee.service';
-import { CommitteePost } from 'src/app/shared/types/committee';
+import { Committee, CommitteePost } from 'src/app/shared/types/committee';
 
 interface CommitteeForm {
   committeeSignature: string;
@@ -30,6 +28,9 @@ interface CommitteeForm {
   styleUrls: ['./create-committee.component.scss'],
 })
 export class CreateCommitteeComponent implements OnInit {
+  private _mode: 'editing' | 'creating';
+  private _committeeId: string;
+  private _cacheId: string;
   form = new FormGroup({
     commiteeSignature: new FormControl(
       'e3ee3r9j5j5jgnonr5t46yg668h',
@@ -40,7 +41,7 @@ export class CreateCommitteeComponent implements OnInit {
     chairId: new FormControl('', Validators.required),
     viceChair: new FormControl('', Validators.required),
     viceChairId: new FormControl('', Validators.required),
-    committesMembers: new FormArray([], Validators.required),
+    committesMembers: new FormArray([]),
     departmentInExcecutive: new FormControl('', Validators.required),
     approverId: new FormControl('2c82d1f29d2f1ce', Validators.required),
     published: new FormControl(false),
@@ -55,10 +56,14 @@ export class CreateCommitteeComponent implements OnInit {
     private cacheService: CacheService,
     private router: Router,
     private committeeService: CommitteeService,
-    private mcaEmployeeService: McaEmployeeService
+    private mcaEmployeeService: McaEmployeeService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    // Get cache id from query url
+    this._cacheId = this.route.snapshot.queryParams.id;
+
     // Rehydrate cached form data if there's any
     const cachedForm = this.cacheService.rehydrate<FormGroup>(
       'CREATE_COMMITTEE'
@@ -66,6 +71,30 @@ export class CreateCommitteeComponent implements OnInit {
 
     if (cachedForm) {
       this.form = cachedForm;
+    }
+
+    // Populate committee data from resolver using param id
+    const committeeId = this.route.snapshot.params.id;
+
+    if (committeeId) {
+      this._mode = 'editing';
+      this._committeeId = committeeId;
+
+      this.route.data
+        .pipe(take(1))
+        .subscribe(({ committee }: { committee: Committee }) => {
+          this.form.patchValue({
+            ...committee,
+            Chairname: committee.chair.name,
+            chairId: committee.chair.id,
+            viceChair: committee.viceChair.name,
+            viceChairId: committee.viceChair.id,
+            approverId: committee.approvingAccount.approverId,
+            account: committee.approvingAccount.account,
+          });
+        });
+    } else {
+      this._mode = 'creating';
     }
 
     // Update members name from form committesMembers ids
@@ -119,7 +148,7 @@ export class CreateCommitteeComponent implements OnInit {
         _id: chairId,
       });
     }
-    if (viceChair) {
+    if (viceChair && chairId !== viceChairId) {
       this.membersName.push({
         name: viceChair,
         _id: viceChairId,
@@ -139,7 +168,11 @@ export class CreateCommitteeComponent implements OnInit {
     this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
       this.form,
-      '/create/committee',
+      this.router.createUrlTree(['/create/committee', this._committeeId], {
+        queryParams: {
+          id: this._cacheId,
+        },
+      }),
       (form, { _id, name }) => {
         form.patchValue({
           Chairname: name,
@@ -152,7 +185,7 @@ export class CreateCommitteeComponent implements OnInit {
 
     // Navigate the user to '/list/mca-employee?select=true'
     this.router.navigate(['/list/mca-employee'], {
-      queryParams: { select: true },
+      queryParams: { select: true, id: 'CREATE_COMMITTEE' },
     });
   }
 
@@ -166,7 +199,11 @@ export class CreateCommitteeComponent implements OnInit {
     this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
       this.form,
-      '/create/committee',
+      this.router.createUrlTree(['/create/committee', this._committeeId], {
+        queryParams: {
+          id: this._cacheId,
+        },
+      }),
       (form, { _id, name }) => {
         form.patchValue({
           viceChair: name,
@@ -179,7 +216,7 @@ export class CreateCommitteeComponent implements OnInit {
 
     // Navigate the user to '/list/mca-employee?select=true'
     this.router.navigate(['/list/mca-employee'], {
-      queryParams: { select: true },
+      queryParams: { select: true, id: 'CREATE_COMMITTEE' },
     });
   }
 
@@ -193,7 +230,11 @@ export class CreateCommitteeComponent implements OnInit {
     this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
       this.form,
-      '/create/committee',
+      this.router.createUrlTree(['/create/committee', this._committeeId], {
+        queryParams: {
+          id: this._cacheId,
+        },
+      }),
       (form, { _id, name }) => {
         const membersControl = form.get('committesMembers') as FormArray; // Get the committesMembers control
 
@@ -214,7 +255,7 @@ export class CreateCommitteeComponent implements OnInit {
 
     // Navigate the user to '/list/mca-employee?select=true'
     this.router.navigate(['/list/mca-employee'], {
-      queryParams: { select: true },
+      queryParams: { select: true, id: 'CREATE_COMMITTEE' },
     });
   }
 
@@ -228,7 +269,11 @@ export class CreateCommitteeComponent implements OnInit {
     this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
       this.form,
-      '/create/committee',
+      this.router.createUrlTree(['/create/committee', this._committeeId], {
+        queryParams: {
+          id: this._cacheId,
+        },
+      }),
       (form, { _id, name }) => {
         form.patchValue({
           departmentInExcecutive: name,
@@ -240,7 +285,7 @@ export class CreateCommitteeComponent implements OnInit {
 
     // Navigate the user to '/list/department?select=true'
     this.router.navigate(['/list/department'], {
-      queryParams: { select: true },
+      queryParams: { select: true, id: 'CREATE_COMMITTEE' },
     });
   }
 
@@ -248,22 +293,32 @@ export class CreateCommitteeComponent implements OnInit {
    * This function get called when 'Save Committee' or 'Save as Draft' buttons is clicked.
    */
   onSave(published: boolean): void {
-    this.form.get('published').setValue(published);
-    this.form.get('datePublished').setValue(new Date().toISOString());
+    if (this._mode === 'creating') {
+      this.form.get('published').setValue(published);
+      this.form.get('datePublished').setValue(new Date().toISOString());
 
-    const value = this.form.value as CommitteePost;
+      const value = this.form.value as CommitteePost;
 
-    // Transform form committesMembers ID array into a single ID string for API parameter.
-    value.committesMembers =
-      `${value.chairId}&&&${value.viceChairId}` +
-      ((value.committesMembers as unknown) as string[]).reduce(
-        (result, currentMemberId) => `${result}&&&${currentMemberId}`,
-        ''
-      );
+      // Transform form committesMembers ID array into a single ID string for API parameter.
+      value.committesMembers =
+        `${value.chairId}&&&${value.viceChairId}` +
+        ((value.committesMembers as unknown) as string[]).reduce(
+          (result, currentMemberId) => `${result}&&&${currentMemberId}`,
+          ''
+        );
 
-    this.committeeService.postCommittee(value).subscribe(() => {
-      this.router.navigate(['/list/committee']);
-    });
+      this.committeeService.postCommittee(value).subscribe(() => {
+        if (this._cacheId) {
+          this.cacheService.emit(this._cacheId, null);
+        } else {
+          this.router.navigate(['/list/committee'], {
+            queryParams: {
+              state: published ? 'published' : 'draft',
+            },
+          });
+        }
+      });
+    }
   }
 
   /**

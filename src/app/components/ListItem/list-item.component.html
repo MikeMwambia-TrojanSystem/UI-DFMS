@@ -1,14 +1,26 @@
-<img *ngIf="pic" [src]="pic" class="profile-pic" width="100" height="100" />
-<div class="info">
-  <div mat-line class="info-title">{{ title }}</div>
-  <div mat-line class="info-subtitle" *ngIf="isSubDate">
-    {{ dateSub || "Formed" }} on {{ dateObj | date: "dd MMMM, yyyy" }}
+<div class="main">
+  <img *ngIf="pic" [src]="pic" class="profile-pic" width="100" height="100" />
+  <div class="info">
+    <div mat-line class="info-title">{{ title }}</div>
+    <div mat-line class="info-subtitle" *ngIf="isSubDate">
+      {{ dateSub || "Formed" }} on {{ dateObj | date: "dd MMMM, yyyy" }}
+    </div>
+    <div mat-line class="info-subtitle hover" *ngIf="!isSubDate && subtitle">
+      {{ subtitle }}
+    </div>
+    <div mat-line class="info-subtitle" *ngIf="subcounty">{{ subcounty }}</div>
+    <div class="state" *ngIf="published !== undefined">
+      <div class="dot"></div>
+      <span class="label">{{ stateExpanded }}</span>
+    </div>
   </div>
-  <div mat-line class="info-subtitle hover" *ngIf="!isSubDate">
-    {{ subtitle }}
-  </div>
-  <div mat-line class="info-subtitle" *ngIf="subcounty">{{ subcounty }}</div>
+  <button mat-button *ngIf="selectable" class="btn" (click)="onSelect()">
+    Select
+  </button>
 </div>
-<button mat-button *ngIf="selectable" class="btn" (click)="onSelect()">
-  Select
-</button>
+<div class="list-actions" *ngIf="!published && selectable === false">
+  <a [routerLink]="[editUrl]">
+    <button mat-button class="list-actions-btn edit">Edit</button>
+  </a>
+  <button mat-button class="list-actions-btn delete" (click)="onDelete()">Delete</button>
+</div>

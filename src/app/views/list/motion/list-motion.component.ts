@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import _ from 'lodash-es';
 import { take } from 'rxjs/operators';
+import { CacheService } from 'src/app/services/cache.service';
 
 import { MotionService } from 'src/app/services/motion.service';
 import { Motion } from 'src/app/shared/types/motion';
@@ -12,27 +13,24 @@ import { Motion } from 'src/app/shared/types/motion';
   templateUrl: './list-motion.component.html',
 })
 export class ListMotionComponent implements OnInit {
-  /**
-   * Predefined motions data
-   */
+  private _cacheId: string;
+  private _state: string;
   motions: Motion[];
-
   selectable: boolean;
-  state: string; // This props is just for example and should be deleted when implementing a fetch request to backend.
 
   constructor(
     private route: ActivatedRoute,
-    private motionService: MotionService
+    private motionService: MotionService,
+    private cacheService: CacheService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.selectable = this.route.snapshot.queryParams.select || false;
-
-    /**
-     * These lines are just for dynamic state example and should be deleted when implementing a fetch request to backend.
-     */
-    this.state = this.route.snapshot.queryParams.state;
-    //=====================================================================
+    // Get selectable state, cache emit id, state from query url
+    const queryParams = this.route.snapshot.queryParams;
+    this.selectable = queryParams.select || false;
+    this._cacheId = queryParams.id;
+    this._state = queryParams.state;
 
     // Get Motions data from resolver
     this.route.data
@@ -45,6 +43,29 @@ export class ListMotionComponent implements OnInit {
   onDelete(id: string) {
     this.motionService.deleteMotion(id).subscribe(() => {
       window.location.reload(); // Reload page when successfully deleting motion
+    });
+  }
+
+  onCreateNew() {
+    this.cacheService.cache(
+      'LIST_NEW_MOTION',
+      null,
+      this.router.createUrlTree(['/list/motion'], {
+        queryParams: {
+          select: this.selectable,
+          id: this._cacheId,
+          state: this._state,
+        },
+      }),
+      () => {
+        return null;
+      }
+    );
+
+    this.router.navigate(['/generate/motion'], {
+      queryParams: {
+        id: 'LIST_NEW_MOTION',
+      },
     });
   }
 }

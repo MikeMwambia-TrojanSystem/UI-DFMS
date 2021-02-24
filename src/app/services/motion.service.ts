@@ -28,7 +28,7 @@ export class MotionService {
         iif(
           () => this._fetched,
           of(motions),
-          this.fetchMotions().pipe(map(({ message }) => message))
+          this.fetchMotions().pipe(map((result) => result))
         )
       )
     );
@@ -41,7 +41,7 @@ export class MotionService {
           () => this._fetched,
           of(motions.find((motion) => motion._id === id)),
           this.fetchMotions().pipe(
-            map(({ message }) => message.find((motion) => motion._id === id))
+            map((result) => result.find((motion) => motion._id === id))
           )
         )
       )
@@ -51,9 +51,12 @@ export class MotionService {
   fetchMotions() {
     return this.apiService.getMotions().pipe(
       tap(({ message }) => {
-        this._fetched = true;
-        this._motions.next(message);
-      })
+        if (Array.isArray(message)) {
+          this._fetched = true;
+          this._motions.next(message);
+        }
+      }),
+      map(({ message }) => (Array.isArray(message) ? message : []))
     );
   }
 
@@ -77,6 +80,23 @@ export class MotionService {
         if (this._fetched) {
           this._motions.next([...this._motions.getValue(), message]);
         }
+      })
+    );
+  }
+
+  updateMotion(motion: MotionPost) {
+    return this.apiService.updateMotion(motion).pipe(
+      tap((result) => {
+        const newMotions = this._motions.getValue();
+        const index = newMotions.findIndex(
+          (motionEle) => motionEle._id === result._id
+        );
+
+        newMotions[index] = {
+          ...result,
+        };
+
+        this._motions.next(newMotions);
       })
     );
   }
