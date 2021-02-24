@@ -32,15 +32,6 @@ export class CreateConstituenciesComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Rehydrate from cached data if there's any
-    const cachedForm = this.cacheService.rehydrate<FormGroup>(
-      'CREATE_CONSTITUENCY'
-    );
-
-    if (cachedForm) {
-      this.form = cachedForm;
-    }
-
     // Populate constituency data from resolver using param id
     const constituencyId = this.route.snapshot.params.id;
 
@@ -57,6 +48,15 @@ export class CreateConstituenciesComponent implements OnInit {
         });
     } else {
       this._mode = 'creating';
+    }
+
+    // Rehydrate from cached data if there's any
+    const cachedForm = this.cacheService.rehydrate<FormGroup>(
+      'CREATE_CONSTITUENCY'
+    );
+
+    if (cachedForm) {
+      this.form = cachedForm;
     }
 
     // Get cached id from query url

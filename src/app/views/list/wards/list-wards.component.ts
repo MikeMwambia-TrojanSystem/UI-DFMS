@@ -13,6 +13,7 @@ import { CacheService } from 'src/app/services/cache.service';
 })
 export class ListWardsComponent implements OnInit {
   private _cacheId: string;
+  private _state: 'draft' | 'published';
   wards: Ward[] = [];
   selectable = false; // Whether the list is selectable
 
@@ -27,6 +28,7 @@ export class ListWardsComponent implements OnInit {
     const queryParams = this.route.snapshot.queryParams;
     this.selectable = queryParams.select || false;
     this._cacheId = queryParams.id;
+    this._state = queryParams.state;
 
     // Get Wards data from resolver
     this.route.data.pipe(take(1)).subscribe(({ wards }: { wards: Ward[] }) => {
@@ -43,7 +45,11 @@ export class ListWardsComponent implements OnInit {
       'LIST_NEW_WARD',
       null,
       this.router.createUrlTree(['/list/wards'], {
-        queryParams: { select: this.selectable, id: this._cacheId },
+        queryParams: {
+          select: this.selectable,
+          id: this._cacheId,
+          state: this._state,
+        },
       }),
       () => {
         return null;

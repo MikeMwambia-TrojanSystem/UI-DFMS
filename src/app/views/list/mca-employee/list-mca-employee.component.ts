@@ -13,7 +13,7 @@ import { McaEmployee } from 'src/app/shared/types/mca-employee';
 })
 export class ListMcaEmployeeComponent implements OnInit {
   private _cacheId: string;
-  private _state: string;
+  private _state: 'draft' | 'published';
   mcaEmployees: McaEmployee[] = [];
   selectable = false; // Whether the list is selectable
 

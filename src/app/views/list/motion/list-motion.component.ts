@@ -14,7 +14,7 @@ import { Motion } from 'src/app/shared/types/motion';
 })
 export class ListMotionComponent implements OnInit {
   private _cacheId: string;
-  private _state: string;
+  private _state: 'draft' | 'private' | 'public';
   motions: Motion[];
   selectable: boolean;
 

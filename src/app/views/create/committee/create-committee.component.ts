@@ -64,15 +64,6 @@ export class CreateCommitteeComponent implements OnInit {
     // Get cache id from query url
     this._cacheId = this.route.snapshot.queryParams.id;
 
-    // Rehydrate cached form data if there's any
-    const cachedForm = this.cacheService.rehydrate<FormGroup>(
-      'CREATE_COMMITTEE'
-    );
-
-    if (cachedForm) {
-      this.form = cachedForm;
-    }
-
     // Populate committee data from resolver using param id
     const committeeId = this.route.snapshot.params.id;
 
@@ -95,6 +86,15 @@ export class CreateCommitteeComponent implements OnInit {
         });
     } else {
       this._mode = 'creating';
+    }
+
+    // Rehydrate cached form data if there's any
+    const cachedForm = this.cacheService.rehydrate<FormGroup>(
+      'CREATE_COMMITTEE'
+    );
+
+    if (cachedForm) {
+      this.form = cachedForm;
     }
 
     // Update members name from form committesMembers ids

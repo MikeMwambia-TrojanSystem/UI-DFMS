@@ -13,7 +13,7 @@ import { Committee } from 'src/app/shared/types/committee';
 })
 export class ListCommitteeComponent implements OnInit {
   private _cacheId: string;
-  private _state: string;
+  private _state: 'draft' | 'published';
   committees: Committee[];
   selectable = false; // Whether the list is selectable
 

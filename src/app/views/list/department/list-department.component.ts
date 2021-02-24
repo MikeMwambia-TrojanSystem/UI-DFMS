@@ -12,7 +12,7 @@ import { Department } from 'src/app/shared/types/department';
 })
 export class ListDepartmentComponent implements OnInit {
   private _cacheId: string;
-  private _state: string;
+  private _state: 'draft' | 'published';
   departments: Department[] = [];
   selectable: boolean;
 

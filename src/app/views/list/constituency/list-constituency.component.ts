@@ -12,7 +12,7 @@ import { CacheService } from 'src/app/services/cache.service';
 })
 export class ListConstituencyComponent implements OnInit {
   private _cacheId: string;
-  private _state: string;
+  private _state: 'draft' | 'published';
   constituencies: Constituency[] = [];
 
   selectable = false; // Whether the list is selectable

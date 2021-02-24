@@ -30,14 +30,8 @@ export class CreateSubcountyComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Rehydrate the cached form data if there's any
-    const cachedForm = this.cacheService.rehydrate<FormGroup>(
-      'CREATE_SUBCOUNTY'
-    );
-
-    if (cachedForm) {
-      this.form = cachedForm;
-    }
+    // Get cache id from query url
+    this._cacheId = this.route.snapshot.queryParams.id;
 
     // Populate subcounty data from resolver using param id
     const subcountyId = this.route.snapshot.params.id;
@@ -57,8 +51,14 @@ export class CreateSubcountyComponent implements OnInit {
       this._mode = 'creating';
     }
 
-    // Get return url from query url
-    this._cacheId = this.route.snapshot.queryParams.id;
+    // Rehydrate the cached form data if there's any
+    const cachedForm = this.cacheService.rehydrate<FormGroup>(
+      'CREATE_SUBCOUNTY'
+    );
+
+    if (cachedForm) {
+      this.form = cachedForm;
+    }
   }
 
   /**

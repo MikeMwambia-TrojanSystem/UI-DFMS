@@ -12,6 +12,7 @@ import { CacheService } from 'src/app/services/cache.service';
 })
 export class ListSubcountyComponent implements OnInit {
   private _cacheId: string;
+  private _state: 'draft' | 'published';
   subCounties: SubCounty[] = [];
   selectable = false; // Whether the list is selectable
 
@@ -22,10 +23,11 @@ export class ListSubcountyComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Get selectable state, cache emit id, return url from query url
+    // Get selectable state, cache emit id, state from query url
     const queryParams = this.route.snapshot.queryParams;
     this.selectable = queryParams.select || false;
     this._cacheId = queryParams.id;
+    this._state = queryParams.state;
 
     // Get Subcounties data from resolver
     this.route.data
@@ -46,7 +48,11 @@ export class ListSubcountyComponent implements OnInit {
       'LIST_NEW_SUBCOUNTY',
       null,
       this.router.createUrlTree(['/list/subcounty'], {
-        queryParams: { select: this.selectable, id: this._cacheId },
+        queryParams: {
+          select: this.selectable,
+          id: this._cacheId,
+          state: this._state,
+        },
       }),
       () => {
         return null;
