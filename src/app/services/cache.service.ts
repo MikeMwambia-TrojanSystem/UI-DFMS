@@ -50,12 +50,11 @@ export class CacheService {
       [id]: {
         data,
         subscription: this._selected
-          .pipe(
-            filter(({ id }) => id === id),
-            take(1)
-          )
+          .pipe(filter(({ id }) => id === id))
           .subscribe(({ selected }: { selected: U }) => {
             const newData = callback(data, selected);
+
+            this._data[id].subscription.unsubscribe();
 
             this._data[id] = {
               data: newData,

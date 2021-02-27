@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { CacheService } from 'src/app/services/cache.service';
 import { Department } from 'src/app/shared/types/department';
+import { DepartmentService } from 'src/app/services/department.service';
 
 @Component({
   templateUrl: './list-department.component.html',
@@ -19,7 +20,8 @@ export class ListDepartmentComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private cacheService: CacheService,
-    private router: Router
+    private router: Router,
+    private departmentService: DepartmentService
   ) {}
 
   ngOnInit() {
@@ -64,6 +66,13 @@ export class ListDepartmentComponent implements OnInit {
       queryParams: {
         id: 'LIST_NEW_DEPARTMENT',
       },
+    });
+  }
+
+  // This function get called when the 'Delete' button is clicked
+  onDelete(id: string) {
+    this.departmentService.deleteDepartment(id).subscribe(() => {
+      window.location.reload();
     });
   }
 }

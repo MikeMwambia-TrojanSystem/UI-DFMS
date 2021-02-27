@@ -69,4 +69,32 @@ export class DepartmentService {
       })
     );
   }
+
+  updateDepartment(department: DepartmentPost) {
+    return this.apiService.updateDepartment(department).pipe(
+      tap((result) => {
+        const newDepartment = this._departments.getValue();
+        const index = newDepartment.findIndex((d) => d._id === result._id);
+
+        newDepartment[index] = {
+          ...result,
+        };
+
+        this._departments.next(newDepartment);
+      })
+    );
+  }
+
+  deleteDepartment(id: string) {
+    return this.apiService.deleteDepartment(id).pipe(
+      tap((result) => {
+        const newDepartment = this._departments.getValue();
+        const index = newDepartment.findIndex((d) => d._id === result._id);
+
+        newDepartment.splice(index, 1);
+
+        this._departments.next(newDepartment);
+      })
+    );
+  }
 }

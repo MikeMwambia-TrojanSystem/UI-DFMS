@@ -185,4 +185,52 @@ export class WardConSubService {
       })
     );
   }
+
+  deleteWardConSub<T>(id: string) {
+    return this.apiService.deleteWardConSub<T>(id);
+  }
+
+  updateWardConSub<T, U>(item: U, type: 'ward' | 'constituency' | 'subcounty') {
+    return this.apiService.updateWardConSub<T, U>(item).pipe(
+      tap((result) => {
+        if (type === 'ward') {
+          const ward = (result as unknown) as Ward;
+          const newWards = this._wards.getValue();
+          const index = newWards.findIndex((w) => w._id === ward._id);
+
+          newWards[index] = {
+            ...ward,
+          };
+
+          this._wards.next(newWards);
+        }
+        if (type === 'constituency') {
+          const constituency = (result as unknown) as Constituency;
+          const newConstituenies = this._constituencies.getValue();
+          const index = newConstituenies.findIndex(
+            (c) => c._id === constituency._id
+          );
+
+          newConstituenies[index] = {
+            ...constituency,
+          };
+
+          this._constituencies.next(newConstituenies);
+        }
+        if (type === 'subcounty') {
+          const subCounty = (result as unknown) as SubCounty;
+          const newSubCounties = this._subCounties.getValue();
+          const index = newSubCounties.findIndex(
+            (s) => s._id === subCounty._id
+          );
+
+          newSubCounties[index] = {
+            ...subCounty,
+          };
+
+          this._subCounties.next(newSubCounties);
+        }
+      })
+    );
+  }
 }

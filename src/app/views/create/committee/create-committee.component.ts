@@ -293,31 +293,45 @@ export class CreateCommitteeComponent implements OnInit {
    * This function get called when 'Save Committee' or 'Save as Draft' buttons is clicked.
    */
   onSave(published: boolean): void {
-    if (this._mode === 'creating') {
-      this.form.get('published').setValue(published);
-      this.form.get('datePublished').setValue(new Date().toISOString());
+    // Subcription callback
+    const subCallback = () => {
+      if (this._cacheId) {
+        this.cacheService.emit(this._cacheId, null);
+      } else {
+        this.router.navigate(['/list/committee'], {
+          queryParams: {
+            state: published ? 'published' : 'draft',
+          },
+        });
+      }
+    };
 
+    // Transform form committesMembers ID array into a single ID string for API parameter.
+    const transform = () => {
       const value = this.form.value as CommitteePost;
 
-      // Transform form committesMembers ID array into a single ID string for API parameter.
-      value.committesMembers =
+      return (
         `${value.chairId}&&&${value.viceChairId}` +
         ((value.committesMembers as unknown) as string[]).reduce(
           (result, currentMemberId) => `${result}&&&${currentMemberId}`,
           ''
-        );
+        )
+      );
+    };
 
-      this.committeeService.postCommittee(value).subscribe(() => {
-        if (this._cacheId) {
-          this.cacheService.emit(this._cacheId, null);
-        } else {
-          this.router.navigate(['/list/committee'], {
-            queryParams: {
-              state: published ? 'published' : 'draft',
-            },
-          });
-        }
-      });
+    const value = this.form.value;
+
+    value.published = published;
+    value.committesMembers = transform();
+
+    if (this._mode === 'creating') {
+      value.datePublished = new Date().toISOString();
+
+      this.committeeService.postCommittee(value).subscribe(subCallback);
+    } else {
+      value.id = this._committeeId;
+
+      this.committeeService.updateCommittee(value).subscribe(subCallback);
     }
   }
 

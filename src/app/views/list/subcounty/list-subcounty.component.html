@@ -5,7 +5,7 @@
     <div *ngIf="subCounties.length">
       <app-list-item *ngFor="let subcounty of subCounties" [title]="subcounty.name" [subtitle]="subcounty.date"
         [isSubDate]="true" [dateSub]="'Published'" [selectable]="selectable" (select)="onSelect(subcounty)"
-        [editUrl]="'/create/subcounty/' + subcounty._id">
+        [editUrl]="'/create/subcounty/' + subcounty._id" (delete)="onDelete(subcounty._id)">
       </app-list-item>
     </div>
     <div *ngIf="!subCounties.length" class="list-no-value">

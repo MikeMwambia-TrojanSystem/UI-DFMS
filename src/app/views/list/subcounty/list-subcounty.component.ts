@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { SubCounty } from 'src/app/shared/types/ward-con-sub';
 import { CacheService } from 'src/app/services/cache.service';
+import { WardConSubService } from 'src/app/services/ward-con-sub.service';
 
 @Component({
   templateUrl: './list-subcounty.component.html',
@@ -19,7 +20,8 @@ export class ListSubcountyComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private cacheService: CacheService,
-    private router: Router
+    private router: Router,
+    private wardConSubService: WardConSubService
   ) {}
 
   ngOnInit(): void {
@@ -63,6 +65,12 @@ export class ListSubcountyComponent implements OnInit {
       queryParams: {
         id: 'LIST_NEW_SUBCOUNTY',
       },
+    });
+  }
+
+  onDelete(id: string) {
+    this.wardConSubService.deleteWardConSub(id).subscribe(() => {
+      window.location.reload();
     });
   }
 }

@@ -81,6 +81,7 @@ import { DepartmentResolver } from './shared/resolver/department/department.reso
 import { CanActivateSubcounty } from './shared/guard/subcounty/subcounty.guard';
 import { CanActivateWard } from './shared/guard/ward/ward.guard';
 import { WardResolver } from './shared/resolver/ward-con-sub/ward.resolver';
+import { subcountyResolver } from './shared/resolver/ward-con-sub/subcounty.resolver';
 
 const routes: Routes = [
   // Login route
@@ -134,7 +135,7 @@ const routes: Routes = [
         component: CreateDepartmentComponent,
         canActivate: [CanActivateDepartment],
         resolve: {
-          constituency: DepartmentResolver,
+          department: DepartmentResolver,
         },
       },
       { path: 'employee', component: CreateEmployeeComponent },
@@ -145,7 +146,7 @@ const routes: Routes = [
         component: CreateSubcountyComponent,
         canActivate: [CanActivateSubcounty],
         resolve: {
-          constituency: DepartmentResolver,
+          subcounty: subcountyResolver,
         },
       },
       { path: 'wards', component: CreateWardsComponent },

@@ -4,7 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import { CacheService } from 'src/app/services/cache.service';
 import { WardConSubService } from 'src/app/services/ward-con-sub.service';
-import { Constituency } from 'src/app/shared/types/ward-con-sub';
+import {
+  Constituency,
+  WardConSubPost,
+} from 'src/app/shared/types/ward-con-sub';
 
 @Component({
   selector: 'app-create-constituencies',
@@ -68,6 +71,19 @@ export class CreateConstituenciesComponent implements OnInit {
    * Post the constituency form data to backend.
    */
   onSave(published: boolean) {
+    // Subcription callback
+    const subCallback = () => {
+      if (this._cacheId) {
+        this.cacheService.emit(this._cacheId, null);
+      } else {
+        this.router.navigate(['/list/constituency'], {
+          queryParams: {
+            state: published ? 'published' : 'draft',
+          },
+        });
+      }
+    };
+
     const value = this.form.value;
 
     value.published = published;
@@ -77,17 +93,13 @@ export class CreateConstituenciesComponent implements OnInit {
 
       this.wardConSubService
         .postWardConSub(value, 'constituency')
-        .subscribe(() => {
-          if (this._cacheId) {
-            this.cacheService.emit(this._cacheId, null);
-          } else {
-            this.router.navigate(['/list/constituency'], {
-              queryParams: {
-                state: published ? 'published' : 'draft',
-              },
-            });
-          }
-        });
+        .subscribe(subCallback);
+    } else {
+      value.id = this._constituencyId;
+
+      this.wardConSubService
+        .updateWardConSub<Constituency, WardConSubPost>(value, 'constituency')
+        .subscribe(subCallback);
     }
   }
 

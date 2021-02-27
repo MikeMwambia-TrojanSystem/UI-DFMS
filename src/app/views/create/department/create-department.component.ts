@@ -52,6 +52,15 @@ export class CreateDepartmentComponent implements OnInit {
     } else {
       this._mode = 'creating';
     }
+
+    // Rehydrate from cached data if there's any
+    const cachedForm = this.cacheService.rehydrate<FormGroup>(
+      'CREATE_DEPARTMENT'
+    );
+
+    if (cachedForm) {
+      this.form = cachedForm;
+    }
   }
 
   /**
@@ -59,22 +68,29 @@ export class CreateDepartmentComponent implements OnInit {
    * Post the department form data to backend.
    */
   onSave(published: boolean) {
+    // Subcription callback
+    const subCallback = () => {
+      if (this._cacheId) {
+        this.cacheService.emit(this._cacheId, null);
+      } else {
+        this.router.navigate(['/list/department'], {
+          queryParams: {
+            state: published ? 'published' : 'draft',
+          },
+        });
+      }
+    };
+
+    const value = this.form.value;
+
+    value.published = published;
+
     if (this._mode === 'creating') {
-      const value = this.form.value;
+      this.departmentService.postDepartment(value).subscribe(subCallback);
+    } else {
+      value.id = this._departmentId;
 
-      value.published = published;
-
-      this.departmentService.postDepartment(value).subscribe(() => {
-        if (this._cacheId) {
-          this.cacheService.emit(this._cacheId, null);
-        } else {
-          this.router.navigate(['/list/department'], {
-            queryParams: {
-              state: published ? 'published' : 'draft',
-            },
-          });
-        }
-      });
+      this.departmentService.updateDepartment(value).subscribe(subCallback);
     }
   }
 }

@@ -93,17 +93,30 @@ export class ApiService {
   }
 
   //DELETEs
-  deleteMotion(id: string) {
+  private _deleteRequest<T>(endpoint: string, id: string) {
     return this.http
-      .delete<ApiResponse<Motion>>(
-        this._baseUrl + 'motion/deleteSpecificMotion',
-        {
-          params: {
-            id,
-          },
-        }
-      )
-      .pipe(timeout(this._timeout), catchError(errorHandler));
+      .delete<ApiResponse<T>>(this._baseUrl + endpoint, {
+        params: {
+          id,
+        },
+      })
+      .pipe(
+        timeout(this._timeout),
+        catchError(errorHandler),
+        map(({ message }) => message)
+      );
+  }
+
+  deleteMotion(id: string) {
+    return this._deleteRequest<Motion>('motion/deleteSpecificMotion', id);
+  }
+
+  deleteWardConSub<T>(id: string) {
+    return this._deleteRequest<T>('wardsConSub/delete', id);
+  }
+
+  deleteDepartment(id: string) {
+    return this._deleteRequest<Department>('department/delete', id);
   }
 
   //UPDATEs
@@ -112,13 +125,35 @@ export class ApiService {
       .put<ApiResponse<U>>(this._baseUrl + endpoint, undefined, {
         params: data as any,
       })
-      .pipe(timeout(this._timeout), catchError(errorHandler));
+      .pipe(
+        timeout(this._timeout),
+        catchError(errorHandler),
+        map(({ message }) => message)
+      );
   }
 
   updateMotion(motion: MotionPost) {
     return this._updateRequest<MotionPost, Motion>(
       'motion/updateSpecificMotion',
       motion
-    ).pipe(map(({ message }) => message));
+    );
+  }
+
+  updateCommittee(committee: CommitteePost) {
+    return this._updateRequest<CommitteePost, Committee>(
+      'commitee/updateSpecificCommitees',
+      committee
+    );
+  }
+
+  updateWardConSub<T, U>(item: U) {
+    return this._updateRequest<U, T>('wardsConSub/update', item);
+  }
+
+  updateDepartment(department: DepartmentPost) {
+    return this._updateRequest<DepartmentPost, Department>(
+      'department/update',
+      department
+    );
   }
 }

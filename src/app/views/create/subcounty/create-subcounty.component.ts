@@ -66,6 +66,19 @@ export class CreateSubcountyComponent implements OnInit {
    * Post the subcounty form data to backend.
    */
   onSave(published: boolean) {
+    // Subcription callback
+    const subCallback = () => {
+      if (this._cacheId) {
+        this.cacheService.emit(this._cacheId, null);
+      } else {
+        this.router.navigate(['/list/subcounty'], {
+          queryParams: {
+            state: published ? 'published' : 'draft',
+          },
+        });
+      }
+    };
+
     const value = this.form.value;
     value.published = published;
 
@@ -74,17 +87,13 @@ export class CreateSubcountyComponent implements OnInit {
 
       this.wardConSubService
         .postWardConSub(value, 'subcounty')
-        .subscribe(({ message }) => {
-          if (this._cacheId) {
-            this.cacheService.emit(this._cacheId, null);
-          } else {
-            this.router.navigate(['/list/subcounty'], {
-              queryParams: {
-                state: published ? 'published' : 'draft',
-              },
-            });
-          }
-        });
+        .subscribe(subCallback);
+    } else {
+      value.id = this._subcountyId;
+
+      this.wardConSubService
+        .updateWardConSub(value, 'subcounty')
+        .subscribe(subCallback);
     }
   }
 }

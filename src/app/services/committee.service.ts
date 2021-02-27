@@ -69,4 +69,19 @@ export class CommitteeService {
       })
     );
   }
+
+  updateCommittee(committee: CommitteePost) {
+    return this.apiService.updateCommittee(committee).pipe(
+      tap((result) => {
+        const newCommittee = this._committees.getValue();
+        const index = newCommittee.findIndex((com) => com._id === result._id);
+
+        newCommittee[index] = {
+          ...result,
+        };
+
+        this._committees.next(newCommittee);
+      })
+    );
+  }
 }

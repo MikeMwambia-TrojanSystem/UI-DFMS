@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { Constituency } from 'src/app/shared/types/ward-con-sub';
 import { CacheService } from 'src/app/services/cache.service';
+import { WardConSubService } from 'src/app/services/ward-con-sub.service';
 
 @Component({
   templateUrl: './list-constituency.component.html',
@@ -20,7 +21,8 @@ export class ListConstituencyComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private cacheService: CacheService,
-    private router: Router
+    private router: Router,
+    private wardConSubService: WardConSubService
   ) {}
 
   ngOnInit(): void {
@@ -64,6 +66,13 @@ export class ListConstituencyComponent implements OnInit {
       queryParams: {
         id: 'LIST_NEW_CONSTITUENCY',
       },
+    });
+  }
+
+  // This function get called when the 'Delete' button is clicked
+  onDelete(id: string) {
+    this.wardConSubService.deleteWardConSub<Constituency>(id).subscribe(() => {
+      window.location.reload();
     });
   }
 }

@@ -66,6 +66,19 @@ export class CreateWardsComponent implements OnInit {
    * Post the ward form data to backend.
    */
   onSave(published: boolean) {
+    // Subcription callback
+    const subCallback = () => {
+      if (this._cacheId) {
+        this.cacheService.emit(this._cacheId, null);
+      } else {
+        this.router.navigate(['/list/wards'], {
+          queryParams: {
+            state: published ? 'published' : 'draft',
+          },
+        });
+      }
+    };
+
     const value = this.form.value;
 
     value.published = published;
@@ -73,17 +86,15 @@ export class CreateWardsComponent implements OnInit {
     if (this._mode === 'creating') {
       value.date = new Date().toISOString();
 
-      this.wardConSubService.postWardConSub(value, 'ward').subscribe(() => {
-        if (this._cacheId) {
-          this.cacheService.emit(this._cacheId, null);
-        } else {
-          this.router.navigate(['/list/wards'], {
-            queryParams: {
-              state: published ? 'published' : 'draft',
-            },
-          });
-        }
-      });
+      this.wardConSubService
+        .postWardConSub(value, 'ward')
+        .subscribe(subCallback);
+    } else {
+      value.id = this._wardId;
+
+      this.wardConSubService
+        .updateWardConSub(value, 'ward')
+        .subscribe(subCallback);
     }
   }
 
