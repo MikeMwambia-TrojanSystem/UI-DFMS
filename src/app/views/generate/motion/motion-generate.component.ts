@@ -76,10 +76,13 @@ export class MotionGenerateComponent implements OnInit {
    */
   onSelectSponsor() {
     // Caching and select callback handling
+    const urlTree = this._motionId
+      ? ['/generate/motion', this._motionId]
+      : ['/generate/motion'];
     this.cacheService.cache<FormGroup, { name: string; _id: string }>(
       'GENERATE_MOTION',
       this.form,
-      this.router.createUrlTree(['/generate/motion', this._motionId], {
+      this.router.createUrlTree(urlTree, {
         queryParams: {
           id: this._cacheId,
         },
@@ -111,16 +114,18 @@ export class MotionGenerateComponent implements OnInit {
    */
   onSelectDepartment() {
     // Caching and select callback handling
+    const urlTree = this._motionId
+      ? ['/generate/motion', this._motionId]
+      : ['/generate/motion'];
     this.cacheService.cache<FormGroup, { name: string; _id: string }>(
       'GENERATE_MOTION',
       this.form,
-      this.router.createUrlTree(['/generate/motion', this._motionId], {
+      this.router.createUrlTree(urlTree, {
         queryParams: {
           id: this._cacheId,
         },
       }),
       (form, { name, _id }) => {
-        console.log(name);
         form.patchValue({
           department: name,
         }); // Patch form with selected department

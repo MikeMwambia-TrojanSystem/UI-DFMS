@@ -155,7 +155,7 @@ const routes: Routes = [
         component: CreateWardsComponent,
         canActivate: [CanActivateWard],
         resolve: {
-          constituency: WardResolver,
+          ward: WardResolver,
         },
       },
     ],

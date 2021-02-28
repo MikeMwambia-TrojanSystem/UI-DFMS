@@ -110,17 +110,17 @@ export class CreateConstituenciesComponent implements OnInit {
    */
   onSelectSubCounty() {
     // Caching and select callback handling
+    const urlTree = this._constituencyId
+      ? ['/create/constituencies', this._constituencyId]
+      : ['/create/constituencies'];
     this.cacheService.cache<FormGroup, { name: string; _id: string }>(
       'CREATE_CONSTITUENCY',
       this.form,
-      this.router.createUrlTree(
-        ['/create/constituencies', this._constituencyId],
-        {
-          queryParams: {
-            id: this._cacheId,
-          },
-        }
-      ),
+      this.router.createUrlTree(urlTree, {
+        queryParams: {
+          id: this._cacheId,
+        },
+      }),
       (form, { name, _id }) => {
         form.patchValue({
           subCounty: name,

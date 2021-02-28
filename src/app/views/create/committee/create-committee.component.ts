@@ -173,10 +173,13 @@ export class CreateCommitteeComponent implements OnInit {
    */
   onSelectChairman() {
     // Caching and select callback handling
+    const urlTree = this._committeeId
+      ? ['/create/committee', this._committeeId]
+      : ['/create/committee'];
     this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
       this.form,
-      this.router.createUrlTree(['/create/committee', this._committeeId], {
+      this.router.createUrlTree(urlTree, {
         queryParams: {
           id: this._cacheId,
         },
@@ -204,10 +207,13 @@ export class CreateCommitteeComponent implements OnInit {
    */
   onSelectViceChairman() {
     // Caching and select callback handling
+    const urlTree = this._committeeId
+      ? ['/create/committee', this._committeeId]
+      : ['/create/committee'];
     this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
       this.form,
-      this.router.createUrlTree(['/create/committee', this._committeeId], {
+      this.router.createUrlTree(urlTree, {
         queryParams: {
           id: this._cacheId,
         },
@@ -235,10 +241,13 @@ export class CreateCommitteeComponent implements OnInit {
    */
   onSelectMember() {
     // Caching and select callback handling
+    const urlTree = this._committeeId
+      ? ['/create/committee', this._committeeId]
+      : ['/create/committee'];
     this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
       this.form,
-      this.router.createUrlTree(['/create/committee', this._committeeId], {
+      this.router.createUrlTree(urlTree, {
         queryParams: {
           id: this._cacheId,
         },
@@ -274,10 +283,13 @@ export class CreateCommitteeComponent implements OnInit {
    */
   onSelectDepartment() {
     // Caching and select callback handling
+    const urlTree = this._committeeId
+      ? ['/create/committee', this._committeeId]
+      : ['/create/committee'];
     this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
       this.form,
-      this.router.createUrlTree(['/create/committee', this._committeeId], {
+      this.router.createUrlTree(urlTree, {
         queryParams: {
           id: this._cacheId,
         },
