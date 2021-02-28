@@ -84,4 +84,17 @@ export class CommitteeService {
       })
     );
   }
+
+  deleteCommittee(id: string) {
+    return this.apiService.deleteCommittee(id).pipe(
+      tap((result) => {
+        const newCommittee = this._committees.getValue();
+        const index = newCommittee.findIndex((com) => com._id === result._id);
+
+        newCommittee.splice(index, 1);
+
+        this._committees.next(newCommittee);
+      })
+    );
+  }
 }

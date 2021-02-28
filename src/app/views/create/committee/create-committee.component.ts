@@ -74,8 +74,16 @@ export class CreateCommitteeComponent implements OnInit {
       this.route.data
         .pipe(take(1))
         .subscribe(({ committee }: { committee: Committee }) => {
+          const { committesMembers, ...others } = committee;
+
+          for (const member of committesMembers) {
+            (this.form.get('committesMembers') as FormArray).push(
+              new FormControl(member)
+            );
+          }
+
           this.form.patchValue({
-            ...committee,
+            ...others,
             Chairname: committee.chair.name,
             chairId: committee.chair.id,
             viceChair: committee.viceChair.name,
@@ -115,7 +123,7 @@ export class CreateCommitteeComponent implements OnInit {
     return this.form.get('departmentInExcecutive').value;
   }
 
-  updateMembersList() {
+  async updateMembersList() {
     const names: { name: string; _id: string }[] = [];
     const {
       committesMembers,
@@ -125,22 +133,22 @@ export class CreateCommitteeComponent implements OnInit {
       viceChairId,
     } = this.form.value as CommitteeForm;
 
-    committesMembers
-      .filter((memberId) => memberId !== chairId && memberId !== viceChairId)
-      .forEach((memberId) => {
-        this.mcaEmployeeService
-          .getMcaEmployee(memberId)
-          .pipe(
-            take(1),
-            map((employee) => employee.name)
-          )
-          .subscribe((name) => {
-            names.push({
-              name,
-              _id: memberId,
-            });
-          });
+    for (const memberId of committesMembers.filter(
+      (memberId) => memberId !== chairId && memberId !== viceChairId
+    )) {
+      const name = await this.mcaEmployeeService
+        .getMcaEmployee(memberId)
+        .pipe(
+          take(1),
+          map((employee) => employee.name)
+        )
+        .toPromise();
+
+      names.push({
+        name,
+        _id: memberId,
       });
+    }
 
     if (Chairname) {
       this.membersName.push({
@@ -155,7 +163,7 @@ export class CreateCommitteeComponent implements OnInit {
       });
     }
 
-    this.membersName = this.membersName.concat(names);
+    this.membersName = [...this.membersName, ...names];
   }
 
   /**
@@ -312,10 +320,14 @@ export class CreateCommitteeComponent implements OnInit {
 
       return (
         `${value.chairId}&&&${value.viceChairId}` +
-        ((value.committesMembers as unknown) as string[]).reduce(
-          (result, currentMemberId) => `${result}&&&${currentMemberId}`,
-          ''
-        )
+        ((value.committesMembers as unknown) as string[])
+          .filter(
+            (member) => member !== value.chairId && member !== value.viceChairId
+          )
+          .reduce(
+            (result, currentMemberId) => `${result}&&&${currentMemberId}`,
+            ''
+          )
       );
     };
 

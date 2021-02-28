@@ -119,6 +119,10 @@ export class ApiService {
     return this._deleteRequest<Department>('department/delete', id);
   }
 
+  deleteCommittee(id: string) {
+    return this._deleteRequest<Committee>('commitee/delete', id);
+  }
+
   //UPDATEs
   private _updateRequest<T, U>(endpoint: string, data: T) {
     return this.http
