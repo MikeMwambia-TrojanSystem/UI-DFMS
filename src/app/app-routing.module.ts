@@ -82,6 +82,11 @@ import { CanActivateSubcounty } from './shared/guard/subcounty/subcounty.guard';
 import { CanActivateWard } from './shared/guard/ward/ward.guard';
 import { WardResolver } from './shared/resolver/ward-con-sub/ward.resolver';
 import { subcountyResolver } from './shared/resolver/ward-con-sub/subcounty.resolver';
+import { McaResolver } from './shared/resolver/mca-employee/mca.resolver';
+import { CanActivateMcaEmployee } from './shared/guard/mca-employee/mca-employee.guard';
+import { ListStatementResolver } from './shared/resolver/statement/list-statement.resolver';
+import { CanActivateStatement } from './shared/guard/statement/statement.guard';
+import { StatementResolver } from './shared/resolver/statement/statement.resolver';
 
 const routes: Routes = [
   // Login route
@@ -140,6 +145,14 @@ const routes: Routes = [
       },
       { path: 'employee', component: CreateEmployeeComponent },
       { path: 'mca', component: CreateMcaComponent },
+      {
+        path: 'mca/:id',
+        component: CreateMcaComponent,
+        canActivate: [CanActivateMcaEmployee],
+        resolve: {
+          mca: McaResolver,
+        },
+      },
       { path: 'subcounty', component: CreateSubcountyComponent },
       {
         path: 'subcounty/:id',
@@ -209,7 +222,13 @@ const routes: Routes = [
         },
       },
       { path: 'message', component: ListMessageComponent },
-      { path: 'statement', component: ListStatementComponent },
+      {
+        path: 'statement',
+        component: ListStatementComponent,
+        resolve: {
+          statements: ListStatementResolver,
+        },
+      },
       {
         path: 'tentative-business',
         component: ListTentativeBusinesssComponent,
@@ -307,6 +326,12 @@ const routes: Routes = [
     path: 'upload',
     children: [
       { path: 'statement', component: StatementUploadComponent },
+      {
+        path: 'statement/:id',
+        component: StatementUploadComponent,
+        canActivate: [CanActivateStatement],
+        resolve: { statement: StatementResolver },
+      },
       { path: 'report', component: ReportUploadComponent },
     ],
   },

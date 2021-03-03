@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-statement-item',
@@ -6,6 +6,7 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./statement-item.component.scss'],
 })
 export class StatementItemComponent {
+  @Output() delete = new EventEmitter<void>();
   @Input() title: string;
   @Input() date: string;
   @Input() soughts: string[] = [];
@@ -13,6 +14,10 @@ export class StatementItemComponent {
   @Input() ward: string;
   @Input() selectable: boolean;
   @Input() sub: string;
-  @Input() status: string;
   @Input() state: string;
+  @Input() editUrl: string;
+
+  onDelete() {
+    this.delete.emit();
+  }
 }

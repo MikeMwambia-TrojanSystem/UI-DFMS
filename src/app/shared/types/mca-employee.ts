@@ -22,3 +22,14 @@ export class McaEmployee {
   createdAt: string;
   updatedAt: string;
 }
+
+export class McaPost {
+  name: string;
+  category: string;
+  position: string;
+  termStart: string;
+  termEnd: string;
+  politicalParty: string;
+  phone: string;
+  profilePic: string;
+}

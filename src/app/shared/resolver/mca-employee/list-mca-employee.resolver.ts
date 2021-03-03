@@ -5,7 +5,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { McaEmployeeService } from 'src/app/services/mca-employee.service';
 import { McaEmployee } from 'src/app/shared/types/mca-employee';
 
@@ -22,6 +22,13 @@ export class ListMcaEmployeeResolver implements Resolve<McaEmployee[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<McaEmployee[]> | Promise<McaEmployee[]> | McaEmployee[] {
-    return this.mcaEmployeeService.getMcaEmployees().pipe(take(1));
+    const publishedState = route.queryParams.state !== 'draft';
+
+    return this.mcaEmployeeService.getMcaEmployees().pipe(
+      take(1),
+      map((mcaEmployees) =>
+        mcaEmployees.filter((e) => e.status === publishedState)
+      )
+    );
   }
 }

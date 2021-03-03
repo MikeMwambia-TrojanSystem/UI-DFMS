@@ -13,7 +13,8 @@ import { DepartmentService } from 'src/app/services/department.service';
 })
 export class ListDepartmentComponent implements OnInit {
   private _cacheId: string;
-  private _state: 'draft' | 'published';
+  // private _state: 'draft' | 'published';
+  state: 'draft' | 'published';
   departments: Department[] = [];
   selectable: boolean;
 
@@ -27,9 +28,10 @@ export class ListDepartmentComponent implements OnInit {
   ngOnInit() {
     // Get selectable state, cache emit id, state from query url
     const queryParams = this.route.snapshot.queryParams;
-    this.selectable = queryParams.select || false;
+    this.selectable = queryParams.select === 'true' || false;
     this._cacheId = queryParams.id;
-    this._state = queryParams.state;
+    // this._state = queryParams.state;
+    this.state = queryParams.state;
 
     // Get departments data from resolver
     this.route.data
@@ -54,7 +56,8 @@ export class ListDepartmentComponent implements OnInit {
         queryParams: {
           select: this.selectable,
           id: this._cacheId,
-          state: this._state,
+          // state: this._state,
+          state: this.state,
         },
       }),
       () => {

@@ -14,6 +14,7 @@ import { WardConSubService } from 'src/app/services/ward-con-sub.service';
 export class ListConstituencyComponent implements OnInit {
   private _cacheId: string;
   private _state: 'draft' | 'published';
+  state: 'draft' | 'published';
   constituencies: Constituency[] = [];
 
   selectable = false; // Whether the list is selectable
@@ -28,9 +29,10 @@ export class ListConstituencyComponent implements OnInit {
   ngOnInit(): void {
     // Get selectable state, cache emit id, state from query url
     const queryParams = this.route.snapshot.queryParams;
-    this.selectable = queryParams.select || false;
+    this.selectable = queryParams.select === 'true' || false;
     this._cacheId = queryParams.id;
     this._state = queryParams.state;
+    this.state = queryParams.state;
 
     // Get Constituency data from resolver
     this.route.data
@@ -54,7 +56,7 @@ export class ListConstituencyComponent implements OnInit {
         queryParams: {
           select: this.selectable,
           id: this._cacheId,
-          state: this._state,
+          state: this.state,
         },
       }),
       () => {

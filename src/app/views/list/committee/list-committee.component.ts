@@ -28,7 +28,7 @@ export class ListCommitteeComponent implements OnInit {
   ngOnInit(): void {
     // Get selectable state, cache emit id, state from query url
     const queryParams = this.route.snapshot.queryParams;
-    this.selectable = queryParams.select || false;
+    this.selectable = queryParams.select === 'true' || false;
     this._cacheId = queryParams.id;
     this._state = queryParams.state;
 

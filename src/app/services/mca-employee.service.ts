@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, iif, Observable, of } from 'rxjs';
 import { map, switchMap, tap } from 'rxjs/operators';
 
-import { McaEmployee } from '../shared/types/mca-employee';
+import { McaEmployee, McaPost } from '../shared/types/mca-employee';
 import { ApiService } from './api.service';
 
 @Injectable({
@@ -55,6 +55,44 @@ export class McaEmployeeService {
         }
       }),
       map(({ message }) => (Array.isArray(message) ? message : []))
+    );
+  }
+
+  postMca(mca: McaPost) {
+    return this.apiService.createMca(mca).pipe(
+      tap(({ message }) => {
+        if (this._fetched) {
+          this._mcaEmployees.next([...this._mcaEmployees.getValue(), message]);
+        }
+      })
+    );
+  }
+
+  deleteMca(id: string) {
+    return this.apiService.deleteMca(id).pipe(
+      tap((result) => {
+        const newMcaEmployees = this._mcaEmployees.getValue();
+        const index = newMcaEmployees.findIndex((m) => m._id === result._id);
+
+        newMcaEmployees.splice(index, 1);
+
+        this._mcaEmployees.next(newMcaEmployees);
+      })
+    );
+  }
+
+  updateMca(mca: McaPost) {
+    return this.apiService.updateMca(mca).pipe(
+      tap((result) => {
+        const newMcaEmployees = this._mcaEmployees.getValue();
+        const index = newMcaEmployees.findIndex((m) => m._id === result._id);
+
+        newMcaEmployees[index] = {
+          ...result,
+        };
+
+        this._mcaEmployees.next(newMcaEmployees);
+      })
     );
   }
 }

@@ -51,20 +51,9 @@
   margin-left: auto;
 }
 
-.status {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-
-  span {
-    margin-right: 5px;
-  }
-}
-
 .state {
   display: flex;
   align-items: center;
-  margin-top: 5px;
 
   .dot {
     padding: 4px;

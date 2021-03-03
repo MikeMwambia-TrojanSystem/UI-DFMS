@@ -1,13 +1,15 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { of, throwError } from 'rxjs';
-import { catchError, map, tap, timeout } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { catchError, map, timeout } from 'rxjs/operators';
 
 import { Committee, CommitteePost } from '../shared/types/committee';
 import { Department, DepartmentPost } from '../shared/types/department';
-import { McaEmployee } from '../shared/types/mca-employee';
+import { McaEmployee, McaPost } from '../shared/types/mca-employee';
 import { Motion, MotionPost } from '../shared/types/motion';
+import { Statement, StatementPost } from '../shared/types/statement';
 import { WardConSub, WardConSubPost } from '../shared/types/ward-con-sub';
+import { Upload } from '../shared/types/upload';
 
 interface ApiResponse<T> {
   message: T;
@@ -65,6 +67,17 @@ export class ApiService {
     );
   }
 
+  createMca(mca: McaPost) {
+    return this._postRequest<McaPost, McaEmployee>('mcaProfile/create', mca);
+  }
+
+  createStatement(statement: StatementPost) {
+    return this._postRequest<StatementPost, Statement>(
+      'statement/create',
+      statement
+    );
+  }
+
   // GETs
   private _getRequest<T>(endpoint: string) {
     return this.http
@@ -90,6 +103,10 @@ export class ApiService {
 
   getMcaEmployee() {
     return this._getRequest<McaEmployee>('mcaProfile/getAllMca');
+  }
+
+  getStatements() {
+    return this._getRequest<Statement>('statement/getAllStatements');
   }
 
   //DELETEs
@@ -121,6 +138,14 @@ export class ApiService {
 
   deleteCommittee(id: string) {
     return this._deleteRequest<Committee>('commitee/delete', id);
+  }
+
+  deleteMca(id: string) {
+    return this._deleteRequest<McaEmployee>('mcaProfile/deleteMca', id);
+  }
+
+  deleteStatement(id: string) {
+    return this._deleteRequest<Statement>('statement/deleteStatement', id);
   }
 
   //UPDATEs
@@ -159,5 +184,26 @@ export class ApiService {
       'department/update',
       department
     );
+  }
+
+  updateMca(mca: McaPost) {
+    return this._updateRequest<McaPost, McaEmployee>(
+      'mcaProfile/updateMca',
+      mca
+    );
+  }
+
+  updateStatement(statement: StatementPost) {
+    return this._updateRequest<StatementPost, Statement>(
+      'statement/update',
+      statement
+    );
+  }
+
+  // UPLOAD
+  upload(data: FormData) {
+    return this.http
+      .post<Upload>('http://3.13.186.200:9000/uploadfile', data)
+      .pipe(timeout(this._timeout), catchError(errorHandler));
   }
 }

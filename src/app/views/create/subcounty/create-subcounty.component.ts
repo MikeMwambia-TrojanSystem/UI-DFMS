@@ -20,6 +20,7 @@ export class CreateSubcountyComponent implements OnInit {
     name: new FormControl('', Validators.required),
     type: new FormControl('subcounty', Validators.required),
     assemblyId: new FormControl('2d7c82a9c', Validators.required),
+    date: new FormControl(''),
   });
 
   constructor(

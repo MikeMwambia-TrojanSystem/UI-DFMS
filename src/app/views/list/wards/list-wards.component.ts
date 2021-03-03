@@ -14,7 +14,8 @@ import { WardConSubService } from 'src/app/services/ward-con-sub.service';
 })
 export class ListWardsComponent implements OnInit {
   private _cacheId: string;
-  private _state: 'draft' | 'published';
+  // private _state: 'draft' | 'published';
+  state: 'draft' | 'published';
   wards: Ward[] = [];
   selectable = false; // Whether the list is selectable
 
@@ -28,9 +29,10 @@ export class ListWardsComponent implements OnInit {
   ngOnInit(): void {
     // Get selectable state, cache emit id, return url from query url
     const queryParams = this.route.snapshot.queryParams;
-    this.selectable = queryParams.select || false;
+    this.selectable = queryParams.select === 'true' || false;
     this._cacheId = queryParams.id;
-    this._state = queryParams.state;
+    // this._state = queryParams.state;
+    this.state = queryParams.state;
 
     // Get Wards data from resolver
     this.route.data.pipe(take(1)).subscribe(({ wards }: { wards: Ward[] }) => {
@@ -50,7 +52,8 @@ export class ListWardsComponent implements OnInit {
         queryParams: {
           select: this.selectable,
           id: this._cacheId,
-          state: this._state,
+          // state: this._state,
+          state: this.state,
         },
       }),
       () => {

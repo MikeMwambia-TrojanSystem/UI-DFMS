@@ -36,7 +36,7 @@ export class CanActivateMcaEmployee implements CanActivate {
     return this.mcaEmployeeService.getMcaEmployee(mcaEmployeeId).pipe(
       take(1),
       map((mcaEmployee) => {
-        if (mcaEmployee) {
+        if (mcaEmployee && mcaEmployee.status === false) {
           return true;
         }
 

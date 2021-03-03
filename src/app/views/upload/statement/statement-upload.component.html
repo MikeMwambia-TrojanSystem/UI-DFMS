@@ -4,47 +4,48 @@
     <form [formGroup]="form" class="form">
       <p class="label">Statement No.</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="number" placeholder="1258789" />
-        <mat-error *ngIf="form.get('number').hasError('required')">Please enter statement no.!</mat-error>
+        <input matInput formControlName="statementNo" placeholder="1258789" />
+        <mat-error *ngIf="form.get('statementNo').hasError('required')">Please enter statement no.!</mat-error>
       </mat-form-field>
       <p class="label">Who is Seeking the Statement</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="seeking" placeholder="Ansaw Berneadd" />
-        <mat-error *ngIf="form.get('seeking').hasError('required')">Please enter a name!</mat-error>
+        <input matInput formControlName="seeker" placeholder="Ansaw Berneadd" />
+        <mat-error *ngIf="form.get('seeker').hasError('required')">Please enter a name!</mat-error>
       </mat-form-field>
       <p class="label">Subject of the Statement</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="subject" placeholder="Life in Green Hardy" />
-        <mat-error *ngIf="form.get('subject').hasError('required')">Please enter subject of the statement!</mat-error>
+        <input matInput formControlName="subjectOfStatement" placeholder="Life in Green Hardy" />
+        <mat-error *ngIf="form.get('subjectOfStatement').hasError('required')">Please enter subject of the statement!
+        </mat-error>
       </mat-form-field>
       <p class="label">Date When the Statement was Sought</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="dateSought" type="date" />
-        <mat-error *ngIf="form.get('dateSought').hasError('required')">Please enter a date!</mat-error>
+        <input matInput formControlName="dateStatementSought" type="date" />
+        <mat-error *ngIf="form.get('dateStatementSought').hasError('required')">Please enter a date!</mat-error>
       </mat-form-field>
       <p class="label">Date When the Statement would be Responded to?</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="dateResponse" type="date" />
-        <mat-error *ngIf="form.get('dateResponse').hasError('required')">Please enter a date!</mat-error>
+        <input matInput formControlName="dateStatementToResponded" type="date" />
+        <mat-error *ngIf="form.get('dateStatementToResponded').hasError('required')">Please enter a date!</mat-error>
       </mat-form-field>
       <p class="label">Statement request directed to?</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="requestTo" placeholder="Abobina Sampson" />
-        <mat-error *ngIf="form.get('requestTo').hasError('required')">Please enter a name!</mat-error>
+        <input matInput formControlName="department" placeholder="Abobina Sampson" />
+        <mat-error *ngIf="form.get('department').hasError('required')">Please enter a name!</mat-error>
       </mat-form-field>
       <p class="label">Fill in the Department responsible for providing the statement</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="department" placeholder="Department of Food" />
-        <mat-error *ngIf="form.get('department').hasError('required')">Please enter a department!</mat-error>
+        <input matInput formControlName="departmentResponsible" placeholder="Department of Food" />
+        <mat-error *ngIf="form.get('departmentResponsible').hasError('required')">Please enter a department!</mat-error>
       </mat-form-field>
-      <app-custom-button [title]="'Upload Statement'" [url]="['/management/upload']"></app-custom-button>
+      <app-custom-button [title]="fileName || 'Upload Statement'" (buttonClick)="onUploadStatement()">
+      </app-custom-button>
       <div class="actions">
-        <a [routerLink]="['/list/statement']" [queryParams]="{state: 'draft'}">
-          <button mat-button type="button" class="btn-draft">Save as Draft</button>
-        </a>
-        <a [routerLink]="form.valid ? ['/list/statement'] : null">
-          <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Statement</button>
-        </a>
+        <button mat-button type="button" class="btn-draft" [disabled]="form.invalid || !fileName"
+          (click)="onSave(false)">Save as
+          Draft</button>
+        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid || !fileName"
+          (click)="onSave(true)">Publish Statement</button>
       </div>
     </form>
   </app-center-card>

@@ -9,14 +9,14 @@
       </mat-form-field>
       <p class="label">Category</p>
       <mat-form-field appearance="standard">
-        <mat-select formControlName="category">
+        <mat-select formControlName="positionStatus">
           <mat-option value="Elected">Elected</mat-option>
           <mat-option value="Nominated">Nominated</mat-option>
         </mat-select>
       </mat-form-field>
       <p class="label">Position</p>
       <mat-form-field appearance="standard">
-        <mat-select formControlName="position">
+        <mat-select>
           <mat-option value="Clerk">Clerk</mat-option>
           <mat-option value="Speaker">Speaker</mat-option>
           <mat-option value="Personnel">Personnel</mat-option>
@@ -49,25 +49,27 @@
       </div>
       <mat-form-field appearance="standard">
         <span matPrefix>+ &nbsp;</span>
-        <input matInput formControlName="phone" type="tel" />
-        <mat-error *ngIf="form.get('phone').hasError('required')">Please enter phone numer</mat-error>
-        <mat-error *ngIf="form.get('phone').hasError('phoneNumber')">Please enter valid phone numer</mat-error>
+        <input matInput formControlName="phoneNumber" type="tel" />
+        <mat-error *ngIf="form.get('phoneNumber').hasError('required')">Please enter phone numer
+        </mat-error>
+        <mat-error *ngIf="form.get('phoneNumber').hasError('phoneNumber')">Please enter valid phone numer
+        </mat-error>
         <app-verify-button>Send Verification Code</app-verify-button>
       </mat-form-field>
       <div class="select-container">
-        <app-custom-button [title]="'Upload Profile Picture'" [url]="['/management/upload']"></app-custom-button>
-        <!-- <input #fileUpload class="upload" type="file" accept="image/*" /> -->
-        <a routerLink="/list/wards" [queryParams]="{select: true}" style="margin-left: 10px">
-          <app-custom-button [title]="'Select Ward Represented'"></app-custom-button>
-        </a>
-        <!-- <button mat-raised-button type="button" class="select-btn">Select Ward Represented</button> -->
-
+        <app-custom-button [title]="profilePic || 'Upload Profile Picture'" (buttonClick)="onProfileSelect()">
+        </app-custom-button>
+        <app-custom-button [title]="ward.length ? ward : 'Select Ward Represented'" style="margin-left: 10px"
+          (buttonClick)="onWardSelect()">
+        </app-custom-button>
       </div>
       <div class="actions">
-        <button mat-button type="button" class="btn-draft">Save as Draft</button>
-        <a [routerLink]="['/signup/phone-verification']" [queryParams]="{redirect: '/list/personnel'}">
-          <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save Committee</button>
-        </a>
+        <button mat-button type="button" class="btn-draft" [disabled]="form.invalid || !profilePic"
+          (click)="onSave(false)">Save as
+          Draft</button>
+        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid || !profilePic"
+          (click)="onSave(false)">Save
+          MCA</button>
       </div>
     </form>
   </app-center-card>
