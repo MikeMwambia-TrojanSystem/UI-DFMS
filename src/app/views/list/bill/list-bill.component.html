@@ -3,10 +3,23 @@
     <h1 class="title">Bills</h1>
     <app-search-bar></app-search-bar>
     <div>
-      <app-info-item *ngFor="let bill of bills" [title]="bill.title" [date]="bill.date" [subjects]="bill.subjects"
-        [ward]="bill.ward" class="item" [selectable]="selectable" [sub]="'Bill on'" [status]="bill.status"
-        [state]="state">
+      <app-info-item
+        *ngFor="let bill of bills"
+        [title]="bill.titleOfBill"
+        [date]="bill.datePublished"
+        [subjects]="[bill.relatedTo]"
+        class="item"
+        [selectable]="selectable"
+        [sub]="'Bill on'"
+        [status]="bill.status"
+        (delete)="onDelete(bill._id)"
+        [editUrl]="'/generate/bill/' + bill._id"
+      >
       </app-info-item>
+    </div>
+    <div *ngIf="!bills.length" class="list-no-value">
+      <p>No Bills Listed!</p>
+      <p (click)="onCreateNew()" class="new">Create Bill</p>
     </div>
   </app-center-card>
 </app-background>

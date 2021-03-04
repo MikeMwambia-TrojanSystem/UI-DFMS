@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { CacheService } from 'src/app/services/cache.service';
 
 interface Report {
   title: string;
@@ -17,6 +18,8 @@ interface Report {
   templateUrl: './list-report.component.html',
 })
 export class ListReportComponent implements OnInit {
+  private _cacheId: string;
+
   /**
    * Reports mock data
    */
@@ -59,18 +62,25 @@ export class ListReportComponent implements OnInit {
     },
   ];
 
-  selectabe: boolean;
+  selectable: boolean;
   state: string; // This props is just for example and should be deleted when implementing a fetch request to backend.
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute, private cacheService: CacheService) { }
 
   ngOnInit(): void {
-    this.selectabe = this.route.snapshot.queryParams.select || false;
+    // Get selectable and cache id from url query
+    const queryParams = this.route.snapshot.queryParams
+    this.selectable = queryParams.select === 'true' || false;
+    this._cacheId = queryParams.id;
 
     /**
      * These lines are just for dynamic state example and should be deleted when implementing a fetch request to backend.
      */
     this.state = this.route.snapshot.queryParams.state;
     //=====================================================================
+  }
+
+  onSelect() {
+    this.cacheService.emit(this._cacheId, null);
   }
 }

@@ -4,33 +4,55 @@
     <form [formGroup]="form" class="form">
       <p class="label">Title of Bill</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="title" placeholder="Acts on Food Reduction and Housing" />
-        <mat-error *ngIf="form.get('title').hasError('required')">Please enter bill title!</mat-error>
+        <input
+          matInput
+          formControlName="titleOfBill"
+          placeholder="Acts on Food Reduction and Housing"
+        />
+        <mat-error *ngIf="form.get('titleOfBill').hasError('required')"
+          >Please enter bill title!</mat-error
+        >
       </mat-form-field>
       <p class="label">Bill No</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="number" placeholder="NO.172" type="number" />
-        <mat-error *ngIf="form.get('number').hasError('required')">Please enter bill number!</mat-error>
+        <input
+          matInput
+          formControlName="billNo"
+          placeholder="NO.172"
+          type="number"
+        />
+        <mat-error *ngIf="form.get('billNo').hasError('required')"
+          >Please enter bill number!</mat-error
+        >
       </mat-form-field>
       <div class="custom-btn-container">
-        <app-custom-button [title]="'Select Sponsor'" class="custom-btn" [url]="['/list/mca-employee']"
-          [query]="{select: true}"></app-custom-button>
-        <app-custom-button [title]="'Select Concerned Committee'" class="custom-btn" [url]="['/list/committee']"
-          [query]="{select: true}"></app-custom-button>
+        <app-custom-button
+          [title]="sponsorName.length ? sponsorName : 'Select Sponsor'"
+          class="custom-btn"
+          (buttonClick)="onSelectSponsored()"
+        ></app-custom-button>
+        <app-custom-button
+          [title]="committeeName ? committeeName : 'Select Concerned Committee'"
+          class="custom-btn"
+          (buttonClick)="onSelectCommittee()"
+        ></app-custom-button>
       </div>
       <div class="date-container">
         <div class="date">
           <p class="label">Date Published</p>
           <mat-form-field appearance="standard">
             <input matInput formControlName="datePublished" type="date" />
-            <mat-error *ngIf="form.get('datePublished').hasError('required')">Please enter date published!</mat-error>
+            <mat-error *ngIf="form.get('datePublished').hasError('required')"
+              >Please enter date published!</mat-error
+            >
           </mat-form-field>
         </div>
         <div class="date">
           <p class="label">First Reading</p>
           <mat-form-field appearance="standard">
-            <input matInput formControlName="firstReading" type="date" />
-            <mat-error *ngIf="form.get('firstReading').hasError('required')">Please enter date first reading!
+            <input matInput formControlName="firstReadingDate" type="date" />
+            <mat-error *ngIf="form.get('firstReadingDate').hasError('required')"
+              >Please enter date first reading!
             </mat-error>
           </mat-form-field>
         </div>
@@ -39,8 +61,10 @@
         <div class="date">
           <p class="label">Second Reading</p>
           <mat-form-field appearance="standard">
-            <input matInput formControlName="secondReading" type="date" />
-            <mat-error *ngIf="form.get('secondReading').hasError('required')">Please enter date second reading!
+            <input matInput formControlName="secondReadingDate" type="date" />
+            <mat-error
+              *ngIf="form.get('secondReadingDate').hasError('required')"
+              >Please enter date second reading!
             </mat-error>
           </mat-form-field>
         </div>
@@ -48,23 +72,43 @@
           <p class="label">Date Passed</p>
           <mat-form-field appearance="standard">
             <input matInput formControlName="datePassed" type="date" />
-            <mat-error *ngIf="form.get('datePassed').hasError('required')">Please enter date passed!</mat-error>
+            <mat-error *ngIf="form.get('datePassed').hasError('required')"
+              >Please enter date passed!</mat-error
+            >
           </mat-form-field>
         </div>
       </div>
-      <app-custom-button [title]="'Select Bill Report'" class="custom-btn standalone" [url]="['/list/report']"
-        [query]="{select: true}">
+      <app-custom-button
+        [title]="'Select Bill Report'"
+        class="custom-btn standalone"
+        (buttonClick)="onSelectBillReport()"
+      >
       </app-custom-button>
-      <app-custom-button [title]="'Upload Bill Soft Copy'" class="custom-btn standalone" [url]="['/management/upload']">
+      <app-custom-button
+        [title]="fileName || 'Upload Bill Soft Copy'"
+        class="custom-btn standalone"
+        (buttonClick)="onUpload()"
+      >
       </app-custom-button>
-      <!-- <input #fileUpload class="hidden" type="file" /> -->
       <div class="actions">
-        <a [routerLink]="['/list/bill']" [queryParams]="{state: 'draft'}">
-          <button mat-button type="button" class="btn-draft">Save as Draft</button>
-        </a>
-        <a [routerLink]="form.valid ? ['/list/bill'] : null">
-          <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Bills</button>
-        </a>
+        <button
+          mat-button
+          type="button"
+          class="btn-draft"
+          [disabled]="form.invalid || !hasUploaded"
+          (click)="onSave(false)"
+        >
+          Save as Draft
+        </button>
+        <button
+          mat-raised-button
+          type="submit"
+          class="btn-save"
+          [disabled]="form.invalid || !hasUploaded"
+          (click)="onSave(true)"
+        >
+          Publish Bills
+        </button>
       </div>
     </form>
   </app-center-card>

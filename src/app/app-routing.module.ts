@@ -91,6 +91,9 @@ import { ListPetitionResolver } from './shared/resolver/petition/list-petition.r
 import { ListPetitionerResolver } from './shared/resolver/petitioner/list-petitioner.resolver';
 import { PetitionResolver } from './shared/resolver/petition/petition.resolver';
 import { CanActivatePetition } from './shared/guard/petition/petition.guard';
+import { ListBillResolver } from './shared/resolver/bill/list-bill.resolver';
+import { CanActivateBill } from './shared/guard/bill/bill.guard';
+import { BillResolver } from './shared/resolver/bill/bill.resolver';
 
 const routes: Routes = [
   // Login route
@@ -212,7 +215,11 @@ const routes: Routes = [
         },
       },
       { path: 'act', component: ListActComponent },
-      { path: 'bill', component: ListBillComponent },
+      {
+        path: 'bill', component: ListBillComponent, resolve: {
+          bills: ListBillResolver
+        }
+      },
       {
         path: 'petition', component: ListPetitionComponent, resolve: {
           petitions: ListPetitionResolver
@@ -280,6 +287,11 @@ const routes: Routes = [
     children: [
       { path: 'act', component: ActGenerateComponent },
       { path: 'bill', component: BillGenerateComponent },
+      {
+        path: 'bill/:id', component: BillGenerateComponent, canActivate: [CanActivateBill], resolve: {
+          bill: BillResolver
+        }
+      },
       {
         path: 'motion',
         component: MotionGenerateComponent,

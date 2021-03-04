@@ -19,7 +19,7 @@ export class UploadPageComponent implements OnInit {
   constructor(
     private cacheService: CacheService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Get cache id from url query
@@ -28,15 +28,22 @@ export class UploadPageComponent implements OnInit {
 
     const category = queryParams.category;
 
-    if (category === 'statement') {
-      this.category = 'Statement';
-    }
-    if (category === 'mca') {
-      this.category = 'MCA Profile';
-      this.accept = 'image/*';
-    }
-    if (category === 'petition') {
-      this.category = 'Petition';
+    switch (category) {
+      case 'statement':
+        this.category = 'Statement';
+        break;
+      case 'mca':
+        this.category = 'MCA Profile';
+        this.accept = 'image/*';
+        break;
+      case 'petition':
+        this.category = 'Petition';
+        break;
+      case 'bill':
+        this.category = 'Petition';
+        break;
+      default:
+        break;
     }
   }
 

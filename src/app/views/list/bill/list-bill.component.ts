@@ -1,71 +1,68 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs/operators';
+import _ from 'lodash';
 
-interface Bill {
-  title: string;
-  date: string;
-  subjects: string[];
-  ward: string;
-  status: string;
-  state: string;
-}
+import { BillService } from 'src/app/services/bill.service';
+import { CacheService } from 'src/app/services/cache.service';
+import { Bill } from 'src/app/shared/types/bill';
 
 @Component({
-  selector: 'app-list-bill',
   templateUrl: './list-bill.component.html',
   styleUrls: ['./list-bill.component.scss'],
 })
 export class ListBillComponent implements OnInit {
-  /**
-   * Bills mock data
-   */
-  bills: Bill[] = [
-    {
-      title: 'Food Drinks Live',
-      date: '9/3/2008',
-      subjects: ['Employment', 'Youth', 'Fomo'],
-      ward: 'MCA Nathu Ward',
-      status: 'Accented Bill',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      title: 'Drug',
-      date: '9/3/2008',
-      subjects: ['Employment', 'Youth', 'Fomo'],
-      ward: 'MCA Nathu Ward',
-      status: 'Accented Bill',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      title: 'Health Facility',
-      date: '9/3/2008',
-      subjects: ['Employment', 'Youth', 'Fomo'],
-      ward: 'MCA Nathu Ward',
-      status: 'Accented Bill',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      title: 'Live Matters',
-      date: '9/3/2008',
-      subjects: ['Employment', 'Youth', 'Fomo'],
-      ward: 'MCA Nathu Ward',
-      status: 'Accented Bill',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-  ];
-
+  private _cacheId: string;
+  private _state: 'draft' | 'private' | 'public';
+  bills: Bill[];
   selectable: boolean;
-  state: string; // This props is just for example and should be deleted when implementing a fetch request to backend.
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(private route: ActivatedRoute,
+    private billService: BillService,
+    private cacheService: CacheService,
+    private router: Router) { }
 
   ngOnInit(): void {
-    this.selectable = this.route.snapshot.queryParams.select || false;
+    // Get selectable state, cache emit id, state from query url
+    const queryParams = this.route.snapshot.queryParams;
+    this.selectable = queryParams.select === 'true' || false;
+    this._cacheId = queryParams.id;
+    this._state = queryParams.state;
 
-    /**
-     * These lines are just for dynamic state example and should be deleted when implementing a fetch request to backend.
-     */
-    this.state = this.route.snapshot.queryParams.state;
-    //=====================================================================
+    // Get Petitions data from resolver
+    this.route.data
+      .pipe(take(1))
+      .subscribe(({ bills }: { bills: Bill[] }) => {
+        this.bills = _.orderBy(bills, 'createdAt', 'desc');
+      });
+  }
+
+  onCreateNew() {
+    this.cacheService.cache(
+      'LIST_NEW_BILL',
+      null,
+      this.router.createUrlTree(['/list/bill'], {
+        queryParams: {
+          select: this.selectable,
+          id: this._cacheId,
+          state: this._state,
+        },
+      }),
+      () => {
+        return null;
+      }
+    );
+
+    this.router.navigate(['/generate/bill'], {
+      queryParams: {
+        id: 'LIST_NEW_BILL',
+      },
+    });
+  }
+
+  onDelete(id: string) {
+    this.billService.deleteBill(id).subscribe(() => {
+      window.location.reload();
+    })
   }
 }

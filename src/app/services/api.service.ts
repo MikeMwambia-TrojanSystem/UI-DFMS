@@ -12,6 +12,7 @@ import { WardConSub, WardConSubPost } from '../shared/types/ward-con-sub';
 import { Upload } from '../shared/types/upload';
 import { Petition, PetitionPost } from '../shared/types/petition';
 import { of } from 'rxjs';
+import { BillPost, Bill } from '../shared/types/bill';
 
 interface ApiResponse<T> {
   message: T;
@@ -81,10 +82,14 @@ export class ApiService {
   }
 
   createPetition(petition: PetitionPost) {
-    return this._postRequest<PetitionPost, any>(
+    return this._postRequest<PetitionPost, Petition>(
       'petition/create',
       petition
     )
+  }
+
+  createBill(bill: BillPost) {
+    return this._postRequest<BillPost, Bill>('bills/create', bill)
   }
 
   // GETs
@@ -119,7 +124,11 @@ export class ApiService {
   }
 
   getPetitions() {
-    return this._getRequest<any>('petition/getAllPetition');
+    return this._getRequest<Petition>('petition/getAllPetition');
+  }
+
+  getBills() {
+    return this._getRequest<Bill>('bills/getAllBills')
   }
 
   //DELETEs
@@ -163,6 +172,10 @@ export class ApiService {
 
   deletePetition(id: string) {
     return this._deleteRequest<Petition>('petition/delete', id)
+  }
+
+  deleteBill(id: string) {
+    return this._deleteRequest<Bill>('bills/delete', id)
   }
 
   //UPDATEs
@@ -222,6 +235,10 @@ export class ApiService {
       'petition/update',
       petition
     )
+  }
+
+  updateBill(bill: BillPost) {
+    return this._updateRequest<BillPost, Bill>('bills/update', bill)
   }
 
   // UPLOAD
