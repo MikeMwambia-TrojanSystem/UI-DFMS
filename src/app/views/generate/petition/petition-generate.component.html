@@ -5,27 +5,43 @@
       <form [formGroup]="form" class="form">
         <p class="label">Fill in the Issues that make up this petition</p>
         <mat-form-field appearance="standard">
-          <textarea matInput formControlName="issues" placeholder="Petition on housing and food"></textarea>
-          <mat-error *ngIf="form.get('issues').hasError('required')">Please fill in issues!</mat-error>
+          <textarea
+            matInput
+            formControlName="content"
+            placeholder="Petition on housing and food"
+          ></textarea>
+          <mat-error *ngIf="form.get('content').hasError('required')"
+            >Please fill in issues!</mat-error
+          >
         </mat-form-field>
         <p class="label">Petition concerning with sector(s)</p>
         <mat-form-field appearance="standard">
-          <input matInput formControlName="sector" placeholder="Food and Water" />
-          <mat-error *ngIf="form.get('sector').hasError('required')">Please enter concerning sector!</mat-error>
+          <input
+            matInput
+            formControlName="relatedTo"
+            placeholder="Food and Water"
+          />
+          <mat-error *ngIf="form.get('relatedTo').hasError('required')"
+            >Please enter concerning sector!</mat-error
+          >
         </mat-form-field>
         <div class="input-container">
           <div class="input">
             <p class="label">Date Provided to the Assembly by Petitioner</p>
             <mat-form-field appearance="standard">
-              <input matInput formControlName="dateProvided" type="date" />
-              <mat-error *ngIf="form.get('dateProvided').hasError('required')">Please enter date provided!</mat-error>
+              <input matInput formControlName="datePresented" type="date" />
+              <mat-error *ngIf="form.get('datePresented').hasError('required')"
+                >Please enter date provided!</mat-error
+              >
             </mat-form-field>
           </div>
           <div class="input">
             <p class="label">Date Set for petition discussions by assembly</p>
             <mat-form-field appearance="standard">
-              <input matInput formControlName="dateSet" type="date" />
-              <mat-error *ngIf="form.get('dateSet').hasError('required')">Please enter date set!
+              <input matInput formControlName="dateToBDiscussed" type="date" />
+              <mat-error
+                *ngIf="form.get('dateToBDiscussed').hasError('required')"
+                >Please enter date set!
               </mat-error>
             </mat-form-field>
           </div>
@@ -34,44 +50,95 @@
           <div class="input">
             <p class="label">Petition Number</p>
             <mat-form-field appearance="standard">
-              <input matInput formControlName="number" type="number" />
-              <mat-error *ngIf="form.get('number').hasError('required')">Please enter petition number!</mat-error>
+              <input matInput formControlName="petitionNumber" type="number" />
+              <mat-error *ngIf="form.get('petitionNumber').hasError('required')"
+                >Please enter petition number!</mat-error
+              >
             </mat-form-field>
           </div>
           <div class="input">
-            <app-custom-button [title]="'Select Concerned Committee'" [url]="['/list/committee']"
-              [query]="{select: true}"></app-custom-button>
+            <app-custom-button
+              [title]="
+                committeeName.length
+                  ? committeeName
+                  : 'Select Concerned Committee'
+              "
+              (buttonClick)="onSelectCommittee()"
+            ></app-custom-button>
           </div>
         </div>
         <div class="input-container">
           <div class="input">
             <p class="label">Due date of Response by Committee</p>
             <mat-form-field appearance="standard">
-              <input matInput formControlName="dueDate" type="date" />
-              <mat-error *ngIf="form.get('dueDate').hasError('required')">Please enter due date!</mat-error>
+              <input
+                matInput
+                formControlName="dateCommitteResponse"
+                type="date"
+              />
+              <mat-error
+                *ngIf="form.get('dateCommitteResponse').hasError('required')"
+                >Please enter due date!</mat-error
+              >
             </mat-form-field>
           </div>
-          <div class="input">
+          <div class="input"></div>
+        </div>
+
+        <div class="custom-btn-container">
+          <app-custom-button
+            [title]="sponsorName.length ? sponsorName : 'Sponsored By'"
+            class="custom-btn sponsored"
+            (buttonClick)="onSelectSponsored()"
+          >
+          </app-custom-button>
+          <app-custom-button
+            [title]="'Add Petitioner'"
+            class="custom-btn petitioner"
+            (buttonClick)="onAddPetitioner()"
+          >
+          </app-custom-button>
+          <app-custom-button
+            [title]="fileName ? fileName : 'Upload Soft copy of the petition'"
+            class="custom-btn upload"
+            (buttonClick)="onUpload()"
+          >
+          </app-custom-button>
+          <div class="list">
+            <div class="petitioner-container" *ngFor="let p of petitionersName">
+              <mat-icon class="petitioner-icon">person_outline</mat-icon>
+              <span>{{ p.name }}</span>
+              <button
+                mat-button
+                color="warn"
+                class="btn-delete"
+                type="button"
+                (click)="onPetitionerDelete(p._id)"
+              >
+                Delete
+              </button>
+            </div>
           </div>
         </div>
-        <div class="custom-btn-container">
-          <app-custom-button [title]="'Sponsored By'" class="custom-btn" [url]="['/', 'list', 'mca-employee']"
-            [query]="{select: true}">
-          </app-custom-button>
-          <app-custom-button [title]="'Add Petitioner'" class="custom-btn" [url]="['/', 'management', 'petitioners']">
-          </app-custom-button>
-        </div>
-        <app-custom-button [title]="'Upload Soft copy of the petition'" class="custom-btn standalone"
-          [url]="['/', 'management', 'upload']">
-        </app-custom-button>
-        <input #fileUpload class="hidden" type="file" />
         <div class="actions">
-          <a routerLink="/list/petition">
-            <button mat-button type="button" class="btn-draft">Save as Draft</button>
-          </a>
-          <a [routerLink]="form.valid ? ['/list/petition'] : null">
-            <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Petition</button>
-          </a>
+          <button
+            mat-button
+            type="button"
+            class="btn-draft"
+            [disabled]="form.invalid || !hasUploaded"
+            (click)="onSave(false)"
+          >
+            Save as Draft
+          </button>
+          <button
+            mat-raised-button
+            type="submit"
+            class="btn-save"
+            [disabled]="form.invalid || !hasUploaded"
+            (click)="onSave(true)"
+          >
+            Publish Petition
+          </button>
         </div>
       </form>
     </div>

@@ -41,26 +41,41 @@
 }
 
 .custom-btn {
-  width: calc(50% - 5px);
-  margin: 0 10px;
-
-  &:first-child {
-    margin-left: 0;
-  }
-
-  &:last-child {
-    margin-right: 0;
-  }
+  width: 100%;
+  margin: 0;
 
   &-container {
-    display: flex;
+    display: grid;
     margin: 15px 0;
+    grid-template:
+      "sponsored petitioner"
+      "upload list";
+    grid-gap: 10px;
   }
 
-  &.standalone {
-    margin: 0;
-    width: calc(50% - 10px);
-    margin-bottom: 15px;
+  &.sponsored {
+    grid-area: sponsored;
+  }
+
+  &.petitioner {
+    grid-area: petitioner;
+  }
+
+  &.upload {
+    grid-area: upload;
+  }
+
+  &.list {
+    grid-area: list;
+  }
+}
+
+.petitioner-container {
+  display: flex;
+  align-items: center;
+
+  .petitioner-icon {
+    color: #008000;
   }
 }
 

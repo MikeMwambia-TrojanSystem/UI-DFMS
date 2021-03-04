@@ -46,13 +46,15 @@ export class CreateMcaComponent implements OnInit {
     wardId: new FormControl('', Validators.required),
   });
 
+  hasUploaded = false;
+
   constructor(
     private cacheService: CacheService,
     private router: Router,
     private mcaEmployeeService: McaEmployeeService,
     private route: ActivatedRoute,
     private apiService: ApiService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     // Get cache id from query url
@@ -85,18 +87,20 @@ export class CreateMcaComponent implements OnInit {
     }
 
     // Rehydrate cached form data if there's any
-    const cachedForm = this.cacheService.rehydrate<FormGroup>('CREATE_MCA');
-    const cachedUpload = this.cacheService.rehydrate<{
+    const cached = this.cacheService.rehydrate<{
       form: FormGroup;
       upload: UploadPost;
-    }>('CREATE_MCA_PICTURE');
+    }>('CREATE_MCA');
 
-    if (cachedForm) {
-      this.form = cachedForm;
-    }
-    if (cachedUpload) {
-      this.form = cachedUpload.form;
-      this._mcaUpload = cachedUpload.upload;
+    if (cached) {
+      const { form, upload } = cached;
+
+      this.form = form;
+      this._mcaUpload = upload;
+
+      if (upload) {
+        this.hasUploaded = true;
+      }
     }
   }
 
@@ -122,21 +126,27 @@ export class CreateMcaComponent implements OnInit {
     const urlTree = this._mcaId
       ? ['/create/mca', this._mcaId]
       : ['/create/mca'];
-    this.cacheService.cache<FormGroup, { _id: string; name: string }>(
+    this.cacheService.cache<{
+      form: FormGroup;
+      upload: UploadPost;
+    }, { _id: string; name: string }>(
       'CREATE_MCA',
-      this.form,
+      {
+        form: this.form,
+        upload: this._mcaUpload,
+      },
       this.router.createUrlTree(urlTree, {
         queryParams: {
           id: this._cacheId,
         },
       }),
-      (form, { _id, name }) => {
+      ({ form, upload }, { _id, name }) => {
         form.patchValue({
           wardId: _id,
           ward: name,
         }); // Patch cached form with new ward information.
 
-        return form;
+        return { form, upload };
       }
     );
 
@@ -160,7 +170,7 @@ export class CreateMcaComponent implements OnInit {
       { form: FormGroup; upload: UploadPost },
       UploadPost
     >(
-      'CREATE_MCA_PICTURE',
+      'CREATE_MCA',
       { form: this.form, upload: this._mcaUpload },
       this.router.createUrlTree(urlTree, {
         queryParams: {
@@ -175,7 +185,7 @@ export class CreateMcaComponent implements OnInit {
 
     // Navigate the user to '/management/upload'
     this.router.navigate(['/management/upload'], {
-      queryParams: { id: 'CREATE_MCA_PICTURE', category: 'mca' },
+      queryParams: { id: 'CREATE_MCA', category: 'mca' },
     });
   }
 

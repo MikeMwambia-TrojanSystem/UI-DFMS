@@ -32,8 +32,11 @@ export class UploadPageComponent implements OnInit {
       this.category = 'Statement';
     }
     if (category === 'mca') {
-      this.category = 'MCA Profie';
+      this.category = 'MCA Profile';
       this.accept = 'image/*';
+    }
+    if (category === 'petition') {
+      this.category = 'Petition';
     }
   }
 

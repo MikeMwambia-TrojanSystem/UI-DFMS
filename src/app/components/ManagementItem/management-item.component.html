@@ -1,12 +1,21 @@
-<div class="container" [ngClass]="{'no-divider': noDivider}">
-  <img [src]="pic" alt="avatar" width="80" height="80" class="image" *ngIf="pic" />
-  <div class="info-container" [ngStyle]="{'margin-left': pic ? '20px' : '0'}">
-    <span class="title" [ngClass]="{'bold': subtitle}">{{title}}</span>
-    <span class="subtitle" *ngIf="subtitle">{{subtitle}}</span>
+<div class="container" [ngClass]="{ 'no-divider': noDivider }">
+  <img
+    [src]="pic"
+    alt="avatar"
+    width="80"
+    height="80"
+    class="image"
+    *ngIf="pic"
+  />
+  <div class="info-container" [ngStyle]="{ 'margin-left': pic ? '20px' : '0' }">
+    <span class="title" [ngClass]="{ bold: subtitle }">{{ title }}</span>
+    <span class="subtitle" *ngIf="subtitle">{{ subtitle }}</span>
     <div class="state" *ngIf="state">
       <div class="dot"></div>
-      <span class="label">{{state}}</span>
+      <span class="label">{{ state }}</span>
     </div>
   </div>
-  <button mat-raised-button class="btn" *ngIf="selectable">Disabled</button>
+  <button mat-button class="btn" *ngIf="selectable" (click)="onSelect()">
+    Select
+  </button>
 </div>

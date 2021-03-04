@@ -87,6 +87,10 @@ import { CanActivateMcaEmployee } from './shared/guard/mca-employee/mca-employee
 import { ListStatementResolver } from './shared/resolver/statement/list-statement.resolver';
 import { CanActivateStatement } from './shared/guard/statement/statement.guard';
 import { StatementResolver } from './shared/resolver/statement/statement.resolver';
+import { ListPetitionResolver } from './shared/resolver/petition/list-petition.resolver';
+import { ListPetitionerResolver } from './shared/resolver/petitioner/list-petitioner.resolver';
+import { PetitionResolver } from './shared/resolver/petition/petition.resolver';
+import { CanActivatePetition } from './shared/guard/petition/petition.guard';
 
 const routes: Routes = [
   // Login route
@@ -209,7 +213,11 @@ const routes: Routes = [
       },
       { path: 'act', component: ListActComponent },
       { path: 'bill', component: ListBillComponent },
-      { path: 'petition', component: ListPetitionComponent },
+      {
+        path: 'petition', component: ListPetitionComponent, resolve: {
+          petitions: ListPetitionResolver
+        }
+      },
       { path: 'report', component: ListReportComponent },
       { path: 'order-paper', component: ListOrderPaperComponent },
       { path: 'votebook', component: ListVoteBookComponent },
@@ -256,7 +264,12 @@ const routes: Routes = [
     children: [
       { path: 'accounts', component: AccountManagementComponent },
       { path: 'oath', component: AdministrationOathComponent },
-      { path: 'petitioners', component: AddPetitionerComponent },
+      {
+        path: 'petitioners', component: AddPetitionerComponent, resolve: {
+          petitioners: ListPetitionerResolver
+        }
+      },
+
       { path: 'upload', component: UploadPageComponent },
     ],
   },
@@ -280,6 +293,12 @@ const routes: Routes = [
         },
       },
       { path: 'petition', component: PetitionGenerateComponent },
+      {
+        path: 'petition/:id', component: PetitionGenerateComponent, resolve: {
+          petition: PetitionResolver
+        },
+        canActivate: [CanActivatePetition]
+      },
       { path: 'report', component: ReportGenerateComponent },
       { path: 'order-paper', component: OrderPaperGenerateComponent },
       { path: 'paper-content', component: PaperContentGenerateComponent },
@@ -363,4 +382,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

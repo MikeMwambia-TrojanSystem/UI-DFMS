@@ -10,6 +10,8 @@ import { Motion, MotionPost } from '../shared/types/motion';
 import { Statement, StatementPost } from '../shared/types/statement';
 import { WardConSub, WardConSubPost } from '../shared/types/ward-con-sub';
 import { Upload } from '../shared/types/upload';
+import { Petition, PetitionPost } from '../shared/types/petition';
+import { of } from 'rxjs';
 
 interface ApiResponse<T> {
   message: T;
@@ -29,7 +31,7 @@ export class ApiService {
   private _baseUrl = 'https://web.jonikisecurity.com/';
   private _timeout = 60 * 1000;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   // POSTs
   private _postRequest<T, U>(endpoint: string, data: T) {
@@ -78,6 +80,13 @@ export class ApiService {
     );
   }
 
+  createPetition(petition: PetitionPost) {
+    return this._postRequest<PetitionPost, any>(
+      'petition/create',
+      petition
+    )
+  }
+
   // GETs
   private _getRequest<T>(endpoint: string) {
     return this.http
@@ -107,6 +116,10 @@ export class ApiService {
 
   getStatements() {
     return this._getRequest<Statement>('statement/getAllStatements');
+  }
+
+  getPetitions() {
+    return this._getRequest<any>('petition/getAllPetition');
   }
 
   //DELETEs
@@ -146,6 +159,10 @@ export class ApiService {
 
   deleteStatement(id: string) {
     return this._deleteRequest<Statement>('statement/deleteStatement', id);
+  }
+
+  deletePetition(id: string) {
+    return this._deleteRequest<Petition>('petition/delete', id)
   }
 
   //UPDATEs
@@ -200,8 +217,22 @@ export class ApiService {
     );
   }
 
+  updatePetition(petition: PetitionPost) {
+    return this._updateRequest<PetitionPost, Petition>(
+      'petition/update',
+      petition
+    )
+  }
+
   // UPLOAD
   upload(data: FormData) {
+    // return of({
+    //   etag: 'test',
+    //   id: 'test',
+    //   key: 'test',
+    //   location: 'google.com',
+    //   uploadedToS3: true,
+    // })
     return this.http
       .post<Upload>('http://3.13.186.200:9000/uploadfile', data)
       .pipe(timeout(this._timeout), catchError(errorHandler));
