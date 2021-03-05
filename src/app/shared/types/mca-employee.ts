@@ -25,11 +25,17 @@ export class McaEmployee {
 
 export class McaPost {
   name: string;
-  category: string;
-  position: string;
-  termStart: string;
-  termEnd: string;
-  politicalParty: string;
-  phone: string;
+  group: string;
+  phoneNumber: string;
+  verified: boolean;
+  dateCreated: string;
+  assemblyId: string;
   profilePic: string;
+  termOfService: string;
+  positionStatus: string;
+  politicalParty: string;
+  ward: string;
+  signature: string;
+  status: string;
+  wardId: string;
 }

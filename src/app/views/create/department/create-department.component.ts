@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 
@@ -20,6 +20,7 @@ export class CreateDepartmentComponent implements OnInit {
     name: new FormControl('', Validators.required),
     assemblyId: new FormControl('2d887s61a', Validators.required),
     published: new FormControl(false),
+    members: new FormArray([]),
   }); // Form group that holds user input
 
   county = 'Meru'; // Dynamic county name;
@@ -45,13 +46,26 @@ export class CreateDepartmentComponent implements OnInit {
       this.route.data
         .pipe(take(1))
         .subscribe(({ department }: { department: Department }) => {
+          const { members, ...others } = department;
+          const membersControl = this.form.get('members') as FormArray;
+
+          console.log(members);
+
+          for (const member of members) {
+            membersControl.push(new FormControl(member));
+          }
+
+          console.log(membersControl.value);
+
           this.form.patchValue({
-            ...department,
+            ...others,
           });
         });
     } else {
       this._mode = 'creating';
     }
+
+    console.log(this.form.value);
 
     // Rehydrate from cached data if there's any
     const cachedForm = this.cacheService.rehydrate<FormGroup>(
@@ -89,6 +103,10 @@ export class CreateDepartmentComponent implements OnInit {
       this.departmentService.postDepartment(value).subscribe(subCallback);
     } else {
       value.id = this._departmentId;
+
+      if (!(value.members as string[]).length) {
+        value.members = '[]';
+      }
 
       this.departmentService.updateDepartment(value).subscribe(subCallback);
     }
