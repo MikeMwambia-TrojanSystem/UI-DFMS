@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError, map, timeout } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 import { Committee, CommitteePost } from '../shared/types/committee';
 import { Department, DepartmentPost } from '../shared/types/department';
@@ -11,8 +12,9 @@ import { Statement, StatementPost } from '../shared/types/statement';
 import { WardConSub, WardConSubPost } from '../shared/types/ward-con-sub';
 import { Upload } from '../shared/types/upload';
 import { Petition, PetitionPost } from '../shared/types/petition';
-import { of } from 'rxjs';
 import { BillPost, Bill } from '../shared/types/bill';
+import { Act, ActPost } from '../shared/types/act';
+import { Personnel, PersonnelPost } from '../shared/types/personnel';
 
 interface ApiResponse<T> {
   message: T;
@@ -32,7 +34,7 @@ export class ApiService {
   private _baseUrl = 'https://web.jonikisecurity.com/';
   private _timeout = 60 * 1000;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   // POSTs
   private _postRequest<T, U>(endpoint: string, data: T) {
@@ -85,11 +87,22 @@ export class ApiService {
     return this._postRequest<PetitionPost, Petition>(
       'petition/create',
       petition
-    )
+    );
   }
 
   createBill(bill: BillPost) {
-    return this._postRequest<BillPost, Bill>('bills/create', bill)
+    return this._postRequest<BillPost, Bill>('bills/create', bill);
+  }
+
+  createAct(act: ActPost) {
+    return this._postRequest<ActPost, Act>('acts/create', act);
+  }
+
+  createPersonnel(personnel: PersonnelPost) {
+    return this._postRequest<PersonnelPost, Personnel>(
+      'personnel/create',
+      personnel
+    );
   }
 
   // GETs
@@ -128,7 +141,15 @@ export class ApiService {
   }
 
   getBills() {
-    return this._getRequest<Bill>('bills/getAllBills')
+    return this._getRequest<Bill>('bills/getAllBills');
+  }
+
+  getActs() {
+    return this._getRequest<Act>('acts/getAllActs');
+  }
+
+  getPersonnels() {
+    return this._getRequest<Personnel>('personnel/getAllPersonnel');
   }
 
   //DELETEs
@@ -171,11 +192,19 @@ export class ApiService {
   }
 
   deletePetition(id: string) {
-    return this._deleteRequest<Petition>('petition/delete', id)
+    return this._deleteRequest<Petition>('petition/delete', id);
   }
 
   deleteBill(id: string) {
-    return this._deleteRequest<Bill>('bills/delete', id)
+    return this._deleteRequest<Bill>('bills/delete', id);
+  }
+
+  deleteAct(id: string) {
+    return this._deleteRequest<Act>('act/delete', id);
+  }
+
+  deletePersonnel(id: string) {
+    return this._deleteRequest<Personnel>('personnel/delete', id);
   }
 
   //UPDATEs
@@ -234,24 +263,35 @@ export class ApiService {
     return this._updateRequest<PetitionPost, Petition>(
       'petition/update',
       petition
-    )
+    );
   }
 
   updateBill(bill: BillPost) {
-    return this._updateRequest<BillPost, Bill>('bills/update', bill)
+    return this._updateRequest<BillPost, Bill>('bills/update', bill);
+  }
+
+  updateAct(act: ActPost) {
+    return this._updateRequest<ActPost, Act>('acts/update', act);
+  }
+
+  updatePersonnel(personnel: PersonnelPost) {
+    return this._updateRequest<PersonnelPost, Personnel>(
+      'personnel/update',
+      personnel
+    );
   }
 
   // UPLOAD
   upload(data: FormData) {
-    // return of({
-    //   etag: 'test',
-    //   id: 'test',
-    //   key: 'test',
-    //   location: 'google.com',
-    //   uploadedToS3: true,
-    // })
-    return this.http
-      .post<Upload>('http://3.13.186.200:9000/uploadfile', data)
-      .pipe(timeout(this._timeout), catchError(errorHandler));
+    return of({
+      etag: 'test',
+      id: 'test',
+      key: 'test',
+      location: 'google.com',
+      uploadedToS3: true,
+    });
+    // return this.http
+    //   .post<Upload>('http://3.13.186.200:9000/uploadfile', data)
+    //   .pipe(timeout(this._timeout), catchError(errorHandler));
   }
 }

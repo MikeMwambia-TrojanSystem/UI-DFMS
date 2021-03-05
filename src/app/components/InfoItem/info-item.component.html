@@ -1,18 +1,26 @@
 <div class="main">
   <div class="info">
     <span class="title">{{ sub }} {{ title }}</span>
-    <span class="date">Published on
-      <span class="highlight">{{ date | date: "dd MMMM, yyyy" }}</span></span>
-    <span class="related">Related to
+    <span class="date"
+      >Published on
+      <span class="highlight">{{ date | date: "dd MMMM, yyyy" }}</span></span
+    >
+    <span class="related"
+      >Related to
       <span class="highlight" *ngFor="let sub of subjects; let i = index">{{
         (i === 0 ? "" : i + 1 === subjects.length ? " and " : ", ") + sub
-        }}</span>
+      }}</span>
     </span>
-    <span class="department" *ngIf="department">Department
-      <span class="highlight">{{department}}</span>
+    <span class="department" *ngIf="department"
+      >Department
+      <span class="highlight">{{ department }}</span>
     </span>
-    <span class="sponsored" *ngIf="sponsored">Sponsored by
-      <span class="highlight">{{ sponsored }}{{ ward ? "(" + ward + ")" : null }}</span></span>
+    <span class="sponsored" *ngIf="sponsored"
+      >Sponsored by
+      <span class="highlight"
+        >{{ sponsored }}{{ ward ? "(" + ward + ")" : null }}</span
+      ></span
+    >
     <div class="status" *ngIf="status">
       <span>Status</span>
       <mat-chip-list>
@@ -24,11 +32,15 @@
       <span class="label">{{ stateExpanded }}</span>
     </div>
   </div>
-  <button mat-button *ngIf="selectable" class="btn">Select</button>
+  <button mat-button *ngIf="selectable" class="btn" (click)="onSelect()">
+    Select
+  </button>
 </div>
 <div class="list-actions" *ngIf="state !== 'public' && selectable === false">
   <a [routerLink]="[editUrl]">
     <button mat-button class="list-actions-btn edit">Edit</button>
   </a>
-  <button mat-button class="list-actions-btn delete" (click)="onDelete()">Delete</button>
+  <button mat-button class="list-actions-btn delete" (click)="onDelete()">
+    Delete
+  </button>
 </div>

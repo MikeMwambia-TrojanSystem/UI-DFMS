@@ -4,8 +4,14 @@
     <form [formGroup]="form" class="form">
       <p class="label">Name</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="name" placeholder="Committee on Food Processing and Fishing" />
-        <mat-error *ngIf="form.get('name').hasError('required')">Please enter committee name!</mat-error>
+        <input
+          matInput
+          formControlName="name"
+          placeholder="Committee on Food Processing and Fishing"
+        />
+        <mat-error *ngIf="form.get('name').hasError('required')"
+          >Please enter committee name!</mat-error
+        >
       </mat-form-field>
       <p class="label">Category</p>
       <mat-form-field appearance="standard">
@@ -27,21 +33,27 @@
           <p class="label">Term of Service (Start)</p>
           <mat-form-field appearance="standard">
             <input matInput formControlName="termStart" type="date" />
-            <mat-error *ngIf="form.get('termStart').hasError('required')">Please enter the time!</mat-error>
+            <mat-error *ngIf="form.get('termStart').hasError('required')"
+              >Please enter the time!</mat-error
+            >
           </mat-form-field>
         </div>
         <div class="term-item">
           <p class="label">Term of Service (End)</p>
           <mat-form-field appearance="standard">
             <input matInput formControlName="termEnd" type="date" />
-            <mat-error *ngIf="form.get('termEnd').hasError('required')">Please enter the time!</mat-error>
+            <mat-error *ngIf="form.get('termEnd').hasError('required')"
+              >Please enter the time!</mat-error
+            >
           </mat-form-field>
         </div>
       </div>
       <span class="label">Political Party</span>
       <mat-form-field appearance="standard">
         <input matInput formControlName="politicalParty" placeholder="PDP" />
-        <mat-error *ngIf="form.get('politicalParty').hasError('required')">Please enter political party!</mat-error>
+        <mat-error *ngIf="form.get('politicalParty').hasError('required')"
+          >Please enter political party!</mat-error
+        >
       </mat-form-field>
       <div>
         <span class="label">Enter Phone Number</span>
@@ -50,26 +62,46 @@
       <mat-form-field appearance="standard">
         <span matPrefix>+ &nbsp;</span>
         <input matInput formControlName="phoneNumber" type="tel" />
-        <mat-error *ngIf="form.get('phoneNumber').hasError('required')">Please enter phone numer
+        <mat-error *ngIf="form.get('phoneNumber').hasError('required')"
+          >Please enter phone numer
         </mat-error>
-        <mat-error *ngIf="form.get('phoneNumber').hasError('phoneNumber')">Please enter valid phone numer
+        <mat-error *ngIf="form.get('phoneNumber').hasError('phoneNumber')"
+          >Please enter valid phone numer
         </mat-error>
         <app-verify-button>Send Verification Code</app-verify-button>
       </mat-form-field>
       <div class="select-container">
-        <app-custom-button [title]="profilePic || 'Upload Profile Picture'" (buttonClick)="onProfileSelect()">
+        <app-custom-button
+          [title]="profilePic || 'Upload Profile Picture'"
+          (buttonClick)="onProfileSelect()"
+        >
         </app-custom-button>
-        <app-custom-button [title]="ward.length ? ward : 'Select Ward Represented'" style="margin-left: 10px"
-          (buttonClick)="onWardSelect()">
+        <app-custom-button
+          [title]="ward.length ? ward : 'Select Ward Represented'"
+          style="margin-left: 10px"
+          (buttonClick)="onWardSelect()"
+        >
         </app-custom-button>
       </div>
       <div class="actions">
-        <button mat-button type="button" class="btn-draft" [disabled]="form.invalid || !profilePic"
-          (click)="onSave(false)">Save as
-          Draft</button>
-        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid || !profilePic"
-          (click)="onSave(false)">Save
-          MCA</button>
+        <button
+          mat-button
+          type="button"
+          class="btn-draft"
+          [disabled]="form.invalid || !profilePic"
+          (click)="onSave(false)"
+        >
+          Save as Draft
+        </button>
+        <button
+          mat-raised-button
+          type="submit"
+          class="btn-save"
+          [disabled]="form.invalid || !profilePic"
+          (click)="onSave(true)"
+        >
+          Save MCA
+        </button>
       </div>
     </form>
   </app-center-card>

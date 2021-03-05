@@ -4,42 +4,85 @@
     <form [formGroup]="form" class="form">
       <p class="label">Title of Acts</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="title" placeholder="Acts on Food and Babies" />
-        <mat-error *ngIf="form.get('title').hasError('required')">Please enter acts title!</mat-error>
+        <input
+          matInput
+          formControlName="titleOfAct"
+          placeholder="Acts on Food and Babies"
+        />
+        <mat-error *ngIf="form.get('titleOfAct').hasError('required')"
+          >Please enter acts title!</mat-error
+        >
       </mat-form-field>
       <p class="label">Acts No</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="number" placeholder="172" type="number" />
-        <mat-error *ngIf="form.get('number').hasError('required')">Please enter acts number!</mat-error>
+        <input
+          matInput
+          formControlName="actNo"
+          placeholder="172"
+          type="number"
+        />
+        <mat-error *ngIf="form.get('actNo').hasError('required')"
+          >Please enter acts number!</mat-error
+        >
       </mat-form-field>
       <p class="label">Date Published</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="date" type="date" />
-        <mat-error *ngIf="form.get('date').hasError('required')">Please enter date published!</mat-error>
+        <input matInput formControlName="datePublished" type="date" />
+        <mat-error *ngIf="form.get('datePublished').hasError('required')"
+          >Please enter date published!</mat-error
+        >
       </mat-form-field>
       <div class="custom-btn-container">
-        <app-custom-button [title]="'Select Sponsor'" class="custom-btn" [url]="['/list/mca-employee']"
-          [query]="{select: true}"></app-custom-button>
-        <app-custom-button [title]="'Select Concerned Committee'" class="custom-btn" [url]="['/list/committee']"
-          [query]="{select: true}"></app-custom-button>
+        <app-custom-button
+          [title]="sponsorName.length ? sponsorName : 'Select Sponsor'"
+          class="custom-btn"
+          (buttonClick)="onSelectSponsored()"
+        ></app-custom-button>
+        <app-custom-button
+          [title]="
+            committeeName.length ? committeeName : 'Select Concerned Committee'
+          "
+          class="custom-btn"
+          (buttonClick)="onSelectCommittee()"
+        ></app-custom-button>
       </div>
-      <app-custom-button [title]="'Select Originating Bill No'" class="custom-btn standalone" [url]="['/list/bill']"
-        [query]="{select: true}"></app-custom-button>
+      <app-custom-button
+        [title]="billNo !== undefined ? billNo : 'Select Originating Bill No'"
+        class="custom-btn standalone"
+        (buttonClick)="onSelectOriginateBill()"
+      ></app-custom-button>
       <p class="label">Fill in Sector Concerned</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="sector" placeholder="Agriculture" />
-        <mat-error *ngIf="form.get('sector').hasError('required')">Please fill in sector concerned!</mat-error>
+        <input matInput formControlName="relatedTo" placeholder="Agriculture" />
+        <mat-error *ngIf="form.get('relatedTo').hasError('required')"
+          >Please fill in sector concerned!</mat-error
+        >
       </mat-form-field>
-      <app-custom-button [title]="'Upload Act File'" class="custom-btn standalone" [url]="['/management/upload']">
+      <app-custom-button
+        [title]="fileName || 'Upload Act File'"
+        class="custom-btn standalone"
+        (buttonClick)="onUpload()"
+      >
       </app-custom-button>
-      <!-- <input #fileUpload class="hidden" type="file" /> -->
       <div class="actions">
-        <a [routerLink]="['/list/act']" [queryParams]="{state: 'draft'}">
-          <button mat-button type="button" class="btn-draft">Save as Draft</button>
-        </a>
-        <a [routerLink]="form.valid ? '/list/act' : null">
-          <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Publish Acts</button>
-        </a>
+        <button
+          mat-button
+          type="button"
+          class="btn-draft"
+          [disabled]="form.invalid || !hasUploaded"
+          (click)="onSave(false)"
+        >
+          Save as Draft
+        </button>
+        <button
+          mat-raised-button
+          type="submit"
+          class="btn-save"
+          [disabled]="form.invalid || !hasUploaded"
+          (click)="onSave(true)"
+        >
+          Publish Acts
+        </button>
       </div>
     </form>
   </app-center-card>

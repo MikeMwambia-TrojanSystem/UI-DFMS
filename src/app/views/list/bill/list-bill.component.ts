@@ -17,10 +17,12 @@ export class ListBillComponent implements OnInit {
   bills: Bill[];
   selectable: boolean;
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private billService: BillService,
     private cacheService: CacheService,
-    private router: Router) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     // Get selectable state, cache emit id, state from query url
@@ -30,11 +32,9 @@ export class ListBillComponent implements OnInit {
     this._state = queryParams.state;
 
     // Get Petitions data from resolver
-    this.route.data
-      .pipe(take(1))
-      .subscribe(({ bills }: { bills: Bill[] }) => {
-        this.bills = _.orderBy(bills, 'createdAt', 'desc');
-      });
+    this.route.data.pipe(take(1)).subscribe(({ bills }: { bills: Bill[] }) => {
+      this.bills = _.orderBy(bills, 'createdAt', 'desc');
+    });
   }
 
   onCreateNew() {
@@ -63,6 +63,10 @@ export class ListBillComponent implements OnInit {
   onDelete(id: string) {
     this.billService.deleteBill(id).subscribe(() => {
       window.location.reload();
-    })
+    });
+  }
+
+  onSelect({ titleOfBill, _id }: Bill) {
+    this.cacheService.emit(this._cacheId, { titleOfBill, _id });
   }
 }

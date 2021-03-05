@@ -94,6 +94,13 @@ import { CanActivatePetition } from './shared/guard/petition/petition.guard';
 import { ListBillResolver } from './shared/resolver/bill/list-bill.resolver';
 import { CanActivateBill } from './shared/guard/bill/bill.guard';
 import { BillResolver } from './shared/resolver/bill/bill.resolver';
+import { ListActResolver } from './shared/resolver/act/list-act.resolver';
+import { CanActivateAct } from './shared/guard/act/act.guard';
+import { ActResolver } from './shared/resolver/act/act.resolver';
+import { PersonnelDepartmentsResolver } from './shared/resolver/personnel/departments.resolver';
+import { PersonnelResolver } from './shared/resolver/personnel/personnel.resolver';
+import { CanActivatePersonnel } from './shared/guard/personnel/personnel.guard';
+import { ListPersonnelResolver } from './shared/resolver/personnel/list-personnels.resolver';
 
 const routes: Routes = [
   // Login route
@@ -150,7 +157,22 @@ const routes: Routes = [
           department: DepartmentResolver,
         },
       },
-      { path: 'employee', component: CreateEmployeeComponent },
+      {
+        path: 'employee',
+        component: CreateEmployeeComponent,
+        resolve: {
+          departments: PersonnelDepartmentsResolver,
+        },
+      },
+      {
+        path: 'employee/:id',
+        component: CreateEmployeeComponent,
+        canActivate: [CanActivatePersonnel],
+        resolve: {
+          departments: PersonnelDepartmentsResolver,
+          personnel: PersonnelResolver,
+        },
+      },
       { path: 'mca', component: CreateMcaComponent },
       {
         path: 'mca/:id',
@@ -199,7 +221,13 @@ const routes: Routes = [
           mcaEmployees: ListMcaEmployeeResolver,
         },
       },
-      { path: 'personnel', component: ListPersonnelComponent },
+      {
+        path: 'personnel',
+        component: ListPersonnelComponent,
+        resolve: {
+          personnels: ListPersonnelResolver,
+        },
+      },
       {
         path: 'wards',
         component: ListWardsComponent,
@@ -214,16 +242,26 @@ const routes: Routes = [
           motions: ListMotionResolver,
         },
       },
-      { path: 'act', component: ListActComponent },
       {
-        path: 'bill', component: ListBillComponent, resolve: {
-          bills: ListBillResolver
-        }
+        path: 'act',
+        component: ListActComponent,
+        resolve: {
+          acts: ListActResolver,
+        },
       },
       {
-        path: 'petition', component: ListPetitionComponent, resolve: {
-          petitions: ListPetitionResolver
-        }
+        path: 'bill',
+        component: ListBillComponent,
+        resolve: {
+          bills: ListBillResolver,
+        },
+      },
+      {
+        path: 'petition',
+        component: ListPetitionComponent,
+        resolve: {
+          petitions: ListPetitionResolver,
+        },
       },
       { path: 'report', component: ListReportComponent },
       { path: 'order-paper', component: ListOrderPaperComponent },
@@ -272,9 +310,11 @@ const routes: Routes = [
       { path: 'accounts', component: AccountManagementComponent },
       { path: 'oath', component: AdministrationOathComponent },
       {
-        path: 'petitioners', component: AddPetitionerComponent, resolve: {
-          petitioners: ListPetitionerResolver
-        }
+        path: 'petitioners',
+        component: AddPetitionerComponent,
+        resolve: {
+          petitioners: ListPetitionerResolver,
+        },
       },
 
       { path: 'upload', component: UploadPageComponent },
@@ -285,12 +325,26 @@ const routes: Routes = [
   {
     path: 'generate',
     children: [
-      { path: 'act', component: ActGenerateComponent },
+      {
+        path: 'act',
+        component: ActGenerateComponent,
+      },
+      {
+        path: 'act/:id',
+        component: ActGenerateComponent,
+        canActivate: [CanActivateAct],
+        resolve: {
+          act: ActResolver,
+        },
+      },
       { path: 'bill', component: BillGenerateComponent },
       {
-        path: 'bill/:id', component: BillGenerateComponent, canActivate: [CanActivateBill], resolve: {
-          bill: BillResolver
-        }
+        path: 'bill/:id',
+        component: BillGenerateComponent,
+        canActivate: [CanActivateBill],
+        resolve: {
+          bill: BillResolver,
+        },
       },
       {
         path: 'motion',
@@ -306,10 +360,12 @@ const routes: Routes = [
       },
       { path: 'petition', component: PetitionGenerateComponent },
       {
-        path: 'petition/:id', component: PetitionGenerateComponent, resolve: {
-          petition: PetitionResolver
+        path: 'petition/:id',
+        component: PetitionGenerateComponent,
+        resolve: {
+          petition: PetitionResolver,
         },
-        canActivate: [CanActivatePetition]
+        canActivate: [CanActivatePetition],
       },
       { path: 'report', component: ReportGenerateComponent },
       { path: 'order-paper', component: OrderPaperGenerateComponent },
@@ -394,4 +450,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

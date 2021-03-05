@@ -1,49 +1,74 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs/operators';
+import _ from 'lodash';
 
-interface Personnel {
-  name: string;
-  department: string;
-  profilePic: string;
-}
+import { CacheService } from 'src/app/services/cache.service';
+import { PersonnelService } from 'src/app/services/personnel.service';
+import { Personnel } from 'src/app/shared/types/personnel';
 
 @Component({
-  selector: 'app-list-personnel',
   templateUrl: './list-personnel.component.html',
   styleUrls: ['./list-personnel.component.scss'],
 })
 export class ListPersonnelComponent implements OnInit {
-  personnels: Personnel[] = [
-    {
-      name: 'Peach Lovil',
-      department: 'Department of Food',
-      profilePic:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJq7OdjXycWLNzlE_iQH0k6al3VWOsHGJzDA&usqp=CAU',
-    },
-    {
-      name: 'Paul Ansa',
-      department: 'Department of Health',
-      profilePic:
-        'https://snappygoat.com/b/d1bed93330681e35898ef1c2778b46e7534e3c2c',
-    },
-    {
-      name: 'Abelina King',
-      department: 'Department of Finance',
-      profilePic:
-        'https://upload.wikimedia.org/wikipedia/commons/2/22/Master_Teacher_Portrait.jpg',
-    },
-    {
-      name: 'Sampson Faith',
-      department: 'Department of Braintreat',
-      profilePic:
-        'https://snappygoat.com/b/b1994f0ceeba40094713fbdd2cb7aa717533fc65',
-    },
-  ];
-  selectabe = false; // Whether the list is selectable
+  private _cacheId: string;
+  private _state: 'draft' | 'private' | 'public';
+  personnels: Personnel[];
+  selectable = false; // Whether the list is selectable
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private personnelService: PersonnelService,
+    private cacheService: CacheService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.selectabe = this.route.snapshot.queryParams.select || false;
+    // Get selectable state, cache emit id, state from query url
+    const queryParams = this.route.snapshot.queryParams;
+    this.selectable = queryParams.select === 'true' || false;
+    this._cacheId = queryParams.id;
+    this._state = queryParams.state;
+
+    // Get Personnels data from resolver
+    this.route.data
+      .pipe(take(1))
+      .subscribe(({ personnels }: { personnels: Personnel[] }) => {
+        this.personnels = _.orderBy(personnels, 'createdAt', 'desc');
+      });
+  }
+
+  onCreateNew() {
+    this.cacheService.cache(
+      'LIST_NEW_PERSONNEL',
+      null,
+      this.router.createUrlTree(['/list/personnel'], {
+        queryParams: {
+          select: this.selectable,
+          id: this._cacheId,
+          state: this._state,
+        },
+      }),
+      () => {
+        return null;
+      }
+    );
+
+    this.router.navigate(['/create/employee'], {
+      queryParams: {
+        id: 'LIST_NEW_PERSONNEL',
+      },
+    });
+  }
+
+  onDelete(id: string) {
+    this.personnelService.deletePersonnel(id).subscribe(() => {
+      window.location.reload();
+    });
+  }
+
+  onSelect({ _id }: Personnel) {
+    this.cacheService.emit(this._cacheId, { _id });
   }
 }
