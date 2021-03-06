@@ -4,27 +4,31 @@
     <form [formGroup]="form" class="form">
       <p class="label">Name</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="name" placeholder="Committee on Food Processing and Fishing" />
-        <mat-error *ngIf="form.get('name').hasError('required')">Please enter committee name!</mat-error>
+        <input
+          matInput
+          formControlName="name"
+          placeholder="Committee on Food Processing and Fishing"
+        />
+        <mat-error *ngIf="form.get('name').hasError('required')"
+          >Please enter committee name!</mat-error
+        >
       </mat-form-field>
-      <p class="label">Category</p>
+      <p class="label">Group</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="category" placeholder="Food Production" />
-        <mat-error *ngIf="form.get('category').hasError('required')">Please enter category!</mat-error>
+        <input matInput formControlName="group" placeholder="Food Production" />
+        <mat-error *ngIf="form.get('group').hasError('required')"
+          >Please enter group!</mat-error
+        >
       </mat-form-field>
       <p class="label">Department</p>
-      <mat-form-field appearance="standard">
-        <!-- <input matInput formControlName="department" placeholder="Department of Works" /> -->
-        <mat-select formControlName="department">
-          <mat-option *ngFor="let department of departments" [value]="department">
-            {{department}}
-          </mat-option>
-        </mat-select>
-        <mat-error *ngIf="form.get('department').hasError('required')">Please enter department!</mat-error>
-      </mat-form-field>
+      <app-custom-button
+        [title]="department.length ? department : 'Select Department'"
+        (buttonClick)="onSelectDepartment()"
+      >
+      </app-custom-button>
       <p class="label">Term of Employment</p>
       <mat-form-field appearance="standard">
-        <mat-select formControlName="term">
+        <mat-select formControlName="termOfService">
           <mat-option value="Permanent">Permanent</mat-option>
           <mat-option value="Contract">Contract</mat-option>
           <mat-option value="Outsourced">Outsourced</mat-option>
@@ -32,9 +36,11 @@
       </mat-form-field>
       <p class="label">Education Level</p>
       <mat-form-field appearance="standard">
-        <mat-select formControlName="education">
+        <mat-select formControlName="educationLevel">
           <mat-option value="Diploma Graduate">Diploma Graduate</mat-option>
-          <mat-option value="Bachelor's Graduate">Bachelor's Graduate</mat-option>
+          <mat-option value="Bachelor's Graduate"
+            >Bachelor's Graduate</mat-option
+          >
           <mat-option value="Master''s Graduate">Master's Graduate</mat-option>
         </mat-select>
       </mat-form-field>
@@ -44,18 +50,37 @@
       </div>
       <mat-form-field appearance="standard">
         <span matPrefix>+ &nbsp;</span>
-        <input matInput formControlName="phone" type="tel" />
-        <mat-error *ngIf="form.get('phone').hasError('required')">Please enter phone numer</mat-error>
-        <mat-error *ngIf="form.get('phone').hasError('phoneNumber')">Please enter valid phone numer</mat-error>
-        <app-verify-button>Send Verification Code</app-verify-button>
+        <input matInput formControlName="phoneNumber" type="tel" />
+        <mat-error *ngIf="form.get('phoneNumber').hasError('required')"
+          >Please enter phone numer</mat-error
+        >
+        <mat-error *ngIf="form.get('phoneNumber').hasError('phoneNumber')"
+          >Please enter valid phone numer</mat-error
+        >
       </mat-form-field>
-      <app-custom-button [title]="'Upload Profile Picture'" [url]="['/management/upload']"></app-custom-button>
-      <!-- <input #fileUpload class="upload" type="file" accept="image/*" /> -->
+      <app-custom-button
+        [title]="'Upload Profile Picture'"
+        (buttonClick)="onUpload()"
+      ></app-custom-button>
       <div class="actions">
-        <button mat-button type="button" class="btn-draft">Save as Draft</button>
-        <a [routerLink]="['/signup/phone-verification']" [queryParams]="{redirect: '/list/personnel'}">
-          <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save Profile</button>
-        </a>
+        <button
+          mat-button
+          type="button"
+          class="btn-draft"
+          [disabled]="form.invalid && !hasUploaded"
+          (click)="onSave(false)"
+        >
+          Save as Draft
+        </button>
+        <button
+          mat-raised-button
+          type="submit"
+          class="btn-save"
+          [disabled]="form.invalid && !hasUploaded"
+          (click)="onSave(true)"
+        >
+          Save Profile
+        </button>
       </div>
     </form>
   </app-center-card>

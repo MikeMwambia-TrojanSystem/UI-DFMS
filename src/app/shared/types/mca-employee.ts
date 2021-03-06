@@ -22,3 +22,20 @@ export class McaEmployee {
   createdAt: string;
   updatedAt: string;
 }
+
+export class McaPost {
+  name: string;
+  group: string;
+  phoneNumber: string;
+  verified: boolean;
+  dateCreated: string;
+  assemblyId: string;
+  profilePic: string;
+  termOfService: string;
+  positionStatus: string;
+  politicalParty: string;
+  ward: string;
+  signature: string;
+  status: string;
+  wardId: string;
+}

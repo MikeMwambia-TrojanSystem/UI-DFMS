@@ -1,70 +1,69 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs/operators';
+import _ from 'lodash';
 
-interface Statement {
-  title: string;
-  date: string;
-  soughts: string[];
-  requested: string;
-  ward: string;
-  state: string;
-}
+import { CacheService } from 'src/app/services/cache.service';
+import { StatementService } from 'src/app/services/statement.service';
 
 @Component({
   templateUrl: './list-statement.component.html',
   styleUrls: ['./list-statement.component.scss'],
 })
 export class ListStatementComponent implements OnInit {
-  /**
-   * Statements mock data
-   */
-  statements: Statement[] = [
-    {
-      title: 'Food Drinks Live',
-      date: '9/3/2008',
-      soughts: ['Employment', 'Youth', 'Fomo'],
-      requested: 'Maariu Nicholas',
-      ward: 'MCA Nathu Ward',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      title: 'Drug',
-      date: '9/3/2008',
-      soughts: ['Employment', 'Youth', 'Fomo'],
-      requested: 'Maariu Nicholas',
-      ward: 'MCA Nathu Ward',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      title: 'Health Facility',
-      date: '9/3/2008',
-      soughts: ['Employment', 'Youth', 'Fomo'],
-      requested: 'Maariu Nicholas',
-      ward: 'MCA Nathu Ward',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      title: 'Live Matters',
-      date: '9/3/2008',
-      soughts: ['Employment', 'Youth', 'Fomo'],
-      requested: 'Maariu Nicholas',
-      ward: 'MCA Nathu Ward',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-  ];
+  private _cacheId: string;
+  private _state: 'draft' | 'private' | 'public';
+  statements: any[];
+  selectable: boolean;
 
-  selectabe: boolean;
-  state: string; // This props is just for example and should be deleted when implementing a fetch request to backend.
-
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private statementService: StatementService,
+    private cacheService: CacheService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.selectabe = this.route.snapshot.queryParams.select || false;
+    // Get selectable state, cache emit id, state from query url
+    const queryParams = this.route.snapshot.queryParams;
+    this.selectable = queryParams.select === 'true' || false;
+    this._cacheId = queryParams.id;
+    this._state = queryParams.state;
 
-    /**
-     * These lines are just for dynamic state example and should be deleted when implementing a fetch request to backend.
-     */
-    this.state = this.route.snapshot.queryParams.state;
-    //=====================================================================
+    // Get Statement data from resolver
+    this.route.data
+      .pipe(take(1))
+      .subscribe(({ statements }: { statements: any[] }) => {
+        this.statements = _.orderBy(statements, 'createdAt', 'desc');
+      });
+  }
+
+  onDelete(id: string) {
+    this.statementService.deleteStatement(id).subscribe(() => {
+      window.location.reload(); // Reload page when successfully deleting motion
+    });
+  }
+
+  onCreateNew() {
+    this.cacheService.cache(
+      'LIST_NEW_STATEMENT',
+      null,
+      this.router.createUrlTree(['/list/statement'], {
+        queryParams: {
+          select: this.selectable,
+          id: this._cacheId,
+          state: this._state,
+        },
+      }),
+      () => {
+        return null;
+      }
+    );
+
+    this.router.navigate(['/upload/statement'], {
+      queryParams: {
+        id: 'LIST_NEW_STATEMENT',
+      },
+    });
   }
 }

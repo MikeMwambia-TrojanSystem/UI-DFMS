@@ -36,7 +36,7 @@ export class CanActivateCommittee implements CanActivate {
     return this.committeeService.getCommittee(committeeId).pipe(
       take(1),
       map((committee) => {
-        if (committee) {
+        if (committee && !committee.published) {
           return true;
         }
 

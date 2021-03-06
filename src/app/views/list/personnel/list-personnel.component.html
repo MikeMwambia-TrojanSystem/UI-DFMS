@@ -3,8 +3,21 @@
     <h1 class="title">Personnel List</h1>
     <app-search-bar></app-search-bar>
     <div>
-      <app-list-item *ngFor="let personnel of personnels" [title]="personnel.name" [subtitle]="personnel.department"
-        [pic]="personnel.profilePic" [selectable]="selectabe"></app-list-item>
+      <app-list-item
+        *ngFor="let personnel of personnels"
+        [title]="personnel.name"
+        [subtitle]="personnel.department.name"
+        [pic]="personnel.profilePic"
+        [selectable]="selectable"
+        [published]="personnel.status"
+        [editUrl]="'/create/employee/' + personnel._id"
+        (delete)="onDelete(personnel._id)"
+        (select)="onSelect(personnel)"
+      ></app-list-item>
+    </div>
+    <div *ngIf="!personnels.length" class="list-no-value">
+      <p>No Personnels Listed!</p>
+      <p (click)="onCreateNew()" class="new">Create Personnel</p>
     </div>
   </app-center-card>
 </app-background>

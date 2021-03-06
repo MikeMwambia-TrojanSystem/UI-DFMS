@@ -2,7 +2,8 @@
   <div class="info">
     <span class="title">{{sub}} {{title}}</span>
     <span class="date">Published on <span class="highlight">{{date | date:'dd MMMM, yyyy'}}</span></span>
-    <span class="sought">Sought to <span class="highlight" *ngFor="let sought of soughts; let i = index">{{(i === 0 ? ''
+    <span class="sought" *ngIf="soughts.length">Sought to <span class="highlight"
+        *ngFor="let sought of soughts; let i = index">{{(i === 0 ? ''
         :
         (i + 1 ===
         soughts.length ? ' and ' : ', ')) + sought}}</span></span>
@@ -14,7 +15,9 @@
   </div>
   <button mat-button *ngIf="selectable" class="btn">Select</button>
 </div>
-<div class="list-actions" *ngIf="!selectable">
-  <button mat-button class="list-actions-btn edit">Edit</button>
-  <button mat-button class="list-actions-btn delete">Delete</button>
+<div class="list-actions" *ngIf="state !== 'public' && !selectable">
+  <a *ngIf="editUrl" [routerLink]="[editUrl]">
+    <button mat-button class="list-actions-btn edit">Edit</button>
+  </a>
+  <button mat-button class="list-actions-btn delete" (click)="onDelete()">Delete</button>
 </div>

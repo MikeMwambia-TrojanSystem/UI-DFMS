@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { Constituency } from 'src/app/shared/types/ward-con-sub';
 import { CacheService } from 'src/app/services/cache.service';
+import { WardConSubService } from 'src/app/services/ward-con-sub.service';
 
 @Component({
   templateUrl: './list-constituency.component.html',
@@ -13,6 +14,7 @@ import { CacheService } from 'src/app/services/cache.service';
 export class ListConstituencyComponent implements OnInit {
   private _cacheId: string;
   private _state: 'draft' | 'published';
+  state: 'draft' | 'published';
   constituencies: Constituency[] = [];
 
   selectable = false; // Whether the list is selectable
@@ -20,15 +22,17 @@ export class ListConstituencyComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private cacheService: CacheService,
-    private router: Router
+    private router: Router,
+    private wardConSubService: WardConSubService
   ) {}
 
   ngOnInit(): void {
     // Get selectable state, cache emit id, state from query url
     const queryParams = this.route.snapshot.queryParams;
-    this.selectable = queryParams.select || false;
+    this.selectable = queryParams.select === 'true' || false;
     this._cacheId = queryParams.id;
     this._state = queryParams.state;
+    this.state = queryParams.state;
 
     // Get Constituency data from resolver
     this.route.data
@@ -52,7 +56,7 @@ export class ListConstituencyComponent implements OnInit {
         queryParams: {
           select: this.selectable,
           id: this._cacheId,
-          state: this._state,
+          state: this.state,
         },
       }),
       () => {
@@ -64,6 +68,13 @@ export class ListConstituencyComponent implements OnInit {
       queryParams: {
         id: 'LIST_NEW_CONSTITUENCY',
       },
+    });
+  }
+
+  // This function get called when the 'Delete' button is clicked
+  onDelete(id: string) {
+    this.wardConSubService.deleteWardConSub<Constituency>(id).subscribe(() => {
+      window.location.reload();
     });
   }
 }

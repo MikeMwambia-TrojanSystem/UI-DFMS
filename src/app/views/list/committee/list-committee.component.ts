@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { CacheService } from 'src/app/services/cache.service';
 import { Committee } from 'src/app/shared/types/committee';
+import { CommitteeService } from 'src/app/services/committee.service';
 
 @Component({
   selector: 'app-list-committee',
@@ -20,13 +21,14 @@ export class ListCommitteeComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private cacheService: CacheService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private committeeService: CommitteeService
+  ) { }
 
   ngOnInit(): void {
     // Get selectable state, cache emit id, state from query url
     const queryParams = this.route.snapshot.queryParams;
-    this.selectable = queryParams.select || false;
+    this.selectable = queryParams.select === 'true' || false;
     this._cacheId = queryParams.id;
     this._state = queryParams.state;
 
@@ -38,9 +40,9 @@ export class ListCommitteeComponent implements OnInit {
       });
   }
 
-  onSelect({ _id }: Committee) {
+  onSelect({ _id, name }: Committee) {
     if (this._cacheId) {
-      this.cacheService.emit(this._cacheId, { _id });
+      this.cacheService.emit(this._cacheId, { name, _id });
     }
   }
 
@@ -64,6 +66,12 @@ export class ListCommitteeComponent implements OnInit {
       queryParams: {
         id: 'LIST_NEW_COMMITTEE',
       },
+    });
+  }
+
+  onDelete(id: string) {
+    this.committeeService.deleteCommittee(id).subscribe(() => {
+      window.location.reload();
     });
   }
 }

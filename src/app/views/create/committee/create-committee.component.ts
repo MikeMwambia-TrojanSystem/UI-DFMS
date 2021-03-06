@@ -74,8 +74,16 @@ export class CreateCommitteeComponent implements OnInit {
       this.route.data
         .pipe(take(1))
         .subscribe(({ committee }: { committee: Committee }) => {
+          const { committesMembers, ...others } = committee;
+
+          for (const member of committesMembers) {
+            (this.form.get('committesMembers') as FormArray).push(
+              new FormControl(member)
+            );
+          }
+
           this.form.patchValue({
-            ...committee,
+            ...others,
             Chairname: committee.chair.name,
             chairId: committee.chair.id,
             viceChair: committee.viceChair.name,
@@ -115,7 +123,7 @@ export class CreateCommitteeComponent implements OnInit {
     return this.form.get('departmentInExcecutive').value;
   }
 
-  updateMembersList() {
+  async updateMembersList() {
     const names: { name: string; _id: string }[] = [];
     const {
       committesMembers,
@@ -125,22 +133,22 @@ export class CreateCommitteeComponent implements OnInit {
       viceChairId,
     } = this.form.value as CommitteeForm;
 
-    committesMembers
-      .filter((memberId) => memberId !== chairId && memberId !== viceChairId)
-      .forEach((memberId) => {
-        this.mcaEmployeeService
-          .getMcaEmployee(memberId)
-          .pipe(
-            take(1),
-            map((employee) => employee.name)
-          )
-          .subscribe((name) => {
-            names.push({
-              name,
-              _id: memberId,
-            });
-          });
+    for (const memberId of committesMembers.filter(
+      (memberId) => memberId !== chairId && memberId !== viceChairId
+    )) {
+      const name = await this.mcaEmployeeService
+        .getMcaEmployee(memberId)
+        .pipe(
+          take(1),
+          map((employee) => employee.name)
+        )
+        .toPromise();
+
+      names.push({
+        name,
+        _id: memberId,
       });
+    }
 
     if (Chairname) {
       this.membersName.push({
@@ -155,7 +163,7 @@ export class CreateCommitteeComponent implements OnInit {
       });
     }
 
-    this.membersName = this.membersName.concat(names);
+    this.membersName = [...this.membersName, ...names];
   }
 
   /**
@@ -165,10 +173,13 @@ export class CreateCommitteeComponent implements OnInit {
    */
   onSelectChairman() {
     // Caching and select callback handling
+    const urlTree = this._committeeId
+      ? ['/create/committee', this._committeeId]
+      : ['/create/committee'];
     this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
       this.form,
-      this.router.createUrlTree(['/create/committee', this._committeeId], {
+      this.router.createUrlTree(urlTree, {
         queryParams: {
           id: this._cacheId,
         },
@@ -196,10 +207,13 @@ export class CreateCommitteeComponent implements OnInit {
    */
   onSelectViceChairman() {
     // Caching and select callback handling
+    const urlTree = this._committeeId
+      ? ['/create/committee', this._committeeId]
+      : ['/create/committee'];
     this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
       this.form,
-      this.router.createUrlTree(['/create/committee', this._committeeId], {
+      this.router.createUrlTree(urlTree, {
         queryParams: {
           id: this._cacheId,
         },
@@ -227,10 +241,13 @@ export class CreateCommitteeComponent implements OnInit {
    */
   onSelectMember() {
     // Caching and select callback handling
+    const urlTree = this._committeeId
+      ? ['/create/committee', this._committeeId]
+      : ['/create/committee'];
     this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
       this.form,
-      this.router.createUrlTree(['/create/committee', this._committeeId], {
+      this.router.createUrlTree(urlTree, {
         queryParams: {
           id: this._cacheId,
         },
@@ -266,10 +283,13 @@ export class CreateCommitteeComponent implements OnInit {
    */
   onSelectDepartment() {
     // Caching and select callback handling
+    const urlTree = this._committeeId
+      ? ['/create/committee', this._committeeId]
+      : ['/create/committee'];
     this.cacheService.cache<FormGroup, { _id: string; name: string }>(
       'CREATE_COMMITTEE',
       this.form,
-      this.router.createUrlTree(['/create/committee', this._committeeId], {
+      this.router.createUrlTree(urlTree, {
         queryParams: {
           id: this._cacheId,
         },
@@ -293,31 +313,49 @@ export class CreateCommitteeComponent implements OnInit {
    * This function get called when 'Save Committee' or 'Save as Draft' buttons is clicked.
    */
   onSave(published: boolean): void {
-    if (this._mode === 'creating') {
-      this.form.get('published').setValue(published);
-      this.form.get('datePublished').setValue(new Date().toISOString());
+    // Subcription callback
+    const subCallback = () => {
+      if (this._cacheId) {
+        this.cacheService.emit(this._cacheId, null);
+      } else {
+        this.router.navigate(['/list/committee'], {
+          queryParams: {
+            state: published ? 'published' : 'draft',
+          },
+        });
+      }
+    };
 
+    // Transform form committesMembers ID array into a single ID string for API parameter.
+    const transform = () => {
       const value = this.form.value as CommitteePost;
 
-      // Transform form committesMembers ID array into a single ID string for API parameter.
-      value.committesMembers =
+      return (
         `${value.chairId}&&&${value.viceChairId}` +
-        ((value.committesMembers as unknown) as string[]).reduce(
-          (result, currentMemberId) => `${result}&&&${currentMemberId}`,
-          ''
-        );
+        ((value.committesMembers as unknown) as string[])
+          .filter(
+            (member) => member !== value.chairId && member !== value.viceChairId
+          )
+          .reduce(
+            (result, currentMemberId) => `${result}&&&${currentMemberId}`,
+            ''
+          )
+      );
+    };
 
-      this.committeeService.postCommittee(value).subscribe(() => {
-        if (this._cacheId) {
-          this.cacheService.emit(this._cacheId, null);
-        } else {
-          this.router.navigate(['/list/committee'], {
-            queryParams: {
-              state: published ? 'published' : 'draft',
-            },
-          });
-        }
-      });
+    const value = this.form.value;
+
+    value.published = published;
+    value.committesMembers = transform();
+
+    if (this._mode === 'creating') {
+      value.datePublished = new Date().toISOString();
+
+      this.committeeService.postCommittee(value).subscribe(subCallback);
+    } else {
+      value.id = this._committeeId;
+
+      this.committeeService.updateCommittee(value).subscribe(subCallback);
     }
   }
 

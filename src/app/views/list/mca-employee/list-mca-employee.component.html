@@ -5,13 +5,11 @@
     <div *ngIf="mcaEmployees.length">
       <app-list-item *ngFor="let mcaEmployee of mcaEmployees" [title]="mcaEmployee.name"
         [subtitle]="mcaEmployee.ward.wardName" [pic]="mcaEmployee.profilePic" [selectable]="selectable"
-        (select)="onSelect(mcaEmployee)" [editUrl]="'/'"></app-list-item>
+        (select)="onSelect(mcaEmployee)" [editUrl]="'/create/mca/' + mcaEmployee._id" [published]="mcaEmployee.status"
+        (delete)="onDelete(mcaEmployee._id)"></app-list-item>
     </div>
     <div *ngIf="!mcaEmployees.length" class="list-no-value">
       <p>No Employees Listed!</p>
-      <p (click)="onCreateNewEmployee()" class="new">
-        Create Employee
-      </p>
       <p (click)="onCreateNewMca()" class="new">
         Create Mca
       </p>

@@ -4,7 +4,8 @@
     <app-search-bar></app-search-bar>
     <div *ngIf="constituencies.length">
       <app-list-item *ngFor="let con of constituencies" [title]="con.name" [subtitle]="con.subCounty"
-        [selectable]="selectable" (select)="onSelect(con)" [editUrl]="'/create/constituencies/' + con._id">
+        [selectable]="selectable" (select)="onSelect(con)" [editUrl]="'/create/constituencies/' + con._id"
+        (delete)="onDelete(con._id)" [published]="state !== 'draft'">
       </app-list-item>
     </div>
     <div *ngIf="!constituencies.length" class="list-no-value">

@@ -62,8 +62,8 @@ export class MotionService {
 
   deleteMotion(id: string) {
     return this.apiService.deleteMotion(id).pipe(
-      tap(({ message }) => {
-        const motionId = message._id;
+      tap((motion) => {
+        const motionId = motion._id;
 
         const newMotions = this.motions
           .getValue()

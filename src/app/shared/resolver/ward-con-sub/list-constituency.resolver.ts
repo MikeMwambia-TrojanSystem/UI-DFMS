@@ -5,7 +5,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { WardConSubService } from 'src/app/services/ward-con-sub.service';
 import { Constituency } from 'src/app/shared/types/ward-con-sub';
 
@@ -22,6 +22,11 @@ export class ListConstituencyResolver implements Resolve<Constituency[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Constituency[]> | Promise<Constituency[]> | Constituency[] {
-    return this.wardConSubService.getConstituencies().pipe(take(1));
+    const publishState = route.queryParams.state !== 'draft';
+
+    return this.wardConSubService.getConstituencies().pipe(
+      take(1),
+      map((cons) => cons.filter((c) => c.published === publishState))
+    );
   }
 }

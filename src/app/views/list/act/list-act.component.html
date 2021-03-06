@@ -3,9 +3,24 @@
     <h1 class="title">Acts</h1>
     <app-search-bar></app-search-bar>
     <div>
-      <app-info-item *ngFor="let act of acts" [title]="act.title" [date]="act.date" [subjects]="act.subjects"
-        class="item" [selectable]="selectabe" [sub]="'Act Title on'" [state]="state">
+      <app-info-item
+        *ngFor="let act of acts"
+        [title]="act.titleOfAct"
+        [date]="act.datePublished"
+        [subjects]="[act.relatedTo]"
+        class="item"
+        [selectable]="selectable"
+        [sub]="'Act Title on'"
+        [state]="act.publishState"
+        [editUrl]="'/generate/act/' + act._id"
+        (delete)="onDelete(act._id)"
+        (select)="onSelect(act)"
+      >
       </app-info-item>
+    </div>
+    <div *ngIf="!acts.length" class="list-no-value">
+      <p>No Acts Listed!</p>
+      <p (click)="onCreateNew()" class="new">Create Act</p>
     </div>
   </app-center-card>
 </app-background>

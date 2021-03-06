@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { SubCounty } from 'src/app/shared/types/ward-con-sub';
 import { CacheService } from 'src/app/services/cache.service';
+import { WardConSubService } from 'src/app/services/ward-con-sub.service';
 
 @Component({
   templateUrl: './list-subcounty.component.html',
@@ -12,22 +13,25 @@ import { CacheService } from 'src/app/services/cache.service';
 })
 export class ListSubcountyComponent implements OnInit {
   private _cacheId: string;
-  private _state: 'draft' | 'published';
+  // private _state: 'draft' | 'published';
+  state: 'draft' | 'published';
   subCounties: SubCounty[] = [];
   selectable = false; // Whether the list is selectable
 
   constructor(
     private route: ActivatedRoute,
     private cacheService: CacheService,
-    private router: Router
+    private router: Router,
+    private wardConSubService: WardConSubService
   ) {}
 
   ngOnInit(): void {
     // Get selectable state, cache emit id, state from query url
     const queryParams = this.route.snapshot.queryParams;
-    this.selectable = queryParams.select || false;
+    this.selectable = queryParams.select === 'true' || false;
     this._cacheId = queryParams.id;
-    this._state = queryParams.state;
+    // this._state = queryParams.state;
+    this.state = queryParams.state;
 
     // Get Subcounties data from resolver
     this.route.data
@@ -51,7 +55,8 @@ export class ListSubcountyComponent implements OnInit {
         queryParams: {
           select: this.selectable,
           id: this._cacheId,
-          state: this._state,
+          // state: this._state,
+          state: this.state,
         },
       }),
       () => {
@@ -63,6 +68,12 @@ export class ListSubcountyComponent implements OnInit {
       queryParams: {
         id: 'LIST_NEW_SUBCOUNTY',
       },
+    });
+  }
+
+  onDelete(id: string) {
+    this.wardConSubService.deleteWardConSub(id).subscribe(() => {
+      window.location.reload();
     });
   }
 }

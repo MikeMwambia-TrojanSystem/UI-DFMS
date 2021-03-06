@@ -3,7 +3,7 @@ import { Router, UrlTree } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 
-type CachedCallback<T, U> = (cachedForm: T, selected: U) => T;
+type CachedCallback<T, U> = (cachedForm: T, selected: U) => Promise<T> | T;
 
 interface CachedData {
   data: any;
@@ -50,12 +50,11 @@ export class CacheService {
       [id]: {
         data,
         subscription: this._selected
-          .pipe(
-            filter(({ id }) => id === id),
-            take(1)
-          )
-          .subscribe(({ selected }: { selected: U }) => {
-            const newData = callback(data, selected);
+          .pipe(filter((value) => value.id === id))
+          .subscribe(async (value) => {
+            const newData = await callback(data, value.selected);
+
+            this._data[id].subscription.unsubscribe();
 
             this._data[id] = {
               data: newData,

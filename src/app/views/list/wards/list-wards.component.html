@@ -4,7 +4,8 @@
     <app-search-bar></app-search-bar>
     <div *ngIf="wards.length">
       <app-list-item *ngFor="let ward of wards" [title]="ward.name" [subtitle]="ward.county"
-        [subcounty]="ward.subCounty" [selectable]="selectable" [editUrl]="'/create/wards/' + ward._id">
+        [subcounty]="ward.subCounty" [selectable]="selectable" [editUrl]="'/create/wards/' + ward._id"
+        (delete)="onDelete(ward._id)" (select)="onSelect(ward)" [published]="state !== 'draft'">
       </app-list-item>
     </div>
     <div *ngIf="!wards.length" class="list-no-value">

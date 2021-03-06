@@ -6,33 +6,64 @@
         <form [formGroup]="form" class="form">
           <p class="label">Name</p>
           <mat-form-field appearance="standard">
-            <input matInput formControlName="name" placeholder="Sterys Crystal" />
-            <mat-error *ngIf="form.get('name').hasError('required')">Please enter your name!</mat-error>
+            <input
+              matInput
+              formControlName="name"
+              placeholder="Sterys Crystal"
+            />
+            <mat-error *ngIf="form.get('name').hasError('required')"
+              >Please enter your name!</mat-error
+            >
           </mat-form-field>
           <p class="label">Phone Number</p>
           <mat-form-field appearance="standard">
             <span matPrefix>+ &nbsp;</span>
             <input matInput formControlName="phone" type="tel" />
-            <mat-error *ngIf="form.get('phone').hasError('required')">Please enter phone numer</mat-error>
-            <mat-error *ngIf="form.get('phone').hasError('phoneNumber')">Please enter valid phone numer</mat-error>
+            <mat-error *ngIf="form.get('phone').hasError('required')"
+              >Please enter phone numer</mat-error
+            >
+            <mat-error *ngIf="form.get('phone').hasError('phoneNumber')"
+              >Please enter valid phone numer</mat-error
+            >
           </mat-form-field>
           <p class="label">Ward / Region Originating</p>
           <mat-form-field appearance="standard">
             <mat-select formControlName="originating">
-              <mat-option value="Nathu Ward" *ngFor="let ward of wards">{{ward.name}}</mat-option>
+              <mat-option value="Nathu Ward" *ngFor="let ward of wards">{{
+                ward.name
+              }}</mat-option>
             </mat-select>
-            <mat-error *ngIf="form.get('originating').hasError('required')">Please select a ward / region!</mat-error>
+            <mat-error *ngIf="form.get('originating').hasError('required')"
+              >Please select a ward / region!</mat-error
+            >
           </mat-form-field>
-          <app-custom-button [title]="'Upload Profile Picture'" (buttonClick)="onStartUpload()"></app-custom-button>
+          <app-custom-button
+            [title]="'Upload Profile Picture'"
+            (buttonClick)="onStartUpload()"
+          ></app-custom-button>
           <input class="hidden" type="file" #fileUpload accept="image/*" />
-          <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save</button>
+          <button
+            mat-raised-button
+            type="submit"
+            class="btn-save"
+            [disabled]="form.invalid"
+          >
+            Save
+          </button>
         </form>
         <div class="divider"></div>
       </div>
       <div class="right-section">
         <h2 class="title">List of Petitioners</h2>
-        <app-management-item *ngFor="let petitioner of petitioners" [title]="petitioner.name"
-          [subtitle]="petitioner.ward" [pic]="petitioner.profilePic" [noDivider]="true"></app-management-item>
+        <app-management-item
+          *ngFor="let petitioner of petitioners"
+          [title]="petitioner.name"
+          [subtitle]="petitioner.ward"
+          [pic]="petitioner.profilePic"
+          [noDivider]="true"
+          [selectable]="selectable"
+          (select)="onSelect(petitioner)"
+        ></app-management-item>
       </div>
     </div>
   </app-center-card>

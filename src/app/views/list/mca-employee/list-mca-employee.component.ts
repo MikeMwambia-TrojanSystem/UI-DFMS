@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { CacheService } from 'src/app/services/cache.service';
 import { McaEmployee } from 'src/app/shared/types/mca-employee';
+import { McaEmployeeService } from 'src/app/services/mca-employee.service';
 
 @Component({
   selector: 'app-list-mca-employee',
@@ -20,13 +21,14 @@ export class ListMcaEmployeeComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private cacheService: CacheService,
-    private router: Router
+    private router: Router,
+    private mcaEmployeeService: McaEmployeeService
   ) {}
 
   ngOnInit(): void {
     // Get selectable state, cache emit id, state from query url
     const queryParams = this.route.snapshot.queryParams;
-    this.selectable = queryParams.select || false;
+    this.selectable = queryParams.select === 'true' || false;
     this._cacheId = queryParams.id;
     this._state = queryParams.state;
 
@@ -45,29 +47,6 @@ export class ListMcaEmployeeComponent implements OnInit {
         name,
       });
     }
-  }
-
-  onCreateNewEmployee() {
-    this.cacheService.cache(
-      'LIST_NEW_EMPLOYEE',
-      null,
-      this.router.createUrlTree(['/list/mca-employee'], {
-        queryParams: {
-          select: this.selectable,
-          id: this._cacheId,
-          state: this._state,
-        },
-      }),
-      () => {
-        return null;
-      }
-    );
-
-    this.router.navigate(['/create/employee'], {
-      queryParams: {
-        id: 'LIST_NEW_EMPLOYEE',
-      },
-    });
   }
 
   onCreateNewMca() {
@@ -90,6 +69,13 @@ export class ListMcaEmployeeComponent implements OnInit {
       queryParams: {
         id: 'LIST_NEW_MCA',
       },
+    });
+  }
+
+  // This function get called when the 'Delete' button is clicked
+  onDelete(id: string) {
+    this.mcaEmployeeService.deleteMca(id).subscribe(() => {
+      window.location.reload();
     });
   }
 }

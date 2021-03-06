@@ -18,6 +18,7 @@ export class InfoItemComponent implements OnInit {
   @Input() editUrl: string;
   @Input() department: string;
   @Output() delete = new EventEmitter<void>();
+  @Output() select = new EventEmitter<void>();
   stateExpanded: string;
 
   ngOnInit() {
@@ -34,5 +35,9 @@ export class InfoItemComponent implements OnInit {
 
   onDelete() {
     this.delete.emit();
+  }
+
+  onSelect() {
+    this.select.emit();
   }
 }

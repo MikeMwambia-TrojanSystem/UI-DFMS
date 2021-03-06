@@ -5,7 +5,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { WardConSubService } from 'src/app/services/ward-con-sub.service';
 import { Ward } from 'src/app/shared/types/ward-con-sub';
 
@@ -22,6 +22,11 @@ export class ListWardResolver implements Resolve<Ward[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Ward[]> | Promise<Ward[]> | Ward[] {
-    return this.wardConSubService.getWards().pipe(take(1));
+    const publishState = route.queryParams.state !== 'draft';
+
+    return this.wardConSubService.getWards().pipe(
+      take(1),
+      map((wards) => wards.filter((w) => w.published === publishState))
+    );
   }
 }

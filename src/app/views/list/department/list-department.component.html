@@ -5,7 +5,8 @@
     <div *ngIf="departments.length">
       <app-list-item *ngFor="let department of departments" [title]="department.name" [subtitle]="department.county"
         [subcounty]="department.subCounty" [selectable]="selectable" (select)="onSelect(department)"
-        [editUrl]="'/create/department/' + department._id">
+        [editUrl]="'/create/department/' + department._id" (delete)="onDelete(department._id)"
+        [published]="state !== 'draft'">
       </app-list-item>
     </div>
     <div *ngIf="!departments.length" class="list-no-value">

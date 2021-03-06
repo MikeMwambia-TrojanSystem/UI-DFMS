@@ -5,7 +5,7 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { WardConSubService } from 'src/app/services/ward-con-sub.service';
 import { SubCounty } from 'src/app/shared/types/ward-con-sub';
 
@@ -22,6 +22,13 @@ export class ListSubCountyResolver implements Resolve<SubCounty[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<SubCounty[]> | Promise<SubCounty[]> | SubCounty[] {
-    return this.wardConSubService.getSubCounties().pipe(take(1));
+    const publishState = route.queryParams.state !== 'draft';
+
+    return this.wardConSubService.getSubCounties().pipe(
+      take(1),
+      map((subcounties) =>
+        subcounties.filter((s) => s.published === publishState)
+      )
+    );
   }
 }

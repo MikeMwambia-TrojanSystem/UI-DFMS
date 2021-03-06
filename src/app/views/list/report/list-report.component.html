@@ -3,9 +3,20 @@
     <h1 class="title">Reports</h1>
     <app-search-bar></app-search-bar>
     <div>
-      <app-report-item *ngFor="let report of reports" [title]="report.title" [date]="report.date"
-        [concerning]="report.concering" [submitted]="report.submitted" [ward]="report.ward" [response]="report.response"
-        class="item" [selectable]="selectabe" [sub]="'Report on'" [state]="state">
+      <app-report-item
+        *ngFor="let report of reports"
+        [title]="report.title"
+        [date]="report.date"
+        [concerning]="report.concering"
+        [submitted]="report.submitted"
+        [ward]="report.ward"
+        [response]="report.response"
+        class="item"
+        [selectable]="selectable"
+        [sub]="'Report on'"
+        [state]="state"
+        (select)="onSelect()"
+      >
       </app-report-item>
     </div>
   </app-center-card>

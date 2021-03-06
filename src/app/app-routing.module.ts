@@ -81,6 +81,26 @@ import { DepartmentResolver } from './shared/resolver/department/department.reso
 import { CanActivateSubcounty } from './shared/guard/subcounty/subcounty.guard';
 import { CanActivateWard } from './shared/guard/ward/ward.guard';
 import { WardResolver } from './shared/resolver/ward-con-sub/ward.resolver';
+import { subcountyResolver } from './shared/resolver/ward-con-sub/subcounty.resolver';
+import { McaResolver } from './shared/resolver/mca-employee/mca.resolver';
+import { CanActivateMcaEmployee } from './shared/guard/mca-employee/mca-employee.guard';
+import { ListStatementResolver } from './shared/resolver/statement/list-statement.resolver';
+import { CanActivateStatement } from './shared/guard/statement/statement.guard';
+import { StatementResolver } from './shared/resolver/statement/statement.resolver';
+import { ListPetitionResolver } from './shared/resolver/petition/list-petition.resolver';
+import { ListPetitionerResolver } from './shared/resolver/petitioner/list-petitioner.resolver';
+import { PetitionResolver } from './shared/resolver/petition/petition.resolver';
+import { CanActivatePetition } from './shared/guard/petition/petition.guard';
+import { ListBillResolver } from './shared/resolver/bill/list-bill.resolver';
+import { CanActivateBill } from './shared/guard/bill/bill.guard';
+import { BillResolver } from './shared/resolver/bill/bill.resolver';
+import { ListActResolver } from './shared/resolver/act/list-act.resolver';
+import { CanActivateAct } from './shared/guard/act/act.guard';
+import { ActResolver } from './shared/resolver/act/act.resolver';
+import { PersonnelDepartmentsResolver } from './shared/resolver/personnel/departments.resolver';
+import { PersonnelResolver } from './shared/resolver/personnel/personnel.resolver';
+import { CanActivatePersonnel } from './shared/guard/personnel/personnel.guard';
+import { ListPersonnelResolver } from './shared/resolver/personnel/list-personnels.resolver';
 
 const routes: Routes = [
   // Login route
@@ -134,18 +154,41 @@ const routes: Routes = [
         component: CreateDepartmentComponent,
         canActivate: [CanActivateDepartment],
         resolve: {
-          constituency: DepartmentResolver,
+          department: DepartmentResolver,
         },
       },
-      { path: 'employee', component: CreateEmployeeComponent },
+      {
+        path: 'employee',
+        component: CreateEmployeeComponent,
+        resolve: {
+          departments: PersonnelDepartmentsResolver,
+        },
+      },
+      {
+        path: 'employee/:id',
+        component: CreateEmployeeComponent,
+        canActivate: [CanActivatePersonnel],
+        resolve: {
+          departments: PersonnelDepartmentsResolver,
+          personnel: PersonnelResolver,
+        },
+      },
       { path: 'mca', component: CreateMcaComponent },
+      {
+        path: 'mca/:id',
+        component: CreateMcaComponent,
+        canActivate: [CanActivateMcaEmployee],
+        resolve: {
+          mca: McaResolver,
+        },
+      },
       { path: 'subcounty', component: CreateSubcountyComponent },
       {
         path: 'subcounty/:id',
         component: CreateSubcountyComponent,
         canActivate: [CanActivateSubcounty],
         resolve: {
-          constituency: DepartmentResolver,
+          subcounty: subcountyResolver,
         },
       },
       { path: 'wards', component: CreateWardsComponent },
@@ -154,7 +197,7 @@ const routes: Routes = [
         component: CreateWardsComponent,
         canActivate: [CanActivateWard],
         resolve: {
-          constituency: WardResolver,
+          ward: WardResolver,
         },
       },
     ],
@@ -178,7 +221,13 @@ const routes: Routes = [
           mcaEmployees: ListMcaEmployeeResolver,
         },
       },
-      { path: 'personnel', component: ListPersonnelComponent },
+      {
+        path: 'personnel',
+        component: ListPersonnelComponent,
+        resolve: {
+          personnels: ListPersonnelResolver,
+        },
+      },
       {
         path: 'wards',
         component: ListWardsComponent,
@@ -193,9 +242,27 @@ const routes: Routes = [
           motions: ListMotionResolver,
         },
       },
-      { path: 'act', component: ListActComponent },
-      { path: 'bill', component: ListBillComponent },
-      { path: 'petition', component: ListPetitionComponent },
+      {
+        path: 'act',
+        component: ListActComponent,
+        resolve: {
+          acts: ListActResolver,
+        },
+      },
+      {
+        path: 'bill',
+        component: ListBillComponent,
+        resolve: {
+          bills: ListBillResolver,
+        },
+      },
+      {
+        path: 'petition',
+        component: ListPetitionComponent,
+        resolve: {
+          petitions: ListPetitionResolver,
+        },
+      },
       { path: 'report', component: ListReportComponent },
       { path: 'order-paper', component: ListOrderPaperComponent },
       { path: 'votebook', component: ListVoteBookComponent },
@@ -208,7 +275,13 @@ const routes: Routes = [
         },
       },
       { path: 'message', component: ListMessageComponent },
-      { path: 'statement', component: ListStatementComponent },
+      {
+        path: 'statement',
+        component: ListStatementComponent,
+        resolve: {
+          statements: ListStatementResolver,
+        },
+      },
       {
         path: 'tentative-business',
         component: ListTentativeBusinesssComponent,
@@ -236,7 +309,14 @@ const routes: Routes = [
     children: [
       { path: 'accounts', component: AccountManagementComponent },
       { path: 'oath', component: AdministrationOathComponent },
-      { path: 'petitioners', component: AddPetitionerComponent },
+      {
+        path: 'petitioners',
+        component: AddPetitionerComponent,
+        resolve: {
+          petitioners: ListPetitionerResolver,
+        },
+      },
+
       { path: 'upload', component: UploadPageComponent },
     ],
   },
@@ -245,8 +325,27 @@ const routes: Routes = [
   {
     path: 'generate',
     children: [
-      { path: 'act', component: ActGenerateComponent },
+      {
+        path: 'act',
+        component: ActGenerateComponent,
+      },
+      {
+        path: 'act/:id',
+        component: ActGenerateComponent,
+        canActivate: [CanActivateAct],
+        resolve: {
+          act: ActResolver,
+        },
+      },
       { path: 'bill', component: BillGenerateComponent },
+      {
+        path: 'bill/:id',
+        component: BillGenerateComponent,
+        canActivate: [CanActivateBill],
+        resolve: {
+          bill: BillResolver,
+        },
+      },
       {
         path: 'motion',
         component: MotionGenerateComponent,
@@ -260,6 +359,14 @@ const routes: Routes = [
         },
       },
       { path: 'petition', component: PetitionGenerateComponent },
+      {
+        path: 'petition/:id',
+        component: PetitionGenerateComponent,
+        resolve: {
+          petition: PetitionResolver,
+        },
+        canActivate: [CanActivatePetition],
+      },
       { path: 'report', component: ReportGenerateComponent },
       { path: 'order-paper', component: OrderPaperGenerateComponent },
       { path: 'paper-content', component: PaperContentGenerateComponent },
@@ -306,6 +413,12 @@ const routes: Routes = [
     path: 'upload',
     children: [
       { path: 'statement', component: StatementUploadComponent },
+      {
+        path: 'statement/:id',
+        component: StatementUploadComponent,
+        canActivate: [CanActivateStatement],
+        resolve: { statement: StatementResolver },
+      },
       { path: 'report', component: ReportUploadComponent },
     ],
   },

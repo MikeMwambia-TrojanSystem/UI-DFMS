@@ -34,12 +34,8 @@ export class CreateWardsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // Rehydrate the cached form data if there's any
-    const cachedForm = this.cacheService.rehydrate<FormGroup>('CREATE_WARD');
-
-    if (cachedForm) {
-      this.form = cachedForm;
-    }
+    // Get cached id from query url
+    this._cacheId = this.route.snapshot.queryParams.id;
 
     // Populate ward data from resolver using param id
     const wardId = this.route.snapshot.params.id;
@@ -57,8 +53,12 @@ export class CreateWardsComponent implements OnInit {
       this._mode = 'creating';
     }
 
-    // Get cached id from query url
-    this._cacheId = this.route.snapshot.queryParams.id;
+    // Rehydrate the cached form data if there's any
+    const cachedForm = this.cacheService.rehydrate<FormGroup>('CREATE_WARD');
+
+    if (cachedForm) {
+      this.form = cachedForm;
+    }
   }
 
   /**
@@ -66,6 +66,19 @@ export class CreateWardsComponent implements OnInit {
    * Post the ward form data to backend.
    */
   onSave(published: boolean) {
+    // Subcription callback
+    const subCallback = () => {
+      if (this._cacheId) {
+        this.cacheService.emit(this._cacheId, null);
+      } else {
+        this.router.navigate(['/list/wards'], {
+          queryParams: {
+            state: published ? 'published' : 'draft',
+          },
+        });
+      }
+    };
+
     const value = this.form.value;
 
     value.published = published;
@@ -73,17 +86,15 @@ export class CreateWardsComponent implements OnInit {
     if (this._mode === 'creating') {
       value.date = new Date().toISOString();
 
-      this.wardConSubService.postWardConSub(value, 'ward').subscribe(() => {
-        if (this._cacheId) {
-          this.cacheService.emit(this._cacheId, null);
-        } else {
-          this.router.navigate(['/list/wards'], {
-            queryParams: {
-              state: published ? 'published' : 'draft',
-            },
-          });
-        }
-      });
+      this.wardConSubService
+        .postWardConSub(value, 'ward')
+        .subscribe(subCallback);
+    } else {
+      value.id = this._wardId;
+
+      this.wardConSubService
+        .updateWardConSub(value, 'ward')
+        .subscribe(subCallback);
     }
   }
 
@@ -94,10 +105,13 @@ export class CreateWardsComponent implements OnInit {
    */
   onSelectConstituency() {
     // Caching and select callback handling
+    const urlTree = this._wardId
+      ? ['/create/wards', this._wardId]
+      : ['/create/wards'];
     this.cacheService.cache<FormGroup, { name: string; _id: string }>(
       'CREATE_WARD',
       this.form,
-      this.router.createUrlTree(['/create/wards', this._wardId], {
+      this.router.createUrlTree(urlTree, {
         queryParams: {
           id: this._cacheId,
         },
@@ -127,10 +141,13 @@ export class CreateWardsComponent implements OnInit {
    */
   onSelectSubCounty() {
     // Caching and select callback handling
+    const urlTree = this._wardId
+      ? ['/create/wards', this._wardId]
+      : ['/create/wards'];
     this.cacheService.cache<FormGroup, { name: string; _id: string }>(
       'CREATE_WARD',
       this.form,
-      this.router.createUrlTree(['/create/wards', this._wardId], {
+      this.router.createUrlTree(urlTree, {
         queryParams: {
           id: this._cacheId,
         },

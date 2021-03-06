@@ -3,10 +3,23 @@
     <h1 class="title">Petitions</h1>
     <app-search-bar></app-search-bar>
     <div>
-      <app-info-item *ngFor="let petition of petitions" [title]="petition.title" [date]="petition.date"
-        [subjects]="petition.subjects" [sponsored]="petition.sponsored" [ward]="petition.ward" class="item"
-        [selectable]="selectabe" [sub]="'Petition on'" [state]="state">
+      <app-info-item
+        *ngFor="let petition of petitions"
+        [title]="petition.content"
+        [date]="petition.datePublished"
+        [subjects]="[petition.relatedTo]"
+        [sponsored]="petition.sponsoredBy.sponsorName"
+        class="item"
+        [selectable]="selectable"
+        [sub]="'Petition on'"
+        (delete)="onDelete(petition._id)"
+        [editUrl]="'/generate/petition/' + petition._id"
+      >
       </app-info-item>
+    </div>
+    <div *ngIf="!petitions.length" class="list-no-value">
+      <p>No Petitions Listed!</p>
+      <p (click)="onCreateNew()" class="new">Create Petition</p>
     </div>
   </app-center-card>
 </app-background>
