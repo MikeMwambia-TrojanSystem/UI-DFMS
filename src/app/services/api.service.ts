@@ -15,6 +15,7 @@ import { Petition, PetitionPost } from '../shared/types/petition';
 import { BillPost, Bill } from '../shared/types/bill';
 import { Act, ActPost } from '../shared/types/act';
 import { Personnel, PersonnelPost } from '../shared/types/personnel';
+import { ReportPost } from '../shared/types/report';
 
 interface ApiResponse<T> {
   message: T;
@@ -103,6 +104,10 @@ export class ApiService {
       'personnel/create',
       personnel
     );
+  }
+
+  createReport(report: ReportPost) {
+    return this._postRequest<ReportPost, any>('report/create', report);
   }
 
   // GETs
@@ -283,15 +288,15 @@ export class ApiService {
 
   // UPLOAD
   upload(data: FormData) {
-    return of({
-      etag: 'test',
-      id: 'test',
-      key: 'test',
-      location: 'google.com',
-      uploadedToS3: true,
-    });
-    // return this.http
-    //   .post<Upload>('http://3.13.186.200:9000/uploadfile', data)
-    //   .pipe(timeout(this._timeout), catchError(errorHandler));
+    // return of({
+    //   etag: 'test',
+    //   id: 'test',
+    //   key: 'test',
+    //   location: 'google.com',
+    //   uploadedToS3: true,
+    // });
+    return this.http
+      .post<Upload>('http://3.13.186.200:9000/uploadfile', data)
+      .pipe(timeout(this._timeout), catchError(errorHandler));
   }
 }
