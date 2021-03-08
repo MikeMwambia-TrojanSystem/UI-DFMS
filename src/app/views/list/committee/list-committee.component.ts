@@ -23,7 +23,7 @@ export class ListCommitteeComponent implements OnInit {
     private cacheService: CacheService,
     private router: Router,
     private committeeService: CommitteeService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     // Get selectable state, cache emit id, state from query url
@@ -40,9 +40,9 @@ export class ListCommitteeComponent implements OnInit {
       });
   }
 
-  onSelect({ _id, name }: Committee) {
+  onSelect(committee: Committee) {
     if (this._cacheId) {
-      this.cacheService.emit(this._cacheId, { name, _id });
+      this.cacheService.emit(this._cacheId, committee);
     }
   }
 

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import moment from 'moment';
+import { ApiService } from 'src/app/services/api.service';
 
 import { CacheService } from 'src/app/services/cache.service';
-import { UploadPost } from 'src/app/shared/types/upload';
+import { Upload, UploadPost } from 'src/app/shared/types/upload';
 
 @Component({
   selector: 'app-upload-page',
@@ -15,10 +16,12 @@ export class UploadPageComponent implements OnInit {
   file: File;
   category = 'Acts';
   accept = 'application/pdf';
+  uploading = false;
 
   constructor(
     private cacheService: CacheService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private apiService: ApiService
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +43,7 @@ export class UploadPageComponent implements OnInit {
         this.category = 'Petition';
         break;
       case 'bill':
-        this.category = 'Petition';
+        this.category = 'Bill';
         break;
       case 'act':
         this.category = 'Act';
@@ -48,6 +51,12 @@ export class UploadPageComponent implements OnInit {
       case 'personnel':
         this.category = 'Personnel';
         this.accept = 'image/*';
+        break;
+      case 'report':
+        this.category = 'Report';
+        break;
+      case 'annexus':
+        this.category = 'Annexus';
         break;
       default:
         break;
@@ -69,11 +78,31 @@ export class UploadPageComponent implements OnInit {
   }
 
   onUploadFileBtn() {
-    this.cacheService.emit<UploadPost>(this._cacheId, {
-      documents: this.category,
-      County: '123456',
-      signature: moment().toISOString(),
-      myFile: this.file,
-    });
+    if (this._cacheId) {
+      this.uploading = true;
+
+      const formData = new FormData();
+
+      formData.append('documents', this.category);
+      formData.append('County', '123456');
+      formData.append('signature', String(moment().unix()));
+      formData.append('myFile', this.file);
+
+      this.apiService.upload(formData).subscribe((result) => {
+        this.uploading = false;
+
+        if (result.location) {
+          this.cacheService.emit<{ result: Upload; file: File }>(
+            this._cacheId,
+            {
+              result,
+              file: this.file,
+            }
+          );
+        } else {
+          alert('ERROR');
+        }
+      });
+    }
   }
 }

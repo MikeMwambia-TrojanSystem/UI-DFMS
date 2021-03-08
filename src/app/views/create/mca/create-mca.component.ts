@@ -1,15 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import moment from 'moment';
 
-import { CacheService } from 'src/app/services/cache.service';
+import { CachedCallback, CacheService } from 'src/app/services/cache.service';
 import { McaEmployeeService } from 'src/app/services/mca-employee.service';
 import { McaEmployee } from 'src/app/shared/types/mca-employee';
 import { phoneNumberValidator } from 'src/app/shared/validators/phone-number';
 import { ApiService } from 'src/app/services/api.service';
-import { UploadPost } from 'src/app/shared/types/upload';
+import { Upload, UploadPost } from 'src/app/shared/types/upload';
+import { PhoneVerification } from 'src/app/shared/types/verification';
+
+type Cache = {
+  form: FormGroup;
+  filename: string;
+  verification?: PhoneVerification;
+};
 
 @Component({
   selector: 'app-create-mca',
@@ -20,7 +27,7 @@ export class CreateMcaComponent implements OnInit {
   private _mode: 'editing' | 'creating';
   private _mcaId: string;
   private _cacheId: string;
-  private _mcaUpload: UploadPost;
+
   form = new FormGroup({
     assemblyId: new FormControl(
       '603cbd73bd0107cf86d79170',
@@ -36,8 +43,8 @@ export class CreateMcaComponent implements OnInit {
     ]),
     politicalParty: new FormControl('', Validators.required),
     positionStatus: new FormControl('', Validators.required),
-    profilePic: new FormControl(''),
-    signature: new FormControl('599595955959595', Validators.required),
+    profilePic: new FormControl('', Validators.required),
+    signature: new FormControl(''),
     status: new FormControl(false),
     termStart: new FormControl('', Validators.required),
     termEnd: new FormControl('', Validators.required),
@@ -46,7 +53,7 @@ export class CreateMcaComponent implements OnInit {
     wardId: new FormControl('', Validators.required),
   });
 
-  hasUploaded = false;
+  filename: string;
 
   constructor(
     private cacheService: CacheService,
@@ -54,7 +61,7 @@ export class CreateMcaComponent implements OnInit {
     private mcaEmployeeService: McaEmployeeService,
     private route: ActivatedRoute,
     private apiService: ApiService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     // Get cache id from query url
@@ -70,37 +77,31 @@ export class CreateMcaComponent implements OnInit {
       this.route.data
         .pipe(take(1))
         .subscribe(({ mca }: { mca: McaEmployee }) => {
-          const { phoneNumber, ward, termOfService, ...others } = mca;
+          const { termOfService, ...others } = mca;
           const [termStart, termEnd] = termOfService.split(' to ');
 
           this.form.patchValue({
             ...others,
-            phoneNumber: phoneNumber.number,
-            ward: ward.wardName,
-            wardId: ward.wardId,
             termStart: moment(termStart, 'Do MMMM YYYY').toJSON().slice(0, 10),
             termEnd: moment(termEnd, 'Do MMMM YYYY').toJSON().slice(0, 10),
           });
+
+          const index = mca.profilePic.lastIndexOf('amazonaws.com/') + 14;
+
+          this.filename = mca.profilePic.substring(index);
         });
     } else {
       this._mode = 'creating';
     }
 
     // Rehydrate cached form data if there's any
-    const cached = this.cacheService.rehydrate<{
-      form: FormGroup;
-      upload: UploadPost;
-    }>('CREATE_MCA');
+    const cached = this.cacheService.rehydrate<Cache>('CREATE_MCA');
 
     if (cached) {
-      const { form, upload } = cached;
+      const { form, filename } = cached;
 
       this.form = form;
-      this._mcaUpload = upload;
-
-      if (upload) {
-        this.hasUploaded = true;
-      }
+      this.filename = filename;
     }
   }
 
@@ -108,12 +109,20 @@ export class CreateMcaComponent implements OnInit {
     return this.form.value.ward;
   }
 
-  get profilePic(): string {
-    try {
-      return this._mcaUpload.myFile.name;
-    } catch (error) {
-      return undefined;
-    }
+  private _onCache<T>(
+    { url, queryParams }: { url: string; queryParams?: Params },
+    callback: CachedCallback<Cache, T>
+  ) {
+    this.cacheService.cacheFunc<Cache, T>({
+      id: 'CREATE_MCA',
+      cacheId: this._cacheId,
+      urlParamer: this._mcaId,
+      returnUrl: '/create/mca',
+      navigateUrl: url,
+      navigateUrlQuery: queryParams,
+      data: { form: this.form, filename: this.filename },
+      callback,
+    })();
   }
 
   /**
@@ -122,38 +131,17 @@ export class CreateMcaComponent implements OnInit {
    * After the user had selected the ward, a callback function will get called and update the cached data with the selected information.
    */
   onWardSelect() {
-    // Caching and select callback handling
-    const urlTree = this._mcaId
-      ? ['/create/mca', this._mcaId]
-      : ['/create/mca'];
-    this.cacheService.cache<{
-      form: FormGroup;
-      upload: UploadPost;
-    }, { _id: string; name: string }>(
-      'CREATE_MCA',
-      {
-        form: this.form,
-        upload: this._mcaUpload,
-      },
-      this.router.createUrlTree(urlTree, {
-        queryParams: {
-          id: this._cacheId,
-        },
-      }),
-      ({ form, upload }, { _id, name }) => {
+    this._onCache(
+      { url: '/list/wards' },
+      ({ form, filename }, { _id, name }) => {
         form.patchValue({
           wardId: _id,
           ward: name,
         }); // Patch cached form with new ward information.
 
-        return { form, upload };
+        return { form, filename };
       }
     );
-
-    // Navigate the user to '/list/wards?select=true'
-    this.router.navigate(['/list/wards'], {
-      queryParams: { select: true, id: 'CREATE_MCA' },
-    });
   }
 
   // This function is called when '' button is clicked
@@ -162,37 +150,28 @@ export class CreateMcaComponent implements OnInit {
    * Caching the form and then redirect the user to '/management/upload'.
    */
   onProfileSelect() {
-    // Caching and select callback handling
-    const urlTree = this._mcaId
-      ? ['/create/mca', this._mcaId]
-      : ['/create/mca'];
-    this.cacheService.cache<
-      { form: FormGroup; upload: UploadPost },
-      UploadPost
-    >(
-      'CREATE_MCA',
-      { form: this.form, upload: this._mcaUpload },
-      this.router.createUrlTree(urlTree, {
+    this._onCache<{ result: Upload }>(
+      {
+        url: '/management/upload',
         queryParams: {
-          id: this._cacheId,
+          select: undefined,
+          category: 'mca',
         },
-      }),
-      (data, uploadData) => ({
-        ...data,
-        upload: uploadData,
-      })
-    );
+      },
+      ({ form }, { result }) => {
+        form.patchValue({
+          profilePic: result.location,
+        });
 
-    // Navigate the user to '/management/upload'
-    this.router.navigate(['/management/upload'], {
-      queryParams: { id: 'CREATE_MCA', category: 'mca' },
-    });
+        return { form, filename: result.key };
+      }
+    );
   }
 
   // This function is called when 'Save as Draft' or 'Save MCA' buttons are clicked
   onSave(published: boolean) {
-    // Subcription callback
-    const subCallback = () => {
+    // After POST
+    const redirecting = () => {
       if (this._cacheId) {
         this.cacheService.emit(this._cacheId, null);
       } else {
@@ -201,6 +180,38 @@ export class CreateMcaComponent implements OnInit {
             state: published ? 'published' : 'draft',
           },
         });
+      }
+    };
+
+    // Subcription callback
+    const subCallback = ({ mcaId, request_id }: any) => {
+      if (published === true) {
+        this.cacheService.cache<
+          Cache & { userId: string; request_id: string },
+          boolean
+        >(
+          'CREATE_MCA',
+          {
+            form: this.form,
+            filename: this.filename,
+            userId: mcaId,
+            request_id,
+          },
+          undefined,
+          (data) => {
+            redirecting();
+
+            return data;
+          }
+        );
+
+        this.router.navigate(['/verification/phone'], {
+          queryParams: {
+            id: 'CREATE_MCA',
+          },
+        });
+      } else {
+        redirecting();
       }
     };
 
@@ -219,20 +230,10 @@ export class CreateMcaComponent implements OnInit {
     value.termOfService = transform();
 
     if (this._mode === 'creating') {
-      const { documents, County, signature, myFile } = this._mcaUpload;
-      const formData = new FormData();
+      value.dateCreated = moment().toISOString();
+      value.signature = moment().unix();
 
-      formData.append('documents', documents);
-      formData.append('County', County);
-      formData.append('signature', signature);
-      formData.append('myFile', myFile);
-
-      this.apiService.upload(formData).subscribe((result) => {
-        value.dateCreated = new Date().toISOString();
-        value.profilePic = result.location;
-
-        this.mcaEmployeeService.postMca(value).subscribe(subCallback);
-      });
+      this.mcaEmployeeService.postMca(value).subscribe(subCallback);
     } else {
       value.id = this._mcaId;
 

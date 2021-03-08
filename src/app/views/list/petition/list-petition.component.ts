@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { CacheService } from 'src/app/services/cache.service';
 import { PetitionService } from 'src/app/services/petition.service';
+import { Petition } from 'src/app/shared/types/petition';
 
 @Component({
   selector: 'app-list-petition',
@@ -17,10 +18,12 @@ export class ListPetitionComponent implements OnInit {
   petitions: any[];
   selectable: boolean;
 
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private route: ActivatedRoute,
     private petitionService: PetitionService,
     private cacheService: CacheService,
-    private router: Router) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     // Get selectable state, cache emit id, state from query url
@@ -63,6 +66,10 @@ export class ListPetitionComponent implements OnInit {
   onDelete(id: string) {
     this.petitionService.deletePetition(id).subscribe(() => {
       window.location.reload();
-    })
+    });
+  }
+
+  onSelect({ _id, content }: Petition) {
+    this.cacheService.emit(this._cacheId, { _id, content });
   }
 }

@@ -53,41 +53,52 @@ export class PersonnelService {
   }
 
   deletePersonnel(id: string) {
-    return this.apiService.deletePersonnel(id).pipe(
-      tap((personnel) => {
-        const personnelId = personnel._id;
+    return this.apiService
+      .deletePersonnel(id)
+      .pipe
+      // tap((personnel) => {
+      //   const personnelId = personnel._id;
 
-        const newPersonnels = this._personnels
-          .getValue()
-          .filter((p) => p._id !== personnelId);
+      //   const newPersonnels = this._personnels
+      //     .getValue()
+      //     .filter((p) => p._id !== personnelId);
 
-        this._personnels.next(newPersonnels);
-      })
-    );
+      //   this._personnels.next(newPersonnels);
+      // })
+      ();
   }
 
   postPersonnel(personnel: PersonnelPost) {
+    // return of({
+    //   personnelId: '124',
+    //   request_id: '124',
+    // });
     return this.apiService.createPersonnel(personnel).pipe(
-      tap(({ message }) => {
-        if (this._fetched) {
-          this._personnels.next([...this._personnels.getValue(), message]);
-        }
+      map(({ message }) => {
+        const { personnelId, request_id } = message;
+
+        return {
+          personnelId,
+          request_id,
+        };
       })
     );
   }
 
   updatePersonnel(personnel: PersonnelPost) {
-    return this.apiService.updatePersonnel(personnel).pipe(
-      tap((result) => {
-        const newPersonnels = this._personnels.getValue();
-        const index = newPersonnels.findIndex((p) => p._id === result._id);
+    return this.apiService
+      .updatePersonnel(personnel)
+      .pipe
+      // tap((result) => {
+      //   const newPersonnels = this._personnels.getValue();
+      //   const index = newPersonnels.findIndex((p) => p._id === result._id);
 
-        newPersonnels[index] = {
-          ...result,
-        };
+      //   newPersonnels[index] = {
+      //     ...result,
+      //   };
 
-        this._personnels.next(newPersonnels);
-      })
-    );
+      //   this._personnels.next(newPersonnels);
+      // })
+      ();
   }
 }

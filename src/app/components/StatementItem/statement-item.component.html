@@ -1,23 +1,36 @@
 <div class="main">
   <div class="info">
-    <span class="title">{{sub}} {{title}}</span>
-    <span class="date">Published on <span class="highlight">{{date | date:'dd MMMM, yyyy'}}</span></span>
-    <span class="sought" *ngIf="soughts.length">Sought to <span class="highlight"
-        *ngFor="let sought of soughts; let i = index">{{(i === 0 ? ''
-        :
-        (i + 1 ===
-        soughts.length ? ' and ' : ', ')) + sought}}</span></span>
-    <span class="requested" *ngIf="requested">Requested by <span class="highlight">{{requested}}({{ward}})</span></span>
+    <span class="title">{{ sub }} {{ title }}</span>
+    <span class="date"
+      >Published on
+      <span class="highlight">{{ date | date: "dd MMMM, yyyy" }}</span></span
+    >
+    <span class="sought" *ngIf="soughts.length"
+      >Sought to
+      <span class="highlight" *ngFor="let sought of soughts; let i = index">{{
+        (i === 0 ? "" : i + 1 === soughts.length ? " and " : ", ") + sought
+      }}</span></span
+    >
+    <span class="requested" *ngIf="requested"
+      >Requested by
+      <span class="highlight"
+        >{{ requested }}<span *ngIf="ward">({{ ward }})</span></span
+      ></span
+    >
     <div class="state" *ngIf="state">
       <div class="dot"></div>
-      <span class="label">{{state}}</span>
+      <span class="label">{{ state }}</span>
     </div>
   </div>
-  <button mat-button *ngIf="selectable" class="btn">Select</button>
+  <button mat-button *ngIf="selectable" class="btn" (click)="onSelect()">
+    Select
+  </button>
 </div>
 <div class="list-actions" *ngIf="state !== 'public' && !selectable">
   <a *ngIf="editUrl" [routerLink]="[editUrl]">
     <button mat-button class="list-actions-btn edit">Edit</button>
   </a>
-  <button mat-button class="list-actions-btn delete" (click)="onDelete()">Delete</button>
+  <button mat-button class="list-actions-btn delete" (click)="onDelete()">
+    Delete
+  </button>
 </div>

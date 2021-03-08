@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { throwError } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map, timeout } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -15,7 +15,8 @@ import { Petition, PetitionPost } from '../shared/types/petition';
 import { BillPost, Bill } from '../shared/types/bill';
 import { Act, ActPost } from '../shared/types/act';
 import { Personnel, PersonnelPost } from '../shared/types/personnel';
-import { ReportPost } from '../shared/types/report';
+import { Report, ReportPost } from '../shared/types/report';
+import { PhoneVerification } from '../shared/types/verification';
 
 interface ApiResponse<T> {
   message: T;
@@ -74,7 +75,10 @@ export class ApiService {
   }
 
   createMca(mca: McaPost) {
-    return this._postRequest<McaPost, McaEmployee>('mcaProfile/create', mca);
+    return this._postRequest<McaPost, { mcaId: string; request_id: string }>(
+      'mcaProfile/create',
+      mca
+    );
   }
 
   createStatement(statement: StatementPost) {
@@ -100,14 +104,14 @@ export class ApiService {
   }
 
   createPersonnel(personnel: PersonnelPost) {
-    return this._postRequest<PersonnelPost, Personnel>(
-      'personnel/create',
-      personnel
-    );
+    return this._postRequest<
+      PersonnelPost,
+      { personnelId: string; request_id: string }
+    >('personnel/create', personnel);
   }
 
   createReport(report: ReportPost) {
-    return this._postRequest<ReportPost, any>('report/create', report);
+    return this._postRequest<ReportPost, Report>('report/create', report);
   }
 
   // GETs
@@ -155,6 +159,10 @@ export class ApiService {
 
   getPersonnels() {
     return this._getRequest<Personnel>('personnel/getAllPersonnel');
+  }
+
+  getReports() {
+    return this._getRequest<Report>('report/getAllReports');
   }
 
   //DELETEs
@@ -210,6 +218,10 @@ export class ApiService {
 
   deletePersonnel(id: string) {
     return this._deleteRequest<Personnel>('personnel/delete', id);
+  }
+
+  deleteReport(id: string) {
+    return this._deleteRequest<Report>('report/deleteReport', id);
   }
 
   //UPDATEs
@@ -286,17 +298,47 @@ export class ApiService {
     );
   }
 
+  updateReport(report: ReportPost) {
+    return this._updateRequest<ReportPost, Report>(
+      'report/updateReport',
+      report
+    );
+  }
+
   // UPLOAD
   upload(data: FormData) {
     // return of({
-    //   etag: 'test',
-    //   id: 'test',
-    //   key: 'test',
-    //   location: 'google.com',
+    //   etag: '22a4eb595a02296c7fec40408f36d72c',
+    //   id: '6044659091ce8fa53d548f4f',
+    //   key: '1615095182-Test.pdf',
+    //   location:
+    //     'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
     //   uploadedToS3: true,
     // });
+
+    // return of({
+    //   etag: '58fdf64c2dd3a7120ac2c2ba53acc718',
+    //   id: '6045a82791ce8fa53d548f58',
+    //   key: '1615177765-cat.jpg',
+    //   location:
+    //     'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615177765-cat.jpg',
+    //   uploadedToS3: true,
+    // });
+
     return this.http
       .post<Upload>('http://3.13.186.200:9000/uploadfile', data)
       .pipe(timeout(this._timeout), catchError(errorHandler));
+  }
+
+  // VERIFICATION
+  phoneVerification(verification: PhoneVerification): Observable<boolean> {
+    return of(true);
+    // return this.http.put(
+    //   this._baseUrl + 'mobile/verifyVerificationCode',
+    //   undefined,
+    //   {
+    //     params: verification as any,
+    //   }
+    // );
   }
 }

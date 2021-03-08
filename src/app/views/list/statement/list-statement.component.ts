@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import { CacheService } from 'src/app/services/cache.service';
 import { StatementService } from 'src/app/services/statement.service';
+import { Statement } from '@angular/compiler';
 
 @Component({
   templateUrl: './list-statement.component.html',
@@ -65,5 +66,9 @@ export class ListStatementComponent implements OnInit {
         id: 'LIST_NEW_STATEMENT',
       },
     });
+  }
+
+  onSelect(statement: Statement) {
+    this.cacheService.emit(this._cacheId, statement);
   }
 }

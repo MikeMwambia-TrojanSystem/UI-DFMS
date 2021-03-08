@@ -17,7 +17,7 @@ import { Petitioner } from '../../types/petitioner';
   providedIn: 'root',
 })
 export class ListPetitionerResolver implements Resolve<Petitioner[]> {
-  constructor(private petitionerService: PetitionerService) { }
+  constructor(private petitionerService: PetitionerService) {}
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -25,8 +25,8 @@ export class ListPetitionerResolver implements Resolve<Petitioner[]> {
   ): Observable<any[]> | Promise<any[]> | any[] {
     const publishState = route.queryParams.state || 'public';
 
-    return this.petitionerService.getPetitioners().pipe(
-      take(1),
+    return this.petitionerService.fetchPetitioners().pipe(
+      take(1)
       // map((petitions) =>
       //   petitions.filter((p) => p.publishState === publishState)
       // )

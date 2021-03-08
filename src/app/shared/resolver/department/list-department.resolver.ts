@@ -24,7 +24,7 @@ export class ListDepartmentResolver implements Resolve<Department[]> {
   ): Observable<Department[]> | Promise<Department[]> | Department[] {
     const published = route.queryParams.state !== 'draft';
 
-    return this.departmentService.getDepartments().pipe(
+    return this.departmentService.fetchDepartments().pipe(
       take(1),
       map((departments) => departments.filter((d) => d.published === published))
     );

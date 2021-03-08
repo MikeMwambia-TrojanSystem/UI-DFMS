@@ -24,7 +24,7 @@ export class ListStatementResolver implements Resolve<Statement[]> {
   ): Observable<Statement[]> | Promise<Statement[]> | Statement[] {
     const publishState = route.queryParams.state || 'public';
 
-    return this.statementService.getStatements().pipe(
+    return this.statementService.fetchStatements().pipe(
       take(1),
       map((statements) =>
         statements.filter((s) => s.publishState === publishState)

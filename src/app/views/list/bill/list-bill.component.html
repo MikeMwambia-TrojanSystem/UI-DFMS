@@ -12,6 +12,7 @@
         [selectable]="selectable"
         [sub]="'Bill on'"
         [status]="bill.status"
+        [state]="bill.publishState"
         (delete)="onDelete(bill._id)"
         [editUrl]="'/generate/bill/' + bill._id"
         (select)="onSelect(bill)"

@@ -16,7 +16,7 @@ import { Bill } from '../../types/bill';
   providedIn: 'root',
 })
 export class ListBillResolver implements Resolve<Bill[]> {
-  constructor(private billService: BillService) { }
+  constructor(private billService: BillService) {}
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -24,11 +24,9 @@ export class ListBillResolver implements Resolve<Bill[]> {
   ): Observable<any[]> | Promise<any[]> | any[] {
     const publishState = route.queryParams.state || 'public';
 
-    return this.billService.getBills().pipe(
+    return this.billService.fetchBills().pipe(
       take(1),
-      map((bills) =>
-        bills.filter((b) => b.publishState === publishState)
-      )
+      map((bills) => bills.filter((b) => b.publishState === publishState))
     );
   }
 }

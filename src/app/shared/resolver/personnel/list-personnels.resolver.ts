@@ -24,7 +24,7 @@ export class ListPersonnelResolver implements Resolve<Personnel[]> {
   ): Observable<Personnel[]> | Promise<Personnel[]> | Personnel[] {
     const publishState = route.queryParams.state !== 'draft';
 
-    return this.personnelService.getPersonnels().pipe(
+    return this.personnelService.fetchPersonnels().pipe(
       take(1),
       map((personnels) => personnels.filter((p) => p.status === publishState))
     );

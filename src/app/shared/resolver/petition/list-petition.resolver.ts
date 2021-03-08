@@ -15,7 +15,7 @@ import { PetitionService } from 'src/app/services/petition.service';
   providedIn: 'root',
 })
 export class ListPetitionResolver implements Resolve<any[]> {
-  constructor(private petitionService: PetitionService) { }
+  constructor(private petitionService: PetitionService) {}
 
   resolve(
     route: ActivatedRouteSnapshot,
@@ -23,7 +23,7 @@ export class ListPetitionResolver implements Resolve<any[]> {
   ): Observable<any[]> | Promise<any[]> | any[] {
     const publishState = route.queryParams.state || 'public';
 
-    return this.petitionService.getPetitions().pipe(
+    return this.petitionService.fetchPetitions().pipe(
       take(1),
       map((petitions) =>
         petitions.filter((p) => p.publishState === publishState)

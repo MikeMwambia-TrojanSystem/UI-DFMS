@@ -13,13 +13,6 @@
           >Please enter committee name!</mat-error
         >
       </mat-form-field>
-      <p class="label">Group</p>
-      <mat-form-field appearance="standard">
-        <input matInput formControlName="group" placeholder="Food Production" />
-        <mat-error *ngIf="form.get('group').hasError('required')"
-          >Please enter group!</mat-error
-        >
-      </mat-form-field>
       <p class="label">Department</p>
       <app-custom-button
         [title]="department.length ? department : 'Select Department'"
@@ -59,7 +52,7 @@
         >
       </mat-form-field>
       <app-custom-button
-        [title]="'Upload Profile Picture'"
+        [title]="filename || 'Upload Profile Picture'"
         (buttonClick)="onUpload()"
       ></app-custom-button>
       <div class="actions">
@@ -67,7 +60,7 @@
           mat-button
           type="button"
           class="btn-draft"
-          [disabled]="form.invalid && !hasUploaded"
+          [disabled]="form.invalid"
           (click)="onSave(false)"
         >
           Save as Draft
@@ -76,7 +69,7 @@
           mat-raised-button
           type="submit"
           class="btn-save"
-          [disabled]="form.invalid && !hasUploaded"
+          [disabled]="form.invalid"
           (click)="onSave(true)"
         >
           Save Profile

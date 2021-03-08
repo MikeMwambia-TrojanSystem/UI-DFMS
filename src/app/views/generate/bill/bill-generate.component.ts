@@ -1,14 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { take } from 'rxjs/operators';
 import moment from 'moment';
 
 import { ApiService } from 'src/app/services/api.service';
 import { BillService } from 'src/app/services/bill.service';
-import { CacheService } from 'src/app/services/cache.service';
-import { UploadPost } from 'src/app/shared/types/upload';
+import {
+  CacheConfigs,
+  CachedCallback,
+  CacheService,
+} from 'src/app/services/cache.service';
+import { Upload, UploadPost } from 'src/app/shared/types/upload';
 import { Bill } from 'src/app/shared/types/bill';
+import { McaEmployee } from 'src/app/shared/types/mca-employee';
+import { Committee } from 'src/app/shared/types/committee';
+import { Report } from 'src/app/shared/types/report';
 
 @Component({
   selector: 'app-bill-generate',
@@ -19,42 +26,43 @@ export class BillGenerateComponent implements OnInit {
   private _cacheId: string;
   private _mode: 'editing' | 'creating';
   private _billId: string;
-  private _billUpload: UploadPost;
 
   form = new FormGroup({
     titleOfBill: new FormControl('', Validators.required),
     billNo: new FormControl('', Validators.required),
-    billSignature: new FormControl('',),
+    billSignature: new FormControl(''),
     datePublished: new FormControl('', Validators.required),
     firstReadingDate: new FormControl('', Validators.required),
     secondReadingDate: new FormControl('', Validators.required),
     datePassed: new FormControl('', Validators.required),
     uploaded: new FormControl(false),
-    uploadedBillURL: new FormControl(''),
+    uploadedBillURL: new FormControl('', Validators.required),
     approvingAcc: new FormControl('test approving acc', Validators.required),
-    orderPaperId: new FormControl('12345', Validators.required),
+    orderPaperId: new FormControl(
+      '60224665fd0c8e1b11fa85d5',
+      Validators.required
+    ),
     sponsorId: new FormControl('', Validators.required),
     sponsor: new FormControl('', Validators.required),
-    relatedTo: new FormControl('test related to',),
-    assemblyId: new FormControl('12345'),
-    published: new FormControl(false,),
-    approvingAccId: new FormControl('12345'),
+    relatedTo: new FormControl('', Validators.required),
+    assemblyId: new FormControl('60224665fd0c8e1b11fa85d5'),
+    published: new FormControl(false),
+    approvingAccId: new FormControl('60224665fd0c8e1b11fa85d5'),
     committeeName: new FormControl('', Validators.required),
     committeeNameId: new FormControl('', Validators.required),
-    billUploadedReportURL: new FormControl('http://google.com'),
+    billUploadedReportURL: new FormControl('', Validators.required),
     status: new FormControl('Accented Bill', Validators.required),
     uploadingPersonnel: new FormControl('test personnel', Validators.required),
-    uploadAccname: new FormControl('test upload accname'),
     publishStatus: new FormControl('draft', Validators.required),
   });
 
-  hasUploaded = false;
-
-  constructor(private cacheService: CacheService,
+  constructor(
+    private cacheService: CacheService,
     private router: Router,
     private route: ActivatedRoute,
     private billService: BillService,
-    private apiService: ApiService) { }
+    private apiService: ApiService
+  ) {}
 
   ngOnInit(): void {
     // Get cache id from query url
@@ -65,61 +73,89 @@ export class BillGenerateComponent implements OnInit {
     if (billId) {
       this._mode = 'editing';
       this._billId = billId;
-      this.hasUploaded = true;
 
-      this.route.data
-        .pipe(take(1))
-        .subscribe(({ bill }: { bill: Bill }) => {
-          const { approvingAccount, concernedCommiteeId, datePublished, firstReadingDate, secondReadingDate, sponsor, uploadingAccount, datePassed, ...others } = bill;
+      this.route.data.pipe(take(1)).subscribe(({ bill }: { bill: Bill }) => {
+        const {
+          approvingAccount,
+          concernedCommiteeId,
+          datePublished,
+          firstReadingDate,
+          secondReadingDate,
+          sponsor,
+          uploadingAccount,
+          datePassed,
+          ...others
+        } = bill;
 
-          this.form.patchValue({
-            ...others,
-            datePublished: moment(datePublished).toJSON().slice(0, 10),
-            firstReadingDate: moment(firstReadingDate).toJSON().slice(0, 10),
-            secondReadingDate: moment(secondReadingDate).toJSON().slice(0, 10),
-            datePassed: moment(datePassed).toJSON().slice(0, 10),
-            approvingAcc: approvingAccount.approvingAcc,
-            sponsorId: sponsor.id,
-            sponsor: sponsor.name,
-            approvingAccId: approvingAccount.approvingAccId,
-            committeeName: concernedCommiteeId.committeeName,
-            committeeNameId: concernedCommiteeId.committeeNameId,
-            uploadingPersonnel: uploadingAccount.uploadingPersonnel,
-            uploadAccname: uploadingAccount.uploadAccname
-          })
+        this.form.patchValue({
+          ...others,
+          datePublished: moment(datePublished).toJSON().slice(0, 10),
+          firstReadingDate: moment(firstReadingDate).toJSON().slice(0, 10),
+          secondReadingDate: moment(secondReadingDate).toJSON().slice(0, 10),
+          datePassed: moment(datePassed).toJSON().slice(0, 10),
+          approvingAcc: approvingAccount.approvingAcc,
+          sponsorId: sponsor.id,
+          sponsor: sponsor.name,
+          approvingAccId: approvingAccount.approvingAccId,
+          committeeName: concernedCommiteeId.committeeName,
+          committeeNameId: concernedCommiteeId.committeeNameId,
+          uploadingPersonnel: uploadingAccount.uploadingPersonnel,
+          uploadAccname: uploadingAccount.uploadAccname,
         });
+      });
     } else {
       this._mode = 'creating';
     }
 
     // Rehydrate the cached form data if there's any
-    const cached = this.cacheService.rehydrate<{ form: FormGroup, upload: UploadPost }>('GENERATE_BILL');
+    const cached = this.cacheService.rehydrate<FormGroup>('GENERATE_BILL');
 
     if (cached) {
-      const { form, upload } = cached;
-      this.form = form;
-      this._billUpload = upload;
-
-      if (upload) {
-        this.hasUploaded = true
-      }
+      this.form = cached;
     }
   }
 
   get committeeName(): string {
-    return this.form.value.committeeName;
+    const name = this.form.value.committeeName;
+    return name.length ? name : undefined;
   }
 
   get sponsorName(): string {
-    return this.form.value.sponsor;
+    const name = this.form.value.sponsor;
+    return name.length ? name : undefined;
   }
 
-  get fileName(): string {
-    try {
-      return this._billUpload.myFile.name;
-    } catch (error) {
-      return undefined;
-    }
+  get billName(): string {
+    const url = this.form.value.uploadedBillURL as string;
+    return url.length
+      ? url.substring(url.lastIndexOf('amazonaws.com/') + 14)
+      : undefined;
+  }
+
+  get reportName(): string {
+    const url = this.form.value.billUploadedReportURL as string;
+    return url.length
+      ? url.substring(url.lastIndexOf('amazonaws.com/') + 14)
+      : undefined;
+  }
+
+  private _onCache<T>(
+    { url, queryParams }: { url: string; queryParams?: Params },
+    callback: CachedCallback<FormGroup, T>,
+    otherData?: Record<string, any>,
+    configs?: CacheConfigs
+  ) {
+    this.cacheService.cacheFunc<FormGroup, T>({
+      id: 'GENERATE_BILL',
+      cacheId: this._cacheId,
+      urlParamer: this._billId,
+      returnUrl: '/generate/bill',
+      navigateUrl: url,
+      navigateUrlQuery: queryParams,
+      data: this.form,
+      callback,
+      configs,
+    })();
   }
 
   /**
@@ -128,35 +164,17 @@ export class BillGenerateComponent implements OnInit {
    * After the user had selected the sponsor, a callback function will get called and update the cached data with the selected information.
    */
   onSelectSponsored() {
-    // Caching and select callback handling
-    const urlTree = this._billId
-      ? ['/generate/bill', this._billId]
-      : ['/generate/bill'];
-    this.cacheService.cache<{ form: FormGroup, upload: UploadPost }, { name: string; _id: string }>(
-      'GENERATE_BILL',
-      { form: this.form, upload: this._billUpload },
-      this.router.createUrlTree(urlTree, {
-        queryParams: {
-          id: this._cacheId,
-        },
-      }),
-      ({ form, upload }, { name, _id }) => {
+    this._onCache<McaEmployee>(
+      { url: '/list/mca-employee' },
+      (form, { name, _id }) => {
         form.patchValue({
           sponsor: name,
           sponsorId: _id,
         }); // Patch form with selected sponsor
 
-        return { form, upload };
+        return form;
       }
     );
-
-    // Navigate the user to '/list/mca-employee?select=true'
-    this.router.navigate(['/list/mca-employee'], {
-      queryParams: {
-        select: true,
-        id: 'GENERATE_BILL',
-      },
-    });
   }
 
   /**
@@ -165,35 +183,17 @@ export class BillGenerateComponent implements OnInit {
    * After the user had selected the committee, a callback function will get called and update the cached data with the selected information.
    */
   onSelectCommittee() {
-    // Caching and select callback handling
-    const urlTree = this._billId
-      ? ['/generate/bill', this._billId]
-      : ['/generate/bill'];
-    this.cacheService.cache<{ form: FormGroup, upload: UploadPost }, { name: string; _id: string }>(
-      'GENERATE_BILL',
-      { form: this.form, upload: this._billUpload },
-      this.router.createUrlTree(urlTree, {
-        queryParams: {
-          id: this._cacheId,
-        },
-      }),
-      ({ form, upload }, { name, _id }) => {
+    this._onCache<Committee>(
+      { url: '/list/committee' },
+      (form, { name, _id }) => {
         form.patchValue({
           committeeName: name,
           committeeNameId: _id,
         }); // Patch form with selected committee
 
-        return { form, upload };
+        return form;
       }
     );
-
-    // Navigate the user to '/list/committee?select=true'
-    this.router.navigate(['/list/committee'], {
-      queryParams: {
-        select: true,
-        id: 'GENERATE_BILL',
-      },
-    });
   }
 
   /**
@@ -202,30 +202,16 @@ export class BillGenerateComponent implements OnInit {
    * After the user had selected the report, a callback function will get called and update the cached data with the selected information.
    */
   onSelectBillReport() {
-    // Caching and select callback handling
-    const urlTree = this._billId
-      ? ['/generate/bill', this._billId]
-      : ['/generate/bill'];
-    this.cacheService.cache<{ form: FormGroup, upload: UploadPost }, null>(
-      'GENERATE_BILL',
-      { form: this.form, upload: this._billUpload },
-      this.router.createUrlTree(urlTree, {
-        queryParams: {
-          id: this._cacheId,
-        },
-      }),
-      ({ form, upload }) => {
-        return { form, upload };
+    this._onCache<Report>(
+      { url: '/list/report' },
+      (form, { uploadedFileURL }) => {
+        form.patchValue({
+          billUploadedReportURL: uploadedFileURL,
+        });
+
+        return form;
       }
     );
-
-    // Navigate the user to '/list/report?select=true'
-    this.router.navigate(['/list/report'], {
-      queryParams: {
-        select: true,
-        id: 'GENERATE_BILL',
-      },
-    });
   }
 
   /**
@@ -234,33 +220,23 @@ export class BillGenerateComponent implements OnInit {
    * After the user had uploaded, a callback function will get called and update the cached data with the uploaded information.
    */
   onUpload() {
-    // Caching and select callback handling
-    const urlTree = this._billId
-      ? ['/generate/bill', this._billId]
-      : ['/generate/bill'];
-    this.cacheService.cache<{ form: FormGroup, upload: UploadPost }, UploadPost>(
-      'GENERATE_BILL',
-      { form: this.form, upload: this._billUpload },
-      this.router.createUrlTree(urlTree, {
+    this._onCache<{ result: Upload }>(
+      {
+        url: '/management/upload',
         queryParams: {
-          id: this._cacheId,
+          select: undefined,
+          category: 'bill',
         },
-      }),
-      ({ form, upload }, uploadData) => {
-        return {
-          form,
-          upload: uploadData
-        }
+      },
+      (form, { result }) => {
+        form.patchValue({
+          uploaded: true,
+          uploadedBillURL: result.location,
+        });
+
+        return form;
       }
     );
-
-    // Navigate the user to '/management/upload'
-    this.router.navigate(['/management/upload'], {
-      queryParams: {
-        id: 'GENERATE_BILL',
-        category: 'bill'
-      },
-    });
   }
 
   /**
@@ -285,7 +261,7 @@ export class BillGenerateComponent implements OnInit {
           },
         });
       }
-    }
+    };
 
     /**
      * Bill form data handling and create post request to backend.
@@ -298,22 +274,9 @@ export class BillGenerateComponent implements OnInit {
       value.publishState = state;
 
       if (this._mode === 'creating') {
+        value.billSignature = new Date().toISOString();
 
-        const { documents, County, signature, myFile } = this._billUpload;
-        const formData = new FormData();
-
-        formData.append('documents', documents)
-        formData.append('County', County)
-        formData.append('signature', signature)
-        formData.append('myFile', myFile)
-
-        this.apiService.upload(formData).subscribe((result) => {
-          value.billSignature = new Date().toISOString();
-          value.uploaded = true;
-          value.uploadedBillURL = result.location;
-
-          this.billService.postBill(value).subscribe(() => subCallback(state));
-        })
+        this.billService.postBill(value).subscribe(() => subCallback(state));
       } else {
         value.id = this._billId;
 
@@ -323,24 +286,23 @@ export class BillGenerateComponent implements OnInit {
 
     // If 'Publish' is clicked
     if (published) {
-      // Caching and callback handling
-      this.cacheService.cache<FormGroup, 'public' | 'private' | 'draft'>(
-        'GENERATE_BILL',
-        this.form,
-        null,
+      this._onCache<'public' | 'private' | 'draft'>(
+        {
+          url: '/publish-status',
+          queryParams: {
+            select: undefined,
+          },
+        },
         (cachedData, selected) => {
           post(selected);
 
           return cachedData;
+        },
+        undefined,
+        {
+          redirect: false,
         }
       );
-
-      // Navigate the user to '/publish-status'
-      this.router.navigate(['/publish-status'], {
-        queryParams: {
-          id: 'GENERATE_BILL',
-        },
-      });
     } else {
       // If 'Save as Draft' is clicked
       post('draft');

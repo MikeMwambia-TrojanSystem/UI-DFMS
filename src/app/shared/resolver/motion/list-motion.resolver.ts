@@ -23,7 +23,7 @@ export class ListMotionResolver implements Resolve<Motion[]> {
     state: RouterStateSnapshot
   ): Observable<Motion[]> | Promise<Motion[]> | Motion[] {
     const publishState = route.queryParams.state || 'public';
-    return this.motionService.getMotions().pipe(
+    return this.motionService.fetchMotions().pipe(
       take(1),
       map((motions) =>
         motions.filter((motion) => motion.publishState === publishState)

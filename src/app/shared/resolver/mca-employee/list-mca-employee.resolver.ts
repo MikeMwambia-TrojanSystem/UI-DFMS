@@ -24,7 +24,7 @@ export class ListMcaEmployeeResolver implements Resolve<McaEmployee[]> {
   ): Observable<McaEmployee[]> | Promise<McaEmployee[]> | McaEmployee[] {
     const publishedState = route.queryParams.state !== 'draft';
 
-    return this.mcaEmployeeService.getMcaEmployees().pipe(
+    return this.mcaEmployeeService.fetchMcaEmployees().pipe(
       take(1),
       map((mcaEmployees) =>
         mcaEmployees.filter((e) => e.status === publishedState)

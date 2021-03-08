@@ -19,6 +19,7 @@ export class McaEmployeeService {
   }
 
   getMcaEmployees(): Observable<McaEmployee[]> {
+    return this.fetchMcaEmployees();
     return this._mcaEmployees.pipe(
       switchMap((mcaEmployees) =>
         iif(
@@ -60,39 +61,46 @@ export class McaEmployeeService {
 
   postMca(mca: McaPost) {
     return this.apiService.createMca(mca).pipe(
-      tap(({ message }) => {
-        if (this._fetched) {
-          this._mcaEmployees.next([...this._mcaEmployees.getValue(), message]);
-        }
+      map(({ message }) => {
+        const { mcaId, request_id } = message;
+
+        return {
+          mcaId,
+          request_id,
+        };
       })
     );
   }
 
   deleteMca(id: string) {
-    return this.apiService.deleteMca(id).pipe(
-      tap((result) => {
-        const newMcaEmployees = this._mcaEmployees.getValue();
-        const index = newMcaEmployees.findIndex((m) => m._id === result._id);
+    return this.apiService
+      .deleteMca(id)
+      .pipe
+      // tap((result) => {
+      //   const newMcaEmployees = this._mcaEmployees.getValue();
+      //   const index = newMcaEmployees.findIndex((m) => m._id === result._id);
 
-        newMcaEmployees.splice(index, 1);
+      //   newMcaEmployees.splice(index, 1);
 
-        this._mcaEmployees.next(newMcaEmployees);
-      })
-    );
+      //   this._mcaEmployees.next(newMcaEmployees);
+      // })
+      ();
   }
 
   updateMca(mca: McaPost) {
-    return this.apiService.updateMca(mca).pipe(
-      tap((result) => {
-        const newMcaEmployees = this._mcaEmployees.getValue();
-        const index = newMcaEmployees.findIndex((m) => m._id === result._id);
+    return this.apiService
+      .updateMca(mca)
+      .pipe
+      // tap((result) => {
+      //   const newMcaEmployees = this._mcaEmployees.getValue();
+      //   const index = newMcaEmployees.findIndex((m) => m._id === result._id);
 
-        newMcaEmployees[index] = {
-          ...result,
-        };
+      //   newMcaEmployees[index] = {
+      //     ...result,
+      //   };
 
-        this._mcaEmployees.next(newMcaEmployees);
-      })
-    );
+      //   this._mcaEmployees.next(newMcaEmployees);
+      // })
+      ();
   }
 }
