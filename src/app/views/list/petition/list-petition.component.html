@@ -12,6 +12,7 @@
         class="item"
         [selectable]="selectable"
         [sub]="'Petition on'"
+        [state]="petition.publishState"
         (delete)="onDelete(petition._id)"
         [editUrl]="'/generate/petition/' + petition._id"
         (select)="onSelect(petition)"

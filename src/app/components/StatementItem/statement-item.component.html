@@ -1,25 +1,16 @@
 <div class="main">
   <div class="info">
-    <span class="title">{{ sub }} {{ title }}</span>
-    <span class="date"
-      >Published on
-      <span class="highlight">{{ date | date: "dd MMMM, yyyy" }}</span></span
-    >
-    <span class="sought" *ngIf="soughts.length"
-      >Sought to
-      <span class="highlight" *ngFor="let sought of soughts; let i = index">{{
-        (i === 0 ? "" : i + 1 === soughts.length ? " and " : ", ") + sought
-      }}</span></span
-    >
-    <span class="requested" *ngIf="requested"
-      >Requested by
-      <span class="highlight"
-        >{{ requested }}<span *ngIf="ward">({{ ward }})</span></span
-      ></span
-    >
+    <div *ngFor="let i of info" [class]="'line ' + i.class.common">
+      <span [class]="i.class.label">
+        {{ i.label }}
+      </span>
+      <span [class]="i.class.content">
+        {{ " " + i.content }}
+      </span>
+    </div>
     <div class="state" *ngIf="state">
       <div class="dot"></div>
-      <span class="label">{{ state }}</span>
+      <span class="label">{{ extendedState }}</span>
     </div>
   </div>
   <button mat-button *ngIf="selectable" class="btn" (click)="onSelect()">

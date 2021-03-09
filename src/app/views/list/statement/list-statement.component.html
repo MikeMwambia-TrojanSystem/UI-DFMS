@@ -5,17 +5,13 @@
     <div>
       <app-statement-item
         *ngFor="let statement of statements"
-        [title]="statement.subjectOfStatement"
-        [date]="statement.datePublished"
         class="item"
         [selectable]="selectable"
-        [soughts]="[statement.statementProvider.name]"
-        [requested]="statement.seeker.name"
-        [sub]="'Statements on'"
         [state]="statement.publishState"
         [editUrl]="'/upload/statement/' + statement._id"
         (delete)="onDelete(statement._id)"
         (select)="onSelect(statement)"
+        [info]="getInfo(statement)"
       >
       </app-statement-item>
     </div>

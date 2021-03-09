@@ -16,26 +16,25 @@
   flex-direction: column;
 }
 
-.title {
+.line {
+  margin-bottom: 6px;
+}
+
+.head {
   font-size: 17px;
   font-weight: 500;
 }
 
-.date {
+.bold {
+  font-weight: 500;
+}
+
+.small {
   font-size: 13px;
-  margin: 10px 0;
-
-  .highlight {
-    color: #008000;
-  }
 }
 
-.sought {
-  margin-bottom: 10px;
-}
-
-.requested {
-  margin-bottom: 5px;
+.color {
+  color: #008000;
 }
 
 .icon {
@@ -65,8 +64,4 @@
   .label {
     font-style: italic;
   }
-}
-
-.highlight {
-  font-weight: 500;
 }
