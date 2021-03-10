@@ -49,13 +49,9 @@ export class CreateDepartmentComponent implements OnInit {
           const { members, ...others } = department;
           const membersControl = this.form.get('members') as FormArray;
 
-          console.log(members);
-
           for (const member of members) {
             membersControl.push(new FormControl(member));
           }
-
-          console.log(membersControl.value);
 
           this.form.patchValue({
             ...others,
@@ -64,8 +60,6 @@ export class CreateDepartmentComponent implements OnInit {
     } else {
       this._mode = 'creating';
     }
-
-    console.log(this.form.value);
 
     // Rehydrate from cached data if there's any
     const cachedForm = this.cacheService.rehydrate<FormGroup>(

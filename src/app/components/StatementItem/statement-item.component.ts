@@ -1,23 +1,50 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
+export type StatementInfo = {
+  label: string;
+  content: string;
+  class?: {
+    label?: string;
+    content?: string;
+    common?: string;
+  };
+};
 
 @Component({
   selector: 'app-statement-item',
   templateUrl: './statement-item.component.html',
   styleUrls: ['./statement-item.component.scss'],
 })
-export class StatementItemComponent {
+export class StatementItemComponent implements OnInit {
   @Output() delete = new EventEmitter<void>();
-  @Input() title: string;
-  @Input() date: string;
-  @Input() soughts: string[] = [];
-  @Input() requested: string;
-  @Input() ward: string;
+  @Output() select = new EventEmitter<void>();
   @Input() selectable: boolean;
-  @Input() sub: string;
   @Input() state: string;
   @Input() editUrl: string;
+  @Input() info: StatementInfo[];
+  extendedState: string;
+
+  ngOnInit() {
+    switch (this.state) {
+      case 'draft':
+        this.extendedState = 'Draft';
+        break;
+      case 'private':
+        this.extendedState = 'Privately Published';
+        break;
+      case 'public':
+        this.extendedState = 'Publicly Published';
+        break;
+      default:
+        break;
+    }
+  }
 
   onDelete() {
     this.delete.emit();
+  }
+
+  onSelect() {
+    this.select.emit();
   }
 }

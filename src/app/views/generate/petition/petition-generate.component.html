@@ -125,7 +125,7 @@
             mat-button
             type="button"
             class="btn-draft"
-            [disabled]="form.invalid || !hasUploaded"
+            [disabled]="form.invalid"
             (click)="onSave(false)"
           >
             Save as Draft
@@ -134,7 +134,7 @@
             mat-raised-button
             type="submit"
             class="btn-save"
-            [disabled]="form.invalid || !hasUploaded"
+            [disabled]="form.invalid"
             (click)="onSave(true)"
           >
             Publish Petition

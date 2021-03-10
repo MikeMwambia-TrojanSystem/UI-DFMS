@@ -28,6 +28,10 @@
   </button>
 </div>
 <div class="list-actions" *ngIf="!selectable">
-  <button mat-button class="list-actions-btn edit">Edit</button>
-  <button mat-button class="list-actions-btn delete">Delete</button>
+  <a [routerLink]="[editUrl]">
+    <button mat-button class="list-actions-btn edit">Edit</button>
+  </a>
+  <button mat-button class="list-actions-btn delete" (click)="onDelete()">
+    Delete
+  </button>
 </div>

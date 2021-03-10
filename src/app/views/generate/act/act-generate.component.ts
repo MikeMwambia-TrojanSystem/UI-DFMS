@@ -1,15 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { take } from 'rxjs/operators';
 import moment from 'moment';
 
 import { ActService } from 'src/app/services/act.service';
 import { ApiService } from 'src/app/services/api.service';
 import { BillService } from 'src/app/services/bill.service';
-import { CacheService } from 'src/app/services/cache.service';
+import {
+  CacheConfigs,
+  CachedCallback,
+  CacheService,
+} from 'src/app/services/cache.service';
 import { Act } from 'src/app/shared/types/act';
-import { UploadPost } from 'src/app/shared/types/upload';
+import { Upload, UploadPost } from 'src/app/shared/types/upload';
+import { McaEmployee } from 'src/app/shared/types/mca-employee';
+import { Committee } from 'src/app/shared/types/committee';
+import { Bill } from 'src/app/shared/types/bill';
 
 @Component({
   templateUrl: './act-generate.component.html',
@@ -19,7 +26,6 @@ export class ActGenerateComponent implements OnInit {
   private _cacheId: string;
   private _mode: 'editing' | 'creating';
   private _actId: string;
-  private _actUpload: UploadPost;
 
   form = new FormGroup({
     titleOfAct: new FormControl('', Validators.required),
@@ -27,7 +33,7 @@ export class ActGenerateComponent implements OnInit {
     actsSignature: new FormControl(''),
     datePublished: new FormControl('', Validators.required),
     uploaded: new FormControl(false),
-    uploadedFileURL: new FormControl(''),
+    uploadedFileURL: new FormControl('', Validators.required),
     uploadAccount: new FormControl('test upload account'),
     approvingAcc: new FormControl('speaker'),
     originatingBTitle: new FormControl('', Validators.required),
@@ -35,18 +41,17 @@ export class ActGenerateComponent implements OnInit {
     sponsorId: new FormControl('', Validators.required),
     concernedCommiteeId: new FormControl('', Validators.required),
     relatedTo: new FormControl('', Validators.required),
-    assemblyId: new FormControl('12345'),
+    assemblyId: new FormControl('6041d62429d8ac0925674035'),
     published: new FormControl(false),
     sponsorName: new FormControl('', Validators.required),
-    uploadId: new FormControl('12345'),
-    approvingAccId: new FormControl('12345'),
+    uploadId: new FormControl('6041d62429d8ac0925674035'),
+    approvingAccId: new FormControl('6041d62429d8ac0925674035'),
     billId: new FormControl('', Validators.required),
     committeeName: new FormControl('', Validators.required),
     committeeNameId: new FormControl('', Validators.required),
     publishState: new FormControl('draft'),
   });
 
-  hasUploaded = false;
   billNo: number;
 
   constructor(
@@ -67,7 +72,6 @@ export class ActGenerateComponent implements OnInit {
     if (actId) {
       this._mode = 'editing';
       this._actId = actId;
-      this.hasUploaded = true;
 
       this.route.data.pipe(take(1)).subscribe(({ act }: { act: Act }) => {
         const {
@@ -101,19 +105,10 @@ export class ActGenerateComponent implements OnInit {
     }
 
     // Rehydrate the cached form data if there's any
-    const cached = this.cacheService.rehydrate<{
-      form: FormGroup;
-      upload: UploadPost;
-    }>('GENERATE_ACT');
+    const cached = this.cacheService.rehydrate<FormGroup>('GENERATE_ACT');
 
     if (cached) {
-      const { form, upload } = cached;
-      this.form = form;
-      this._actUpload = upload;
-
-      if (upload) {
-        this.hasUploaded = true;
-      }
+      this.form = cached;
     }
 
     // Get the selected bill no
@@ -136,11 +131,27 @@ export class ActGenerateComponent implements OnInit {
   }
 
   get fileName(): string {
-    try {
-      return this._actUpload.myFile.name;
-    } catch (error) {
-      return undefined;
-    }
+    const url = this.form.value.uploadedFileURL as string;
+    return url.substring(url.lastIndexOf('amazonaws.com/') + 14);
+  }
+
+  private _onCache<T>(
+    { url, queryParams }: { url: string; queryParams?: Params },
+    callback: CachedCallback<FormGroup, T>,
+    additionalData?: Record<string, any>,
+    configs?: CacheConfigs
+  ) {
+    this.cacheService.cacheFunc<FormGroup, T>({
+      id: 'GENERATE_ACT',
+      cacheId: this._cacheId,
+      urlParamer: this._actId,
+      returnUrl: '/generate/act',
+      navigateUrl: url,
+      navigateUrlQuery: queryParams,
+      data: this.form,
+      callback,
+      configs,
+    })();
   }
 
   /**
@@ -149,38 +160,17 @@ export class ActGenerateComponent implements OnInit {
    * After the user had selected the sponsor, a callback function will get called and update the cached data with the selected information.
    */
   onSelectSponsored() {
-    // Caching and select callback handling
-    const urlTree = this._cacheId
-      ? ['/generate/act', this._cacheId]
-      : ['/generate/act'];
-    this.cacheService.cache<
-      { form: FormGroup; upload: UploadPost },
-      { name: string; _id: string }
-    >(
-      'GENERATE_ACT',
-      { form: this.form, upload: this._actUpload },
-      this.router.createUrlTree(urlTree, {
-        queryParams: {
-          id: this._cacheId,
-        },
-      }),
-      ({ form, upload }, { name, _id }) => {
+    this._onCache<McaEmployee>(
+      { url: '/list/mca-employee' },
+      (form, { name, _id }) => {
         form.patchValue({
           sponsorName: name,
           sponsorId: _id,
         }); // Patch form with selected sponsor
 
-        return { form, upload };
+        return form;
       }
     );
-
-    // Navigate the user to '/list/mca-employee?select=true'
-    this.router.navigate(['/list/mca-employee'], {
-      queryParams: {
-        select: true,
-        id: 'GENERATE_ACT',
-      },
-    });
   }
 
   /**
@@ -189,39 +179,18 @@ export class ActGenerateComponent implements OnInit {
    * After the user had selected the committee, a callback function will get called and update the cached data with the selected information.
    */
   onSelectCommittee() {
-    // Caching and select callback handling
-    const urlTree = this._actId
-      ? ['/generate/act', this._actId]
-      : ['/generate/act'];
-    this.cacheService.cache<
-      { form: FormGroup; upload: UploadPost },
-      { name: string; _id: string }
-    >(
-      'GENERATE_ACT',
-      { form: this.form, upload: this._actUpload },
-      this.router.createUrlTree(urlTree, {
-        queryParams: {
-          id: this._cacheId,
-        },
-      }),
-      ({ form, upload }, { name, _id }) => {
+    this._onCache<Committee>(
+      { url: '/list/committee' },
+      (form, { name, _id }) => {
         form.patchValue({
           committeeName: name,
           committeeNameId: _id,
           concernedCommiteeId: _id,
         }); // Patch form with selected committee
 
-        return { form, upload };
+        return form;
       }
     );
-
-    // Navigate the user to '/list/committee?select=true'
-    this.router.navigate(['/list/committee'], {
-      queryParams: {
-        select: true,
-        id: 'GENERATE_ACT',
-      },
-    });
   }
 
   /**
@@ -230,37 +199,13 @@ export class ActGenerateComponent implements OnInit {
    * After the user had selected the bill, a callback function will get called and update the cached data with the selected information.
    */
   onSelectOriginateBill() {
-    // Caching and select callback handling
-    const urlTree = this._actId
-      ? ['/generate/act', this._actId]
-      : ['/generate/act'];
-    this.cacheService.cache<
-      { form: FormGroup; upload: UploadPost },
-      { _id: string; titleOfBill: string }
-    >(
-      'GENERATE_ACT',
-      { form: this.form, upload: this._actUpload },
-      this.router.createUrlTree(urlTree, {
-        queryParams: {
-          id: this._cacheId,
-        },
-      }),
-      ({ form, upload }, { _id, titleOfBill }) => {
-        form.patchValue({
-          billId: _id,
-          originatingBTitle: titleOfBill,
-        });
+    this._onCache<Bill>({ url: '/list/bill' }, (form, { _id, titleOfBill }) => {
+      form.patchValue({
+        billId: _id,
+        originatingBTitle: titleOfBill,
+      });
 
-        return { form, upload };
-      }
-    );
-
-    // Navigate the user to '/list/bill?select=true'
-    this.router.navigate(['/list/bill'], {
-      queryParams: {
-        select: true,
-        id: 'GENERATE_ACT',
-      },
+      return form;
     });
   }
 
@@ -270,36 +215,22 @@ export class ActGenerateComponent implements OnInit {
    * After the user had uploaded, a callback function will get called and update the cached data with the uploaded information.
    */
   onUpload() {
-    // Caching and select callback handling
-    const urlTree = this._actId
-      ? ['/generate/act', this._actId]
-      : ['/generate/act'];
-    this.cacheService.cache<
-      { form: FormGroup; upload: UploadPost },
-      UploadPost
-    >(
-      'GENERATE_ACT',
-      { form: this.form, upload: this._actUpload },
-      this.router.createUrlTree(urlTree, {
+    this._onCache<{ result: Upload }>(
+      {
+        url: '/management/upload',
         queryParams: {
-          id: this._cacheId,
+          select: undefined,
+          category: 'act',
         },
-      }),
-      ({ form, upload }, uploadData) => {
-        return {
-          form,
-          upload: uploadData,
-        };
+      },
+      (form, { result }) => {
+        form.patchValue({
+          uploaded: true,
+          uploadedFileURL: result.location,
+        });
+        return form;
       }
     );
-
-    // Navigate the user to '/management/upload'
-    this.router.navigate(['/management/upload'], {
-      queryParams: {
-        id: 'GENERATE_ACT',
-        category: 'act',
-      },
-    });
   }
 
   /**
@@ -337,21 +268,9 @@ export class ActGenerateComponent implements OnInit {
       value.publishState = state;
 
       if (this._mode === 'creating') {
-        const { documents, County, signature, myFile } = this._actUpload;
-        const formData = new FormData();
+        value.actsSignature = moment().unix();
 
-        formData.append('documents', documents);
-        formData.append('County', County);
-        formData.append('signature', signature);
-        formData.append('myFile', myFile);
-
-        this.apiService.upload(formData).subscribe((result) => {
-          value.actsSignature = new Date().toISOString();
-          value.uploaded = true;
-          value.uploadedFileURL = result.location;
-
-          this.actService.postAct(value).subscribe(() => subCallback(state));
-        });
+        this.actService.postAct(value).subscribe(() => subCallback(state));
       } else {
         value.id = this._actId;
 
@@ -361,24 +280,23 @@ export class ActGenerateComponent implements OnInit {
 
     // If 'Publish' is clicked
     if (published) {
-      // Caching and callback handling
-      this.cacheService.cache<FormGroup, 'public' | 'private' | 'draft'>(
-        'GENERATE_ACT',
-        this.form,
-        null,
+      this._onCache<'public' | 'private' | 'draft'>(
+        {
+          url: '/publish-status',
+          queryParams: {
+            select: undefined,
+          },
+        },
         (cachedData, selected) => {
           post(selected);
 
           return cachedData;
+        },
+        undefined,
+        {
+          redirect: false,
         }
       );
-
-      // Navigate the user to '/publish-status'
-      this.router.navigate(['/publish-status'], {
-        queryParams: {
-          id: 'GENERATE_ACT',
-        },
-      });
     } else {
       // If 'Save as Draft' is clicked
       post('draft');

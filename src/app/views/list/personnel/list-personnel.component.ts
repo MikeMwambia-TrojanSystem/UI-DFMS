@@ -68,7 +68,7 @@ export class ListPersonnelComponent implements OnInit {
     });
   }
 
-  onSelect({ _id }: Personnel) {
-    this.cacheService.emit(this._cacheId, { _id });
+  onSelect(personnel: Personnel) {
+    this.cacheService.emit(this._cacheId, personnel);
   }
 }

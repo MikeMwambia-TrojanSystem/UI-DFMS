@@ -2,9 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import _ from 'lodash';
+import moment from 'moment';
 
 import { CacheService } from 'src/app/services/cache.service';
 import { StatementService } from 'src/app/services/statement.service';
+import { Statement } from 'src/app/shared/types/statement';
+import { StatementInfo } from 'src/app/components/StatementItem/statement-item.component';
 
 @Component({
   templateUrl: './list-statement.component.html',
@@ -38,6 +41,41 @@ export class ListStatementComponent implements OnInit {
       });
   }
 
+  getInfo({
+    statementNo,
+    subjectOfStatement,
+    seeker,
+    departmentResponsible,
+    datePublished,
+  }: Statement): StatementInfo[] {
+    return [
+      {
+        label: 'Statement No ',
+        content: statementNo.toString(),
+        class: { common: 'head' },
+      },
+      {
+        label: 'Subject of the Statement ',
+        content: subjectOfStatement,
+        class: { content: 'bold' },
+      },
+      { label: 'Sought by', content: seeker.name, class: { content: 'bold' } },
+      {
+        label: 'Responded By',
+        content: departmentResponsible,
+        class: { content: 'bold' },
+      },
+      {
+        label: 'Date Responded',
+        content: moment(datePublished).format('DD MMMM, YYYY'),
+        class: {
+          common: 'small',
+          content: 'color bold',
+        },
+      },
+    ];
+  }
+
   onDelete(id: string) {
     this.statementService.deleteStatement(id).subscribe(() => {
       window.location.reload(); // Reload page when successfully deleting motion
@@ -65,5 +103,9 @@ export class ListStatementComponent implements OnInit {
         id: 'LIST_NEW_STATEMENT',
       },
     });
+  }
+
+  onSelect(statement: Statement) {
+    this.cacheService.emit(this._cacheId, statement);
   }
 }

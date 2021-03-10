@@ -7,6 +7,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ReportItemComponent {
   @Output() select = new EventEmitter<void>();
+  @Output() delete = new EventEmitter<void>();
   @Input() title: string;
   @Input() date: string;
   @Input() concerning: string[] = [];
@@ -16,8 +17,13 @@ export class ReportItemComponent {
   @Input() selectable: boolean;
   @Input() sub: string;
   @Input() state: string;
+  @Input() editUrl: string;
 
   onSelect() {
     this.select.emit();
+  }
+
+  onDelete() {
+    this.delete.emit();
   }
 }

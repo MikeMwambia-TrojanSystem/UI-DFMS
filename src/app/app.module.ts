@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuillModule } from 'ngx-quill';
 import { HttpClientModule } from '@angular/common/http';
+import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
+import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -19,8 +21,8 @@ import { SuccessSignupComponent } from './views/signup/success/success.component
 import { LoginSignupComponent } from './views/signup/login/login.component';
 import { SystemSignupComponent } from './views/signup/system/system.component';
 import { NotificationsSignupComponent } from './views/signup/notifications/notifications.component';
-import { EmailVerificationComponent } from './views/signup/email-verification/email-verification.component';
-import { PhoneVerificationComponent } from './views/signup/phone-verification/phone-verification.component';
+import { EmailVerificationComponent } from './views/verification/email-verification/email-verification.component';
+import { PhoneVerificationComponent } from './views/verification/phone-verification/phone-verification.component';
 import { CreateCommitteeComponent } from './views/create/committee/create-committee.component';
 import { CreateConstituenciesComponent } from './views/create/constituencies/create-constituencies.component';
 import { CreateDepartmentComponent } from './views/create/department/create-department.component';
@@ -90,6 +92,23 @@ import { ReportItemComponent } from './components/ReportItem/report-item.compone
 import { VerifyButtonComponent } from './components/VerifyButton/verify-button.component';
 import { StatementItemComponent } from './components/StatementItem/statement-item.component';
 import { ListDepartmentComponent } from './views/list/department/list-department.component';
+import { ReportViewComponent } from './views/view/report/report-view.component';
+
+const dbConfig: DBConfig = {
+  name: 'MyDb',
+  version: 1,
+  objectStoresMeta: [
+    {
+      store: 'files',
+      storeConfig: { keyPath: 'id', autoIncrement: true },
+      storeSchema: [
+        { name: 'type', keypath: 'type', options: { unique: false } },
+        { name: 'file', keypath: 'file', options: { unique: false } },
+        { name: 'uuid', keypath: 'uuid', options: { unique: true } },
+      ],
+    },
+  ],
+};
 
 @NgModule({
   declarations: [
@@ -171,6 +190,7 @@ import { ListDepartmentComponent } from './views/list/department/list-department
     ListSubcountyComponent,
     PublishStatusComponent,
     ListDepartmentComponent,
+    ReportViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -196,6 +216,8 @@ import { ListDepartmentComponent } from './views/list/department/list-department
       },
     }),
     HttpClientModule,
+    PdfJsViewerModule,
+    NgxIndexedDBModule.forRoot(dbConfig),
   ],
   providers: [],
   bootstrap: [AppComponent],

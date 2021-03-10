@@ -1,5 +1,32 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { Component } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router, ActivatedRoute, Params } from '@angular/router';
+import moment from 'moment';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { Subject } from 'rxjs';
+import { takeUntil, take } from 'rxjs/operators';
+
+import { ApiService } from 'src/app/services/api.service';
+import { BillService } from 'src/app/services/bill.service';
+import {
+  CacheConfigs,
+  CachedCallback,
+  CacheService,
+} from 'src/app/services/cache.service';
+import { PersonnelService } from 'src/app/services/personnel.service';
+import { PetitionService } from 'src/app/services/petition.service';
+import { ReportService } from 'src/app/services/report.service';
+import { StatementService } from 'src/app/services/statement.service';
+import { Committee } from 'src/app/shared/types/committee';
+import { Personnel } from 'src/app/shared/types/personnel';
+import { Report } from 'src/app/shared/types/report';
+import { Upload, UploadPost } from 'src/app/shared/types/upload';
+
+type Cache = {
+  form: FormGroup;
+  report: { name: string; file: File };
+  annexus: { name: string; file: File };
+};
 
 @Component({
   selector: 'app-upload-report',
@@ -7,38 +34,442 @@ import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
   styleUrls: ['./report-upload.component.scss'],
 })
 export class ReportUploadComponent {
-  @ViewChild('fileUpload') fileUpload: ElementRef<HTMLInputElement>;
+  private $onDestroy = new Subject<void>();
+  private _cacheId: string;
+  private _mode: 'editing' | 'creating';
+  private _reportId: string;
+
   form = new FormGroup({
-    title: new FormControl('', Validators.required),
-    authorConcerned: new FormControl('', Validators.required),
+    reportSignature: new FormControl(''),
+    titleOfReport: new FormControl('', Validators.required),
+    authorCommitee: new FormControl('', Validators.required),
+    authorCommiteeId: new FormControl('', Validators.required),
     dueDate: new FormControl('', Validators.required),
-    editors: new FormArray(
-      [new FormControl('King Topsy'), new FormControl('Lawrence Mike')],
-      Validators.required
-    ),
-    originating: new FormControl('', Validators.required),
+    originatingDocType: new FormControl('', Validators.required),
+    originatingDocTypeId: new FormControl('', Validators.required),
+    editors: new FormControl('', Validators.required),
+    pageNo: new FormControl(''),
+    content: new FormControl(''),
+    author: new FormControl('', Validators.required),
+    uploaded: new FormControl(false),
+    uploadedFileURL: new FormControl(''),
+    uploadingAccount: new FormControl('60266ae8c8e745386efc6d36'),
+    uploaderId: new FormControl('60266ae8c8e745386efc6d36'),
+    account: new FormControl('speaker'),
+    approverId: new FormControl('60266ae8c8e745386efc6d36'),
+    annexusName: new FormControl(''),
+    annexusId: new FormControl(''),
+    uploadedAnexux: new FormControl(false),
+    uploadingUrl: new FormControl(''),
+    datePublished: new FormControl(''),
+    orderPaperId: new FormControl(''),
+    relatedTo: new FormControl('test related to'),
+    assemblyId: new FormControl('60266ae8c8e745386efc6d36'),
+    published: new FormControl(false),
+    publishState: new FormControl('draft'),
   });
 
-  originatings = ['Petitions', 'Statements', 'Bills'];
+  originatings = ['petition', 'statement', 'bill'];
+  originatingsTitle = ['Petitions', 'Statements', 'Bills'];
+  editors: Personnel[] = [];
+  originatingName = '';
+  report: File;
+  reportName: string;
+  annexus: File;
+  annexusName: string;
 
-  onStartUpload() {
-    this.fileUpload.nativeElement.click();
+  constructor(
+    private cacheService: CacheService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private reportService: ReportService,
+    private apiService: ApiService,
+    private personnelService: PersonnelService,
+    private petitionService: PetitionService,
+    private statementService: StatementService,
+    private billService: BillService,
+    private ngxIndexedDBService: NgxIndexedDBService
+  ) {}
+
+  ngOnInit(): void {
+    // Get cache id from query url
+    this._cacheId = this.route.snapshot.queryParams.id;
+
+    // Populate act data from resolver using param id
+    const reportId = this.route.snapshot.params.id;
+    if (reportId) {
+      this._mode = 'editing';
+      this._reportId = reportId;
+
+      this.route.data
+        .pipe(take(1))
+        .subscribe(({ report }: { report: Report }) => {
+          const {
+            annexus,
+            approvingAccount,
+            authorCommitee,
+            content,
+            originatingDocument,
+            dueDate,
+            uploadingAccount,
+            editors,
+            uploadedFileURL,
+            ...others
+          } = report;
+
+          this.form.patchValue({
+            ...others,
+            authorCommitee: authorCommitee.name,
+            authorCommiteeId: authorCommitee.id,
+            dueDate: moment(dueDate).toJSON().slice(0, 10),
+            originatingDocType: originatingDocument.type,
+            originatingDocTypeId: originatingDocument.id,
+            editors: editors.reduce(
+              (result, currentEditor) =>
+                (result.length ? `&&&` : '') + currentEditor,
+              ''
+            ),
+            pageNo: content[0].pageNo,
+            content: content[0].content,
+            author: content[0].author,
+            uploadingAccount: uploadingAccount.name,
+            uploaderId: uploadingAccount.id,
+            account: approvingAccount.account,
+            approverId: approvingAccount.approverId,
+            annexusName: annexus.name,
+            annexusId: annexus.id,
+            uploadedAnexux: annexus.uploaded,
+            uploadingUrl: annexus.uploadingUrl,
+            uploadedFileURL: uploadedFileURL,
+          });
+
+          this.reportName = uploadedFileURL.length
+            ? uploadedFileURL.substring(
+                uploadedFileURL.lastIndexOf('amazonaws.com/') + 14
+              )
+            : undefined;
+          this.annexusName = annexus.uploadingUrl.length
+            ? annexus.uploadingUrl.substring(
+                annexus.uploadingUrl.lastIndexOf('amazonaws.com/') + 14
+              )
+            : undefined;
+        });
+    } else {
+      this._mode = 'creating';
+    }
+
+    // Rehydrate the cached form data if there's any
+    const cached = this.cacheService.rehydrate<Cache>('UPLOAD_REPORT');
+
+    if (cached) {
+      const { form, report, annexus } = cached;
+
+      this.form = form;
+      this.report = report.file;
+      this.reportName = report.name;
+      this.annexus = annexus.file;
+      this.annexusName = annexus.name;
+    }
+
+    // Updating information when first time opening this page
+    this.updateEditors();
+    this.updateOriginating();
+
+    // Change the originating whenever the type of originating document changed
+    this.form
+      .get('originatingDocType')
+      .valueChanges.pipe(takeUntil(this.$onDestroy))
+      .subscribe(() => {
+        this.form.patchValue({
+          originatingDocTypeId: '',
+        });
+
+        this.updateOriginating();
+      });
   }
 
-  get editors(): string[] {
-    return this.form.get('editors').value;
+  ngOnDestroy(): void {
+    this.$onDestroy.next();
   }
 
-  get url(): string[] {
-    switch (this.form.get('originating').value) {
-      case 'Petitions':
-        return ['/', 'list', 'petition'];
-      case 'Statements':
-        return ['/', 'list', 'statement'];
-      case 'Bills':
-        return ['/', 'list', 'bill'];
-      default:
-        return ['/'];
+  get originating(): string {
+    const type = this.form.value.originatingDocType;
+    switch (type) {
+      case 'petition':
+        return 'Petitions';
+      case 'statement':
+        return 'Statements';
+      case 'bill':
+        return 'Bills';
+    }
+  }
+
+  get committee(): string {
+    return this.form.value.authorCommitee;
+  }
+  // Get the editors name from editor ids field
+  updateEditors() {
+    const editorsStr = this.form.value.editors as string;
+    const editorIds = editorsStr.split('&&&');
+    let editors = [];
+
+    for (const id of editorIds) {
+      if (id.length) {
+        this.personnelService
+          .getPersonnel(id)
+          .pipe(take(1))
+          .subscribe((personnel) => {
+            if (personnel) {
+              editors.push(personnel);
+            }
+          });
+      }
+    }
+
+    this.editors = editors;
+  }
+
+  // Handling originating document
+  updateOriginating() {
+    const id = this.form.value.originatingDocTypeId as string;
+    const type = this.form.value.originatingDocType as
+      | 'petition'
+      | 'bill'
+      | 'statement';
+
+    if (id.length) {
+      // Reset the originating document whenever the document type changed
+      this.originatingName = '';
+
+      // Get originating document
+      if (type === 'petition') {
+        this.petitionService
+          .getPetition(id)
+          .pipe(take(1))
+          .subscribe((petition) => {
+            this.originatingName = petition ? petition.content : '';
+          });
+      }
+      if (type === 'bill') {
+        this.billService
+          .getBill(id)
+          .pipe(take(1))
+          .subscribe((bill) => {
+            this.originatingName = bill ? bill.titleOfBill : '';
+          });
+      }
+      if (type === 'statement') {
+        this.statementService
+          .getStatement(id)
+          .pipe(take(1))
+          .subscribe((statement) => {
+            this.originatingName = statement
+              ? statement.subjectOfStatement
+              : '';
+          });
+      }
+    }
+  }
+
+  // 'Delete' editor button
+  onEditorDelete(id: string) {
+    let editors = this.form.value.editors;
+
+    editors = editors.replace(id, '');
+    editors = editors.replace('&&&&&&', '&&&');
+
+    if (editors.charAt(0) === '&') {
+      editors = editors.substring(3);
+    }
+
+    this.form.patchValue({
+      editors,
+    });
+
+    const index = this.editors.findIndex((e) => e._id === id);
+    this.editors.splice(index, 1);
+  }
+
+  // Caching form and redirecting handling
+  private _onCache<T>(
+    { url, queryParams }: { url: string; queryParams?: Params },
+    callback: CachedCallback<Cache, T>,
+    otherData?: Record<string, any>,
+    configs?: CacheConfigs
+  ) {
+    this.cacheService.cacheFunc<Cache, T>({
+      id: 'UPLOAD_REPORT',
+      cacheId: this._cacheId,
+      urlParamer: this._reportId,
+      returnUrl: '/upload/report',
+      navigateUrl: url,
+      navigateUrlQuery: queryParams,
+      data: {
+        form: this.form,
+        report: { name: this.reportName, file: this.report },
+        annexus: { name: this.annexusName, file: this.annexus },
+        ...otherData,
+      },
+      callback,
+      configs,
+    })();
+  }
+
+  // 'Select Author Concerned Committee' button handling
+  onSelectCommittee() {
+    this._onCache<Committee>(
+      { url: '/list/committee' },
+      ({ form, report, annexus }, { name, _id }) => {
+        form.patchValue({
+          authorCommitee: name,
+          author: name,
+          authorCommiteeId: _id,
+        }); // Patch form with selected committee
+
+        return { form, report, annexus };
+      }
+    );
+  }
+
+  // 'Add Originating ...' button handling
+  onSelectOriginatingDoc() {
+    this._onCache<any>(
+      { url: `/list/${this.form.value.originatingDocType}` },
+      ({ form, ...others }, { _id }) => {
+        form.patchValue({
+          originatingDocTypeId: _id,
+        });
+
+        return { form, ...others };
+      }
+    );
+  }
+
+  // 'Add Editors' button handling
+  onSelectEditor() {
+    this._onCache<Personnel>(
+      { url: '/list/personnel' },
+      ({ form, ...others }, { _id }) => {
+        let editors = this.form.value.editors as string;
+
+        editors = editors.replace(_id, '');
+        editors = editors.replace('&&&&&&', '&&&');
+
+        if (editors.charAt(0) === '&') {
+          editors = editors.substring(3);
+        }
+
+        editors = editors.length ? editors + `&&&${_id}` : _id;
+
+        form.patchValue({
+          editors,
+        });
+
+        return { form, ...others };
+      }
+    );
+  }
+
+  // 'Upload Report' button handling
+  onUploadReport() {
+    this._onCache<{ result: Upload; file: File }>(
+      {
+        url: '/management/upload',
+        queryParams: {
+          select: undefined,
+          category: 'report',
+        },
+      },
+      ({ form, ...others }, { result, file }) => {
+        form.patchValue({
+          uploaded: true,
+          uploadedFileURL: result.location,
+        });
+
+        return {
+          ...others,
+          form,
+          report: {
+            name: result.key,
+            file,
+          },
+        };
+      }
+    );
+  }
+
+  // 'Upload Annexus' button handling
+  onUploadAnnexus() {
+    this._onCache<{ result: Upload; file: File }>(
+      {
+        url: '/management/upload',
+        queryParams: {
+          select: undefined,
+          category: 'annexus',
+        },
+      },
+      ({ form, annexus, ...others }, { result, file }) => {
+        form.patchValue({
+          annexusName: result.key,
+          annexusId: result.id,
+          uploadedAnexux: true,
+          uploadingUrl: result.location,
+        });
+
+        return {
+          ...others,
+          form,
+          annexus: { name: result.key, file },
+        };
+      }
+    );
+  }
+
+  // 'Save as Draft' and 'Preview Report' buttons handling
+  onSave(content: boolean) {
+    const post = (state: 'draft' | 'private' | 'public') => {
+      const navigating = () => {
+        this.router.navigate(['/list/report'], {
+          queryParams: {
+            state: state,
+          },
+        });
+      };
+      const value = this.form.value;
+
+      value.publishState = state;
+      value.published = state === 'public';
+
+      if (this._mode === 'creating') {
+        value.reportSignature = moment().unix();
+        value.datePublished = moment().toISOString();
+
+        this.reportService.postReport(value).subscribe(navigating);
+      } else {
+        value.id = this._reportId;
+
+        this.reportService.updateReport(value).subscribe(navigating);
+      }
+    };
+
+    if (content) {
+      this._onCache<'draft' | 'private' | 'public'>(
+        {
+          url: '/view/report',
+          queryParams: {
+            select: undefined,
+          },
+        },
+        (data, status) => {
+          post(status);
+
+          return data;
+        },
+        undefined,
+        { redirect: false }
+      );
+    } else {
+      post('draft');
     }
   }
 }

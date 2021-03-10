@@ -20,14 +20,6 @@
           <mat-option value="Nominated">Nominated</mat-option>
         </mat-select>
       </mat-form-field>
-      <p class="label">Position</p>
-      <mat-form-field appearance="standard">
-        <mat-select>
-          <mat-option value="Clerk">Clerk</mat-option>
-          <mat-option value="Speaker">Speaker</mat-option>
-          <mat-option value="Personnel">Personnel</mat-option>
-        </mat-select>
-      </mat-form-field>
       <div class="term-container">
         <div class="term-item">
           <p class="label">Term of Service (Start)</p>
@@ -68,11 +60,10 @@
         <mat-error *ngIf="form.get('phoneNumber').hasError('phoneNumber')"
           >Please enter valid phone numer
         </mat-error>
-        <app-verify-button>Send Verification Code</app-verify-button>
       </mat-form-field>
       <div class="select-container">
         <app-custom-button
-          [title]="profilePic || 'Upload Profile Picture'"
+          [title]="filename || 'Upload Profile Picture'"
           (buttonClick)="onProfileSelect()"
         >
         </app-custom-button>
@@ -88,7 +79,7 @@
           mat-button
           type="button"
           class="btn-draft"
-          [disabled]="form.invalid || !profilePic"
+          [disabled]="form.invalid"
           (click)="onSave(false)"
         >
           Save as Draft
@@ -97,7 +88,7 @@
           mat-raised-button
           type="submit"
           class="btn-save"
-          [disabled]="form.invalid || !profilePic"
+          [disabled]="form.invalid"
           (click)="onSave(true)"
         >
           Save MCA

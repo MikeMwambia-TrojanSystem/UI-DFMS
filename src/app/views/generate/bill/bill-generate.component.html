@@ -25,14 +25,21 @@
           >Please enter bill number!</mat-error
         >
       </mat-form-field>
+      <p class="label">Related To</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="relatedTo" />
+        <mat-error *ngIf="form.get('billNo').hasError('required')"
+          >Please enter related to!</mat-error
+        >
+      </mat-form-field>
       <div class="custom-btn-container">
         <app-custom-button
-          [title]="sponsorName.length ? sponsorName : 'Select Sponsor'"
+          [title]="sponsorName || 'Select Sponsor'"
           class="custom-btn"
           (buttonClick)="onSelectSponsored()"
         ></app-custom-button>
         <app-custom-button
-          [title]="committeeName ? committeeName : 'Select Concerned Committee'"
+          [title]="committeeName || 'Select Concerned Committee'"
           class="custom-btn"
           (buttonClick)="onSelectCommittee()"
         ></app-custom-button>
@@ -79,13 +86,13 @@
         </div>
       </div>
       <app-custom-button
-        [title]="'Select Bill Report'"
+        [title]="reportName || 'Select Bill Report'"
         class="custom-btn standalone"
         (buttonClick)="onSelectBillReport()"
       >
       </app-custom-button>
       <app-custom-button
-        [title]="fileName || 'Upload Bill Soft Copy'"
+        [title]="billName || 'Upload Bill Soft Copy'"
         class="custom-btn standalone"
         (buttonClick)="onUpload()"
       >
@@ -95,7 +102,7 @@
           mat-button
           type="button"
           class="btn-draft"
-          [disabled]="form.invalid || !hasUploaded"
+          [disabled]="form.invalid"
           (click)="onSave(false)"
         >
           Save as Draft
@@ -104,7 +111,7 @@
           mat-raised-button
           type="submit"
           class="btn-save"
-          [disabled]="form.invalid || !hasUploaded"
+          [disabled]="form.invalid"
           (click)="onSave(true)"
         >
           Publish Bills

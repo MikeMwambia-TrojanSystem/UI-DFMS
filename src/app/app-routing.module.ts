@@ -9,8 +9,8 @@ import { SuccessSignupComponent } from './views/signup/success/success.component
 import { LoginSignupComponent } from './views/signup/login/login.component';
 import { SystemSignupComponent } from './views/signup/system/system.component';
 import { NotificationsSignupComponent } from './views/signup/notifications/notifications.component';
-import { EmailVerificationComponent } from './views/signup/email-verification/email-verification.component';
-import { PhoneVerificationComponent } from './views/signup/phone-verification/phone-verification.component';
+import { EmailVerificationComponent } from './views/verification/email-verification/email-verification.component';
+import { PhoneVerificationComponent } from './views/verification/phone-verification/phone-verification.component';
 import { CreateCommitteeComponent } from './views/create/committee/create-committee.component';
 import { CreateConstituenciesComponent } from './views/create/constituencies/create-constituencies.component';
 import { CreateDepartmentComponent } from './views/create/department/create-department.component';
@@ -62,6 +62,7 @@ import { ListTentativeBusinesssComponent } from './views/list/tentative-business
 import { ListSubcountyComponent } from './views/list/subcounty/list-subcounty.component';
 import { PublishStatusComponent } from './views/publish-status/publish-status.component';
 import { ListDepartmentComponent } from './views/list/department/list-department.component';
+import { ReportViewComponent } from './views/view/report/report-view.component';
 
 import { MotionResolver } from './shared/resolver/motion/motion.resolver';
 import { CanActivateMotion } from './shared/guard/motion/motion.guard';
@@ -97,14 +98,25 @@ import { BillResolver } from './shared/resolver/bill/bill.resolver';
 import { ListActResolver } from './shared/resolver/act/list-act.resolver';
 import { CanActivateAct } from './shared/guard/act/act.guard';
 import { ActResolver } from './shared/resolver/act/act.resolver';
-import { PersonnelDepartmentsResolver } from './shared/resolver/personnel/departments.resolver';
 import { PersonnelResolver } from './shared/resolver/personnel/personnel.resolver';
 import { CanActivatePersonnel } from './shared/guard/personnel/personnel.guard';
 import { ListPersonnelResolver } from './shared/resolver/personnel/list-personnels.resolver';
+import { ListReportResolver } from './shared/resolver/report/list-report.resolver';
+import { CanActivateUploadReport } from './shared/guard/report/upload-report.guard';
+import { ReportResolver } from './shared/resolver/report/report.resolver';
 
 const routes: Routes = [
   // Login route
   { path: 'login', component: LoginComponent },
+
+  // Verification parent routte
+  {
+    path: 'verification',
+    children: [
+      { path: 'phone', component: PhoneVerificationComponent },
+      { path: 'email', component: EmailVerificationComponent },
+    ],
+  },
 
   // Sign up parent route
   {
@@ -117,8 +129,6 @@ const routes: Routes = [
       { path: 'login', component: LoginSignupComponent },
       { path: 'system', component: SystemSignupComponent },
       { path: 'notifications', component: NotificationsSignupComponent },
-      { path: 'email-verification', component: EmailVerificationComponent },
-      { path: 'phone-verification', component: PhoneVerificationComponent },
       { path: 'reset-password', component: ResetPasswordComponent },
     ],
   },
@@ -160,16 +170,12 @@ const routes: Routes = [
       {
         path: 'employee',
         component: CreateEmployeeComponent,
-        resolve: {
-          departments: PersonnelDepartmentsResolver,
-        },
       },
       {
         path: 'employee/:id',
         component: CreateEmployeeComponent,
         canActivate: [CanActivatePersonnel],
         resolve: {
-          departments: PersonnelDepartmentsResolver,
           personnel: PersonnelResolver,
         },
       },
@@ -263,7 +269,13 @@ const routes: Routes = [
           petitions: ListPetitionResolver,
         },
       },
-      { path: 'report', component: ListReportComponent },
+      {
+        path: 'report',
+        component: ListReportComponent,
+        resolve: {
+          reports: ListReportResolver,
+        },
+      },
       { path: 'order-paper', component: ListOrderPaperComponent },
       { path: 'votebook', component: ListVoteBookComponent },
       { path: 'communication', component: ListCommunicationComponent },
@@ -378,8 +390,9 @@ const routes: Routes = [
   {
     path: 'view',
     children: [
-      { path: 'order-paper/:id', component: OrderPaperViewComponent },
-      { path: 'order-paper/:id/edit-title', component: EditTitleComponent },
+      { path: 'order-paper', component: OrderPaperViewComponent },
+      { path: 'order-paper/edit-title', component: EditTitleComponent },
+      { path: 'report', component: ReportViewComponent },
     ],
   },
 
@@ -388,21 +401,21 @@ const routes: Routes = [
     path: 'edit',
     children: [
       {
-        path: 'votebook/:id',
+        path: 'votebook',
         component: EditVotebookComponent,
       },
       {
-        path: 'votebook/:id/preview',
+        path: 'votebook/preview',
         component: VotebookPreviewComponent,
       },
-      { path: 'paper/:id', component: EditPaperComponent },
+      { path: 'paper', component: EditPaperComponent },
       {
-        path: 'paper/:id/preview',
+        path: 'paper/preview',
         component: PaperPreviewComponent,
       },
-      { path: 'content/:id', component: EditContentComponent },
+      { path: 'content', component: EditContentComponent },
       {
-        path: 'content/:id/preview',
+        path: 'content/preview',
         component: ContentPreviewComponent,
       },
     ],
@@ -420,6 +433,14 @@ const routes: Routes = [
         resolve: { statement: StatementResolver },
       },
       { path: 'report', component: ReportUploadComponent },
+      {
+        path: 'report/:id',
+        component: ReportUploadComponent,
+        canActivate: [CanActivateUploadReport],
+        resolve: {
+          report: ReportResolver,
+        },
+      },
     ],
   },
 

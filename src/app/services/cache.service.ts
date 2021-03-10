@@ -2,12 +2,32 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { Router, UrlTree } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
+import _ from 'lodash';
 
-type CachedCallback<T, U> = (cachedForm: T, selected: U) => Promise<T> | T;
+export type CachedCallback<T, U> = (
+  cachedForm: T,
+  selected: U
+) => Promise<T> | T;
 
 interface CachedData {
   data: any;
   subscription: Subscription;
+}
+
+interface CacheFuncProps<T, U> {
+  id: string;
+  cacheId: string;
+  urlParamer: string;
+  returnUrl: string;
+  navigateUrl: string;
+  navigateUrlQuery?: Record<string, any>;
+  data: T;
+  callback: CachedCallback<T, U>;
+  configs?: CacheConfigs;
+}
+
+export interface CacheConfigs {
+  redirect?: boolean;
 }
 
 /**
@@ -24,6 +44,10 @@ export class CacheService {
   private _selected = new EventEmitter<{ id: string; selected: any }>(); // Event will be emitted when user select a element from navigated select page.
 
   constructor(private router: Router) {}
+
+  get data() {
+    return _.cloneDeep(this._data);
+  }
 
   /**
    * Caching method, accepts formId, form data, return url and a callback function.
@@ -96,5 +120,45 @@ export class CacheService {
    */
   emit<T>(id: string, selected: T) {
     this._selected.emit({ id, selected });
+  }
+
+  cacheFunc<T, U>({
+    id,
+    cacheId,
+    urlParamer,
+    returnUrl,
+    navigateUrl,
+    navigateUrlQuery,
+    data,
+    callback,
+    configs = {
+      redirect: true,
+    },
+  }: CacheFuncProps<T, U>) {
+    return () => {
+      // Caching and select callback handling
+      const urlTree = urlParamer ? [returnUrl, urlParamer] : [returnUrl];
+
+      this.cache<T, U>(
+        id,
+        data,
+        configs.redirect
+          ? this.router.createUrlTree(urlTree, {
+              queryParams: {
+                id: cacheId,
+              },
+            })
+          : undefined,
+        callback
+      );
+
+      this.router.navigate([navigateUrl], {
+        queryParams: {
+          id,
+          select: true,
+          ...navigateUrlQuery,
+        },
+      });
+    };
   }
 }

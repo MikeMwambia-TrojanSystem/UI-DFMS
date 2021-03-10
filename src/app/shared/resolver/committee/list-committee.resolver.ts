@@ -25,7 +25,7 @@ export class ListCommitteeResolver implements Resolve<Committee[]> {
     const queryState = route.queryParams.state;
     const published = queryState ? queryState === 'published' : true;
 
-    return this.commiteeService.getCommittees().pipe(
+    return this.commiteeService.fetchCommittees().pipe(
       take(1),
       map((committees) =>
         committees.filter((committee) => committee.published === published)

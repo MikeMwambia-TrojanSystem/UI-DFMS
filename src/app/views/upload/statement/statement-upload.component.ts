@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { take } from 'rxjs/operators';
 import moment from 'moment';
 
-import { CacheService } from 'src/app/services/cache.service';
+import { CachedCallback, CacheService } from 'src/app/services/cache.service';
 import { StatementService } from 'src/app/services/statement.service';
 import { Statement } from 'src/app/shared/types/statement';
-import { UploadPost } from 'src/app/shared/types/upload';
+import { Upload, UploadPost } from 'src/app/shared/types/upload';
 import { ApiService } from 'src/app/services/api.service';
+import { McaEmployee } from 'src/app/shared/types/mca-employee';
+import { Committee } from 'src/app/shared/types/committee';
+
+type Cache = { form: FormGroup; filename: string };
 
 @Component({
   selector: 'app-upload-statement',
@@ -20,28 +24,31 @@ export class StatementUploadComponent implements OnInit {
   private _mode: 'editing' | 'creating';
   private _statementId: string;
   private _statementUpload: UploadPost;
+
   form = new FormGroup({
-    statementSignature: new FormControl('dedpelpdldpedlepldepdlepdleplp'),
+    statementSignature: new FormControl(''),
     statementNo: new FormControl('', Validators.required),
     seeker: new FormControl('', Validators.required),
-    seekerId: new FormControl('602677b307f6184108b890a6'),
-    seekerPosition: new FormControl('MCA National Assembly'),
+    seekerId: new FormControl('', Validators.required),
     subjectOfStatement: new FormControl('', Validators.required),
-    statementProvider: new FormControl('Test Committee'),
-    statementProviderId: new FormControl('6026839d07f6184108b890ac'),
+    statementProvider: new FormControl('', Validators.required),
+    statementProviderId: new FormControl('', Validators.required),
     department: new FormControl('', Validators.required),
     departmentResponsible: new FormControl('', Validators.required),
     dateStatementSought: new FormControl('', Validators.required),
     dateStatementToResponded: new FormControl('', Validators.required),
     uploaded: new FormControl('false'),
-    uploadedFileURL: new FormControl(''),
+    uploadedFileURL: new FormControl('', Validators.required),
     status: new FormControl('pending'),
     assemblyId: new FormControl('602651242ed6962b8b5be6f9'),
     published: new FormControl(false),
     datePublished: new FormControl(''),
     approverId: new FormControl('565564564654564564545645646'),
     account: new FormControl('Speaker'),
+    publishState: new FormControl(''),
   });
+
+  filename: string;
 
   constructor(
     private cacheService: CacheService,
@@ -90,33 +97,61 @@ export class StatementUploadComponent implements OnInit {
               .toJSON()
               .slice(0, 10),
           });
+
+          this.filename = statement.uploadedFileURL.substring(
+            statement.uploadedFileURL.lastIndexOf('amazonaws.com/') + 14
+          );
         });
     } else {
       this._mode = 'creating';
     }
 
     // Rehydrate the cached form data if there's any
-    const cached = this.cacheService.rehydrate<FormGroup>('UPLOAD_STATEMENT');
-    const cachedUpload = this.cacheService.rehydrate<{
-      form: FormGroup;
-      upload: UploadPost;
-    }>('UPLOAD_STATEMENT_FILE');
+    const cached = this.cacheService.rehydrate<Cache>('UPLOAD_STATEMENT');
 
     if (cached) {
-      this.form = cached;
-    }
-    if (cachedUpload) {
-      this.form = cachedUpload.form;
-      this._statementUpload = cachedUpload.upload;
+      this.form = cached.form;
+      this.filename = cached.filename;
     }
   }
 
-  get fileName() {
-    try {
-      return this._statementUpload.myFile.name;
-    } catch (error) {
-      return undefined;
-    }
+  get seekerName(): string {
+    return this.form.value.seeker.length ? this.form.value.seeker : undefined;
+  }
+
+  get providerName(): string {
+    return this.form.value.statementProvider.length
+      ? this.form.value.statementProvider
+      : undefined;
+  }
+
+  private _onCache<T>(
+    { url, queryParams }: { url: string; queryParams?: Params },
+    callback: CachedCallback<Cache, T>
+  ) {
+    // Caching and select callback handling
+    const urlTree = this._statementId
+      ? ['/upload/statement', this._statementId]
+      : ['/upload/statement'];
+
+    this.cacheService.cache<Cache, T>(
+      'UPLOAD_STATEMENT',
+      { form: this.form, filename: this.filename },
+      this.router.createUrlTree(urlTree, {
+        queryParams: {
+          id: this._cacheId,
+        },
+      }),
+      callback
+    );
+
+    this.router.navigate([url], {
+      queryParams: {
+        id: 'UPLOAD_STATEMENT',
+        select: true,
+        ...queryParams,
+      },
+    });
   }
 
   /**
@@ -125,40 +160,72 @@ export class StatementUploadComponent implements OnInit {
    * After the user had uploaded the statement, a callback function will get called and update the cached data with the uploaded information.
    */
   onUploadStatement() {
-    // Caching and select callback handling
-    const urlTree = this._statementId
-      ? ['/upload/statement', this._statementId]
-      : ['/upload/statement'];
-
-    this.cacheService.cache<
-      { form: FormGroup; upload: UploadPost },
-      UploadPost
-    >(
-      'UPLOAD_STATEMENT_FILE',
+    this._onCache<{ result: Upload }>(
       {
-        form: this.form,
-        upload: this._statementUpload,
-      },
-      this.router.createUrlTree(urlTree, {
+        url: '/management/upload',
         queryParams: {
-          id: this._cacheId,
+          select: undefined,
+          category: 'statement',
         },
-      }),
-      (data, uploadData) => {
+      },
+      ({ form }, { result }) => {
+        form.patchValue({
+          uploaded: 'true',
+          uploadedFileURL: result.location,
+        });
+
         return {
-          ...data,
-          upload: uploadData,
+          form,
+          filename: result.key,
         };
       }
     );
+  }
 
-    // Navigate the user to '/management/upload'
-    this.router.navigate(['/management/upload'], {
-      queryParams: {
-        id: 'UPLOAD_STATEMENT_FILE',
-        category: 'statement',
-      },
-    });
+  /**
+   * This function get called when 'Who is Seeking the Statement' button is clicked.
+   * Caching the form and then redirect the user to '/list/mca-employee'.
+   * After the user had selected the mca, a callback function will get called and update the cached data with the uploaded information.
+   */
+  onSelectSeeker() {
+    this._onCache<McaEmployee>(
+      { url: '/list/mca-employee' },
+      ({ form, filename }, { name, _id }) => {
+        form.patchValue({
+          seeker: name,
+          seekerId: _id,
+        });
+
+        return {
+          form,
+          filename,
+        };
+      }
+    );
+  }
+
+  /**
+   * This function get called when 'Statement request directed to?' button is clicked.
+   * Caching the form and then redirect the user to '/list/committee'.
+   * After the user had selected the committee, a callback function will get called and update the cached data with the uploaded information.
+   */
+  onSelectRequestTo() {
+    this._onCache<Committee>(
+      { url: '/list/committee' },
+      ({ form, filename }, { name, _id, departmentInExcecutive }) => {
+        form.patchValue({
+          statementProvider: name,
+          statementProviderId: _id,
+          department: departmentInExcecutive,
+          departmentResponsible: departmentInExcecutive,
+        });
+
+        return {
+          form,
+          filename,
+        };
+      }
+    );
   }
 
   /**
@@ -194,31 +261,20 @@ export class StatementUploadComponent implements OnInit {
 
       value.published = state === 'public';
       value.publishState = state;
-      value.datePublished = moment().toISOString();
-      value.dateStatementSought = moment(
-        value.dateStatementSought
-      ).toISOString();
-      value.dateStatementToResponded = moment(
-        value.dateStatementToResponded
-      ).toISOString();
 
       if (this._mode === 'creating') {
-        const { documents, County, signature, myFile } = this._statementUpload;
-        const formData = new FormData();
+        value.datePublished = moment().toISOString();
+        value.statementSignature = moment().unix();
+        value.dateStatementSought = moment(
+          value.dateStatementSought
+        ).toISOString();
+        value.dateStatementToResponded = moment(
+          value.dateStatementToResponded
+        ).toISOString();
 
-        formData.append('documents', documents);
-        formData.append('County', County);
-        formData.append('signature', signature);
-        formData.append('myFile', myFile);
-
-        this.apiService.upload(formData).subscribe((result) => {
-          value.uploaded = 'true';
-          value.uploadedFileURL = result.location;
-
-          this.statementService
-            .postStatement(value)
-            .subscribe(() => subCallback(state));
-        });
+        this.statementService
+          .postStatement(value)
+          .subscribe(() => subCallback(state));
       } else {
         value.id = this._statementId;
 

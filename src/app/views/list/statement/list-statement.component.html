@@ -3,17 +3,21 @@
     <h1 class="title">Statements</h1>
     <app-search-bar></app-search-bar>
     <div>
-      <app-statement-item *ngFor="let statement of statements" [title]="statement.subjectOfStatement"
-        [date]="statement.datePublished" class="item" [selectable]="selectable" [sub]="'Statements on'"
-        [state]="statement.publishState" (delete)="onDelete(statement._id)"
-        [editUrl]="'/upload/statement/' + statement._id">
+      <app-statement-item
+        *ngFor="let statement of statements"
+        class="item"
+        [selectable]="selectable"
+        [state]="statement.publishState"
+        [editUrl]="'/upload/statement/' + statement._id"
+        (delete)="onDelete(statement._id)"
+        (select)="onSelect(statement)"
+        [info]="getInfo(statement)"
+      >
       </app-statement-item>
     </div>
     <div *ngIf="!statements.length" class="list-no-value">
       <p>No Statements Listed!</p>
-      <p (click)="onCreateNew()" class="new">
-        Create Statement
-      </p>
+      <p (click)="onCreateNew()" class="new">Create Statement</p>
     </div>
   </app-center-card>
 </app-background>

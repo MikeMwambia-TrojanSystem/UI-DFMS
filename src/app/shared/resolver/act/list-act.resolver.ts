@@ -24,7 +24,7 @@ export class ListActResolver implements Resolve<Act[]> {
   ): Observable<Act[]> | Promise<Act[]> | Act[] {
     const publishState = route.queryParams.state || 'public';
 
-    return this.actService.getActs().pipe(
+    return this.actService.fetchActs().pipe(
       take(1),
       map((acts) => acts.filter((a) => a.publishState === publishState))
     );

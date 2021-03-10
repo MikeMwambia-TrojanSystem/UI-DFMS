@@ -4,51 +4,103 @@
     <form [formGroup]="form" class="form">
       <p class="label">Report Title</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="title" placeholder="Report on Food Stability and Availability" />
-        <mat-error *ngIf="form.get('title').hasError('required')">Please enter report title!</mat-error>
+        <input
+          matInput
+          formControlName="titleOfReport"
+          placeholder="Report on Food Stability and Availability"
+        />
+        <mat-error *ngIf="form.get('titleOfReport').hasError('required')"
+          >Please enter report title!</mat-error
+        >
       </mat-form-field>
-      <app-custom-button [title]="'Select Author Concerned Committee'" style="margin-bottom: 20px;"
-        [url]="['/', 'list', 'committee']" [query]="{select: true}"></app-custom-button>
+      <app-custom-button
+        style="margin-bottom: 20px"
+        [title]="
+          committee.length ? committee : 'Select Author Concerned Committee'
+        "
+        (buttonClick)="onSelectCommittee()"
+      ></app-custom-button>
       <p class="label">Due Date</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="dueDate" type="date" />
-        <mat-error *ngIf="form.get('dueDate').hasError('required')">Please enter due date!</mat-error>
+        <mat-error *ngIf="form.get('dueDate').hasError('required')"
+          >Please enter due date!</mat-error
+        >
       </mat-form-field>
       <p class="label">Originating Document</p>
       <mat-form-field appearance="standard">
-        <mat-select formControlName="originating">
-          <mat-option *ngFor="let originating of originatings" [value]="originating">{{originating}}</mat-option>
+        <mat-select formControlName="originatingDocType">
+          <mat-option
+            *ngFor="let o of originatings; let i = index"
+            [value]="o"
+            >{{ originatingsTitle[i] }}</mat-option
+          >
         </mat-select>
       </mat-form-field>
-      <app-custom-button [title]="'Add Originating ' + form.get('originating').value"
-        *ngIf="form.get('originating').value" [url]="url" [query]="{select: true}"></app-custom-button>
+      <app-custom-button
+        [title]="
+          originatingName.length
+            ? originatingName
+            : 'Add Originating ' + originating
+        "
+        *ngIf="form.get('originatingDocType').value"
+        (buttonClick)="onSelectOriginatingDoc()"
+      ></app-custom-button>
       <div class="buttons-container">
-        <app-custom-button [title]="'Add Editors'" class="custom-btn" [url]="['/', 'list', 'personnel']"
-          [query]="{select: true}"></app-custom-button>
-        <app-custom-button [title]="'Upload Document'" class="custom-btn" style="margin-left: 10px"
-          [url]="['/', 'management' ,'upload']">
+        <app-custom-button
+          [title]="'Add Editors'"
+          class="custom-btn"
+          (buttonClick)="onSelectEditor()"
+        ></app-custom-button>
+        <app-custom-button
+          [title]="reportName || 'Upload Report'"
+          class="custom-btn"
+          style="margin-left: 10px"
+          (buttonClick)="onUploadReport()"
+        >
         </app-custom-button>
-        <input class="hidden" type="file" #fileUpload />
-      </div>
-      <div class="buttons-container">
-        <app-custom-button [title]="'Remove Editors'" class="custom-btn" [url]="['/', 'list', 'personnel']"
-          [query]="{select: true}"></app-custom-button>
-        <div style="margin-left: 10px; width: 50%"></div>
       </div>
       <div class="buttons-container">
         <div class="editors-container">
-          <p class="editors">{{editors.length}} Editors</p>
+          <p class="editors">{{ editors.length }} Editors</p>
           <div *ngFor="let editor of editors" class="editor">
             <mat-icon class="icon">person_outline</mat-icon>
-            <span>{{editor}}</span>
+            <span>{{ editor.name }}</span>
+            <button
+              mat-button
+              color="warn"
+              (click)="onEditorDelete(editor._id)"
+            >
+              Delete
+            </button>
           </div>
         </div>
-        <app-custom-button [title]="'Add Annexus'" style="margin-left: 10px" [url]="['/', 'management' ,'upload']">
+        <app-custom-button
+          [title]="annexusName || 'Add Annexus'"
+          style="margin-left: 10px"
+          (buttonClick)="onUploadAnnexus()"
+        >
         </app-custom-button>
       </div>
       <div class="actions">
-        <button mat-button type="button" class="btn-draft">Save as Draft</button>
-        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Preview Report</button>
+        <button
+          mat-button
+          type="button"
+          class="btn-draft"
+          [disabled]="form.invalid"
+          (click)="onSave(false)"
+        >
+          Save as Draft
+        </button>
+        <button
+          mat-raised-button
+          type="submit"
+          class="btn-save"
+          [disabled]="form.invalid || !reportName || !annexusName"
+          (click)="onSave(true)"
+        >
+          Preview Report
+        </button>
       </div>
     </form>
   </app-center-card>

@@ -1,86 +1,74 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { CacheService } from 'src/app/services/cache.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs/operators';
+import _ from 'lodash';
 
-interface Report {
-  title: string;
-  date: string;
-  concering: string[];
-  submitted: string;
-  ward: string;
-  response: string;
-  state: string;
-}
+import { CacheService } from 'src/app/services/cache.service';
+import { ReportService } from 'src/app/services/report.service';
+import { Report } from 'src/app/shared/types/report';
 
 @Component({
-  selector: 'app-list-report',
   styleUrls: ['./list-report.component.scss'],
   templateUrl: './list-report.component.html',
 })
 export class ListReportComponent implements OnInit {
   private _cacheId: string;
-
-  /**
-   * Reports mock data
-   */
-  reports: Report[] = [
-    {
-      title: 'Food Drinks Live',
-      date: '9/3/2008',
-      concering: ['Employment', 'Youth', 'Fomo'],
-      submitted: 'Maariu Nicholas',
-      ward: 'MCA Nathu Ward',
-      response: 'minim mollit non deserunt',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      title: 'Drug',
-      date: '9/3/2008',
-      concering: ['Employment', 'Youth', 'Fomo'],
-      submitted: 'Maariu Nicholas',
-      ward: 'MCA Nathu Ward',
-      response: 'minim mollit non deserunt',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      title: 'Health Facility',
-      date: '9/3/2008',
-      concering: ['Employment', 'Youth', 'Fomo'],
-      submitted: 'Maariu Nicholas',
-      ward: 'MCA Nathu Ward',
-      response: 'minim mollit non deserunt',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      title: 'Live Matters',
-      date: '9/3/2008',
-      concering: ['Employment', 'Youth', 'Fomo'],
-      submitted: 'Maariu Nicholas',
-      ward: 'MCA Nathu Ward',
-      response: 'minim mollit non deserunt',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-  ];
-
+  private _state: 'draft' | 'private' | 'public';
+  reports: Report[];
   selectable: boolean;
-  state: string; // This props is just for example and should be deleted when implementing a fetch request to backend.
 
-  constructor(private route: ActivatedRoute, private cacheService: CacheService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private reportService: ReportService,
+    private cacheService: CacheService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    // Get selectable and cache id from url query
-    const queryParams = this.route.snapshot.queryParams
+    // Get selectable state, cache emit id, state from query url
+    const queryParams = this.route.snapshot.queryParams;
     this.selectable = queryParams.select === 'true' || false;
     this._cacheId = queryParams.id;
+    this._state = queryParams.state;
 
-    /**
-     * These lines are just for dynamic state example and should be deleted when implementing a fetch request to backend.
-     */
-    this.state = this.route.snapshot.queryParams.state;
-    //=====================================================================
+    // Get Reports data from resolver
+    this.route.data
+      .pipe(take(1))
+      .subscribe(({ reports }: { reports: Report[] }) => {
+        this.reports = _.orderBy(reports, 'createdAt', 'desc');
+      });
   }
 
-  onSelect() {
-    this.cacheService.emit(this._cacheId, null);
+  onCreateNew() {
+    this.cacheService.cache(
+      'LIST_NEW_REPORT',
+      null,
+      this.router.createUrlTree(['/list/report'], {
+        queryParams: {
+          select: this.selectable,
+          id: this._cacheId,
+          state: this._state,
+        },
+      }),
+      () => {
+        return null;
+      }
+    );
+
+    this.router.navigate(['/upload/report'], {
+      queryParams: {
+        id: 'LIST_NEW_REPORT',
+      },
+    });
+  }
+
+  onDelete(id: string) {
+    this.reportService.deleteReport(id).subscribe(() => {
+      window.location.reload();
+    });
+  }
+
+  onSelect(report: Report) {
+    this.cacheService.emit(this._cacheId, report);
   }
 }

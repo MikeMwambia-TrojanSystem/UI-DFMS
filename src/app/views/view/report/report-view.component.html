@@ -1,0 +1,25 @@
+<app-background>
+  <app-center-card>
+    <div class="main">
+      <ng2-pdfjs-viewer #pdfViewer></ng2-pdfjs-viewer>
+      <div class="actions">
+        <button
+          mat-button
+          type="button"
+          class="btn-draft"
+          (click)="onSave(false)"
+        >
+          Save as Draft
+        </button>
+        <button
+          mat-raised-button
+          type="submit"
+          class="btn-save"
+          (click)="onSave(true)"
+        >
+          Generate Report
+        </button>
+      </div>
+    </div>
+  </app-center-card>
+</app-background>
