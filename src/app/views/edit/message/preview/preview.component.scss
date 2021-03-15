@@ -3,33 +3,19 @@
 }
 
 .title {
-  text-align: center;
   font-weight: 500;
-  margin-bottom: 20px;
 }
 
 .words {
-  .limit {
-    font-weight: 500;
-  }
-}
-
-.pages {
   display: flex;
+  flex-direction: column;
   margin: 20px 0;
 
-  .previous {
-    color: gray;
-    margin-right: 10px;
+  .line {
+    margin: 5px 0;
   }
 
-  .current {
-    .page {
-      color: #008000;
-    }
-  }
-
-  .page {
+  .word {
     font-weight: 500;
   }
 }
@@ -60,11 +46,6 @@
 
   .ql-container {
     margin-bottom: 30px;
-  }
-}
-
-:host ::ng-deep {
-  .ql-container {
     min-width: unset;
   }
 }

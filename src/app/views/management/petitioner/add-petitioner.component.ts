@@ -12,47 +12,49 @@ interface Ward {
 }
 
 @Component({
-  selector: 'app-add-petitioner',
   templateUrl: './add-petitioner.component.html',
   styleUrls: ['./add-petitioner.component.scss'],
 })
 export class AddPetitionerComponent implements OnInit {
   private _cacheId: string;
-  @ViewChild('fileUpload') fileUpload: ElementRef<HTMLInputElement>;
+
   form = new FormGroup({
     name: new FormControl('', Validators.required),
     phone: new FormControl('', [Validators.required, phoneNumberValidator]),
-    originating: new FormControl('', Validators.required),
-    picture: new FormControl('', Validators.required),
   }); // Form group that holds user input
 
-  petitioners: Petitioner[];
-
-  wards: Ward[] = [
-    {
-      name: 'Nathu Ward',
-    },
-  ];
+  petitioners: Petitioner[] = [];
 
   selectable = false;
 
-  constructor(private route: ActivatedRoute, private cacheService: CacheService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private cacheService: CacheService
+  ) {}
 
   ngOnInit(): void {
     // Get selectable, cache id from url query
-    const queryParams = this.route.snapshot.queryParams
-    this.selectable = queryParams.select === 'true';
+    const queryParams = this.route.snapshot.queryParams;
     this._cacheId = queryParams.id;
-
-    // Get petitioners data from resolver
-    this.route.data.pipe(take(1), map(({ petitioners }: { petitioners: Petitioner[] }) => petitioners)).subscribe(petitioners => this.petitioners = petitioners)
   }
 
-  onStartUpload(): void {
-    this.fileUpload.nativeElement.click();
+  onAdd(): void {
+    const { name, phone } = this.form.value as { name: string; phone: string };
+
+    this.petitioners = [
+      ...this.petitioners.filter((p) => p.name !== name),
+      { name, phone },
+    ];
+
+    this.form.reset();
   }
 
-  onSelect({ name, _id }: Petitioner): void {
-    this.cacheService.emit(this._cacheId, { name, _id });
+  onComplete(): void {
+    this.cacheService.emit(
+      this._cacheId,
+      this.petitioners
+        .map((p) => `name=${p.name}|||phone=${p.phone}`)
+        .join('&&&')
+    );
   }
 }

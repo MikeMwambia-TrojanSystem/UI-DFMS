@@ -1,0 +1,40 @@
+<app-background>
+  <app-center-card>
+    <div class="main">
+      <form [formGroup]="form">
+        <span class="words"
+          >Words Per Page: <span class="limit">{{ words }}</span></span
+        >
+        <quill-editor formControlName="content"></quill-editor>
+        <app-custom-button
+          [title]="'Upload Message File'"
+          (buttonClick)="onUpload()"
+        ></app-custom-button>
+        <!-- <div class="pages">
+          <div class="previous">
+            <span
+              >Previous page: <span class="page">{{ previousPage }}</span></span
+            >
+          </div>
+          <div class="current">
+            <span
+              >Currently writing page:
+              <span class="page">{{ currentPage }}</span></span
+            >
+          </div>
+        </div> -->
+        <div class="actions">
+          <button
+            mat-raised-button
+            type="submit"
+            class="btn-save"
+            [disabled]="form.invalid"
+            (click)="onPreview()"
+          >
+            Preview Pages
+          </button>
+        </div>
+      </form>
+    </div>
+  </app-center-card>
+</app-background>

@@ -1,6 +1,4 @@
 export class Petitioner {
-  _id: string;
+  phone: string;
   name: string;
-  ward: string;
-  profilePic: string;
 }

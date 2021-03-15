@@ -93,6 +93,8 @@ import { VerifyButtonComponent } from './components/VerifyButton/verify-button.c
 import { StatementItemComponent } from './components/StatementItem/statement-item.component';
 import { ListDepartmentComponent } from './views/list/department/list-department.component';
 import { ReportViewComponent } from './views/view/report/report-view.component';
+import { EditMessageComponent } from './views/edit/message/edit-message.component';
+import { MessagePreviewComponent } from './views/edit/message/preview/preview.component';
 
 const dbConfig: DBConfig = {
   name: 'MyDb',
@@ -191,6 +193,8 @@ const dbConfig: DBConfig = {
     PublishStatusComponent,
     ListDepartmentComponent,
     ReportViewComponent,
+    EditMessageComponent,
+    MessagePreviewComponent,
   ],
   imports: [
     BrowserModule,

@@ -105,15 +105,18 @@
           >
           </app-custom-button>
           <div class="list">
-            <div class="petitioner-container" *ngFor="let p of petitionersName">
+            <div
+              class="petitioner-container"
+              *ngFor="let p of petitionersName; let index = index"
+            >
               <mat-icon class="petitioner-icon">person_outline</mat-icon>
-              <span>{{ p.name }}</span>
+              <span>{{ p }}</span>
               <button
                 mat-button
                 color="warn"
                 class="btn-delete"
                 type="button"
-                (click)="onPetitionerDelete(p._id)"
+                (click)="onPetitionerDelete(index)"
               >
                 Delete
               </button>

@@ -22,6 +22,7 @@ export class StatementItemComponent implements OnInit {
   @Input() state: string;
   @Input() editUrl: string;
   @Input() info: StatementInfo[];
+  @Input() downloadUrl: string;
   extendedState: string;
 
   ngOnInit() {

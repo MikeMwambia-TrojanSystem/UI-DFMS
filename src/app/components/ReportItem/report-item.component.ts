@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-report-item',
@@ -18,6 +18,7 @@ export class ReportItemComponent {
   @Input() sub: string;
   @Input() state: string;
   @Input() editUrl: string;
+  @Input() downloadUrl: string;
 
   onSelect() {
     this.select.emit();

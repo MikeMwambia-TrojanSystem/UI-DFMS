@@ -170,15 +170,11 @@ export class CreateEmployeeComponent implements OnInit {
   onSave(status: boolean) {
     // After POST
     const redirecting = () => {
-      if (this._cacheId) {
-        this.cacheService.emit(this._cacheId, null);
-      } else {
-        this.router.navigate(['/list/personnel'], {
-          queryParams: {
-            state: status ? 'published' : 'draft',
-          },
-        });
-      }
+      this.router.navigate(['/list/personnel'], {
+        queryParams: {
+          state: status ? 'published' : 'draft',
+        },
+      });
     };
 
     // Subcription callback

@@ -8,7 +8,6 @@ import _ from 'lodash';
 import { ApiService } from 'src/app/services/api.service';
 import { CachedCallback, CacheService } from 'src/app/services/cache.service';
 import { PetitionService } from 'src/app/services/petition.service';
-import { PetitionerService } from 'src/app/services/petitioner.service';
 import { Petition } from 'src/app/shared/types/petition';
 import { Upload } from 'src/app/shared/types/upload';
 import { Committee } from 'src/app/shared/types/committee';
@@ -50,15 +49,14 @@ export class PetitionGenerateComponent implements OnInit {
     petitionNumber: new FormControl('', Validators.required),
   });
 
-  petitionersName: { name: string; _id: string }[] = [];
+  petitionersName: string[] = [];
 
   constructor(
     private cacheService: CacheService,
     private router: Router,
     private route: ActivatedRoute,
     private petitionService: PetitionService,
-    private apiService: ApiService,
-    private petitionerService: PetitionerService
+    private apiService: ApiService
   ) {}
 
   ngOnInit(): void {
@@ -99,7 +97,7 @@ export class PetitionGenerateComponent implements OnInit {
               .slice(0, 10),
             datePresented: moment(datePresented).toJSON().slice(0, 10),
             dateToBDiscussed: moment(dateToBDiscussed).toJSON().slice(0, 10),
-            petitioners: _.join(petitioners, '&&&'),
+            petitioners: petitioners.join('&&&'),
             uploader: uploadingAccount.name,
             uploaderId: uploadingAccount.id,
           });
@@ -169,27 +167,19 @@ export class PetitionGenerateComponent implements OnInit {
   }
 
   async updatePetitionersList() {
-    const names: { name: string; _id: string }[] = [];
-    const petitioners = (this.form.value.petitioners as string).split('&&&');
+    let petitioners = (this.form.value.petitioners as string).split('&&&');
 
-    for (const petitionerId of petitioners) {
-      if (petitionerId.length) {
-        const name = await this.petitionerService
-          .getPetitioner(petitionerId)
-          .pipe(
-            take(1),
-            map((p) => p.name)
-          )
-          .toPromise();
+    petitioners = petitioners[0].length ? petitioners : [];
 
-        names.push({
-          name,
-          _id: petitionerId,
-        });
-      }
+    console.log(petitioners);
+
+    for (const p of petitioners) {
+      this.petitionersName.push(
+        p.match(/(?<=name=).+?(?=\|\|\|)/g)
+          ? p.match(/(?<=name=).+?(?=\|\|\|)/g)[0]
+          : ''
+      );
     }
-
-    this.petitionersName = [...names];
   }
 
   /**
@@ -237,22 +227,18 @@ export class PetitionGenerateComponent implements OnInit {
    * After the user had selected the petitioner, a callback function will get called and update the cached data with the selected information.
    */
   onAddPetitioner() {
-    this._onCache<any>({ url: '/management/petitioners' }, (form, { _id }) => {
-      let petitioners = form.value.petitioners as string;
+    this._onCache<string>(
+      { url: '/management/petitioners' },
+      (form, petitioners) => {
+        console.log(petitioners);
 
-      petitioners = petitioners.replace(_id, '');
-      petitioners = petitioners.replace(`&&&&&&`, '&&&');
+        form.patchValue({
+          petitioners,
+        });
 
-      if (petitioners.charAt(0) === '&&&') {
-        petitioners = petitioners.substring(3);
+        return form;
       }
-
-      form.patchValue({
-        petitioners: petitioners.length ? petitioners + '&&&' + _id : _id,
-      });
-
-      return form;
-    });
+    );
   }
 
   /**
@@ -281,24 +267,16 @@ export class PetitionGenerateComponent implements OnInit {
   }
 
   // This function get called when the 'Delete' button at petitioner list is clicked
-  onPetitionerDelete(petitionerId: string) {
-    let petitioners = this.form.value.petitioners as string;
+  onPetitionerDelete(index: number) {
+    this.petitionersName.splice(index, 1);
 
-    petitioners = petitioners.replace(petitionerId, '');
-    petitioners = petitioners.replace(`&&&&&&`, '&&&');
+    const newPetitioners = (this.form.value.petitioners as string).split('&&&');
 
-    if (petitioners.charAt(0) === '&&&') {
-      petitioners = petitioners.substring(1);
-    }
+    newPetitioners.splice(index, 1);
 
     this.form.patchValue({
-      petitioners: petitioners,
+      petitioners: newPetitioners.join('&&&'),
     });
-
-    const index = this.petitionersName.findIndex(
-      (member) => member._id === petitionerId
-    );
-    this.petitionersName.splice(index, 1);
   }
 
   /**
@@ -314,15 +292,11 @@ export class PetitionGenerateComponent implements OnInit {
   onSave(published: boolean) {
     // Subcription callback
     const subCallback = (state: 'public' | 'private' | 'draft') => {
-      if (this._cacheId) {
-        this.cacheService.emit(this._cacheId, null);
-      } else {
-        this.router.navigate(['/list/petition'], {
-          queryParams: {
-            state: state,
-          },
-        });
-      }
+      this.router.navigate(['/list/petition'], {
+        queryParams: {
+          state: state,
+        },
+      });
     };
 
     /**

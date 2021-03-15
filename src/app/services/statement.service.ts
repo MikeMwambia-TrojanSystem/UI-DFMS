@@ -85,17 +85,8 @@ export class StatementService {
   }
 
   updateStatement(statement: StatementPost) {
-    return this.apiService.updateStatement(statement).pipe(
-      tap((result) => {
-        const newStatements = this._statements.getValue();
-        const index = newStatements.findIndex((s) => s._id === result._id);
-
-        newStatements[index] = {
-          ...result,
-        };
-
-        this._statements.next(newStatements);
-      })
-    );
+    return this.apiService
+      .updateStatement(statement)
+      .pipe(switchMap(() => this.fetchStatements()));
   }
 }

@@ -1,61 +1,44 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs/operators';
+import { CacheService } from 'src/app/services/cache.service';
+import { OrderPaperService } from 'src/app/services/order-paper.service';
 
-interface OrderPaper {
-  number: number;
-  date: Date;
-  views: number;
-  state: string;
-}
+import { OrderPaper } from 'src/app/shared/types/order-paper';
 
 @Component({
-  selector: 'app-list-order-paper',
   styleUrls: ['./list-order-paper.component.scss'],
   templateUrl: './list-order-paper.component.html',
 })
 export class ListOrderPaperComponent implements OnInit {
-  /**
-   * Petitions mock data
-   */
-  orderPapers: OrderPaper[] = [
-    {
-      number: 178,
-      date: new Date(),
-      views: 28,
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      number: 178,
-      date: new Date(),
-      views: 28,
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      number: 178,
-      date: new Date(),
-      views: 28,
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      number: 178,
-      date: new Date(),
-      views: 28,
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-  ];
+  orderPapers: OrderPaper[];
 
-  selectabe: boolean;
-  state: string; // This props is just for example and should be deleted when implementing a fetch request to backend.
+  selectable: boolean;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private orderPaperService: OrderPaperService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.selectabe = this.route.snapshot.queryParams.select || false;
+    const queryParams = this.route.snapshot.queryParams;
+    this.selectable = queryParams.select || false;
 
-    /**
-     * These lines are just for dynamic state example and should be deleted when implementing a fetch request to backend.
-     */
-    this.state = this.route.snapshot.queryParams.state;
-    //=====================================================================
+    this.route.data
+      .pipe(take(1))
+      .subscribe(({ orderPapers }: { orderPapers: OrderPaper[] }) => {
+        this.orderPapers = orderPapers;
+      });
+  }
+
+  onCreateNew() {
+    this.router.navigate(['/generate/order-paper']);
+  }
+
+  onDelete(orderPaper: OrderPaper) {
+    this.orderPaperService.deleteOrderPaper(orderPaper._id).subscribe(() => {
+      window.location.reload();
+    });
   }
 }

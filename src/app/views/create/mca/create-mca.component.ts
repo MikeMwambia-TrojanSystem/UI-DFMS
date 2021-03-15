@@ -172,15 +172,11 @@ export class CreateMcaComponent implements OnInit {
   onSave(published: boolean) {
     // After POST
     const redirecting = () => {
-      if (this._cacheId) {
-        this.cacheService.emit(this._cacheId, null);
-      } else {
-        this.router.navigate(['/list/mca-employee'], {
-          queryParams: {
-            state: published ? 'published' : 'draft',
-          },
-        });
-      }
+      this.router.navigate(['/list/mca-employee'], {
+        queryParams: {
+          state: published ? 'published' : 'draft',
+        },
+      });
     };
 
     // Subcription callback

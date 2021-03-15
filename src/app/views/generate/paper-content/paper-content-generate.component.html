@@ -1,32 +1,55 @@
 <app-background>
   <app-center-card>
     <h1 class="title">Generate an Order Paper</h1>
-    <app-menu-container *ngFor="let item of items; let i = index" [notifications]="item.notifications">
+    <app-menu-container
+      *ngFor="let item of items; let i = index"
+      [notifications]="item.notifications"
+    >
       <div class="content">
         <div class="info">
-          <span>{{i + 1 | number: '2.0-0'}}</span>
-          <span class="label">{{item.label}}</span>
+          <span>{{ i + 1 | number: "2.0-0" }}</span>
+          <span class="label">{{ item.label }}</span>
         </div>
         <div class="buttons-container">
-          <a class="btn-container" *ngIf="item.select" [routerLink]="[item.select.url]"
-            [queryParams]="item.select.query">
-            <button mat-stroked-button class="btn">Select</button>
-          </a>
-          <a class="btn-container" *ngIf="item.generate" [routerLink]="[item.generate.url]"
-            [queryParams]="item.generate.query">
-            <button mat-stroked-button class="btn">Generate</button>
-          </a>
+          <button
+            mat-stroked-button
+            class="btn"
+            *ngIf="item.select"
+            (click)="onSelect(item.select)"
+          >
+            Select
+          </button>
+          <button
+            mat-stroked-button
+            class="btn"
+            *ngIf="item.generate"
+            (click)="onGenerate(item.generate)"
+          >
+            Generate
+          </button>
           <button mat-stroked-button class="btn">Skip</button>
         </div>
       </div>
     </app-menu-container>
     <div class="actions">
-      <a [routerLink]="['/list/order-paper']" [queryParams]="{state: 'draft'}">
-        <button mat-button type="button" class="btn-draft">Save as Draft</button>
-      </a>
-      <a [routerLink]="['/view/order-paper/1']">
-        <button mat-raised-button type="submit" class="btn-save">Publish Order Paper</button>
-      </a>
+      <button
+        mat-button
+        type="button"
+        class="btn-draft"
+        [disabled]="form.invalid"
+        (click)="onSave(true)"
+      >
+        Save as Draft
+      </button>
+      <button
+        mat-raised-button
+        type="submit"
+        class="btn-save"
+        [disabled]="form.invalid"
+        (click)="onSave(false)"
+      >
+        Publish Order Paper
+      </button>
     </div>
   </app-center-card>
 </app-background>

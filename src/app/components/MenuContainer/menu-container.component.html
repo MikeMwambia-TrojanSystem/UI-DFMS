@@ -1,4 +1,4 @@
-<span class="title" *ngIf="title">{{title}}</span>
+<span class="title" *ngIf="title">{{ title }}</span>
 <div class="container">
   <div class="content">
     <ng-content></ng-content>
@@ -6,18 +6,20 @@
   <div class="footer" *ngIf="notifications">
     <span>Notifications</span>
     <div class="number" *ngIf="notifications">
-      <div>{{notifications.length}}</div>
+      <div>{{ notifications.length }}</div>
     </div>
-    <mat-icon class="icon" (click)="onExpand()">{{expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}}</mat-icon>
+    <mat-icon class="icon" (click)="onExpand()">{{
+      expanded ? "keyboard_arrow_up" : "keyboard_arrow_down"
+    }}</mat-icon>
   </div>
   <div class="notification-container" *ngIf="expanded">
     <div class="notification" *ngFor="let noti of notifications">
       <div class="top">
-        <span>{{noti.label}}</span>
-        <a [href]="noti.url" class="view">View</a>
+        <span>{{ noti.label }}</span>
+        <!-- <span class="view">View</span> -->
       </div>
-      <div class="bottom">
-        {{getTimeDiff(noti.date)}}
+      <div class="bottom" *ngIf="noti.date">
+        {{ noti.date }}
       </div>
     </div>
   </div>

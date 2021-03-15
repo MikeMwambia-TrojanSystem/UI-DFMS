@@ -89,7 +89,6 @@ import { ListStatementResolver } from './shared/resolver/statement/list-statemen
 import { CanActivateStatement } from './shared/guard/statement/statement.guard';
 import { StatementResolver } from './shared/resolver/statement/statement.resolver';
 import { ListPetitionResolver } from './shared/resolver/petition/list-petition.resolver';
-import { ListPetitionerResolver } from './shared/resolver/petitioner/list-petitioner.resolver';
 import { PetitionResolver } from './shared/resolver/petition/petition.resolver';
 import { CanActivatePetition } from './shared/guard/petition/petition.guard';
 import { ListBillResolver } from './shared/resolver/bill/list-bill.resolver';
@@ -104,6 +103,11 @@ import { ListPersonnelResolver } from './shared/resolver/personnel/list-personne
 import { ListReportResolver } from './shared/resolver/report/list-report.resolver';
 import { CanActivateUploadReport } from './shared/guard/report/upload-report.guard';
 import { ReportResolver } from './shared/resolver/report/report.resolver';
+import { EditMessageComponent } from './views/edit/message/edit-message.component';
+import { MessagePreviewComponent } from './views/edit/message/preview/preview.component';
+import { CanActivateOrderPaper } from './shared/guard/order-paper/order-paper.guard';
+import { OrderPaperResolver } from './shared/resolver/order-paper/order-paper.resolver';
+import { ListOrderPaperResolver } from './shared/resolver/order-paper/list-order-paper.resolver';
 
 const routes: Routes = [
   // Login route
@@ -276,7 +280,13 @@ const routes: Routes = [
           reports: ListReportResolver,
         },
       },
-      { path: 'order-paper', component: ListOrderPaperComponent },
+      {
+        path: 'order-paper',
+        component: ListOrderPaperComponent,
+        resolve: {
+          orderPapers: ListOrderPaperResolver,
+        },
+      },
       { path: 'votebook', component: ListVoteBookComponent },
       { path: 'communication', component: ListCommunicationComponent },
       {
@@ -324,9 +334,6 @@ const routes: Routes = [
       {
         path: 'petitioners',
         component: AddPetitionerComponent,
-        resolve: {
-          petitioners: ListPetitionerResolver,
-        },
       },
 
       { path: 'upload', component: UploadPageComponent },
@@ -381,7 +388,21 @@ const routes: Routes = [
       },
       { path: 'report', component: ReportGenerateComponent },
       { path: 'order-paper', component: OrderPaperGenerateComponent },
+      {
+        path: 'order-paper/:id',
+        component: OrderPaperGenerateComponent,
+        canActivate: [CanActivateOrderPaper],
+        resolve: {
+          orderPaper: OrderPaperResolver,
+        },
+      },
       { path: 'paper-content', component: PaperContentGenerateComponent },
+      {
+        path: 'paper-content/:id',
+        component: PaperContentGenerateComponent,
+        resolve: { orderPaper: OrderPaperResolver },
+        canActivate: [CanActivateOrderPaper],
+      },
       { path: 'votebook', component: VotebookGenerateComponent },
     ],
   },
@@ -417,6 +438,14 @@ const routes: Routes = [
       {
         path: 'content/preview',
         component: ContentPreviewComponent,
+      },
+      {
+        path: 'message',
+        component: EditMessageComponent,
+      },
+      {
+        path: 'message/preview',
+        component: MessagePreviewComponent,
       },
     ],
   },

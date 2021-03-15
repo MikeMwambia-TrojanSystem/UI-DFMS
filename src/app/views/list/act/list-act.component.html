@@ -10,9 +10,9 @@
         [subjects]="[act.relatedTo]"
         class="item"
         [selectable]="selectable"
-        [sub]="'Act Title on'"
         [state]="act.publishState"
         [editUrl]="'/generate/act/' + act._id"
+        [downloadUrl]="act.uploadedFileURL"
         (delete)="onDelete(act._id)"
         (select)="onSelect(act)"
       >

@@ -169,15 +169,11 @@ export class MotionGenerateComponent implements OnInit {
         value.motionSignature = new Date().toISOString();
 
         this.motionService.postMotion(value).subscribe(() => {
-          if (this._cacheId) {
-            this.cacheService.emit(this._cacheId, null);
-          } else {
-            this.router.navigate(['/list/motion'], {
-              queryParams: {
-                state: state,
-              },
-            });
-          }
+          this.router.navigate(['/list/motion'], {
+            queryParams: {
+              state: state,
+            },
+          });
         });
       } else {
         value.id = this._motionId;
