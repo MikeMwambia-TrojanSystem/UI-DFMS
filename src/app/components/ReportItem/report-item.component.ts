@@ -18,7 +18,6 @@ export class ReportItemComponent {
   @Input() sub: string;
   @Input() state: string;
   @Input() editUrl: string;
-  @Input() downloadUrl: string;
 
   onSelect() {
     this.select.emit();

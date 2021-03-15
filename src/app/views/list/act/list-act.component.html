@@ -12,7 +12,6 @@
         [selectable]="selectable"
         [state]="act.publishState"
         [editUrl]="'/generate/act/' + act._id"
-        [downloadUrl]="act.uploadedFileURL"
         (delete)="onDelete(act._id)"
         (select)="onSelect(act)"
       >

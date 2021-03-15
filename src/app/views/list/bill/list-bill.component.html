@@ -15,7 +15,6 @@
         [state]="bill.publishState"
         (delete)="onDelete(bill._id)"
         [editUrl]="'/generate/bill/' + bill._id"
-        [downloadUrl]="bill.uploadedBillURL"
         (select)="onSelect(bill)"
       >
       </app-info-item>

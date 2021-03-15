@@ -14,7 +14,6 @@
         [sub]="'Report on'"
         [state]="report.publishState"
         [editUrl]="'/upload/report/' + report._id"
-        [downloadUrl]="report.uploadedFileURL"
         (select)="onSelect(report)"
         (delete)="onDelete(report._id)"
       >

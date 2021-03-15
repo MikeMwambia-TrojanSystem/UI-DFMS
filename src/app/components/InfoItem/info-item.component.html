@@ -37,9 +37,6 @@
   </button>
 </div>
 <div class="list-actions" *ngIf="state !== 'public' && selectable === false">
-  <a [href]="downloadUrl" *ngIf="downloadUrl">
-    <button mat-button class="list-actions-btn delete">Download</button>
-  </a>
   <a [routerLink]="[editUrl]">
     <button mat-button class="list-actions-btn edit">Edit</button>
   </a>
