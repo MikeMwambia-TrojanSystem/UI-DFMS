@@ -84,8 +84,6 @@ export class CacheService {
             newData = await callback(data, value.selected);
           }
 
-          console.log(this._data[id]);
-
           this._data[id].subscription.unsubscribe();
 
           this._data[id] = {

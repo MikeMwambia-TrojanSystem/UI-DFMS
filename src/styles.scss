@@ -60,6 +60,11 @@ textarea {
   }
 }
 
+.edit-link {
+  text-decoration: underline;
+  color: #008000;
+}
+
 // Material Overriding CSS
 .mat-radio-button.mat-accent .mat-radio-inner-circle,
 .mat-radio-button.mat-accent
@@ -84,6 +89,6 @@ mat-chip.state-chip {
 
 //Quill Editor Overriding CSS
 .ql-container {
-  min-width: 800px;
+  // min-width: 800px;
   min-height: 500px;
 }

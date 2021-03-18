@@ -74,6 +74,14 @@ import { ListStatementComponent } from './views/list/statement/list-statement.co
 import { ListTentativeBusinesssComponent } from './views/list/tentative-business/list-tentative-business.component';
 import { ListSubcountyComponent } from './views/list/subcounty/list-subcounty.component';
 import { PublishStatusComponent } from './views/publish-status/publish-status.component';
+import { ListDepartmentComponent } from './views/list/department/list-department.component';
+import { ReportViewComponent } from './views/view/report/report-view.component';
+import { EditMessageComponent } from './views/edit/message/edit-message.component';
+import { MessagePreviewComponent } from './views/edit/message/preview/preview.component';
+import { EditNoticeMotionComponent } from './views/edit/notice-motion/edit-notice-motion.component';
+import { VotebookNoticeMotionPreviewComponent } from './views/edit/notice-motion/preview/preview.component';
+import { EditBillComponent } from './views/edit/bill/edit-bill.component';
+import { VotebookBillPreviewComponent } from './views/edit/bill/preview/preview.component';
 
 import { AppComponent } from './app.component';
 import { BackButtonComponent } from './components/BackButton/back-button.component';
@@ -91,10 +99,8 @@ import { OrderPaperItemComponent } from './components/OrderPaperItem/order-paper
 import { ReportItemComponent } from './components/ReportItem/report-item.component';
 import { VerifyButtonComponent } from './components/VerifyButton/verify-button.component';
 import { StatementItemComponent } from './components/StatementItem/statement-item.component';
-import { ListDepartmentComponent } from './views/list/department/list-department.component';
-import { ReportViewComponent } from './views/view/report/report-view.component';
-import { EditMessageComponent } from './views/edit/message/edit-message.component';
-import { MessagePreviewComponent } from './views/edit/message/preview/preview.component';
+import { EditMotionComponent } from './views/edit/motion/edit-motion.component';
+import { VotebookMotionPreviewComponent } from './views/edit/motion/preview/preview.component';
 
 const dbConfig: DBConfig = {
   name: 'MyDb',
@@ -195,6 +201,12 @@ const dbConfig: DBConfig = {
     ReportViewComponent,
     EditMessageComponent,
     MessagePreviewComponent,
+    EditNoticeMotionComponent,
+    VotebookNoticeMotionPreviewComponent,
+    EditBillComponent,
+    VotebookBillPreviewComponent,
+    EditMotionComponent,
+    VotebookMotionPreviewComponent,
   ],
   imports: [
     BrowserModule,

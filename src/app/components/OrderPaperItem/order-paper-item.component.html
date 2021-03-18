@@ -14,9 +14,15 @@
       <span class="label">{{ state }}</span>
     </div>
   </div>
-  <button mat-button *ngIf="selectable" class="btn">Select</button>
+  <button mat-button *ngIf="selectable" class="btn" (click)="onSelect()">
+    Select
+  </button>
   <a [routerLink]="[editUrl]">
-    <button mat-icon-button *ngIf="!selectable" class="btn">
+    <button
+      mat-icon-button
+      *ngIf="state !== 'public' && !selectable"
+      class="btn"
+    >
       <mat-icon> keyboard_arrow_right </mat-icon>
     </button>
   </a>
@@ -30,7 +36,12 @@
   </button>
 </div>
 <div class="list-actions" *ngIf="state === 'public' && !selectable">
-  <button mat-button class="list-actions-btn edit" (click)="onDownload()">
+  <button
+    mat-button
+    class="list-actions-btn edit"
+    (click)="onDownload()"
+    *ngIf="downloadUrl"
+  >
     Download
   </button>
 </div>

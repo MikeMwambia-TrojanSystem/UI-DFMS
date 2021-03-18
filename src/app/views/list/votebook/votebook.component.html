@@ -3,10 +3,23 @@
     <h1 class="title">Votebooks</h1>
     <app-search-bar></app-search-bar>
     <div>
-      <app-order-paper-item *ngFor="let votebook of votebooks" [number]="votebook.number" [date]="votebook.date"
-        [views]="votebook.views" class="item" [selectable]="selectabe" [sub]="'Vote Book for Order Paper'"
-        [state]="state">
+      <app-order-paper-item
+        *ngFor="let votebook of votebooks"
+        [number]="votebook.orderPapersNo"
+        [date]="votebook.datePublished"
+        class="item"
+        [selectable]="selectable"
+        [sub]="'Vote Book for Order Paper'"
+        [state]="votebook.publishState"
+        [editUrl]="getEditUrl(votebook)"
+        (delete)="onDelete(votebook._id)"
+        (select)="onSelect(votebook)"
+      >
       </app-order-paper-item>
+    </div>
+    <div *ngIf="!votebooks.length" class="list-no-value">
+      <p>No Order Papers Listed!</p>
+      <p (click)="onCreateNew()" class="new">Create Order Paper</p>
     </div>
   </app-center-card>
 </app-background>

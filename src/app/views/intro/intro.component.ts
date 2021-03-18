@@ -488,7 +488,11 @@ export class IntroComponent {
       actions: [
         {
           label: 'Generation Votebook',
-          url: '/generate/votebook',
+          url: '/list/order-paper',
+          query: {
+            purpose: 'NEW_VOTEBOOK',
+            select: 'true',
+          },
         },
         {
           label: 'View Votebook in draft status',

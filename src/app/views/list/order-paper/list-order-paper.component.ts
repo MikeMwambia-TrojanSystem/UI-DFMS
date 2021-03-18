@@ -11,6 +11,7 @@ import { OrderPaper } from 'src/app/shared/types/order-paper';
   templateUrl: './list-order-paper.component.html',
 })
 export class ListOrderPaperComponent implements OnInit {
+  private _cacheId: string;
   orderPapers: OrderPaper[];
 
   selectable: boolean;
@@ -18,18 +19,28 @@ export class ListOrderPaperComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private orderPaperService: OrderPaperService,
-    private router: Router
+    private router: Router,
+    private cacheService: CacheService
   ) {}
 
   ngOnInit(): void {
     const queryParams = this.route.snapshot.queryParams;
     this.selectable = queryParams.select || false;
+    this._cacheId = queryParams.id;
 
     this.route.data
       .pipe(take(1))
       .subscribe(({ orderPapers }: { orderPapers: OrderPaper[] }) => {
         this.orderPapers = orderPapers;
       });
+  }
+
+  onSelect(orderPaper: OrderPaper) {
+    if (this.route.snapshot.queryParams.purpose === 'NEW_VOTEBOOK') {
+      return this.router.navigate(['/generate/votebook/', orderPaper._id]);
+    }
+
+    this.cacheService.emit(this._cacheId, orderPaper);
   }
 
   onCreateNew() {

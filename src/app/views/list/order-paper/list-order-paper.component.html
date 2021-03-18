@@ -13,6 +13,7 @@
         [state]="orderPaper.publishState"
         [editUrl]="'/generate/order-paper/' + orderPaper._id"
         (delete)="onDelete(orderPaper)"
+        (select)="onSelect(orderPaper)"
       >
       </app-order-paper-item>
     </div>

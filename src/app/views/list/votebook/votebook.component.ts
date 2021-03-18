@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-
-interface Votebook {
-  number: number;
-  date: Date;
-  views: number;
-  state: string;
-}
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { map, take } from 'rxjs/operators';
+import { CacheService } from 'src/app/services/cache.service';
+import { OrderPaperService } from 'src/app/services/order-paper.service';
+import { VotebookService } from 'src/app/services/votebook.service';
+import { OrderPaper } from 'src/app/shared/types/order-paper';
+import { Votebook } from 'src/app/shared/types/votebook';
 
 @Component({
   selector: 'app-list-votebook',
@@ -14,48 +14,67 @@ interface Votebook {
   styleUrls: ['./votebook.component.scss'],
 })
 export class ListVoteBookComponent implements OnInit {
-  /**
-   * Reports mock data
-   */
-  votebooks: Votebook[] = [
-    {
-      number: 178,
-      date: new Date(),
-      views: 28,
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      number: 178,
-      date: new Date(),
-      views: 28,
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      number: 178,
-      date: new Date(),
-      views: 28,
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      number: 178,
-      date: new Date(),
-      views: 28,
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-  ];
+  private _cacheId: string;
+  private _orderPapers: OrderPaper[];
 
-  selectabe: boolean;
-  state: string; // This props is just for example and should be deleted when implementing a fetch request to backend.
+  votebooks: Votebook[];
 
-  constructor(private route: ActivatedRoute) {}
+  selectable: boolean;
+
+  constructor(
+    private route: ActivatedRoute,
+    private cacheService: CacheService,
+    private votebookService: VotebookService,
+    private router: Router,
+    private orderPaperService: OrderPaperService
+  ) {}
 
   ngOnInit(): void {
-    this.selectabe = this.route.snapshot.queryParams.select || false;
+    // Get query data
+    const queryParams = this.route.snapshot.queryParams;
+    this.selectable = queryParams.select || false;
+    this._cacheId = queryParams.id;
 
-    /**
-     * These lines are just for dynamic state example and should be deleted when implementing a fetch request to backend.
-     */
-    this.state = this.route.snapshot.queryParams.state;
-    //=====================================================================
+    // Get resolved data
+    this.route.data
+      .pipe(take(1))
+      .subscribe(({ votebooks }: { votebooks: Votebook[] }) => {
+        this.votebooks = votebooks;
+      });
+
+    this.orderPaperService
+      .getOrderPapers()
+      .pipe(take(1))
+      .subscribe((orderPapers) => {
+        this._orderPapers = orderPapers;
+      });
+  }
+
+  getEditUrl(votebook: Votebook) {
+    try {
+      const orderPaperId = this._orderPapers.find(
+        (o) => o.orderPaperNo === votebook.orderPapersNo
+      )._id;
+
+      return `/generate/votebook/${orderPaperId}/${votebook._id}`;
+    } catch (err) {
+      return undefined;
+    }
+  }
+
+  onSelect(votebook: Votebook) {
+    this.cacheService.emit(this._cacheId, votebook);
+  }
+
+  onDelete(id: string) {
+    this.votebookService.deleteVotebook(id).subscribe(() => {
+      window.location.reload();
+    });
+  }
+
+  onCreateNew() {
+    this.router.navigate(['/list/order-paper'], {
+      queryParams: { select: true, purpose: 'NEW_VOTEBOOK' },
+    });
   }
 }

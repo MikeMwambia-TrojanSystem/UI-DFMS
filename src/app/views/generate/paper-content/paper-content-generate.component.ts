@@ -10,7 +10,10 @@ import { Location } from '@angular/common';
 import moment from 'moment';
 import _ from 'lodash';
 
-import { MenuNotification } from 'src/app/components/MenuContainer/menu-container.component';
+import {
+  MenuItem,
+  MenuNotification,
+} from 'src/app/components/MenuContainer/menu-container.component';
 import {
   CacheConfigs,
   CachedCallback,
@@ -20,14 +23,6 @@ import { OrderPaperCached } from '../order-paper/order-paper-generate.component'
 import { OrderPaperService } from 'src/app/services/order-paper.service';
 import { take } from 'rxjs/operators';
 import { OrderPaper } from 'src/app/shared/types/order-paper';
-
-interface Item {
-  key: string;
-  label: string;
-  select?: string;
-  generate?: string;
-  notifications?: MenuNotification[];
-}
 
 enum SelectUrl {
   'petitionId' = '/list/petition',
@@ -61,7 +56,7 @@ export class PaperContentGenerateComponent implements OnInit {
   private _paperId: string;
   private _mode: 'creating' | 'editing' = 'creating';
 
-  items: Item[] = [
+  items: MenuItem[] = [
     {
       key: 'adminContent',
       label: 'Administration of Oath',

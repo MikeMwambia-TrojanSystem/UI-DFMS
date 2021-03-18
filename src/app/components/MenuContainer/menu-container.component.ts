@@ -8,6 +8,14 @@ export interface MenuNotification {
   url?: string;
 }
 
+export interface MenuItem {
+  key: string;
+  label: string;
+  select?: string;
+  generate?: string;
+  notifications?: MenuNotification[];
+}
+
 @Component({
   selector: 'app-menu-container',
   templateUrl: './menu-container.component.html',

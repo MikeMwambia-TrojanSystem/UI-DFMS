@@ -6,6 +6,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./order-paper-item.component.scss'],
 })
 export class OrderPaperItemComponent {
+  @Output() select = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Output() edit = new EventEmitter<void>();
   @Input() number: number;
@@ -15,10 +16,15 @@ export class OrderPaperItemComponent {
   @Input() sub: string;
   @Input() state: string;
   @Input() editUrl: string;
+  @Input() downloadUrl: string;
 
   onDelete() {
     this.delete.emit();
   }
 
   onDownload() {}
+
+  onSelect() {
+    this.select.emit();
+  }
 }

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { CacheService } from 'src/app/services/cache.service';
 
 @Component({
@@ -9,28 +7,32 @@ import { CacheService } from 'src/app/services/cache.service';
   templateUrl: './preview.component.html',
   styleUrls: ['./preview.component.scss'],
 })
-export class VotebookPreviewComponent implements OnInit {
+export class VotebookNoticeMotionPreviewComponent implements OnInit {
   content = new FormControl('', Validators.required);
+  status = new FormControl({ value: '', disabled: true }, Validators.required);
 
   page = 'Order Paper on the Development of Kura';
 
-  wordsNumber = 0;
+  wordsNumber: number;
 
-  constructor(
-    private route: ActivatedRoute,
-    private cacheService: CacheService
-  ) {}
+  constructor(private cacheService: CacheService) {}
 
   ngOnInit(): void {
-    const { content } = this.cacheService.getData<{ content: string }>(
-      'EDIT_VOTEBOOK_PREVIEW'
-    );
+    const { content, status } = this.cacheService.getData<{
+      content: string;
+      status: string;
+    }>('EDIT_VOTEBOOK_PREVIEW');
 
     this.content.setValue(content);
+    this.status.setValue(status);
 
     this.wordsNumber = ((content && content.match(/ /g)) || []).length;
 
-    if (content.slice(content.length - 1) !== ' ') {
+    if (
+      content &&
+      content.charAt(content.length - 1) !== ' ' &&
+      content.length
+    ) {
       this.wordsNumber++;
     }
   }

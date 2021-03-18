@@ -18,6 +18,7 @@ import { Personnel, PersonnelPost } from '../shared/types/personnel';
 import { Report, ReportPost } from '../shared/types/report';
 import { PhoneVerification } from '../shared/types/verification';
 import { OrderPaper, OrderPaperPost } from '../shared/types/order-paper';
+import { Votebook, VotebookPost } from '../shared/types/votebook';
 
 interface ApiResponse<T> {
   message: T;
@@ -122,6 +123,13 @@ export class ApiService {
     );
   }
 
+  createVotebook(votebook: VotebookPost) {
+    return this._postRequest<VotebookPost, Votebook>(
+      'votebook/create',
+      votebook
+    );
+  }
+
   // GETs
   private _getRequest<T>(endpoint: string) {
     return this.http
@@ -175,6 +183,10 @@ export class ApiService {
 
   getOrderPaper() {
     return this._getRequest<OrderPaper>('orderPaper/getAllOrderPapers');
+  }
+
+  getVoteboook() {
+    return this._getRequest<Votebook>('votebook/getAllVotebooks');
   }
 
   //DELETEs
@@ -241,6 +253,10 @@ export class ApiService {
       'orderPaper/deleteSpecificPaper',
       id
     );
+  }
+
+  deleteVotebook(id: string) {
+    return this._deleteRequest<Votebook>('votebook/deleteVotebook', id);
   }
 
   //UPDATEs
@@ -328,6 +344,13 @@ export class ApiService {
     return this._updateRequest<OrderPaperPost, OrderPaper>(
       'orderPaper/updateSpecificPaper',
       orderPaper
+    );
+  }
+
+  updateVotebook(votebook: VotebookPost) {
+    return this._updateRequest<VotebookPost, Votebook>(
+      'votebook/updateVotebook',
+      votebook
     );
   }
 

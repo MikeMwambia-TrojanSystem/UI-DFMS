@@ -1,0 +1,57 @@
+<app-background>
+  <app-center-card>
+    <div class="content">
+      <h1 class="title">Generate Votebook on {{ title }}</h1>
+      <form>
+        <quill-editor [formControl]="content"></quill-editor>
+      </form>
+      <div class="words">
+        <span>No of Words: </span>
+        <span class="limit">{{ words }}</span>
+      </div>
+      <div class="select">
+        <mat-form-field>
+          <mat-label>Select Status</mat-label>
+          <mat-select [formControl]="status">
+            <mat-option value="passed">Passed</mat-option>
+            <mat-option value="dropped">Dropped</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Select Motion</mat-label>
+          <mat-select [formControl]="motionId">
+            <mat-option *ngFor="let motion of motions" [value]="motion._id">{{
+              motion.content
+            }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <!-- <div class="pages">
+        <div class="previous" *ngIf="previousPage > 0">
+          <span
+            >Previous page: <span class="page">{{ previousPage }}</span></span
+          >
+        </div>
+        <div class="current">
+          <span
+            >Currently writing page:
+            <span class="page">{{ currentPage }}</span></span
+          >
+        </div>
+      </div> -->
+      <div class="btn-container">
+        <button
+          mat-raised-button
+          class="publish-btn"
+          [disabled]="content.invalid || status.invalid"
+          (click)="onPublish()"
+        >
+          Save Content
+        </button>
+      </div>
+      <div class="hr"></div>
+      <h2 class="subtitle">{{ title }}</h2>
+      <app-oath-content [content]="orderPaperContent"></app-oath-content>
+    </div>
+  </app-center-card>
+</app-background>

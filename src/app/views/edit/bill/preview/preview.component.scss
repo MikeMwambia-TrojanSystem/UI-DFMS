@@ -39,6 +39,15 @@
   border-radius: 10px;
 }
 
+.select {
+  display: flex;
+  flex-direction: column;
+
+  mat-form-field {
+    margin-right: auto;
+  }
+}
+
 :host ::ng-deep {
   .ql-toolbar {
     margin-top: 15px;
