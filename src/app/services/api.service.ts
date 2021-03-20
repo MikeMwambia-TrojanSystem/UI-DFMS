@@ -393,4 +393,52 @@ export class ApiService {
         })
       );
   }
+
+  // ACCOUNT
+  createAccount(
+    form: any
+  ): Observable<
+    ApiResponse<{ message: string; request_id: string; userId: string }>
+  > {
+    return this.http
+      .post<
+        ApiResponse<{ message: string; request_id: string; userId: string }>
+      >(this._baseUrl + 'akuru/create', undefined, { params: form })
+      .pipe(catchError(errorHandler));
+  }
+
+  verifyAccount(form: any): Observable<any> {
+    return this.http
+      .post(this._baseUrl + 'akuru/verifyCode', undefined, { params: form })
+      .pipe(catchError(errorHandler));
+  }
+
+  login(form: { username: string; password: string }): Observable<any> {
+    return this.http
+      .get(this._baseUrl + 'akuru/login', { params: form })
+      .pipe(catchError(errorHandler));
+  }
+
+  changePassword(form: {
+    username: string;
+    password: string;
+  }): Observable<{
+    success: { message: string; request_id: string; userId: string };
+  }> {
+    return this.http
+      .get<{
+        success: { message: string; request_id: string; userId: string };
+      }>(this._baseUrl + 'akuru/changePassword', {
+        params: form,
+      })
+      .pipe(catchError(errorHandler));
+  }
+
+  updatePassword(form: any) {
+    return this.http
+      .get(this._baseUrl + 'akuru/updatePassword', {
+        params: form,
+      })
+      .pipe(catchError(errorHandler));
+  }
 }

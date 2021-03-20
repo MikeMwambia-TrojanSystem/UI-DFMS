@@ -27,6 +27,7 @@ export class CreateMcaComponent implements OnInit {
   private _mode: 'editing' | 'creating';
   private _mcaId: string;
   private _cacheId: string;
+  private _createdUser = false;
 
   form = new FormGroup({
     assemblyId: new FormControl(
@@ -37,7 +38,7 @@ export class CreateMcaComponent implements OnInit {
     dateCreated: new FormControl(''),
     group: new FormControl('MCA', Validators.required),
     name: new FormControl('', Validators.required),
-    phoneNumber: new FormControl('', [
+    phoneNumber: new FormControl({ value: '', disabled: this._createdUser }, [
       Validators.required,
       phoneNumberValidator,
     ]),
@@ -65,7 +66,9 @@ export class CreateMcaComponent implements OnInit {
 
   ngOnInit(): void {
     // Get cache id from query url
-    this._cacheId = this.route.snapshot.queryParams.id;
+    const queryParams = this.route.snapshot.queryParams;
+    this._cacheId = queryParams.id;
+    this._createdUser = queryParams.user === 'true';
 
     // Populate mca data from resolver using param id
     const committeeId = this.route.snapshot.params.id;
@@ -92,6 +95,15 @@ export class CreateMcaComponent implements OnInit {
         });
     } else {
       this._mode = 'creating';
+    }
+
+    if (this._createdUser) {
+      const form = JSON.parse(localStorage.getItem('account'));
+
+      this.form.patchValue({
+        ...form,
+      });
+      this.form.get('phoneNumber').disable();
     }
 
     // Rehydrate cached form data if there's any
@@ -182,28 +194,10 @@ export class CreateMcaComponent implements OnInit {
     // Subcription callback
     const subCallback = ({ mcaId, request_id }: any) => {
       if (published === true) {
-        this.cacheService.cache<
-          Cache & { userId: string; request_id: string },
-          boolean
-        >(
-          'CREATE_MCA',
-          {
-            form: this.form,
-            filename: this.filename,
-            userId: mcaId,
-            request_id,
-          },
-          undefined,
-          (data) => {
-            redirecting();
-
-            return data;
-          }
-        );
-
         this.router.navigate(['/verification/phone'], {
           queryParams: {
-            id: 'CREATE_MCA',
+            userId: mcaId,
+            request_id,
           },
         });
       } else {

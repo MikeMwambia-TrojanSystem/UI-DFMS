@@ -1,6 +1,11 @@
 import { Location } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { of, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { AccountService } from 'src/app/services/account.service';
 
 import { ApiService } from 'src/app/services/api.service';
 import { CacheService } from 'src/app/services/cache.service';
@@ -11,8 +16,9 @@ import { PhoneVerification } from 'src/app/shared/types/verification';
   styleUrls: ['./phone-verification.component.scss'],
 })
 export class PhoneVerificationComponent implements OnInit {
-  private _cacheId: string;
   private _verification: PhoneVerification;
+  private _user: boolean;
+  private _cacheId: string;
   valid = false;
   redirect: string;
 
@@ -21,32 +27,24 @@ export class PhoneVerificationComponent implements OnInit {
     private cacheService: CacheService,
     private apiService: ApiService,
     private router: Router,
-    private location: Location
+    private location: Location,
+    private accountService: AccountService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
-    const queryParams = this.route.snapshot.queryParams;
-    this._cacheId = queryParams.id;
-
     try {
-      const data = this.cacheService.data[this._cacheId];
+      const queryParams = this.route.snapshot.queryParams;
+      const { request_id, userId, user } = queryParams;
 
-      if (!data.subscription.closed) {
-        const { userId, request_id } = data.data as {
-          userId: string;
-          request_id: string;
-        };
-
-        this._verification = {
-          ...this._verification,
-          userId,
-          request_id,
-        };
-      } else {
-        throw new Error('NO_SUB');
-      }
+      this._cacheId = queryParams.id;
+      this._user = user === 'true';
+      this._verification = {
+        code: '',
+        request_id,
+        userId,
+      };
     } catch (error) {
-      alert('Session Expired');
       this.location.back();
     }
   }
@@ -63,10 +61,30 @@ export class PhoneVerificationComponent implements OnInit {
   }
 
   onSend() {
-    this.apiService
-      .phoneVerification(this._verification)
-      .subscribe((result) => {
+    if (this._user) {
+      this._verification.db = 'users';
+
+      this.accountService
+        .verifyOtp(this._verification)
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            this.router.navigate(['/signup/account']);
+
+            return throwError(error);
+          })
+        )
+        .subscribe(() => {
+          this.router.navigate(['/create/mca'], {
+            queryParams: {
+              user: true,
+            },
+          });
+        });
+    }
+    this.apiService.phoneVerification(this._verification).subscribe(() => {
+      if (this._cacheId) {
         this.cacheService.emit(this._cacheId, null);
-      });
+      }
+    });
   }
 }

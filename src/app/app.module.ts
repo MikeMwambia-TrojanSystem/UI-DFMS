@@ -45,7 +45,7 @@ import { MotionGenerateComponent } from './views/generate/motion/motion-generate
 import { PetitionGenerateComponent } from './views/generate/petition/petition-generate.component';
 import { ListMotionComponent } from './views/list/motion/list-motion.component';
 import { IntroComponent } from './views/intro/intro.component';
-import { ResetPasswordComponent } from './views/signup/reset-password/reset-password.component';
+import { ResetPasswordComponent } from './views/reset-password/reset-password.component';
 import { ReportGenerateComponent } from './views/generate/report/report-generate.component';
 import { OrderPaperGenerateComponent } from './views/generate/order-paper/order-paper-generate.component';
 import { ReportMethodsComponent } from './views/report-methods/report-methods.component';
@@ -101,6 +101,7 @@ import { VerifyButtonComponent } from './components/VerifyButton/verify-button.c
 import { StatementItemComponent } from './components/StatementItem/statement-item.component';
 import { EditMotionComponent } from './views/edit/motion/edit-motion.component';
 import { VotebookMotionPreviewComponent } from './views/edit/motion/preview/preview.component';
+import { UpdatePasswordComponent } from './views/reset-password/update-password/update-password.component';
 
 const dbConfig: DBConfig = {
   name: 'MyDb',
@@ -207,6 +208,7 @@ const dbConfig: DBConfig = {
     VotebookBillPreviewComponent,
     EditMotionComponent,
     VotebookMotionPreviewComponent,
+    UpdatePasswordComponent,
   ],
   imports: [
     BrowserModule,

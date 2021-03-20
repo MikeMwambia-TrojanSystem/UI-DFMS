@@ -32,7 +32,7 @@ import { MotionGenerateComponent } from './views/generate/motion/motion-generate
 import { PetitionGenerateComponent } from './views/generate/petition/petition-generate.component';
 import { ListMotionComponent } from './views/list/motion/list-motion.component';
 import { IntroComponent } from './views/intro/intro.component';
-import { ResetPasswordComponent } from './views/signup/reset-password/reset-password.component';
+import { ResetPasswordComponent } from './views/reset-password/reset-password.component';
 import { ReportGenerateComponent } from './views/generate/report/report-generate.component';
 import { OrderPaperGenerateComponent } from './views/generate/order-paper/order-paper-generate.component';
 import { ReportMethodsComponent } from './views/report-methods/report-methods.component';
@@ -119,10 +119,13 @@ import { VotebookMotionPreviewComponent } from './views/edit/motion/preview/prev
 import { CanActivateVotebook } from './shared/guard/votebook/votebook.guard';
 import { VotebookResolver } from './shared/resolver/votebook/votebook.resolver';
 import { ListVotebookResolver } from './shared/resolver/votebook/list-votebook.resolver';
+import { UpdatePasswordComponent } from './views/reset-password/update-password/update-password.component';
 
 const routes: Routes = [
   // Login route
   { path: 'login', component: LoginComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'update-password', component: UpdatePasswordComponent },
 
   // Verification parent routte
   {
@@ -144,7 +147,6 @@ const routes: Routes = [
       { path: 'login', component: LoginSignupComponent },
       { path: 'system', component: SystemSignupComponent },
       { path: 'notifications', component: NotificationsSignupComponent },
-      { path: 'reset-password', component: ResetPasswordComponent },
     ],
   },
 
