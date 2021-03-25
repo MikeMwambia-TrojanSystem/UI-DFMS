@@ -3,17 +3,22 @@
     <h1 class="title">Department List</h1>
     <app-search-bar></app-search-bar>
     <div *ngIf="departments.length">
-      <app-list-item *ngFor="let department of departments" [title]="department.name" [subtitle]="department.county"
-        [subcounty]="department.subCounty" [selectable]="selectable" (select)="onSelect(department)"
-        [editUrl]="'/create/department/' + department._id" (delete)="onDelete(department._id)"
-        [published]="state !== 'draft'">
+      <app-list-item
+        *ngFor="let department of departments"
+        [title]="department.name"
+        [subtitle]="department.county"
+        [subcounty]="department.subCounty"
+        [selectable]="selectable"
+        (select)="onSelect(department)"
+        [editUrl]="'/create/department/' + department._id"
+        (delete)="onDelete(department._id)"
+        [published]="state !== 'draft'"
+      >
       </app-list-item>
     </div>
-    <div *ngIf="!departments.length" class="list-no-value">
-      <p>No Departments Listed!</p>
-      <p (click)="onCreateNew()" class="new">
-        Create Department
-      </p>
+    <div class="list-no-value">
+      <p *ngIf="!departments.length">No Departments Listed!</p>
+      <p (click)="onCreateNew()" class="new">Create Department</p>
     </div>
   </app-center-card>
 </app-background>

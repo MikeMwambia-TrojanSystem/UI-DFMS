@@ -18,8 +18,8 @@
         (select)="onSelect(motion)"
       ></app-info-item>
     </div>
-    <div *ngIf="!motions.length" class="list-no-value">
-      <p>No Motions Listed!</p>
+    <div class="list-no-value">
+      <p *ngIf="!motions.length">No Motions Listed!</p>
       <p (click)="onCreateNew()" class="new">Create Motion</p>
     </div>
   </app-center-card>

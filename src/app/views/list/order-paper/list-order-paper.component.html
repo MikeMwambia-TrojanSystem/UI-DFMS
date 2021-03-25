@@ -17,8 +17,8 @@
       >
       </app-order-paper-item>
     </div>
-    <div *ngIf="!orderPapers.length" class="list-no-value">
-      <p>No Order Papers Listed!</p>
+    <div class="list-no-value">
+      <p *ngIf="!orderPapers.length">No Order Papers Listed!</p>
       <p (click)="onCreateNew()" class="new">Create Order Paper</p>
     </div>
   </app-center-card>

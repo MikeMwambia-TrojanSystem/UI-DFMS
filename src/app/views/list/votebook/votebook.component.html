@@ -17,8 +17,8 @@
       >
       </app-order-paper-item>
     </div>
-    <div *ngIf="!votebooks.length" class="list-no-value">
-      <p>No Votebook Listed!</p>
+    <div class="list-no-value">
+      <p *ngIf="!votebooks.length">No Votebook Listed!</p>
       <p (click)="onCreateNew()" class="new">Create Votebook</p>
     </div>
   </app-center-card>

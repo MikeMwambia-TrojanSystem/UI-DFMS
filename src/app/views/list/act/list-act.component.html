@@ -17,8 +17,8 @@
       >
       </app-info-item>
     </div>
-    <div *ngIf="!acts.length" class="list-no-value">
-      <p>No Acts Listed!</p>
+    <div class="list-no-value">
+      <p *ngIf="!acts.length">No Acts Listed!</p>
       <p (click)="onCreateNew()" class="new">Create Act</p>
     </div>
   </app-center-card>

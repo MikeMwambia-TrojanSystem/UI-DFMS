@@ -15,8 +15,8 @@
       >
       </app-statement-item>
     </div>
-    <div *ngIf="!statements.length" class="list-no-value">
-      <p>No Statements Listed!</p>
+    <div class="list-no-value">
+      <p *ngIf="!statements.length">No Statements Listed!</p>
       <p (click)="onCreateNew()" class="new">Create Statement</p>
     </div>
   </app-center-card>

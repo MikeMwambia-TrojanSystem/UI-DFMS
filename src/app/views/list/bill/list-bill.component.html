@@ -19,8 +19,8 @@
       >
       </app-info-item>
     </div>
-    <div *ngIf="!bills.length" class="list-no-value">
-      <p>No Bills Listed!</p>
+    <div class="list-no-value">
+      <p *ngIf="!bills.length">No Bills Listed!</p>
       <p (click)="onCreateNew()" class="new">Create Bill</p>
     </div>
   </app-center-card>

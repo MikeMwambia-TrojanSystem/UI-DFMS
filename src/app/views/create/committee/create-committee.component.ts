@@ -184,10 +184,12 @@ export class CreateCommitteeComponent implements OnInit {
         },
       }),
       (form, { _id, name }) => {
-        form.patchValue({
-          Chairname: name,
-          chairId: _id,
-        }); // Patch cached form with new chairman information.
+        if (form.value.viceChairId !== _id) {
+          form.patchValue({
+            Chairname: name,
+            chairId: _id,
+          }); // Patch cached form with new chairman information.
+        }
 
         return form;
       }
@@ -218,10 +220,12 @@ export class CreateCommitteeComponent implements OnInit {
         },
       }),
       (form, { _id, name }) => {
-        form.patchValue({
-          viceChair: name,
-          viceChairId: _id,
-        }); // Patch cached form with new vice chairman information.
+        if (form.value.chairId !== _id) {
+          form.patchValue({
+            viceChair: name,
+            viceChairId: _id,
+          }); // Patch cached form with new vice chairman information.
+        }
 
         return form;
       }

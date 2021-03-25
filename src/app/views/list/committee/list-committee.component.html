@@ -3,16 +3,22 @@
     <h1 class="title">Committee List</h1>
     <app-search-bar></app-search-bar>
     <div *ngIf="committees.length">
-      <app-list-item *ngFor="let committee of committees" [title]="committee.name" [subtitle]="committee.createdAt"
-        [isSubDate]="true" [selectable]="selectable" [published]="committee.published" (select)="onSelect(committee)"
-        [editUrl]="'/create/committee/' + committee._id" (delete)="onDelete(committee._id)">
+      <app-list-item
+        *ngFor="let committee of committees"
+        [title]="committee.name"
+        [subtitle]="committee.createdAt"
+        [isSubDate]="true"
+        [selectable]="selectable"
+        [published]="committee.published"
+        (select)="onSelect(committee)"
+        [editUrl]="'/create/committee/' + committee._id"
+        (delete)="onDelete(committee._id)"
+      >
       </app-list-item>
     </div>
-    <div *ngIf="!committees.length" class="list-no-value">
-      <p>No Committees Listed!</p>
-      <p (click)="onCreateNew()" class="new">
-        Create Committee
-      </p>
+    <div class="list-no-value">
+      <p *ngIf="!committees.length">No Committees Listed!</p>
+      <p (click)="onCreateNew()" class="new">Create Committee</p>
     </div>
   </app-center-card>
 </app-background>
