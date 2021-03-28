@@ -252,15 +252,11 @@ export class BillGenerateComponent implements OnInit {
   onSave(published: boolean) {
     // Subcription callback
     const subCallback = (state: 'public' | 'private' | 'draft') => {
-      if (this._cacheId) {
-        this.cacheService.emit(this._cacheId, null);
-      } else {
-        this.router.navigate(['/list/bill'], {
-          queryParams: {
-            state: state,
-          },
-        });
-      }
+      this.router.navigate(['/list/bill'], {
+        queryParams: {
+          state: state,
+        },
+      });
     };
 
     /**

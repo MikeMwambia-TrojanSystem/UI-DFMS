@@ -32,7 +32,7 @@ import { MotionGenerateComponent } from './views/generate/motion/motion-generate
 import { PetitionGenerateComponent } from './views/generate/petition/petition-generate.component';
 import { ListMotionComponent } from './views/list/motion/list-motion.component';
 import { IntroComponent } from './views/intro/intro.component';
-import { ResetPasswordComponent } from './views/signup/reset-password/reset-password.component';
+import { ResetPasswordComponent } from './views/reset-password/reset-password.component';
 import { ReportGenerateComponent } from './views/generate/report/report-generate.component';
 import { OrderPaperGenerateComponent } from './views/generate/order-paper/order-paper-generate.component';
 import { ReportMethodsComponent } from './views/report-methods/report-methods.component';
@@ -89,7 +89,6 @@ import { ListStatementResolver } from './shared/resolver/statement/list-statemen
 import { CanActivateStatement } from './shared/guard/statement/statement.guard';
 import { StatementResolver } from './shared/resolver/statement/statement.resolver';
 import { ListPetitionResolver } from './shared/resolver/petition/list-petition.resolver';
-import { ListPetitionerResolver } from './shared/resolver/petitioner/list-petitioner.resolver';
 import { PetitionResolver } from './shared/resolver/petition/petition.resolver';
 import { CanActivatePetition } from './shared/guard/petition/petition.guard';
 import { ListBillResolver } from './shared/resolver/bill/list-bill.resolver';
@@ -104,10 +103,29 @@ import { ListPersonnelResolver } from './shared/resolver/personnel/list-personne
 import { ListReportResolver } from './shared/resolver/report/list-report.resolver';
 import { CanActivateUploadReport } from './shared/guard/report/upload-report.guard';
 import { ReportResolver } from './shared/resolver/report/report.resolver';
+import { EditMessageComponent } from './views/edit/message/edit-message.component';
+import { MessagePreviewComponent } from './views/edit/message/preview/preview.component';
+import { CanActivateOrderPaper } from './shared/guard/order-paper/order-paper.guard';
+import { OrderPaperResolver } from './shared/resolver/order-paper/order-paper.resolver';
+import { ListOrderPaperResolver } from './shared/resolver/order-paper/list-order-paper.resolver';
+import { CanActivateVotebookOrderPaper } from './shared/guard/votebook/order-paper.guard';
+import { VotebookOrderPaperResolver } from './shared/resolver/votebook/order-paper.resolver';
+import { EditNoticeMotionComponent } from './views/edit/notice-motion/edit-notice-motion.component';
+import { VotebookNoticeMotionPreviewComponent } from './views/edit/notice-motion/preview/preview.component';
+import { EditBillComponent } from './views/edit/bill/edit-bill.component';
+import { VotebookBillPreviewComponent } from './views/edit/bill/preview/preview.component';
+import { EditMotionComponent } from './views/edit/motion/edit-motion.component';
+import { VotebookMotionPreviewComponent } from './views/edit/motion/preview/preview.component';
+import { CanActivateVotebook } from './shared/guard/votebook/votebook.guard';
+import { VotebookResolver } from './shared/resolver/votebook/votebook.resolver';
+import { ListVotebookResolver } from './shared/resolver/votebook/list-votebook.resolver';
+import { UpdatePasswordComponent } from './views/reset-password/update-password/update-password.component';
 
 const routes: Routes = [
   // Login route
   { path: 'login', component: LoginComponent },
+  { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'update-password', component: UpdatePasswordComponent },
 
   // Verification parent routte
   {
@@ -129,7 +147,6 @@ const routes: Routes = [
       { path: 'login', component: LoginSignupComponent },
       { path: 'system', component: SystemSignupComponent },
       { path: 'notifications', component: NotificationsSignupComponent },
-      { path: 'reset-password', component: ResetPasswordComponent },
     ],
   },
 
@@ -276,8 +293,21 @@ const routes: Routes = [
           reports: ListReportResolver,
         },
       },
-      { path: 'order-paper', component: ListOrderPaperComponent },
-      { path: 'votebook', component: ListVoteBookComponent },
+      {
+        path: 'order-paper',
+        component: ListOrderPaperComponent,
+        resolve: {
+          orderPapers: ListOrderPaperResolver,
+        },
+      },
+      {
+        path: 'votebook',
+        component: ListVoteBookComponent,
+        resolve: {
+          votebooks: ListVotebookResolver,
+          orderPapers: ListOrderPaperResolver,
+        },
+      },
       { path: 'communication', component: ListCommunicationComponent },
       {
         path: 'constituency',
@@ -324,9 +354,6 @@ const routes: Routes = [
       {
         path: 'petitioners',
         component: AddPetitionerComponent,
-        resolve: {
-          petitioners: ListPetitionerResolver,
-        },
       },
 
       { path: 'upload', component: UploadPageComponent },
@@ -381,8 +408,38 @@ const routes: Routes = [
       },
       { path: 'report', component: ReportGenerateComponent },
       { path: 'order-paper', component: OrderPaperGenerateComponent },
+      {
+        path: 'order-paper/:id',
+        component: OrderPaperGenerateComponent,
+        canActivate: [CanActivateOrderPaper],
+        resolve: {
+          orderPaper: OrderPaperResolver,
+        },
+      },
       { path: 'paper-content', component: PaperContentGenerateComponent },
-      { path: 'votebook', component: VotebookGenerateComponent },
+      {
+        path: 'paper-content/:id',
+        component: PaperContentGenerateComponent,
+        resolve: { orderPaper: OrderPaperResolver },
+        canActivate: [CanActivateOrderPaper],
+      },
+      {
+        path: 'votebook/:orderPaperId',
+        component: VotebookGenerateComponent,
+        canActivate: [CanActivateVotebookOrderPaper],
+        resolve: {
+          orderPaper: VotebookOrderPaperResolver,
+        },
+      },
+      {
+        path: 'votebook/:orderPaperId/:votebookId',
+        component: VotebookGenerateComponent,
+        canActivate: [CanActivateVotebookOrderPaper, CanActivateVotebook],
+        resolve: {
+          orderPaper: VotebookOrderPaperResolver,
+          votebook: VotebookResolver,
+        },
+      },
     ],
   },
 
@@ -417,6 +474,38 @@ const routes: Routes = [
       {
         path: 'content/preview',
         component: ContentPreviewComponent,
+      },
+      {
+        path: 'message',
+        component: EditMessageComponent,
+      },
+      {
+        path: 'message/preview',
+        component: MessagePreviewComponent,
+      },
+      {
+        path: 'notice-motion',
+        component: EditNoticeMotionComponent,
+      },
+      {
+        path: 'notice-motion/preview',
+        component: VotebookNoticeMotionPreviewComponent,
+      },
+      {
+        path: 'motion',
+        component: EditMotionComponent,
+      },
+      {
+        path: 'motion/preview',
+        component: VotebookMotionPreviewComponent,
+      },
+      {
+        path: 'bill',
+        component: EditBillComponent,
+      },
+      {
+        path: 'bill/preview',
+        component: VotebookBillPreviewComponent,
       },
     ],
   },

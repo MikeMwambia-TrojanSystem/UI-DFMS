@@ -68,4 +68,8 @@ export class ListMotionComponent implements OnInit {
       },
     });
   }
+
+  onSelect(motion: Motion) {
+    this.cacheService.emit(this._cacheId, motion);
+  }
 }

@@ -1,0 +1,23 @@
+<app-background [background]="'green'">
+  <app-center-card>
+    <div class="logo-container">
+      <img class="logo" src="/assets/logo.png" alt="logo" width="100" />
+    </div>
+    <h1 class="title">Welcome to County Assembly of {{county}}</h1>
+    <h3 class="subtitle">Digital File Management System</h3>
+    <h2 class="county">County Assemblies of {{county}}</h2>
+    <form [formGroup]="form" class="form">
+      <p class="label">Username</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="username" />
+        <mat-error *ngIf="form.get('username').hasError('required')">Please enter username</mat-error>
+      </mat-form-field>
+      <p class="label">Password</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="password" type="password" />
+        <mat-error *ngIf="form.get('password').hasError('required')">Please enter password</mat-error>
+      </mat-form-field>
+      <button mat-flat-button class="btn" [disabled]="form.invalid" (click)="onLogin()">Login</button>
+    </form>
+  </app-center-card>
+</app-background>

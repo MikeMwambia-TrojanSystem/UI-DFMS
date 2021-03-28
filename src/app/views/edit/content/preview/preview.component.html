@@ -1,24 +1,34 @@
 <app-background>
   <app-center-card>
     <div class="main">
-      <h1 class="title">Edit {{page}}</h1>
+      <h1 class="title">Edit {{ page }}</h1>
       <quill-editor [formControl]="content" [readOnly]="true"></quill-editor>
       <div class="words">
         <div class="line">
-          <span>No of Words: <span class="word">{{wordsNumber}}</span></span>
+          <span
+            >No of Words: <span class="word">{{ wordsNumber }}</span></span
+          >
+        </div>
+        <!-- <div class="line">
+          <span
+            >Words Per Paragrah: <span class="word">{{ wordsPara }}</span></span
+          >
         </div>
         <div class="line">
-          <span>Words Per Paragrah: <span class="word">{{wordsPara}}</span></span>
-        </div>
-        <div class="line">
-          <span>Words Per Page: <span class="word">{{wordsPage}}</span></span>
-        </div>
+          <span
+            >Words Per Page: <span class="word">{{ wordsPage }}</span></span
+          >
+        </div> -->
       </div>
       <div class="actions">
-        <button mat-button type="button" class="btn-draft">Save as Changes</button>
-        <a [routerLink]="return || '/intro'" [queryParams]="{state: state}">
-          <button mat-raised-button type="submit" class="btn-save">Complete</button>
-        </a>
+        <button
+          mat-raised-button
+          type="submit"
+          class="btn-save"
+          (click)="onComplete()"
+        >
+          Complete
+        </button>
       </div>
     </div>
   </app-center-card>

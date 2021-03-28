@@ -1,26 +1,6 @@
-.logo-container {
-  width: 100%;
-  display: flex;
-  margin-bottom: 15px;
-
-  .logo {
-    margin: 0 auto;
-  }
-}
-
 .title {
-  font-weight: 600;
+  font-weight: 500;
   text-align: center;
-}
-
-.subtitle {
-  color: #008000;
-  font-size: 1.1rem;
-  text-align: center;
-}
-
-.county {
-  margin: 20px 0;
 }
 
 .form {
@@ -34,6 +14,22 @@
   margin: 0;
   font-weight: 600;
   font-size: 1rem;
+}
+
+.forgot {
+  align-self: flex-end;
+  text-decoration: none;
+  color: gray;
+  font-weight: 500;
+}
+
+.check-box {
+  margin: 20px 0;
+}
+
+.btn-link {
+  width: 100%;
+  margin: 10px 0;
 }
 
 .btn {
@@ -62,5 +58,19 @@
 
   .mat-form-field-infix {
     border-top: none;
+  }
+
+  .mat-checkbox-label,
+  .mat-select-value {
+    color: gray;
+  }
+
+  .mat-select {
+    margin-bottom: 12px;
+  }
+
+  .mat-form-field-prefix {
+    position: relative;
+    bottom: 12px;
   }
 }

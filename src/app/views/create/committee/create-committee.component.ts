@@ -15,7 +15,7 @@ interface CommitteeForm {
   chairId: string;
   viceChair: string;
   viceChairId: string;
-  committesMembers: string[];
+  committesMembers: string;
   departmentInExcecutive: string;
   approverId: string;
   published: boolean;
@@ -41,7 +41,7 @@ export class CreateCommitteeComponent implements OnInit {
     chairId: new FormControl('', Validators.required),
     viceChair: new FormControl('', Validators.required),
     viceChairId: new FormControl('', Validators.required),
-    committesMembers: new FormArray([]),
+    committesMembers: new FormControl('', Validators.required),
     departmentInExcecutive: new FormControl('', Validators.required),
     approverId: new FormControl('2c82d1f29d2f1ce', Validators.required),
     published: new FormControl(false),
@@ -76,12 +76,6 @@ export class CreateCommitteeComponent implements OnInit {
         .subscribe(({ committee }: { committee: Committee }) => {
           const { committesMembers, ...others } = committee;
 
-          for (const member of committesMembers) {
-            (this.form.get('committesMembers') as FormArray).push(
-              new FormControl(member)
-            );
-          }
-
           this.form.patchValue({
             ...others,
             Chairname: committee.chair.name,
@@ -90,6 +84,7 @@ export class CreateCommitteeComponent implements OnInit {
             viceChairId: committee.viceChair.id,
             approverId: committee.approvingAccount.approverId,
             account: committee.approvingAccount.account,
+            committesMembers: committesMembers.join('&&&'),
           });
         });
     } else {
@@ -133,7 +128,11 @@ export class CreateCommitteeComponent implements OnInit {
       viceChairId,
     } = this.form.value as CommitteeForm;
 
-    for (const memberId of committesMembers.filter(
+    let members = committesMembers.split('&&&');
+
+    members = members[0].length ? members : [];
+
+    for (const memberId of members.filter(
       (memberId) => memberId !== chairId && memberId !== viceChairId
     )) {
       const name = await this.mcaEmployeeService
@@ -185,10 +184,12 @@ export class CreateCommitteeComponent implements OnInit {
         },
       }),
       (form, { _id, name }) => {
-        form.patchValue({
-          Chairname: name,
-          chairId: _id,
-        }); // Patch cached form with new chairman information.
+        if (form.value.viceChairId !== _id) {
+          form.patchValue({
+            Chairname: name,
+            chairId: _id,
+          }); // Patch cached form with new chairman information.
+        }
 
         return form;
       }
@@ -219,10 +220,12 @@ export class CreateCommitteeComponent implements OnInit {
         },
       }),
       (form, { _id, name }) => {
-        form.patchValue({
-          viceChair: name,
-          viceChairId: _id,
-        }); // Patch cached form with new vice chairman information.
+        if (form.value.chairId !== _id) {
+          form.patchValue({
+            viceChair: name,
+            viceChairId: _id,
+          }); // Patch cached form with new vice chairman information.
+        }
 
         return form;
       }
@@ -253,18 +256,17 @@ export class CreateCommitteeComponent implements OnInit {
         },
       }),
       (form, { _id, name }) => {
-        const membersControl = form.get('committesMembers') as FormArray; // Get the committesMembers control
+        let members = (form.get('committesMembers').value as string).split(
+          '&&&'
+        );
 
-        const members = [
-          ...(membersControl.value as string[]).filter((id) => id !== _id),
-          _id,
-        ]; // Prevent duplication in id
+        members = members[0].length ? members : [];
 
-        membersControl.clear(); // Clear all the cached member IDs.
+        members.push(_id);
 
-        for (const member of members) {
-          membersControl.push(new FormControl(member));
-        } // Set the committesMembers control to the new array.
+        form.patchValue({
+          committesMembers: members.join('&&&'),
+        });
 
         return form;
       }
@@ -315,38 +317,16 @@ export class CreateCommitteeComponent implements OnInit {
   onSave(published: boolean): void {
     // Subcription callback
     const subCallback = () => {
-      if (this._cacheId) {
-        this.cacheService.emit(this._cacheId, null);
-      } else {
-        this.router.navigate(['/list/committee'], {
-          queryParams: {
-            state: published ? 'published' : 'draft',
-          },
-        });
-      }
-    };
-
-    // Transform form committesMembers ID array into a single ID string for API parameter.
-    const transform = () => {
-      const value = this.form.value as CommitteePost;
-
-      return (
-        `${value.chairId}&&&${value.viceChairId}` +
-        ((value.committesMembers as unknown) as string[])
-          .filter(
-            (member) => member !== value.chairId && member !== value.viceChairId
-          )
-          .reduce(
-            (result, currentMemberId) => `${result}&&&${currentMemberId}`,
-            ''
-          )
-      );
+      this.router.navigate(['/list/committee'], {
+        queryParams: {
+          state: published ? 'published' : 'draft',
+        },
+      });
     };
 
     const value = this.form.value;
 
     value.published = published;
-    value.committesMembers = transform();
 
     if (this._mode === 'creating') {
       value.datePublished = new Date().toISOString();
@@ -376,8 +356,15 @@ export class CreateCommitteeComponent implements OnInit {
       this.form.get('viceChair').setValue('');
     }
 
-    const formIndex = committesMembers.findIndex((id) => id === memberId);
-    (this.form.get('committesMembers') as FormArray).removeAt(formIndex);
+    const members = committesMembers.split('&&&')[0].length
+      ? committesMembers.split('&&&')
+      : [];
+    const memberIndex = members.findIndex((id) => id === memberId);
+    members.splice(memberIndex, 1);
+
+    this.form.patchValue({
+      committesMembers: members,
+    });
 
     const index = this.membersName.findIndex(
       (member) => member._id === memberId

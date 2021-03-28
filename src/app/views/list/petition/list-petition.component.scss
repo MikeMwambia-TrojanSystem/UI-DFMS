@@ -14,3 +14,10 @@
     margin-bottom: 0;
   }
 }
+
+:host ::ng-deep {
+  mat-card {
+    width: 70vw !important;
+    min-width: unset !important;
+  }
+}

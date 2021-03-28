@@ -3,16 +3,22 @@
     <h1 class="title">Wards List</h1>
     <app-search-bar></app-search-bar>
     <div *ngIf="wards.length">
-      <app-list-item *ngFor="let ward of wards" [title]="ward.name" [subtitle]="ward.county"
-        [subcounty]="ward.subCounty" [selectable]="selectable" [editUrl]="'/create/wards/' + ward._id"
-        (delete)="onDelete(ward._id)" (select)="onSelect(ward)" [published]="state !== 'draft'">
+      <app-list-item
+        *ngFor="let ward of wards"
+        [title]="ward.name"
+        [subtitle]="ward.county"
+        [subcounty]="ward.subCounty"
+        [selectable]="selectable"
+        [editUrl]="'/create/wards/' + ward._id"
+        (delete)="onDelete(ward._id)"
+        (select)="onSelect(ward)"
+        [published]="state !== 'draft'"
+      >
       </app-list-item>
     </div>
-    <div *ngIf="!wards.length" class="list-no-value">
-      <p>No Wards Listed!</p>
-      <p (click)="onCreateNew()" class="new">
-        Create Ward
-      </p>
+    <div class="list-no-value">
+      <p *ngIf="!wards.length">No Wards Listed!</p>
+      <p (click)="onCreateNew()" class="new">Create Ward</p>
     </div>
   </app-center-card>
 </app-background>

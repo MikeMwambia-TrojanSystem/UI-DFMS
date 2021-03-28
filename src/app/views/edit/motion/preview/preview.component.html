@@ -1,0 +1,40 @@
+<app-background>
+  <app-center-card>
+    <div class="main">
+      <h1 class="title">Edit {{ page }}</h1>
+      <quill-editor [formControl]="content" [readOnly]="true"></quill-editor>
+      <div class="words">
+        <div class="line">
+          <span
+            >No of Words: <span class="word">{{ wordsNumber }}</span></span
+          >
+        </div>
+      </div>
+      <div class="select">
+        <mat-form-field>
+          <mat-label>Select Status</mat-label>
+          <mat-select [formControl]="status">
+            <mat-option value="passed">Passed</mat-option>
+            <mat-option value="dropped">Dropped</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Select Motion</mat-label>
+          <mat-select [value]="motionId" disabled>
+            <mat-option [value]="motionId">{{ motion.content }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="actions">
+        <button
+          mat-raised-button
+          type="submit"
+          class="btn-save"
+          (click)="onComplete()"
+        >
+          Complete
+        </button>
+      </div>
+    </div>
+  </app-center-card>
+</app-background>

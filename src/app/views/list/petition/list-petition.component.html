@@ -19,8 +19,8 @@
       >
       </app-info-item>
     </div>
-    <div *ngIf="!petitions.length" class="list-no-value">
-      <p>No Petitions Listed!</p>
+    <div class="list-no-value">
+      <p *ngIf="!petitions.length">No Petitions Listed!</p>
       <p (click)="onCreateNew()" class="new">Create Petition</p>
     </div>
   </app-center-card>

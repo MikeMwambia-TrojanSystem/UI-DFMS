@@ -12,8 +12,6 @@ import { ApiService } from 'src/app/services/api.service';
 import { McaEmployee } from 'src/app/shared/types/mca-employee';
 import { Committee } from 'src/app/shared/types/committee';
 
-type Cache = { form: FormGroup; filename: string };
-
 @Component({
   selector: 'app-upload-statement',
   templateUrl: './statement-upload.component.html',
@@ -23,7 +21,6 @@ export class StatementUploadComponent implements OnInit {
   private _cacheId: string;
   private _mode: 'editing' | 'creating';
   private _statementId: string;
-  private _statementUpload: UploadPost;
 
   form = new FormGroup({
     statementSignature: new FormControl(''),
@@ -82,37 +79,34 @@ export class StatementUploadComponent implements OnInit {
 
           this.form.patchValue({
             ...others,
-            seeker: seeker.name,
-            seekerId: seeker.id,
-            seekerPostition: seeker.position,
-            account: approvingAccount.account,
-            approverId: approvingAccount.approverId,
-            department: statementProvider.department,
-            statementProviderId: statementProvider.id,
-            statementProvider: statementProvider.name,
-            dateStatementSought: moment(dateStatementSought)
-              .toJSON()
-              .slice(0, 10),
-            dateStatementToResponded: moment(dateStatementToResponded)
-              .toJSON()
-              .slice(0, 10),
+            seeker: seeker.name || '',
+            seekerId: seeker.id || '',
+            seekerPostition: seeker.position || '',
+            account: approvingAccount.account || '',
+            approverId: approvingAccount.approverId || '',
+            department: statementProvider.department || '',
+            statementProviderId: statementProvider.id || '',
+            statementProvider: statementProvider.name || '',
+            dateStatementSought:
+              moment(dateStatementSought).toJSON().slice(0, 10) || '',
+            dateStatementToResponded:
+              moment(dateStatementToResponded).toJSON().slice(0, 10) || '',
           });
-
-          this.filename = statement.uploadedFileURL.substring(
-            statement.uploadedFileURL.lastIndexOf('amazonaws.com/') + 14
-          );
         });
     } else {
       this._mode = 'creating';
     }
 
     // Rehydrate the cached form data if there's any
-    const cached = this.cacheService.rehydrate<Cache>('UPLOAD_STATEMENT');
+    const cached = this.cacheService.rehydrate<FormGroup>('UPLOAD_STATEMENT');
 
     if (cached) {
-      this.form = cached.form;
-      this.filename = cached.filename;
+      this.form = cached;
     }
+
+    const url = this.form.get('uploadedFileURL').value;
+
+    this.filename = url.substring(url.lastIndexOf('amazonaws.com/') + 14);
   }
 
   get seekerName(): string {
@@ -127,16 +121,16 @@ export class StatementUploadComponent implements OnInit {
 
   private _onCache<T>(
     { url, queryParams }: { url: string; queryParams?: Params },
-    callback: CachedCallback<Cache, T>
+    callback: CachedCallback<FormGroup, T>
   ) {
     // Caching and select callback handling
     const urlTree = this._statementId
       ? ['/upload/statement', this._statementId]
       : ['/upload/statement'];
 
-    this.cacheService.cache<Cache, T>(
+    this.cacheService.cache<FormGroup, T>(
       'UPLOAD_STATEMENT',
-      { form: this.form, filename: this.filename },
+      this.form,
       this.router.createUrlTree(urlTree, {
         queryParams: {
           id: this._cacheId,
@@ -168,16 +162,13 @@ export class StatementUploadComponent implements OnInit {
           category: 'statement',
         },
       },
-      ({ form }, { result }) => {
+      (form, { result }) => {
         form.patchValue({
           uploaded: 'true',
           uploadedFileURL: result.location,
         });
 
-        return {
-          form,
-          filename: result.key,
-        };
+        return form;
       }
     );
   }
@@ -190,16 +181,13 @@ export class StatementUploadComponent implements OnInit {
   onSelectSeeker() {
     this._onCache<McaEmployee>(
       { url: '/list/mca-employee' },
-      ({ form, filename }, { name, _id }) => {
+      (form, { name, _id }) => {
         form.patchValue({
           seeker: name,
           seekerId: _id,
         });
 
-        return {
-          form,
-          filename,
-        };
+        return form;
       }
     );
   }
@@ -212,7 +200,7 @@ export class StatementUploadComponent implements OnInit {
   onSelectRequestTo() {
     this._onCache<Committee>(
       { url: '/list/committee' },
-      ({ form, filename }, { name, _id, departmentInExcecutive }) => {
+      (form, { name, _id, departmentInExcecutive }) => {
         form.patchValue({
           statementProvider: name,
           statementProviderId: _id,
@@ -220,10 +208,7 @@ export class StatementUploadComponent implements OnInit {
           departmentResponsible: departmentInExcecutive,
         });
 
-        return {
-          form,
-          filename,
-        };
+        return form;
       }
     );
   }
@@ -241,15 +226,13 @@ export class StatementUploadComponent implements OnInit {
   onSave(published: boolean) {
     // Subscription Callback
     const subCallback = (state: 'public' | 'private' | 'draft') => {
-      if (this._cacheId) {
-        this.cacheService.emit(this._cacheId, null);
-      } else {
-        this.router.navigate(['/list/statement'], {
-          queryParams: {
-            state: state,
-          },
-        });
-      }
+      this.cacheService.clearCache(this._cacheId);
+
+      this.router.navigate(['/list/statement'], {
+        queryParams: {
+          state: state,
+        },
+      });
     };
 
     /**

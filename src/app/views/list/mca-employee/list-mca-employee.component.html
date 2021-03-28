@@ -3,16 +3,21 @@
     <h1 class="title">MCA Lists</h1>
     <app-search-bar></app-search-bar>
     <div *ngIf="mcaEmployees.length">
-      <app-list-item *ngFor="let mcaEmployee of mcaEmployees" [title]="mcaEmployee.name"
-        [subtitle]="mcaEmployee.ward.wardName" [pic]="mcaEmployee.profilePic" [selectable]="selectable"
-        (select)="onSelect(mcaEmployee)" [editUrl]="'/create/mca/' + mcaEmployee._id" [published]="mcaEmployee.status"
-        (delete)="onDelete(mcaEmployee._id)"></app-list-item>
+      <app-list-item
+        *ngFor="let mcaEmployee of mcaEmployees"
+        [title]="mcaEmployee.name"
+        [subtitle]="mcaEmployee.ward.wardName"
+        [pic]="mcaEmployee.profilePic"
+        [selectable]="selectable"
+        (select)="onSelect(mcaEmployee)"
+        [editUrl]="'/create/mca/' + mcaEmployee._id"
+        [published]="mcaEmployee.status"
+        (delete)="onDelete(mcaEmployee._id)"
+      ></app-list-item>
     </div>
-    <div *ngIf="!mcaEmployees.length" class="list-no-value">
-      <p>No Employees Listed!</p>
-      <p (click)="onCreateNewMca()" class="new">
-        Create Mca
-      </p>
+    <div class="list-no-value">
+      <p *ngIf="!mcaEmployees.length">No Employees Listed!</p>
+      <p (click)="onCreateNewMca()" class="new">Create Mca</p>
     </div>
   </app-center-card>
 </app-background>

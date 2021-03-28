@@ -1,28 +1,40 @@
 <app-background>
   <app-center-card>
     <div class="content">
-      <h1 class="title">Generate Votebook on Administration of Oath</h1>
-      <form [formGroup]="form">
-        <quill-editor formControlName="content"></quill-editor>
+      <h1 class="title">Generate Votebook on {{ title }}</h1>
+      <form>
+        <quill-editor [formControl]="content"></quill-editor>
       </form>
       <div class="words">
         <span>No of Words: </span>
-        <span class="limit">{{words}}</span>
+        <span class="limit">{{ words }}</span>
       </div>
-      <div class="pages">
-        <div class="previous">
-          <span>Previous page: <span class="page">{{previousPage}}</span></span>
+      <!-- <div class="pages">
+        <div class="previous" *ngIf="previousPage > 0">
+          <span
+            >Previous page: <span class="page">{{ previousPage }}</span></span
+          >
         </div>
         <div class="current">
-          <span>Currently writing page: <span class="page">{{currentPage}}</span></span>
+          <span
+            >Currently writing page:
+            <span class="page">{{ currentPage }}</span></span
+          >
         </div>
-      </div>
+      </div> -->
       <div class="btn-container">
-        <button mat-raised-button class="publish-btn" [disabled]="form.invalid">Publish Pages</button>
+        <button
+          mat-raised-button
+          class="publish-btn"
+          [disabled]="content.invalid"
+          (click)="onPublish()"
+        >
+          Save Content
+        </button>
       </div>
       <div class="hr"></div>
-      <h2 class="subtitle">Administration of Oath Content</h2>
-      <app-oath-content [content]="oathContent"></app-oath-content>
+      <h2 class="subtitle">{{ title }}</h2>
+      <app-oath-content [content]="orderPaperContent"></app-oath-content>
     </div>
   </app-center-card>
 </app-background>

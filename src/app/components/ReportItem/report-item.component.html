@@ -13,7 +13,9 @@
     >
     <span class="submitted" *ngIf="submitted"
       >Submitted by
-      <span class="highlight">{{ submitted }}({{ ward }})</span></span
+      <span class="highlight"
+        >{{ submitted }}<span *ngIf="ward">({{ ward }})</span></span
+      ></span
     >
     <span class="response" *ngIf="response"
       >In response to <span class="highlight">{{ response }}</span></span
@@ -27,7 +29,7 @@
     Select
   </button>
 </div>
-<div class="list-actions" *ngIf="!selectable">
+<div class="list-actions" *ngIf="state !== 'public' && !selectable">
   <a [routerLink]="[editUrl]">
     <button mat-button class="list-actions-btn edit">Edit</button>
   </a>

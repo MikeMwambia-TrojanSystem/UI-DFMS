@@ -1,27 +1,26 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-signup-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  county = 'Meru'; // Field for dynamic county
   form = new FormGroup({
+    group: new FormControl('', Validators.required),
     username: new FormControl('', Validators.required),
     password: new FormControl('', Validators.required),
+    isRemember: new FormControl(false),
   }); // Form group that holds username and password from user input
 
-  constructor(private router: Router) {}
+  constructor(private accountService: AccountService, private router: Router) {}
 
   onLogin() {
-    // Predefined valid value. This value should be replace as a post request to the server to check if credentials is correct or not.
-    const valid = true;
-
-    if (valid) {
-      this.router.navigate(['/signup/county']);
-    }
+    this.accountService.login(this.form.value).subscribe(() => {
+      this.router.navigate(['/intro']);
+    });
   }
 }

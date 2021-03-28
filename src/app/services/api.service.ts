@@ -17,6 +17,8 @@ import { Act, ActPost } from '../shared/types/act';
 import { Personnel, PersonnelPost } from '../shared/types/personnel';
 import { Report, ReportPost } from '../shared/types/report';
 import { PhoneVerification } from '../shared/types/verification';
+import { OrderPaper, OrderPaperPost } from '../shared/types/order-paper';
+import { Votebook, VotebookPost } from '../shared/types/votebook';
 
 interface ApiResponse<T> {
   message: T;
@@ -114,6 +116,20 @@ export class ApiService {
     return this._postRequest<ReportPost, Report>('report/create', report);
   }
 
+  createOrderPaper(orderPaper: OrderPaperPost) {
+    return this._postRequest<OrderPaperPost, OrderPaper>(
+      'orderPaper/create',
+      orderPaper
+    );
+  }
+
+  createVotebook(votebook: VotebookPost) {
+    return this._postRequest<VotebookPost, Votebook>(
+      'votebook/create',
+      votebook
+    );
+  }
+
   // GETs
   private _getRequest<T>(endpoint: string) {
     return this.http
@@ -163,6 +179,14 @@ export class ApiService {
 
   getReports() {
     return this._getRequest<Report>('report/getAllReports');
+  }
+
+  getOrderPaper() {
+    return this._getRequest<OrderPaper>('orderPaper/getAllOrderPapers');
+  }
+
+  getVoteboook() {
+    return this._getRequest<Votebook>('votebook/getAllVotebooks');
   }
 
   //DELETEs
@@ -222,6 +246,17 @@ export class ApiService {
 
   deleteReport(id: string) {
     return this._deleteRequest<Report>('report/deleteReport', id);
+  }
+
+  deleteOrderPaper(id: string) {
+    return this._deleteRequest<OrderPaper>(
+      'orderPaper/deleteSpecificPaper',
+      id
+    );
+  }
+
+  deleteVotebook(id: string) {
+    return this._deleteRequest<Votebook>('votebook/deleteVotebook', id);
   }
 
   //UPDATEs
@@ -305,16 +340,30 @@ export class ApiService {
     );
   }
 
+  updateOrderPaper(orderPaper: OrderPaperPost) {
+    return this._updateRequest<OrderPaperPost, OrderPaper>(
+      'orderPaper/updateSpecificPaper',
+      orderPaper
+    );
+  }
+
+  updateVotebook(votebook: VotebookPost) {
+    return this._updateRequest<VotebookPost, Votebook>(
+      'votebook/updateVotebook',
+      votebook
+    );
+  }
+
   // UPLOAD
   upload(data: FormData) {
-    // return of({
-    //   etag: '22a4eb595a02296c7fec40408f36d72c',
-    //   id: '6044659091ce8fa53d548f4f',
-    //   key: '1615095182-Test.pdf',
-    //   location:
-    //     'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
-    //   uploadedToS3: true,
-    // });
+    return of({
+      etag: '22a4eb595a02296c7fec40408f36d72c',
+      id: '6044659091ce8fa53d548f4f',
+      key: '1615095182-Test.pdf',
+      location:
+        'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+      uploadedToS3: true,
+    });
 
     // return of({
     //   etag: '58fdf64c2dd3a7120ac2c2ba53acc718',
@@ -325,20 +374,71 @@ export class ApiService {
     //   uploadedToS3: true,
     // });
 
-    return this.http
-      .post<Upload>('http://3.13.186.200:9000/uploadfile', data)
-      .pipe(timeout(this._timeout), catchError(errorHandler));
+    // return this.http
+    //   .post<Upload>('http://3.13.186.200:9000/uploadfile', data)
+    //   .pipe(timeout(this._timeout), catchError(errorHandler));
   }
 
   // VERIFICATION
-  phoneVerification(verification: PhoneVerification): Observable<boolean> {
-    return of(true);
-    // return this.http.put(
-    //   this._baseUrl + 'mobile/verifyVerificationCode',
-    //   undefined,
-    //   {
-    //     params: verification as any,
-    //   }
-    // );
+  phoneVerification(verification: PhoneVerification): Observable<any> {
+    // return of(true);
+    return this.http
+      .put(this._baseUrl + 'mobile/verifyVerificationCode', undefined, {
+        params: verification as any,
+      })
+      .pipe(
+        catchError((error: HttpErrorResponse) => {
+          alert('Error');
+          return throwError(error);
+        })
+      );
+  }
+
+  // ACCOUNT
+  createAccount(
+    form: any
+  ): Observable<
+    ApiResponse<{ message: string; request_id: string; userId: string }>
+  > {
+    return this.http
+      .post<
+        ApiResponse<{ message: string; request_id: string; userId: string }>
+      >(this._baseUrl + 'akuru/create', undefined, { params: form })
+      .pipe(catchError(errorHandler));
+  }
+
+  verifyAccount(form: any): Observable<any> {
+    return this.http
+      .post(this._baseUrl + 'akuru/verifyCode', undefined, { params: form })
+      .pipe(catchError(errorHandler));
+  }
+
+  login(form: { username: string; password: string }): Observable<any> {
+    return this.http
+      .get(this._baseUrl + 'akuru/login', { params: form })
+      .pipe(catchError(errorHandler));
+  }
+
+  changePassword(form: {
+    username: string;
+    password: string;
+  }): Observable<{
+    success: { message: string; request_id: string; userId: string };
+  }> {
+    return this.http
+      .get<{
+        success: { message: string; request_id: string; userId: string };
+      }>(this._baseUrl + 'akuru/changePassword', {
+        params: form,
+      })
+      .pipe(catchError(errorHandler));
+  }
+
+  updatePassword(form: any) {
+    return this.http
+      .get(this._baseUrl + 'akuru/updatePassword', {
+        params: form,
+      })
+      .pipe(catchError(errorHandler));
   }
 }

@@ -66,30 +66,35 @@ export class CacheService {
   cache<T, U>(
     id: string,
     data: T,
-    returnUrl: UrlTree,
-    callback: CachedCallback<T, U>
+    returnUrl?: UrlTree,
+    callback?: CachedCallback<T, U>
   ) {
-    this._data = {
-      ...this._data,
-      [id]: {
-        data,
-        subscription: this._selected
-          .pipe(filter((value) => value.id === id))
-          .subscribe(async (value) => {
-            const newData = await callback(data, value.selected);
+    if (this._data[id] && this._data[id].subscription) {
+      this._data[id].subscription.unsubscribe();
+    }
 
-            this._data[id].subscription.unsubscribe();
+    this._data[id] = {
+      data,
+      subscription: this._selected
+        .pipe(filter((value) => value.id === id))
+        .subscribe(async (value) => {
+          let newData = data;
 
-            this._data[id] = {
-              data: newData,
-              subscription: null,
-            }; // Replace the old data with the new data after handling in callback.
+          if (callback) {
+            newData = await callback(data, value.selected);
+          }
 
-            if (returnUrl) {
-              this.router.navigateByUrl(returnUrl);
-            }
-          }),
-      },
+          this._data[id].subscription.unsubscribe();
+
+          this._data[id] = {
+            data: newData,
+            subscription: null,
+          }; // Replace the old data with the new data after handling in callback.
+
+          if (returnUrl) {
+            this.router.navigateByUrl(returnUrl);
+          }
+        }),
     };
   }
 
@@ -160,5 +165,27 @@ export class CacheService {
         },
       });
     };
+  }
+
+  /**
+   * Get cached data from ID
+   */
+  getData<T>(id: string): T {
+    if (this._data[id]) {
+      return this._data[id].data;
+    }
+
+    return undefined;
+  }
+
+  /**
+   * Clear cache data
+   */
+  clearCache(id: string): void {
+    const data = this._data[id];
+    if (data) {
+      data.subscription.unsubscribe();
+      this._data[id] = undefined;
+    }
   }
 }

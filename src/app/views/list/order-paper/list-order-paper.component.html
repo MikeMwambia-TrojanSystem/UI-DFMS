@@ -3,9 +3,23 @@
     <h1 class="title">Order Papers</h1>
     <app-search-bar></app-search-bar>
     <div>
-      <app-order-paper-item *ngFor="let orderPaper of orderPapers" [number]="orderPaper.number" [date]="orderPaper.date"
-        [views]="orderPaper.views" class="item" [selectable]="selectabe" [sub]="'Order Paper'" [state]="state">
+      <app-order-paper-item
+        *ngFor="let orderPaper of orderPapers"
+        [number]="orderPaper.orderPaperNo"
+        [date]="orderPaper.datePublished"
+        class="item"
+        [selectable]="selectable"
+        [sub]="'Order Paper'"
+        [state]="orderPaper.publishState"
+        [editUrl]="'/generate/order-paper/' + orderPaper._id"
+        (delete)="onDelete(orderPaper)"
+        (select)="onSelect(orderPaper)"
+      >
       </app-order-paper-item>
+    </div>
+    <div class="list-no-value">
+      <p *ngIf="!orderPapers.length">No Order Papers Listed!</p>
+      <p (click)="onCreateNew()" class="new">Create Order Paper</p>
     </div>
   </app-center-card>
 </app-background>

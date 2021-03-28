@@ -3,21 +3,33 @@
     <div class="main">
       <form [formGroup]="form">
         <h1 class="title">Generate Content Page</h1>
-        <span class="words">Words Per Page: <span class="limit">{{words}}</span></span>
+        <span class="words"
+          >Words Per Page: <span class="limit">{{ words }}</span></span
+        >
         <quill-editor formControlName="content"></quill-editor>
         <div class="pages">
-          <div class="previous">
-            <span>Previous page: <span class="page">{{previousPage}}</span></span>
+          <div class="previous" *ngIf="page - 1 > 0">
+            <span
+              >Previous page: <span class="page">{{ page - 1 }}</span></span
+            >
           </div>
           <div class="current">
-            <span>Currently writing page: <span class="page">{{currentPage}}</span></span>
+            <span
+              >Currently writing page:
+              <span class="page">{{ page }}</span></span
+            >
           </div>
         </div>
         <div class="actions">
-          <button mat-button type="button" class="btn-draft">Save as Draft</button>
-          <a [routerLink]="form.invalid ? [] : ['preview']" [queryParamsHandling]="'preserve'">
-            <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Preview Pages</button>
-          </a>
+          <button
+            mat-raised-button
+            type="submit"
+            class="btn-save"
+            [disabled]="form.invalid"
+            (click)="onPreview()"
+          >
+            Save Content
+          </button>
         </div>
       </form>
     </div>

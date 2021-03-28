@@ -18,8 +18,8 @@
         (delete)="onDelete(report._id)"
       >
       </app-report-item>
-      <div *ngIf="!reports.length" class="list-no-value">
-        <p>No Reports Listed!</p>
+      <div class="list-no-value">
+        <p *ngIf="!reports.length">No Reports Listed!</p>
         <p (click)="onCreateNew()" class="new">Create Report</p>
       </div>
     </div>

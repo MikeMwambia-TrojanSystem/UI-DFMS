@@ -1,36 +1,89 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, Subscription } from 'rxjs';
+import _ from 'lodash';
+import { takeUntil } from 'rxjs/operators';
+import { CacheService } from 'src/app/services/cache.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-content',
   templateUrl: './edit-content.component.html',
   styleUrls: ['./edit-content.component.scss'],
 })
-export class EditContentComponent implements OnInit {
-  private wordSub: Subscription;
+export class EditContentComponent implements OnInit, OnDestroy {
+  private $onDestroy = new Subject();
+  private _cacheId: string;
 
   form = new FormGroup({
     content: new FormControl('', Validators.required),
   });
 
-  id: string;
-
   words = 0;
-  previousPage = 34;
-  currentPage = 35;
+  page: number;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private cacheService: CacheService,
+    private location: Location,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.id = this.route.snapshot.params.id;
+    // get cache id from query url
+    const queryParams = this.route.snapshot.queryParams;
+    this._cacheId = queryParams.id;
+
+    // Get cached data
+    try {
+      const cachedData = this.cacheService.getData<{
+        page: number;
+      }>(this._cacheId);
+
+      if (!cachedData) {
+        throw new Error('No cached data');
+      }
+
+      this.page = cachedData.page;
+
+      const cachedContent = this.cacheService.rehydrate<{ content: string }>(
+        'EDIT_CONTENT'
+      );
+
+      if (cachedContent) {
+        this.form.get('content').setValue(cachedContent.content);
+      }
+    } catch (error) {
+      this.location.back();
+    }
 
     // Subscription to the form content to count the number of words
-    this.wordSub = this.form
+    this.form
       .get('content')
-      .valueChanges.subscribe((content: string) => {
+      .valueChanges.pipe(takeUntil(this.$onDestroy))
+      .subscribe((content: string) => {
         this.words = ((content && content.match(/ /g)) || []).length;
+
+        if (content.slice(content.length - 1) !== ' ') {
+          this.words++;
+        }
       });
+  }
+
+  ngOnDestroy(): void {
+    this.$onDestroy.next();
+  }
+
+  onPreview(): void {
+    this.cacheService.cache('EDIT_CONTENT', {
+      content: this.form.get('content').value,
+    });
+
+    this.router.navigate(['/edit/content/preview'], {
+      queryParams: {
+        id: this._cacheId,
+      },
+    });
   }
 }

@@ -170,42 +170,20 @@ export class CreateEmployeeComponent implements OnInit {
   onSave(status: boolean) {
     // After POST
     const redirecting = () => {
-      if (this._cacheId) {
-        this.cacheService.emit(this._cacheId, null);
-      } else {
-        this.router.navigate(['/list/personnel'], {
-          queryParams: {
-            state: status ? 'published' : 'draft',
-          },
-        });
-      }
+      this.router.navigate(['/list/personnel'], {
+        queryParams: {
+          state: status ? 'published' : 'draft',
+        },
+      });
     };
 
     // Subcription callback
     const subCallback = ({ personnelId, request_id }: any) => {
       if (status === true) {
-        this.cacheService.cache<
-          Cache & { userId: string; request_id: string },
-          boolean
-        >(
-          'CREATE_EMPLOYEE',
-          {
-            form: this.form,
-            filename: this.filename,
-            userId: personnelId,
-            request_id,
-          },
-          undefined,
-          (data) => {
-            redirecting();
-
-            return data;
-          }
-        );
-
         this.router.navigate(['/verification/phone'], {
           queryParams: {
-            id: 'CREATE_EMPLOYEE',
+            userId: personnelId,
+            request_id,
           },
         });
       } else {
