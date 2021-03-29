@@ -44,7 +44,7 @@ export class AccountSignupComponent {
           })
         );
 
-        this.router.navigate(['/verification/mobile'], {
+        this.router.navigate(['/verification/phone'], {
           queryParams: {
             userId,
             request_id,

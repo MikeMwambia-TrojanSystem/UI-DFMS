@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ApiService } from './api.service';
 
@@ -24,11 +24,15 @@ export class AccountService {
     return this.apiService.verifyAccount(form);
   }
 
-  login(form: { username: string; password: string }) {
+  login(form: { username: string; password: string; group: string }) {
     return this.apiService.login(form);
   }
 
   changePassword(form: { username: string; password: string }) {
+    return of({
+      request_id: 'test',
+      userId: '12345',
+    });
     return this.apiService.changePassword(form).pipe(
       map(({ success }) => ({
         request_id: success.request_id,

@@ -12,7 +12,6 @@ import { PasswordErrorStateMatcher } from 'src/app/shared/validators/password-ma
 export class UpdatePasswordComponent implements OnInit {
   form = this.fb.group(
     {
-      username: ['', Validators.required],
       code: ['', Validators.required],
       requestId: ['', Validators.required],
       userId: ['', Validators.required],
@@ -37,6 +36,18 @@ export class UpdatePasswordComponent implements OnInit {
     this.form.patchValue({
       requestId: queryParams.request_id,
       userId: queryParams.user_id,
+    });
+
+    this.form.valueChanges.subscribe(() => {
+      const invalid = [];
+
+      for (const control in this.form.controls) {
+        if (this.form.controls[control].invalid) {
+          invalid.push(control);
+        }
+      }
+
+      console.log(invalid);
     });
   }
 
