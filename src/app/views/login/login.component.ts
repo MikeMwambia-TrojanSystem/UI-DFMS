@@ -19,7 +19,9 @@ export class LoginComponent {
   constructor(private accountService: AccountService, private router: Router) {}
 
   onLogin() {
-    this.accountService.login(this.form.value).subscribe(() => {
+    const { username, password, group } = this.form.value;
+
+    this.accountService.login({ username, password, group }).subscribe(() => {
       this.router.navigate(['/intro']);
     });
   }

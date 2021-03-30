@@ -413,7 +413,11 @@ export class ApiService {
       .pipe(catchError(errorHandler));
   }
 
-  login(form: { username: string; password: string }): Observable<any> {
+  login(form: {
+    username: string;
+    password: string;
+    group: string;
+  }): Observable<any> {
     return this.http
       .get(this._baseUrl + 'akuru/login', { params: form })
       .pipe(catchError(errorHandler));
