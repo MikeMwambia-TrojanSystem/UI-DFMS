@@ -41,7 +41,9 @@ export class CommitteeService {
           () => this._fetched,
           of(committees.find((committee) => committee._id === id)),
           this.fetchCommittees().pipe(
-            map((result) => result.find((committee) => committee._id === id))
+            map((result) => {
+              return result.find((committee) => committee._id === id);
+            })
           )
         )
       )

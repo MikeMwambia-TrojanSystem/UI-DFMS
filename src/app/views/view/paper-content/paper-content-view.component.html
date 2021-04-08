@@ -1,0 +1,27 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Order Paper</h1>
+    <app-menu-container
+      *ngFor="let item of items; let i = index"
+      [notifications]="item.notifications"
+      [noView]="true"
+      [noDelete]="true"
+    >
+      <div class="content">
+        <div class="info">
+          <span>{{ i + 1 | number: "2.0-0" }}</span>
+          <span class="label">{{ item.label }}</span>
+        </div>
+        <div class="buttons-container"></div>
+      </div>
+    </app-menu-container>
+    <app-menu-container>
+      <div class="content">
+        <div class="info">
+          <span>10</span>
+          <span class="label">Adjournment</span>
+        </div>
+      </div>
+    </app-menu-container>
+  </app-center-card>
+</app-background>

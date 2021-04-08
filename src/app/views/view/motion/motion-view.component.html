@@ -1,0 +1,39 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Motion</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Motion Content</p>
+      <mat-form-field appearance="standard">
+        <textarea
+          matInput
+          formControlName="content"
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="1"
+        ></textarea>
+      </mat-form-field>
+
+      <p class="label">Related To</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="relatedTo" />
+      </mat-form-field>
+
+      <p class="label">Department</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="department" />
+      </mat-form-field>
+
+      <p class="label">Sponsor</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="sponsorName" />
+      </mat-form-field>
+
+      <p class="label notice">Generate Notice of Motion</p>
+      <mat-radio-group [disabled]="true">
+        <mat-radio-button value="true" style="margin-right: 20px"
+          >Yes</mat-radio-button
+        >
+        <mat-radio-button value="false">No</mat-radio-button>
+      </mat-radio-group>
+    </form>
+  </app-center-card>
+</app-background>

@@ -1,49 +1,86 @@
 <app-background>
   <app-center-card>
-    <h1 class="title">
-      On this page you can generate votebook based on the Order Paper No.{{
-        orderPaperNo
-      }}
-    </h1>
-    <app-menu-container
-      *ngFor="let item of items; let i = index"
-      [notifications]="item.notifications"
-    >
-      <div class="content">
-        <div class="info">
-          <span>{{ i + 1 | number: "2.0-0" }}</span>
-          <span class="label">{{ item.label }}</span>
+    <h1 class="title">Generate an Votes and Procedures</h1>
+    <form [formGroup]="form" class="form">
+      <app-custom-button
+        [title]="orderPaperNo ? orderPaperNo : 'Order Paper No'"
+        (buttonClick)="onSelectOrderPaper()"
+      ></app-custom-button>
+
+      <p class="label">Assembly No</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="assemblyNo" type="number" />
+      </mat-form-field>
+
+      <p class="label">Session No</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="sessionNo" type="number" />
+      </mat-form-field>
+
+      <div class="grid">
+        <div class="grid-form">
+          <p class="label">Assembly Sitting No</p>
+          <mat-form-field appearance="standard">
+            <input matInput type="number" />
+          </mat-form-field>
         </div>
-        <div class="buttons-container">
-          <button
-            mat-stroked-button
-            class="btn"
-            (click)="onGenerateController(item.generate)"
-          >
-            Generate
-          </button>
+        <div class="grid-form">
+          <p class="label">Page No</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="pageNoToDate" type="number" />
+          </mat-form-field>
         </div>
       </div>
-    </app-menu-container>
-    <div class="actions">
-      <button
-        mat-button
-        type="button"
-        class="btn-draft"
-        [disabled]="form.invalid"
-        (click)="onSave(true)"
+
+      <p class="label">Select Presiding Officer</p>
+      <mat-form-field appearance="standard">
+        <mat-select formControlName="presidingPosition">
+          <mat-option value="Speaker of the Assembly"
+            >Speaker of the Assembly</mat-option
+          >
+          <mat-option value="Member of the Speaker Parliament"
+            >Member of the Speaker Parliament</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+
+      <p class="label" *ngIf="presidingPosition === 'Speaker of the Assembly'">
+        Speaker Name
+      </p>
+      <mat-form-field
+        appearance="standard"
+        *ngIf="presidingPosition === 'Speaker of the Assembly'"
       >
-        Save as Draft
-      </button>
-      <button
-        mat-raised-button
-        type="submit"
-        class="btn-save"
-        [disabled]="form.invalid"
-        (click)="onSave(false)"
+        <input matInput [value]="this.form.get('presiding').value" disabled />
+      </mat-form-field>
+
+      <p class="label" *ngIf="presidingPosition === 'Speaker of the Assembly'">
+        Speaker Role
+      </p>
+      <mat-form-field
+        appearance="standard"
+        *ngIf="presidingPosition === 'Speaker of the Assembly'"
       >
-        Publish Votebook
-      </button>
-    </div>
+        <input matInput value="Speaker of the Assembly" disabled />
+      </mat-form-field>
+
+      <app-custom-button
+        [title]="memberName.length ? memberName : 'Select Member'"
+        (buttonClick)="onSelectMca()"
+        *ngIf="presidingPosition === 'Member of the Speaker Parliament'"
+      ></app-custom-button>
+
+      <div class="actions">
+        <button
+          mat-raised-button
+          type="button"
+          class="btn-save"
+          [disabled]="form.invalid || !valid"
+          (click)="onGenerate()"
+        >
+          Generate Content
+        </button>
+      </div>
+    </form>
   </app-center-card>
 </app-background>

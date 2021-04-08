@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 
 import { CacheService } from 'src/app/services/cache.service';
+import { OrderPaperService } from 'src/app/services/order-paper.service';
 import { OrderPaper } from 'src/app/shared/types/order-paper';
 
 export interface OrderPaperCached {
@@ -41,14 +42,15 @@ export class OrderPaperGenerateComponent implements OnInit {
     motionId: [''],
     motionNoticeId: [''],
     billsId: [''],
-    adjournment: [''],
+    adjournment: ['ADJOURNMENT'],
   });
 
   constructor(
     private fb: FormBuilder,
     private cacheService: CacheService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private orderPaperService: OrderPaperService
   ) {}
 
   ngOnInit(): void {
@@ -76,20 +78,24 @@ export class OrderPaperGenerateComponent implements OnInit {
             ...others,
             approvingAccount: approvingAccount.account,
             approverId: approvingAccount.approverId,
-            adminContent: adminstrationOfOath.join('&&&'),
-            communContent: communicationFromChainr.join('&&&'),
-            messages: messages
-              .map(
-                ({ content, source, uploadedLocation }) =>
-                  `content=${content}|||source=${source}|||uploadedLocation=${uploadedLocation}`
-              )
-              .join('&&&'),
-            petitionId: petitions.join('&&&'),
-            reportId: papers.join('&&&'),
-            statementId: statements.join('&&&'),
-            motionId: motions.join('&&&'),
-            motionNoticeId: noticeOfMotions.join('&&&'),
-            billsId: bills.join('&&&'),
+            adminContent: this.orderPaperService.checkNone(adminstrationOfOath),
+            communContent: this.orderPaperService.checkNone(
+              communicationFromChainr
+            ),
+            messages: this.orderPaperService.checkNone(messages, (m) =>
+              m
+                .map(
+                  (m) =>
+                    `content=${m.content}|||source=${m.source}|||uploadedLocation=${m.uploadedLocation}`
+                )
+                .join('&&&')
+            ),
+            petitionId: this.orderPaperService.checkNone(petitions),
+            reportId: this.orderPaperService.checkNone(papers),
+            statementId: this.orderPaperService.checkNone(statements),
+            motionId: this.orderPaperService.checkNone(motions),
+            motionNoticeId: this.orderPaperService.checkNone(noticeOfMotions),
+            billsId: this.orderPaperService.checkNone(bills),
           });
         }
       });

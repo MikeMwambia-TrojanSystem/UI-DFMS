@@ -32,6 +32,7 @@
             >
           </mat-form-field>
           <div class="actions">
+            <div></div>
             <button
               mat-button
               type="submit"
@@ -40,15 +41,6 @@
               (click)="onAdd()"
             >
               Add
-            </button>
-            <button
-              mat-raised-button
-              type="submit"
-              class="btn-save"
-              [disabled]="!petitioners.length"
-              (click)="onComplete()"
-            >
-              Complete
             </button>
           </div>
         </form>
@@ -62,6 +54,15 @@
           [subtitle]="'Phone number: ' + petitioner.phone"
           [noDivider]="true"
         ></app-management-item>
+        <button
+          mat-raised-button
+          type="submit"
+          class="btn-save"
+          [disabled]="!petitioners.length"
+          (click)="onComplete()"
+        >
+          Complete
+        </button>
       </div>
     </div>
   </app-center-card>

@@ -23,6 +23,8 @@ export class CreateSubcountyComponent implements OnInit {
     date: new FormControl(''),
   });
 
+  county = 'Meru';
+
   constructor(
     private wardConSubService: WardConSubService,
     private router: Router,

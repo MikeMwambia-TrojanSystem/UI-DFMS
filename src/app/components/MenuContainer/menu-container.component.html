@@ -14,13 +14,106 @@
   </div>
   <div class="notification-container" *ngIf="expanded">
     <div class="notification" *ngFor="let noti of notifications">
-      <div class="top">
-        <span>{{ noti.label }}</span>
-        <!-- <span class="view">View</span> -->
+      <div
+        class="top"
+        *ngIf="
+          noti.type === 'communContent' ||
+          noti.type === 'adminstrationOfOathReply' ||
+          noti.type === 'communicationFromChainr' ||
+          noti.type === 'messageContent' ||
+          noti.type === 'petionReply' ||
+          noti.type === 'reportReply' ||
+          noti.type === 'statementReply' ||
+          noti.type === 'adjournment'
+        "
+      >
+        <span [innerHtml]="noti.content"></span>
       </div>
-      <div class="bottom" *ngIf="noti.date">
+      <!-- <div class="top" *ngIf="">
+        <p>
+          Content:
+          <span [innerHtml]="getNoticeMotionContent(noti)"></span>
+        </p>
+        <p>Status: {{ getNoticeMotionStatus(noti) }}</p>
+      </div> -->
+      <div
+        class="top"
+        *ngIf="
+          noti.type === 'noticeOfMotionsReply' ||
+          noti.type === 'bills' ||
+          noti.type === 'motions'
+        "
+      >
+        <span>{{ getMessageContent(noti) }}</span>
+      </div>
+      <app-management-item
+        [title]="getAdminContent(noti).name"
+        [subtitle]="getAdminContent(noti).ward"
+        [pic]="getAdminContent(noti).passport"
+        *ngIf="noti.type === 'adminContent'"
+      ></app-management-item>
+      <app-info-item
+        [title]="(getPetitionContent(noti) | async).content"
+        [date]="(getPetitionContent(noti) | async).datePublished"
+        [subjects]="[(getPetitionContent(noti) | async).relatedTo]"
+        [sponsored]="(getPetitionContent(noti) | async).sponsoredBy.sponsorName"
+        [sub]="'Petition on'"
+        *ngIf="noti.type === 'petitionId'"
+      >
+      </app-info-item>
+      <app-report-item
+        [title]="(getReportContent(noti) | async).titleOfReport"
+        [date]="(getReportContent(noti) | async).datePublished"
+        [concerning]="[(getReportContent(noti) | async).relatedTo]"
+        [submitted]="(getReportContent(noti) | async).authorCommitee.name"
+        [sub]="'Report on'"
+        *ngIf="noti.type === 'reportId'"
+      >
+      </app-report-item>
+      <app-statement-item
+        [info]="getStatementContent(noti) | async"
+        *ngIf="noti.type === 'statementId'"
+      >
+      </app-statement-item>
+      <app-info-item
+        [title]="(getMotionContent(noti) | async).content"
+        [date]="(getMotionContent(noti) | async).datePublished"
+        [subjects]="[(getMotionContent(noti) | async).relatedTo]"
+        [department]="(getMotionContent(noti) | async).department"
+        [sponsored]="(getMotionContent(noti) | async).sponsoredBy.sponsorName"
+        *ngIf="noti.type === 'motionId'"
+      ></app-info-item>
+      <app-info-item
+        [title]="(getMotionContent(noti) | async).content"
+        [date]="(getMotionContent(noti) | async).datePublished"
+        [subjects]="[(getMotionContent(noti) | async).relatedTo]"
+        [department]="(getMotionContent(noti) | async).department"
+        [sponsored]="(getMotionContent(noti) | async).sponsoredBy.sponsorName"
+        *ngIf="noti.type === 'motionNoticeId'"
+      ></app-info-item>
+      <app-info-item
+        [title]="(getBillContent(noti) | async).titleOfBill"
+        [date]="(getBillContent(noti) | async).datePublished"
+        [subjects]="[(getBillContent(noti) | async).relatedTo]"
+        [sub]="'Bill on'"
+        [status]="(getBillContent(noti) | async).status"
+        *ngIf="noti.type === 'billsId'"
+      >
+      </app-info-item>
+      <div class="bottom">
+        <button mat-button class="view" *ngIf="!noView">View</button>
+        <button
+          mat-button
+          color="error"
+          (click)="onDelete(noti)"
+          *ngIf="!noDelete"
+        >
+          Delete
+        </button>
+      </div>
+      <!-- <div class="bottom" *ngIf="noti.date">
         {{ noti.date }}
-      </div>
+      </div> -->
     </div>
   </div>
 </div>

@@ -20,6 +20,15 @@
       <div class="actions">
         <button
           mat-raised-button
+          color="error"
+          type="button"
+          class="btn-discard"
+          (click)="onDiscard()"
+        >
+          Discard
+        </button>
+        <button
+          mat-raised-button
           type="submit"
           class="btn-save"
           (click)="onComplete()"

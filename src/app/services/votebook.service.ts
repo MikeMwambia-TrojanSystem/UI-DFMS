@@ -71,4 +71,15 @@ export class VotebookService {
       .deleteVotebook(id)
       .pipe(switchMap(() => this.fetchVotebook()));
   }
+
+  checkNone(
+    value: any[] | 'NONE',
+    transformation?: (value: any[]) => string
+  ): string {
+    return value === 'NONE'
+      ? 'NONE'
+      : transformation
+      ? transformation(value)
+      : value.join('&&&');
+  }
 }

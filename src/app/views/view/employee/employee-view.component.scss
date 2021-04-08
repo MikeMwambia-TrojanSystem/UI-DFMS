@@ -1,0 +1,100 @@
+.title {
+  font-weight: 500;
+  text-align: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 50px 0;
+}
+
+.label {
+  margin: 0;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.select {
+  &-container {
+    padding: 15px;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 250px;
+    margin: 10px 0;
+  }
+
+  &-title {
+    font-weight: 500;
+  }
+
+  &-icon {
+    color: rgba(0, 0, 0, 0.25);
+    transition: color 0.1s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      color: #008000;
+    }
+  }
+}
+
+.example {
+  font-size: 14px;
+  margin-left: 10px;
+  font-style: italic;
+  color: gray;
+}
+
+.profile-pic {
+  width: 100px;
+  min-width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 100%;
+  margin-right: 20px;
+}
+
+.grid {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+
+  .grid-form {
+    width: 100%;
+
+    .grid-field {
+      width: 100%;
+    }
+  }
+}
+
+/**
+  * Selectors to overwrite Material Input styling.
+  * :host is needed to prevent the style bleeding into other components.
+  * More information can be found at: https://angular.io/guide/component-styles#deprecated-deep--and-ng-deep
+  * Note: This is not a very good way to deal with overwrite Material styling. But it is the shortest and easiest way
+  * For better method I recommend checking Material documentation: https://material.angular.io/guide/theming-your-components
+  */
+:host ::ng-deep {
+  .mat-input-element {
+    margin-bottom: 12px;
+    color: black;
+  }
+
+  .mat-form-field-infix {
+    border-top: none;
+  }
+
+  .mat-select {
+    margin-bottom: 12px;
+  }
+
+  .mat-form-field-prefix {
+    position: relative;
+    bottom: 12px;
+  }
+}

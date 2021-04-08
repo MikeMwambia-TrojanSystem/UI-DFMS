@@ -1,0 +1,21 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Wards of {{ county }} County</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Name</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="name" />
+      </mat-form-field>
+
+      <p class="label">Constituency</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="constituency" />
+      </mat-form-field>
+
+      <p class="label">Sub County</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="subCounty" />
+      </mat-form-field>
+    </form>
+  </app-center-card>
+</app-background>

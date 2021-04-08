@@ -1,0 +1,73 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Bill</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Title of Bill</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="titleOfBill" />
+      </mat-form-field>
+
+      <p class="label">Bill No</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="billNo" type="number" />
+      </mat-form-field>
+
+      <p class="label">Related To</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="relatedTo" />
+      </mat-form-field>
+
+      <p class="label">Sponsor</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="sponsor" />
+      </mat-form-field>
+
+      <p class="label">Concerned Committee</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="committeeName" />
+      </mat-form-field>
+
+      <div class="date-container">
+        <div class="date">
+          <p class="label">Date Published</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="datePublished" type="date" />
+          </mat-form-field>
+        </div>
+
+        <div class="date">
+          <p class="label">First Reading</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="firstReadingDate" type="date" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="date-container">
+        <div class="date">
+          <p class="label">Second Reading</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="secondReadingDate" type="date" />
+          </mat-form-field>
+        </div>
+
+        <div class="date">
+          <p class="label">Date Passed</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="datePassed" type="date" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <p class="label">Bill Report</p>
+      <a [href]="reportUrl" target="_blank" class="document-link">{{
+        reportName
+      }}</a>
+
+      <p class="label">Bill Soft Copy</p>
+      <a [href]="billUrl" target="_blank" class="document-link">{{
+        billName
+      }}</a>
+    </form>
+  </app-center-card>
+</app-background>

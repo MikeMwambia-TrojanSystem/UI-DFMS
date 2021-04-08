@@ -1,0 +1,56 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Report</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Report Title</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="titleOfReport" />
+      </mat-form-field>
+
+      <p class="label">Author Concerned Committee</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="authorCommitee" />
+      </mat-form-field>
+
+      <p class="label">Due Date</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="dueDate" type="date" />
+      </mat-form-field>
+
+      <p class="label">Originating Document</p>
+      <mat-form-field appearance="standard">
+        <mat-select formControlName="originatingDocType">
+          <mat-option
+            *ngFor="let o of originatings; let i = index"
+            [value]="o"
+            >{{ originatingsTitle[i] }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+
+      <p class="label">Originating Document</p>
+      <mat-form-field appearance="standard">
+        <input matInput [value]="originatingName" [disabled]="true" />
+      </mat-form-field>
+
+      <p class="label">Uploaded Report</p>
+      <a [href]="reportUrl" target="_blank" class="document-link">{{
+        reportName
+      }}</a>
+
+      <p class="label">Annexus</p>
+      <a [href]="annexusUrl" target="_blank" class="document-link">{{
+        annexusName
+      }}</a>
+
+      <p class="label">Editors</p>
+      <div class="editors-container">
+        <p class="editors">{{ editors.length }} Editors</p>
+        <div *ngFor="let editor of editors" class="editor">
+          <mat-icon class="icon">person_outline</mat-icon>
+          <span>{{ editor.name }}</span>
+        </div>
+      </div>
+    </form>
+  </app-center-card>
+</app-background>

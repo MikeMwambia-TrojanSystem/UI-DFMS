@@ -36,7 +36,7 @@ export class CanActivateDepartment implements CanActivate {
     return this.departmentService.getDepartment(departmentId).pipe(
       take(1),
       map((department) => {
-        if (department) {
+        if (department && !department.published) {
           return true;
         }
 

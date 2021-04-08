@@ -71,21 +71,16 @@
     padding: 10px 0;
   }
 
-  .top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
   .bottom {
     margin-top: 10px;
     font-size: 12px;
     color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
   }
 
   .view {
-    text-decoration: underline;
     color: #008000;
-    font-weight: 500;
   }
 }

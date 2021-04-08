@@ -124,11 +124,7 @@ export class ReportUploadComponent {
             dueDate: moment(dueDate).toJSON().slice(0, 10),
             originatingDocType: originatingDocument.type,
             originatingDocTypeId: originatingDocument.id,
-            editors: editors.reduce(
-              (result, currentEditor) =>
-                (result.length ? `&&&` : '') + currentEditor,
-              ''
-            ),
+            editors: editors.join('&&&'),
             pageNo: content[0].pageNo,
             content: content[0].content,
             author: content[0].author,

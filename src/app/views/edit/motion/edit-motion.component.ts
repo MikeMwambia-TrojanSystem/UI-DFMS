@@ -105,4 +105,8 @@ export class EditMotionComponent {
 
     this.router.navigate(['/edit/motion/preview']);
   }
+
+  onDiscard() {
+    this.location.back();
+  }
 }

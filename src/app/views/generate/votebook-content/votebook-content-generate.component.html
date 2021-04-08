@@ -1,0 +1,52 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">
+      On this page you can generate votebook based on the Order Paper No.{{
+        orderPaperNo
+      }}
+    </h1>
+    <app-menu-container
+      *ngFor="let item of items; let i = index"
+      [notifications]="item.notifications"
+      [noView]="true"
+      (delete)="onDelete($event)"
+    >
+      <div class="content">
+        <div class="info">
+          <span>{{ i + 1 | number: "2.0-0" }}</span>
+          <span class="label">{{ item.label }}</span>
+        </div>
+        <div class="buttons-container">
+          <button
+            mat-stroked-button
+            class="btn"
+            (click)="onGenerateController(item.generate)"
+            [disabled]="form.get(item.key).value === 'NONE'"
+          >
+            Generate
+          </button>
+        </div>
+      </div>
+    </app-menu-container>
+    <div class="actions">
+      <button
+        mat-button
+        type="button"
+        class="btn-draft"
+        [disabled]="form.invalid"
+        (click)="onSave(true)"
+      >
+        Save as Draft
+      </button>
+      <button
+        mat-raised-button
+        type="submit"
+        class="btn-save"
+        [disabled]="form.invalid"
+        (click)="onSave(false)"
+      >
+        Publish Votebook
+      </button>
+    </div>
+  </app-center-card>
+</app-background>

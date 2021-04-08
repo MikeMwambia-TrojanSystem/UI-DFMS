@@ -36,10 +36,6 @@ export class ListOrderPaperComponent implements OnInit {
   }
 
   onSelect(orderPaper: OrderPaper) {
-    if (this.route.snapshot.queryParams.purpose === 'NEW_VOTEBOOK') {
-      return this.router.navigate(['/generate/votebook/', orderPaper._id]);
-    }
-
     this.cacheService.emit(this._cacheId, orderPaper);
   }
 

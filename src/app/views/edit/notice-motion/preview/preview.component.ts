@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
+import { Location } from '@angular/common';
+
 import { CacheService } from 'src/app/services/cache.service';
 
 @Component({
@@ -15,7 +17,7 @@ export class VotebookNoticeMotionPreviewComponent implements OnInit {
 
   wordsNumber: number;
 
-  constructor(private cacheService: CacheService) {}
+  constructor(private cacheService: CacheService, private location: Location) {}
 
   ngOnInit(): void {
     const { content, status } = this.cacheService.getData<{
@@ -39,5 +41,9 @@ export class VotebookNoticeMotionPreviewComponent implements OnInit {
 
   onComplete() {
     this.cacheService.emit('EDIT_VOTEBOOK_PREVIEW', undefined);
+  }
+
+  onDiscard() {
+    this.location.back();
   }
 }

@@ -1,0 +1,56 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">MCA Profile</h1>
+    <form [formGroup]="form" class="form">
+      <div class="grid">
+        <img [src]="profilePic" *ngIf="profilePic" class="profile-pic" />
+        <div class="grid-form">
+          <p class="label">Name</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="name" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <p class="label">Category</p>
+      <mat-form-field appearance="standard">
+        <mat-select formControlName="positionStatus">
+          <mat-option value="Elected">Elected</mat-option>
+          <mat-option value="Nominated">Nominated</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div class="term-container">
+        <div class="term-item">
+          <p class="label">Term of Service (Start)</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="termStart" type="date" />
+          </mat-form-field>
+        </div>
+
+        <div class="term-item">
+          <p class="label">Term of Service (End)</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="termEnd" type="date" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <span class="label">Ward Represented</span>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="ward" type="tel" />
+      </mat-form-field>
+
+      <span class="label">Political Party</span>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="politicalParty" placeholder="PDP" />
+      </mat-form-field>
+
+      <span class="label">Phone Number</span>
+      <mat-form-field appearance="standard">
+        <span matPrefix>+ &nbsp;</span>
+        <input matInput formControlName="phoneNumber" type="tel" />
+      </mat-form-field>
+    </form>
+  </app-center-card>
+</app-background>

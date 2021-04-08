@@ -94,4 +94,8 @@ export class EditNoticeMotionComponent {
 
     this.router.navigate(['/edit/notice-motion/preview']);
   }
+
+  onDiscard() {
+    this.location.back();
+  }
 }

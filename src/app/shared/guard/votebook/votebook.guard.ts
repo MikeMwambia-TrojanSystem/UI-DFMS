@@ -5,8 +5,9 @@ import {
   Router,
   UrlTree,
 } from '@angular/router';
-import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
+import { OrderPaperService } from 'src/app/services/order-paper.service';
 import { VotebookService } from 'src/app/services/votebook.service';
 
 @Injectable({
@@ -15,21 +16,29 @@ import { VotebookService } from 'src/app/services/votebook.service';
 export class CanActivateVotebook implements CanActivate {
   constructor(
     private votebookService: VotebookService,
+    private orderPaperService: OrderPaperService,
     private router: Router
   ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot
   ):
-    | boolean
-    | UrlTree
     | Promise<boolean | UrlTree>
-    | Observable<boolean | UrlTree> {
+    | Observable<boolean | UrlTree>
+    | boolean
+    | UrlTree {
     const votebookId = route.params.votebookId;
 
     return this.votebookService.getVotebook(votebookId).pipe(
       take(1),
-      map((votebook) => (votebook ? true : this.router.createUrlTree(['/'])))
+      switchMap((votebook) =>
+        votebook
+          ? this.orderPaperService.getOrderPaperByNo(votebook.orderPapersNo)
+          : of(this.router.createUrlTree(['/']))
+      ),
+      map((orderPaper) =>
+        orderPaper ? true : this.router.createUrlTree(['/'])
+      )
     );
   }
 }

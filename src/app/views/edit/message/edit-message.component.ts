@@ -127,4 +127,8 @@ export class EditMessageComponent implements OnInit, OnDestroy {
       },
     });
   }
+
+  onDiscard() {
+    this.location.back();
+  }
 }

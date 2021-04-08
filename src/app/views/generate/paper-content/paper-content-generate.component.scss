@@ -31,7 +31,6 @@
   padding: 0;
   width: 85px;
   line-height: 30px;
-
   margin: 0 5px;
 
   &:first-child {
@@ -41,11 +40,15 @@
   &:last-child {
     margin-right: 0;
   }
+
+  &[disabled] {
+    border-color: #ccc;
+  }
 }
 
 .actions {
   margin: 15px 0;
-  margin-top: 45px;
+  margin-top: 30px;
   display: flex;
   align-items: center;
   justify-content: space-between;

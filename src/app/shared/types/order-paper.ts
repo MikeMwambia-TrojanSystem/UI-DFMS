@@ -31,26 +31,26 @@ export class Message {
 
 export class OrderPaper {
   adjournment: string;
-  adminstrationOfOath: string[];
+  adminstrationOfOath: string[] | 'NONE';
   approvingAccount: { account: string; approverId: string };
   assemblyId: string;
   assemblyNo: number;
-  bills: string[];
-  communicationFromChainr: string[];
+  bills: string[] | 'NONE';
+  communicationFromChainr: string[] | 'NONE';
   createdAt: string;
   datePublished: string;
-  messages: Message[];
-  motions: string[];
-  noticeOfMotions: string[];
+  messages: Message[] | 'NONE';
+  motions: string[] | 'NONE';
+  noticeOfMotions: string[] | 'NONE';
   orderPaperNo: number;
   orderPaperSignature: string;
   pageNoToDate: number;
-  papers: string[];
-  petitions: string[];
+  papers: string[] | 'NONE';
+  petitions: string[] | 'NONE';
   publishState: 'draft' | 'private' | 'public';
   published: boolean;
   sessionNo: number;
-  statements: string[];
+  statements: string[] | 'NONE';
   updatedAt: string;
   _id: string;
 }

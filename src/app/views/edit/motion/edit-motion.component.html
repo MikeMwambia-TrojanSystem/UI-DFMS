@@ -42,8 +42,16 @@
       <div class="btn-container">
         <button
           mat-raised-button
+          color="error"
+          class="discard-btn"
+          (click)="onDiscard()"
+        >
+          Discard
+        </button>
+        <button
+          mat-raised-button
           class="publish-btn"
-          [disabled]="content.invalid || status.invalid"
+          [disabled]="content.invalid || status.invalid || motionId.invalid"
           (click)="onPublish()"
         >
           Save Content

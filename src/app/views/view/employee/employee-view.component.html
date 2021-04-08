@@ -1,0 +1,57 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Employee Profile</h1>
+    <form [formGroup]="form" class="form">
+      <div class="grid">
+        <img [src]="profilePic" *ngIf="profilePic" class="profile-pic" />
+        <div class="grid-form">
+          <p class="label">Name</p>
+          <mat-form-field appearance="standard" class="grid-field">
+            <input matInput formControlName="name" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <p class="label">Department</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="deparment" />
+      </mat-form-field>
+
+      <p class="label">Term of Employment</p>
+      <mat-form-field appearance="standard">
+        <mat-select formControlName="termOfService">
+          <mat-option value="Permanent">Permanent</mat-option>
+          <mat-option value="Contract">Contract</mat-option>
+          <mat-option value="Outsourced">Outsourced</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <p class="label">Education Level</p>
+      <mat-form-field appearance="standard">
+        <mat-select formControlName="educationLevel">
+          <mat-option value="Diploma Graduate">Diploma Graduate</mat-option>
+          <mat-option value="Bachelor's Graduate"
+            >Bachelor's Graduate</mat-option
+          >
+          <mat-option value="Master''s Graduate">Master's Graduate</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <span class="label">Extra Qualification</span>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="extraQualification" />
+      </mat-form-field>
+
+      <span class="label">Phone Number</span>
+      <mat-form-field appearance="standard">
+        <span matPrefix>+ &nbsp;</span>
+        <input matInput formControlName="phoneNumber" type="tel" />
+      </mat-form-field>
+
+      <span class="label">Email Address</span>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="emailAddress" />
+      </mat-form-field>
+    </form>
+  </app-center-card>
+</app-background>

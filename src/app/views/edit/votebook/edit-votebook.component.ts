@@ -91,4 +91,8 @@ export class EditVotebookComponent implements OnInit, OnDestroy {
 
     this.router.navigate(['/edit/votebook/preview']);
   }
+
+  onDiscard() {
+    this.location.back();
+  }
 }

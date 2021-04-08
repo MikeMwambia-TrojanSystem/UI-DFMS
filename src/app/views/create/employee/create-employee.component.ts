@@ -45,6 +45,8 @@ export class CreateEmployeeComponent implements OnInit {
     status: new FormControl(false),
     verified: new FormControl(false),
     educationLevel: new FormControl('', Validators.required),
+    emailAddress: new FormControl('', [Validators.required, Validators.email]),
+    extraQualification: new FormControl('', Validators.required),
     deparment: new FormControl('', Validators.required),
     deptId: new FormControl('', Validators.required),
   });

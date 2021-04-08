@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -29,7 +30,8 @@ export class MessagePreviewComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private cacheService: CacheService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -60,5 +62,9 @@ export class MessagePreviewComponent implements OnInit {
       message,
       page,
     });
+  }
+
+  onDiscard() {
+    this.location.back();
   }
 }

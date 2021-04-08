@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -18,7 +19,8 @@ export class VotebookPreviewComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -37,5 +39,9 @@ export class VotebookPreviewComponent implements OnInit {
 
   onComplete() {
     this.cacheService.emit('EDIT_VOTEBOOK_PREVIEW', undefined);
+  }
+
+  onDiscard() {
+    this.location.back();
   }
 }
