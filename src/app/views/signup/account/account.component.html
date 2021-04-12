@@ -9,12 +9,12 @@
       <mat-form-field appearance="standard">
         <mat-select formControlName="group">
           <!-- <mat-option value="Staff">Drafter of the Assembly</mat-option> -->
-          <mat-option value="clerk">Clerk of the Assembly</mat-option>
-          <mat-option value="speaker">Speaker of the Assembly</mat-option>
+          <mat-option value="speaker">Speaker of the County Assembly</mat-option>
+          <mat-option value="clerk">Clerk of the County Assembly</mat-option>
+          <mat-option value="drafter">Drafter of the County Assembly</mat-option>
         </mat-select>
         <mat-error *ngIf="form.get('group').hasError('required')"
-          >Please choose a role</mat-error
-        >
+          >Please choose a role</mat-error>
       </mat-form-field>
       <p class="label">Enter your Name</p>
       <mat-form-field appearance="standard">

@@ -29,7 +29,7 @@ export class CreateEmployeeComponent implements OnInit {
 
   form = new FormGroup({
     name: new FormControl('', Validators.required),
-    group: new FormControl('Staff', Validators.required),
+    group: new FormControl('drafter', Validators.required),
     phoneNumber: new FormControl('', [
       Validators.required,
       phoneNumberValidator,

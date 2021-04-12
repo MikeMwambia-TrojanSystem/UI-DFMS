@@ -29,10 +29,10 @@ export class AccountService {
   }
 
   changePassword(form: { username: string; password: string }) {
-    return of({
+    /*return of({
       request_id: 'test',
       userId: '12345',
-    });
+    });*/
     return this.apiService.changePassword(form).pipe(
       map(({ success }) => ({
         request_id: success.request_id,

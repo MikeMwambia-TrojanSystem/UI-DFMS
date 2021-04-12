@@ -868,7 +868,7 @@ export class ApiService {
   phoneVerification(verification: PhoneVerification): Observable<any> {
     // return of(true);
     return this.http
-      .put(this._baseUrl + 'mobile/verifyVerificationCode', undefined, {
+      .put(this._baseUrl + 'akuru/verifyCode', undefined, {
         params: verification as any,
       })
       .pipe(
@@ -878,6 +878,12 @@ export class ApiService {
         })
       );
   }
+
+  /*PHONE VERIFICATION LOGIC
+  For MCA Profile Creation the endpoint for code verifications is '/mcaProfile/verifySentCode'
+  For Account creation the endpoint for code verification is '/akuru/verifyCode'
+  For Personnel profile creation the endpoint for code verification is '/personnel/verifySentCode'
+  */
 
   // ACCOUNT
   createAccount(
@@ -925,7 +931,7 @@ export class ApiService {
 
   updatePassword(form: any) {
     return this.http
-      .get(this._baseUrl + 'akuru/updatePassword', {
+      .put(this._baseUrl + 'akuru/updatePassword', {
         params: form,
       })
       .pipe(catchError(errorHandler));

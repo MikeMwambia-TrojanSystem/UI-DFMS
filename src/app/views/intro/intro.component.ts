@@ -181,7 +181,7 @@ export class IntroComponent {
       ],
     },
     {
-      label: 'Reports',
+      label: 'Papers',
       actions: [
         {
           label: 'Generation Reports',
@@ -222,7 +222,7 @@ export class IntroComponent {
       ],
     },
     {
-      label: 'Notice of Motion',
+      label: 'Notices of Motions',
       actions: [
         {
           label: 'Generation Notice of Motion',
