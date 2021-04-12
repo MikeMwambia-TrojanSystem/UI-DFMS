@@ -30,20 +30,31 @@
           >Please enter assembly no!</mat-error
         >
       </mat-form-field>
-      <p class="label">Assembly Session</p>
+      <p class="label">Session No</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="sessionNo" type="number" />
         <mat-error *ngIf="form.get('sessionNo').hasError('required')"
-          >Please enter assembly session!</mat-error
+          >Please enter session no!</mat-error
         >
       </mat-form-field>
-      <p class="label">Starting Page on the Order Paper</p>
-      <mat-form-field appearance="standard">
-        <input matInput formControlName="pageNoToDate" type="number" />
-        <mat-error *ngIf="form.get('pageNoToDate').hasError('required')"
-          >Please enter starting page!</mat-error
-        >
-      </mat-form-field>
+      <div class="grid">
+        <div class="grid-form">
+          <p class="label">Assembly Sitting No</p>
+          <mat-form-field appearance="standard">
+            <input matInput type="number" />
+          </mat-form-field>
+        </div>
+        <div class="grid-form">
+          <p class="label">Page No</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="pageNoToDate" type="number" />
+            <mat-error *ngIf="form.get('pageNoToDate').hasError('required')"
+              >Please enter page no!</mat-error
+            >
+          </mat-form-field>
+        </div>
+      </div>
+
       <div class="actions">
         <button
           mat-raised-button

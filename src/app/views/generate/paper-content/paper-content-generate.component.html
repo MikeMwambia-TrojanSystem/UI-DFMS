@@ -4,6 +4,7 @@
     <app-menu-container
       *ngFor="let item of items; let i = index"
       [notifications]="item.notifications"
+      (delete)="onDelete($event)"
     >
       <div class="content">
         <div class="info">
@@ -16,6 +17,7 @@
             class="btn"
             *ngIf="item.select"
             (click)="onSelect(item.select)"
+            [disabled]="form.get(item.key).value === 'NONE'"
           >
             Select
           </button>
@@ -24,13 +26,32 @@
             class="btn"
             *ngIf="item.generate"
             (click)="onGenerate(item.generate)"
+            [disabled]="form.get(item.key).value === 'NONE'"
           >
             Generate
           </button>
-          <button mat-stroked-button class="btn">Skip</button>
+          <button
+            mat-stroked-button
+            class="btn"
+            (click)="onSkip(item.key)"
+            [disabled]="form.get(item.key).value === 'NONE'"
+          >
+            Skip
+          </button>
         </div>
       </div>
     </app-menu-container>
+    <app-menu-container>
+      <div class="content">
+        <div class="info">
+          <span>10</span>
+          <span class="label">Adjournment</span>
+        </div>
+      </div>
+    </app-menu-container>
+    <p style="color: #008000; margin: 0; margin-top: -30px">
+      Generate Tentative Bussiness
+    </p>
     <div class="actions">
       <button
         mat-button

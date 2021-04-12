@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, iif, Observable, of } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, switchMap, take, tap } from 'rxjs/operators';
 import { OrderPaper, OrderPaperPost } from '../shared/types/order-paper';
 import { ApiService } from './api.service';
 
@@ -22,16 +22,23 @@ export class OrderPaperService {
   }
 
   getOrderPapers(): Observable<OrderPaper[]> {
-    return this._orderPapers.pipe(
-      switchMap((orderPapers) =>
-        iif(() => this._fetched, of(orderPapers), this.fetchOrderPapers())
-      )
-    );
+    return this.fetchOrderPapers();
+    // return this._orderPapers.pipe(
+    //   switchMap((orderPapers) =>
+    //     iif(() => this._fetched, of(orderPapers), this.fetchOrderPapers())
+    //   )
+    // );
   }
 
   getOrderPaper(id: string): Observable<OrderPaper> {
     return this.getOrderPapers().pipe(
       map((orderPapers) => orderPapers.find((o) => o._id === id))
+    );
+  }
+
+  getOrderPaperByNo(no: number): Observable<OrderPaper> {
+    return this.getOrderPapers().pipe(
+      map((orderPapers) => orderPapers.find((o) => o.orderPaperNo === no))
     );
   }
 
@@ -43,7 +50,9 @@ export class OrderPaperService {
           this._fetched = true;
         }
       }),
-      map(({ message }) => (Array.isArray(message) ? message : []))
+      map(({ message }) => {
+        return Array.isArray(message) ? message : [];
+      })
     );
   }
 
@@ -87,5 +96,16 @@ export class OrderPaperService {
         }
       })
     );
+  }
+
+  checkNone(
+    value: any[] | 'NONE',
+    transformation?: (value: any[]) => string
+  ): string {
+    return value === 'NONE'
+      ? 'NONE'
+      : transformation
+      ? transformation(value)
+      : value.join('&&&');
   }
 }

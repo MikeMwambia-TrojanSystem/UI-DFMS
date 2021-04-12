@@ -1,0 +1,47 @@
+.title {
+  text-align: center;
+  font-weight: 600;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+
+  .info {
+    margin-right: 20px;
+  }
+}
+
+.label {
+  margin-left: 20px;
+  font-weight: 500;
+}
+
+.buttons-container {
+  display: flex;
+  align-items: center;
+}
+
+.btn {
+  border-color: #008000;
+  color: #008000;
+  border-radius: 10px;
+  padding: 0;
+  width: 85px;
+  line-height: 30px;
+  margin: 0 5px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &[disabled] {
+    border-color: #ccc;
+  }
+}

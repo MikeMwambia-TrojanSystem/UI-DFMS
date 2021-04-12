@@ -34,7 +34,6 @@ export class ActGenerateComponent implements OnInit {
     datePublished: new FormControl('', Validators.required),
     uploaded: new FormControl(false),
     uploadedFileURL: new FormControl('', Validators.required),
-    uploadAccount: new FormControl('test upload account'),
     approvingAcc: new FormControl('speaker'),
     originatingBTitle: new FormControl('', Validators.required),
     orderPaperId: new FormControl('6041d62429d8ac0925674035'),
@@ -44,7 +43,6 @@ export class ActGenerateComponent implements OnInit {
     assemblyId: new FormControl('6041d62429d8ac0925674035'),
     published: new FormControl(false),
     sponsorName: new FormControl('', Validators.required),
-    uploadId: new FormControl('6041d62429d8ac0925674035'),
     approvingAccId: new FormControl('6041d62429d8ac0925674035'),
     billId: new FormControl('', Validators.required),
     committeeName: new FormControl('', Validators.required),
@@ -79,7 +77,6 @@ export class ActGenerateComponent implements OnInit {
           concernedCommiteeId,
           originatingBillId,
           sponsorId,
-          uploadingAccount,
           datePublished,
           ...others
         } = act;
@@ -87,8 +84,6 @@ export class ActGenerateComponent implements OnInit {
         this.form.patchValue({
           ...others,
           datePublished: moment(datePublished).toJSON().slice(0, 10),
-          uploadAccount: uploadingAccount.uploadAccount,
-          uploadId: uploadingAccount.uploadId,
           approvingAcc: approvingAccount.approvingAcc,
           approvingAccId: approvingAccount.approvingAccId,
           originatingBTitle: originatingBillId.originatingBTitle,
@@ -260,7 +255,7 @@ export class ActGenerateComponent implements OnInit {
     const post = (state: 'public' | 'private' | 'draft') => {
       const value = this.form.value;
 
-      value.published = state === 'public';
+      // value.published = state === 'public';
       value.publishState = state;
 
       if (this._mode === 'creating') {

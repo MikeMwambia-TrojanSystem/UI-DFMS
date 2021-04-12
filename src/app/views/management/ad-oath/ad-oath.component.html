@@ -5,29 +5,49 @@
       <p class="label">Name</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="name" placeholder="Sterys Crystal" />
-        <mat-error *ngIf="form.get('name').hasError('required')">Please enter your name!</mat-error>
+        <mat-error *ngIf="form.get('name').hasError('required')"
+          >Please enter your name!</mat-error
+        >
       </mat-form-field>
-      <p class="label">Ward Represented</p>
-      <mat-form-field appearance="standard">
-        <mat-select formControlName="ward">
-          <mat-option *ngFor="let ward of wards" [value]="ward">{{ward}}</mat-option>
-        </mat-select>
-        <mat-error *ngIf="form.get('ward').hasError('required')">Please select a ward!</mat-error>
-      </mat-form-field>
-      <app-custom-button [title]="'Upload Passport Picture'" [url]="['/', 'management', 'upload']"></app-custom-button>
+      <app-custom-button
+        [title]="wardName || 'Ward Represented'"
+        (buttonClick)="onWardSelect()"
+      ></app-custom-button>
+      <app-custom-button
+        [title]="fileName.length ? fileName : 'Upload Passport Picture'"
+        (buttonClick)="onUpload()"
+      ></app-custom-button>
       <p class="label">Political Party</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="party" placeholder="Trust Party" />
-        <mat-error *ngIf="form.get('party').hasError('required')">Please enter political party!</mat-error>
+        <input
+          matInput
+          formControlName="politicalParty"
+          placeholder="Trust Party"
+        />
+        <mat-error *ngIf="form.get('politicalParty').hasError('required')"
+          >Please enter political party!</mat-error
+        >
       </mat-form-field>
       <div class="actions">
-        <button mat-button type="button" class="btn-draft">Save as Draft</button>
-        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid">Save</button>
+        <button
+          mat-raised-button
+          type="submit"
+          class="btn-save"
+          [disabled]="form.invalid"
+          (click)="onSave()"
+        >
+          Save
+        </button>
       </div>
     </form>
     <div class="divider"></div>
-    <h2 class="list-title" *ngIf="state">Previous Administration of Oaths</h2>
-    <app-management-item *ngFor="let ad of administrations" [title]="ad.name" [subtitle]="ad.ward" [pic]="ad.profilePic"
-      [state]="state"></app-management-item>
+    <app-management-item
+      *ngFor="let ad of administrations"
+      [title]="ad.name"
+      [subtitle]="ad.ward"
+      [pic]="ad.passport"
+      [selectable]="true"
+      (select)="onSelect(ad)"
+    ></app-management-item>
   </app-center-card>
 </app-background>

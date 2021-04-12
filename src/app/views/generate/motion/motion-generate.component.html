@@ -4,9 +4,16 @@
     <form [formGroup]="form" class="form">
       <p class="label">Motion Content</p>
       <mat-form-field appearance="standard">
-        <textarea matInput formControlName="content" placeholder="Motion on Sales Entity" cdkTextareaAutosize
-          cdkAutosizeMinRows="1"></textarea>
-        <mat-error *ngIf="form.get('content').hasError('required')">Please enter motion content!</mat-error>
+        <textarea
+          matInput
+          formControlName="content"
+          placeholder="Motion on Sales Entity"
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="1"
+        ></textarea>
+        <mat-error *ngIf="form.get('content').hasError('required')"
+          >Please enter motion content!</mat-error
+        >
       </mat-form-field>
       <!-- <p class="label">Subject Matter of the Motion</p>
       <mat-form-field appearance="standard">
@@ -18,23 +25,52 @@
       <p class="label">Related To</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="relatedTo" />
-        <mat-error *ngIf="form.get('relatedTo').hasError('required')">Please enter related to!</mat-error>
+        <mat-error *ngIf="form.get('relatedTo').hasError('required')"
+          >Please enter related to!</mat-error
+        >
       </mat-form-field>
-      <app-custom-button [title]="
+      <app-custom-button
+        [title]="
           form.get('department').value.length
             ? form.get('department').value
             : 'Select Department'
-        " class="custom-btn standalone" (buttonClick)="onSelectDepartment()"></app-custom-button>
-      <app-custom-button [title]="
+        "
+        class="custom-btn standalone"
+        (buttonClick)="onSelectDepartment()"
+      ></app-custom-button>
+      <app-custom-button
+        [title]="
           form.get('sponsorName').value.length
             ? form.get('sponsorName').value
             : 'Select Sponsor'
-        " class="custom-btn standalone" (buttonClick)="onSelectSponsor()"></app-custom-button>
+        "
+        class="custom-btn standalone"
+        (buttonClick)="onSelectSponsor()"
+      ></app-custom-button>
+      <p class="label notice">Generate Notice of Motion</p>
+      <mat-radio-group>
+        <mat-radio-button value="true" style="margin-right: 20px"
+          >Yes</mat-radio-button
+        >
+        <mat-radio-button value="false">No</mat-radio-button>
+      </mat-radio-group>
       <div class="actions">
-        <button mat-button type="button" class="btn-draft" [disabled]="form.invalid" (click)="onSave(false)">
+        <button
+          mat-button
+          type="button"
+          class="btn-draft"
+          [disabled]="form.invalid"
+          (click)="onSave(false)"
+        >
           Save as Draft
         </button>
-        <button mat-raised-button type="submit" class="btn-save" [disabled]="form.invalid" (click)="onSave(true)">
+        <button
+          mat-raised-button
+          type="submit"
+          class="btn-save"
+          [disabled]="form.invalid"
+          (click)="onSave(true)"
+        >
           Publish Motion
         </button>
       </div>

@@ -19,6 +19,7 @@ import { Report, ReportPost } from '../shared/types/report';
 import { PhoneVerification } from '../shared/types/verification';
 import { OrderPaper, OrderPaperPost } from '../shared/types/order-paper';
 import { Votebook, VotebookPost } from '../shared/types/votebook';
+import { Speaker } from '../shared/types/speaker';
 
 interface ApiResponse<T> {
   message: T;
@@ -137,11 +138,68 @@ export class ApiService {
       .pipe(timeout(this._timeout), catchError(errorHandler));
   }
 
-  getCommittees() {
+  getCommittees(): Observable<ApiResponse<Committee[] | string>> {
+    // return of({
+    //   message: [
+    //     {
+    //       committesMembers: ['123'],
+    //       _id: '123',
+    //       commiteeSignature: '123',
+    //       name: 'Tets Name',
+    //       chair: {
+    //         name: 'Test Chair',
+    //         id: '123',
+    //       },
+    //       viceChair: {
+    //         name: 'Test Vice',
+    //         id: '1234',
+    //       },
+    //       departmentInExcecutive: 'test Depart',
+    //       approvingAccount: {
+    //         approverId: '123',
+    //         account: 'test',
+    //       },
+    //       datePublished: '2020-03-01',
+    //       published: true,
+    //       assemblyId: '123',
+    //       createdAt: '2020-03-01',
+    //       updatedAt: '2020-03-01',
+    //     },
+    //   ],
+    //   success: true,
+    //   status: 200,
+    // });
     return this._getRequest<Committee>('commitee/getAllCommitees');
   }
 
-  getMotions() {
+  getMotions(): Observable<ApiResponse<Motion[] | string>> {
+    // return of({
+    //   message: [
+    //     {
+    //       _id: '1',
+    //       motionSignature: '1',
+    //       content: 'content',
+    //       sponsoredBy: {
+    //         sponsorName: 'sponsor name',
+    //         sponsorId: '1',
+    //       },
+    //       department: 'test department',
+    //       resolution: 'test resolution',
+    //       relatedTo: 'test related',
+    //       assemblyId: '123',
+    //       approvingAccount: {
+    //         name: 'name',
+    //         id: '123',
+    //       },
+    //       datePublished: '2021-03-01',
+    //       publishState: 'public',
+    //       createdAt: '2021-03-01',
+    //       updatedAt: '2021-03-01',
+    //     },
+    //   ],
+    //   status: 200,
+    //   success: true,
+    // });
     return this._getRequest<Motion>('motion/getAllMotions');
   }
 
@@ -157,36 +215,463 @@ export class ApiService {
     return this._getRequest<McaEmployee>('mcaProfile/getAllMca');
   }
 
-  getStatements() {
+  getStatements(): Observable<ApiResponse<Statement[] | string>> {
+    // return of({
+    //   message: [
+    //     {
+    //       _id: '1',
+    //       approvingAccount: {
+    //         account: 'test',
+    //         approverId: '123',
+    //       },
+    //       assemblyId: '123',
+    //       createdAt: '2021-03-01',
+    //       datePublished: '2021-03-01',
+    //       dateStatementSought: '2021-03-01',
+    //       dateStatementToResponded: '2021-03-01',
+    //       departmentResponsible: 'test department',
+    //       publishState: 'public',
+    //       published: true,
+    //       seeker: {
+    //         id: '123',
+    //         name: 'test',
+    //         position: 'speaker',
+    //       },
+    //       statementNo: 1,
+    //       statementProvider: {
+    //         department: 'test department',
+    //         id: '1',
+    //         name: 'test department',
+    //       },
+    //       statementSignature: '123',
+    //       status: 'public',
+    //       subjectOfStatement: 'test',
+    //       updatedAt: '2021-03-01',
+    //       uploaded: true,
+    //       uploadedFileURL:
+    //         'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //     },
+    //   ],
+    //   status: 200,
+    //   success: true,
+    // });
     return this._getRequest<Statement>('statement/getAllStatements');
   }
 
-  getPetitions() {
+  getPetitions(): Observable<ApiResponse<string | Petition[]>> {
+    // return of({
+    //   message: [
+    //     {
+    //       _id: '1',
+    //       approvingAccount: { approverId: '123', account: '123' },
+    //       assemblyId: '123',
+    //       concernedCommitee: { name: 'test', id: '123' },
+    //       content: 'content',
+    //       createdAt: '2021-03-02',
+    //       dateCommitteResponse: '2021-03-02',
+    //       datePresented: '2021-03-02',
+    //       datePublished: '2021-03-02',
+    //       dateToBDiscussed: '2021-03-02',
+    //       orderPaperId: '1',
+    //       petitionNumber: 1,
+    //       petitionSignature: 'test',
+    //       petitionTitle: 'test title',
+    //       petitioners: [
+    //         'name=test|||phone=254123123123',
+    //         'name=test2|||phone=254123123123',
+    //       ],
+    //       publishState: 'public',
+    //       published: true,
+    //       relatedTo: 'test',
+    //       sponsoredBy: { sponsorName: 'test', sponsorId: '123' },
+    //       updatedAt: '2021-03-02',
+    //       uploaded: true,
+    //       uploadedFileURL:
+    //         'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //       uploadingAccount: { name: 'test', id: '1' },
+    //     },
+    //     {
+    //       _id: '2',
+    //       approvingAccount: { approverId: '123', account: '123' },
+    //       assemblyId: '123',
+    //       concernedCommitee: { name: 'test', id: '123' },
+    //       content: 'content',
+    //       createdAt: '2021-03-02',
+    //       dateCommitteResponse: '2021-03-02',
+    //       datePresented: '2021-03-02',
+    //       datePublished: '2021-03-02',
+    //       dateToBDiscussed: '2021-03-02',
+    //       orderPaperId: '1',
+    //       petitionNumber: 1,
+    //       petitionSignature: 'test',
+    //       petitionTitle: 'test title',
+    //       petitioners: [
+    //         'name=test|||phone=254123123123',
+    //         'name=test2|||phone=254123123123',
+    //       ],
+    //       publishState: 'public',
+    //       published: true,
+    //       relatedTo: 'test',
+    //       sponsoredBy: { sponsorName: 'test', sponsorId: '123' },
+    //       updatedAt: '2021-03-02',
+    //       uploaded: true,
+    //       uploadedFileURL:
+    //         'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //       uploadingAccount: { name: 'test', id: '1' },
+    //     },
+    //   ],
+    //   success: true,
+    //   status: 200,
+    // });
     return this._getRequest<Petition>('petition/getAllPetition');
   }
 
-  getBills() {
+  getBills(): Observable<ApiResponse<Bill[] | string>> {
+    // return of({
+    //   message: [
+    //     {
+    //       _id: '1',
+    //       approvingAccount: { approvingAcc: 'test', approvingAccId: '123' },
+    //       assemblyId: '123',
+    //       billNo: 1,
+    //       billSignature: '123',
+    //       billUploadedReportURL:
+    //         'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //       concernedCommiteeId: { committeeName: 'test', committeeNameId: '1' },
+    //       createdAt: '2021-03-01',
+    //       datePassed: '2021-03-01',
+    //       datePublished: '2021-03-01',
+    //       firstReadingDate: '2021-03-01',
+    //       orderPaperId: '123',
+    //       publishState: 'public',
+    //       published: true,
+    //       relatedTo: 'test related',
+    //       secondReadingDate: '2021-03-01',
+    //       sponsor: { name: 'sponsor name', id: '1' },
+    //       status: 'published',
+    //       titleOfBill: 'title bill',
+    //       updatedAt: '2021-03-01',
+    //       uploaded: true,
+    //       uploadedBillURL:
+    //         'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //       uploadingAccount: {
+    //         uploadAccname: 'test',
+    //         uploadingPersonnel: 'test',
+    //       },
+    //     },
+    //     {
+    //       _id: '2',
+    //       approvingAccount: { approvingAcc: 'test', approvingAccId: '123' },
+    //       assemblyId: '123',
+    //       billNo: 2,
+    //       billSignature: '123',
+    //       billUploadedReportURL:
+    //         'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //       concernedCommiteeId: { committeeName: 'test', committeeNameId: '1' },
+    //       createdAt: '2021-03-01',
+    //       datePassed: '2021-03-01',
+    //       datePublished: '2021-03-01',
+    //       firstReadingDate: '2021-03-01',
+    //       orderPaperId: '123',
+    //       publishState: 'public',
+    //       published: true,
+    //       relatedTo: 'test related',
+    //       secondReadingDate: '2021-03-01',
+    //       sponsor: { name: 'sponsor name', id: '1' },
+    //       status: 'published',
+    //       titleOfBill: 'title bill 2',
+    //       updatedAt: '2021-03-01',
+    //       uploaded: true,
+    //       uploadedBillURL:
+    //         'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //       uploadingAccount: {
+    //         uploadAccname: 'test',
+    //         uploadingPersonnel: 'test',
+    //       },
+    //     },
+    //     {
+    //       _id: '3',
+    //       approvingAccount: { approvingAcc: 'test', approvingAccId: '123' },
+    //       assemblyId: '123',
+    //       billNo: 3,
+    //       billSignature: '123',
+    //       billUploadedReportURL:
+    //         'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //       concernedCommiteeId: { committeeName: 'test', committeeNameId: '1' },
+    //       createdAt: '2021-03-01',
+    //       datePassed: '2021-03-01',
+    //       datePublished: '2021-03-01',
+    //       firstReadingDate: '2021-03-01',
+    //       orderPaperId: '123',
+    //       publishState: 'public',
+    //       published: true,
+    //       relatedTo: 'test related',
+    //       secondReadingDate: '2021-03-01',
+    //       sponsor: { name: 'sponsor name', id: '1' },
+    //       status: 'published',
+    //       titleOfBill: 'title bill 3',
+    //       updatedAt: '2021-03-01',
+    //       uploaded: true,
+    //       uploadedBillURL:
+    //         'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //       uploadingAccount: {
+    //         uploadAccname: 'test',
+    //         uploadingPersonnel: 'test',
+    //       },
+    //     },
+    //   ],
+    //   status: 200,
+    //   success: true,
+    // });
     return this._getRequest<Bill>('bills/getAllBills');
   }
 
-  getActs() {
+  getActs(): Observable<ApiResponse<Act[] | string>> {
+    // return of({
+    //   message: [
+    //     {
+    //       _id: '123',
+    //       actNo: 1,
+    //       actsSignature: '123',
+    //       approvingAccount: { approvingAcc: 'test', approvingAccId: '123' },
+    //       assemblyId: '123',
+    //       concernedCommiteeId: {
+    //         committeeName: 'test',
+    //         committeeNameId: '123',
+    //       },
+    //       createdAt: '2021-03-01',
+    //       datePublished: '2021-03-01',
+    //       orderPaperId: '123',
+    //       originatingBillId: {
+    //         originatingBTitle: 'title bill',
+    //         originatingBId: '1',
+    //       },
+    //       publishState: 'public',
+    //       published: true,
+    //       relatedTo: 'test related',
+    //       sponsorId: { sponsorName: 'test', sponsorId: '123' },
+    //       titleOfAct: 'title',
+    //       updatedAt: '2021-03-01',
+    //       uploaded: true,
+    //       uploadedFileURL:
+    //         'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //       uploadingAccount: { uploadAccount: 'test', uploadId: '123' },
+    //     },
+    //   ],
+    //   success: true,
+    //   status: 200,
+    // });
     return this._getRequest<Act>('acts/getAllActs');
   }
 
-  getPersonnels() {
+  getPersonnels(): Observable<ApiResponse<Personnel[] | string>> {
+    // return of({
+    //   message: [
+    //     {
+    //       _id: '1',
+    //       assemblyId: '123',
+    //       createdAt: '2021-03-01',
+    //       dateCreated: '2021-03-01',
+    //       department: { name: 'test', id: '123' },
+    //       educationLevel: 'Diploma Graduate',
+    //       group: 'group',
+    //       name: 'name 1',
+    //       phoneNumber: {
+    //         phoneNumber: '254123123123',
+    //         verified: 'true',
+    //         request_id: '123',
+    //       },
+    //       profilePic:
+    //         'https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png',
+    //       signature: '123',
+    //       status: true,
+    //       termOfService: 'Permanent',
+    //       updatedAt: '2021-03-01',
+    //     },
+    //     {
+    //       _id: '2',
+    //       assemblyId: '123',
+    //       createdAt: '2021-03-01',
+    //       dateCreated: '2021-03-01',
+    //       department: { name: 'test', id: '123' },
+    //       educationLevel: 'Diploma Graduate',
+    //       group: 'group',
+    //       name: 'name 2',
+    //       phoneNumber: {
+    //         phoneNumber: '254123123123',
+    //         verified: 'true',
+    //         request_id: '123',
+    //       },
+    //       profilePic:
+    //         'https://icatcare.org/app/uploads/2018/07/Thinking-of-getting-a-cat.png',
+    //       signature: '123',
+    //       status: true,
+    //       termOfService: 'Permanent',
+    //       updatedAt: '2021-03-01',
+    //     },
+    //   ],
+    //   status: 200,
+    //   success: true,
+    // });
     return this._getRequest<Personnel>('personnel/getAllPersonnel');
   }
 
-  getReports() {
+  getReports(): Observable<ApiResponse<Report[] | string>> {
+    // return of({
+    //   message: [
+    //     {
+    //       _id: '123',
+    //       annexus: {
+    //         name: '1615095182-Test.pdf',
+    //         id: '1',
+    //         uploaded: 'true',
+    //         uploadingUrl:
+    //           'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //       },
+    //       approvingAccount: {
+    //         approverId: '123',
+    //         account: 'test',
+    //       },
+    //       assemblyId: '123',
+    //       authorCommitee: {
+    //         name: 'author name',
+    //         id: '123',
+    //       },
+    //       content: [
+    //         {
+    //           pageNo: '1',
+    //           content: 'page content',
+    //           author: 'author name',
+    //         },
+    //       ],
+    //       createdAt: '2021-03-01',
+    //       datePublished: '2021-03-01',
+    //       dueDate: '2021-03-01',
+    //       editors: ['1', '2'],
+    //       orderPaperId: '123',
+    //       originatingDocument: { type: 'bill', id: '1' },
+    //       publishState: 'public',
+    //       published: true,
+    //       relatedTo: 'test related',
+    //       reportSignature: '123',
+    //       titleOfReport: 'title',
+    //       updatedAt: '2021-03-01',
+    //       uploaded: true,
+    //       uploadedFileURL:
+    //         'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //       uploadingAccount: { name: 'test', id: '123' },
+    //     },
+    //   ],
+    //   status: 200,
+    //   success: true,
+    // });
     return this._getRequest<Report>('report/getAllReports');
   }
 
-  getOrderPaper() {
+  getOrderPaper(): Observable<ApiResponse<OrderPaper[] | string>> {
+    // return of({
+    //   message: [
+    //     {
+    //       adjournment: 'ADJOURNMENT',
+    //       adminstrationOfOath: [
+    //         'name=test1|||ward=ward|||passport=https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615177765-cat.jpg|||politicalParty=party',
+    //       ],
+    //       approvingAccount: { account: 'test', approverId: '123' },
+    //       assemblyId: '123',
+    //       assemblyNo: 1,
+    //       bills: ['1', '2'],
+    //       communicationFromChainr: [
+    //         '<p>test content 1</p>',
+    //         '<p>Test content 2</p>',
+    //       ],
+    //       createdAt: '2021-03-01',
+    //       datePublished: '2021-03-01',
+    //       messages: [
+    //         {
+    //           content: 'test content',
+    //           source: 'testsource',
+    //           uploadedLocation:
+    //             'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //         },
+    //         {
+    //           content: 'test content',
+    //           source: 'testsource',
+    //           uploadedLocation:
+    //             'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //         },
+    //       ],
+    //       motions: ['1'],
+    //       noticeOfMotions: ['1'],
+    //       orderPaperNo: 1,
+    //       orderPaperSignature: '123',
+    //       pageNoToDate: 1,
+    //       papers: [],
+    //       petitions: ['1', '2'],
+    //       publishState: 'public',
+    //       published: true,
+    //       sessionNo: 1,
+    //       statements: ['1'],
+    //       updatedAt: '2021-03-01',
+    //       _id: '1',
+    //     },
+    //     {
+    //       adjournment: 'ADJOURNMENT',
+    //       adminstrationOfOath: [
+    //         'name=test1|||ward=ward|||passport=https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615177765-cat.jpg|||politicalParty=party',
+    //       ],
+    //       approvingAccount: { account: 'test', approverId: '123' },
+    //       assemblyId: '123',
+    //       assemblyNo: 1,
+    //       bills: ['1', '2'],
+    //       communicationFromChainr: [
+    //         '<p>test content 1</p>',
+    //         '<p>Test content 2</p>',
+    //       ],
+    //       createdAt: '2021-03-01',
+    //       datePublished: '2021-03-01',
+    //       messages: [
+    //         {
+    //           content: 'test content',
+    //           source: 'testsource',
+    //           uploadedLocation:
+    //             'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //         },
+    //         {
+    //           content: 'test content',
+    //           source: 'testsource',
+    //           uploadedLocation:
+    //             'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //         },
+    //       ],
+    //       motions: ['1'],
+    //       noticeOfMotions: ['1'],
+    //       orderPaperNo: 1,
+    //       orderPaperSignature: '123',
+    //       pageNoToDate: 1,
+    //       papers: [],
+    //       petitions: ['1', '2'],
+    //       publishState: 'draft',
+    //       published: false,
+    //       sessionNo: 1,
+    //       statements: 'NONE',
+    //       updatedAt: '2021-03-01',
+    //       _id: '2',
+    //     },
+    //   ],
+    //   status: 200,
+    //   success: true,
+    // });
     return this._getRequest<OrderPaper>('orderPaper/getAllOrderPapers');
   }
 
   getVoteboook() {
     return this._getRequest<Votebook>('votebook/getAllVotebooks');
+  }
+
+  getSpeaker(): Observable<ApiResponse<Speaker>> {
+    return (this._getRequest<Speaker>(
+      'assemblyManagement/getSpeaker'
+    ) as unknown) as Observable<ApiResponse<Speaker>>;
   }
 
   //DELETEs
@@ -356,14 +841,14 @@ export class ApiService {
 
   // UPLOAD
   upload(data: FormData) {
-    return of({
-      etag: '22a4eb595a02296c7fec40408f36d72c',
-      id: '6044659091ce8fa53d548f4f',
-      key: '1615095182-Test.pdf',
-      location:
-        'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
-      uploadedToS3: true,
-    });
+    // return of({
+    //   etag: '22a4eb595a02296c7fec40408f36d72c',
+    //   id: '6044659091ce8fa53d548f4f',
+    //   key: '1615095182-Test.pdf',
+    //   location:
+    //     'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615095182-Test.pdf',
+    //   uploadedToS3: true,
+    // });
 
     // return of({
     //   etag: '58fdf64c2dd3a7120ac2c2ba53acc718',
@@ -374,9 +859,9 @@ export class ApiService {
     //   uploadedToS3: true,
     // });
 
-    // return this.http
-    //   .post<Upload>('http://3.13.186.200:9000/uploadfile', data)
-    //   .pipe(timeout(this._timeout), catchError(errorHandler));
+    return this.http
+      .post<Upload>('http://3.13.186.200:9000/uploadfile', data)
+      .pipe(timeout(this._timeout), catchError(errorHandler));
   }
 
   // VERIFICATION

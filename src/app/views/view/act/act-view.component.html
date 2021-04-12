@@ -1,0 +1,46 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Act</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Title of Acts</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="titleOfAct" />
+      </mat-form-field>
+
+      <p class="label">Acts No</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="actNo" type="number" />
+      </mat-form-field>
+
+      <p class="label">Date Published</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="datePublished" type="date" />
+      </mat-form-field>
+
+      <p class="label">Sponsor</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="sponsorName" />
+      </mat-form-field>
+
+      <p class="label">Concerned Committee</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="committeeName" />
+      </mat-form-field>
+
+      <p class="label">Originating Bill No</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="billNo" />
+      </mat-form-field>
+
+      <p class="label">Fill in Sector Concerned</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="relatedTo" />
+      </mat-form-field>
+
+      <p class="label">Act File</p>
+      <a [href]="fileUrl" target="_blank" class="document-link">{{
+        fileName
+      }}</a>
+    </form>
+  </app-center-card>
+</app-background>

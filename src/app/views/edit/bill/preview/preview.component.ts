@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { map, take } from 'rxjs/operators';
@@ -21,7 +22,8 @@ export class VotebookBillPreviewComponent implements OnInit {
 
   constructor(
     private cacheService: CacheService,
-    private billService: BillService
+    private billService: BillService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -56,5 +58,9 @@ export class VotebookBillPreviewComponent implements OnInit {
 
   onComplete() {
     this.cacheService.emit('EDIT_VOTEBOOK_PREVIEW', undefined);
+  }
+
+  onDiscard() {
+    this.location.back();
   }
 }

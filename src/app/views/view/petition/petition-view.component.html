@@ -1,0 +1,67 @@
+<app-background>
+  <app-center-card>
+    <div class="main">
+      <h1 class="title">Petition</h1>
+      <form [formGroup]="form" class="form">
+        <p class="label">The Issues that make up this petition</p>
+        <mat-form-field appearance="standard">
+          <textarea matInput formControlName="content"></textarea>
+        </mat-form-field>
+
+        <p class="label">Petition concerning which sector(s)</p>
+        <mat-form-field appearance="standard">
+          <input matInput formControlName="relatedTo" />
+        </mat-form-field>
+
+        <p class="label">Concerned Committee</p>
+        <mat-form-field appearance="standard">
+          <input matInput formControlName="concernedCommitee" />
+        </mat-form-field>
+
+        <div class="input-container">
+          <div class="input">
+            <p class="label">Date Provided to the Assembly by Petitioner</p>
+            <mat-form-field appearance="standard">
+              <input matInput formControlName="datePresented" type="date" />
+            </mat-form-field>
+          </div>
+          <div class="input">
+            <p class="label">Date Set for petition discussions by assembly</p>
+            <mat-form-field appearance="standard">
+              <input matInput formControlName="dateToBDiscussed" type="date" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <p class="label">Petition Number</p>
+        <mat-form-field appearance="standard">
+          <input matInput formControlName="petitionNumber" type="number" />
+        </mat-form-field>
+
+        <p class="label">Due date of Response by Committee</p>
+        <mat-form-field appearance="standard">
+          <input matInput formControlName="dateCommitteResponse" type="date" />
+        </mat-form-field>
+
+        <p class="label">Sponsored By</p>
+        <mat-form-field appearance="standard">
+          <input matInput formControlName="sponsorName" />
+        </mat-form-field>
+
+        <p class="label">Soft copy of the petition</p>
+        <a [href]="fileUrl" class="document-link">{{ fileName }}</a>
+
+        <p class="label">Petitioners</p>
+        <div class="list">
+          <div
+            class="petitioner-container"
+            *ngFor="let p of petitionersName; let index = index"
+          >
+            <mat-icon class="petitioner-icon">person_outline</mat-icon>
+            <span>{{ p }}</span>
+          </div>
+        </div>
+      </form>
+    </div>
+  </app-center-card>
+</app-background>

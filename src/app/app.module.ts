@@ -82,6 +82,11 @@ import { EditNoticeMotionComponent } from './views/edit/notice-motion/edit-notic
 import { VotebookNoticeMotionPreviewComponent } from './views/edit/notice-motion/preview/preview.component';
 import { EditBillComponent } from './views/edit/bill/edit-bill.component';
 import { VotebookBillPreviewComponent } from './views/edit/bill/preview/preview.component';
+import { EditMotionComponent } from './views/edit/motion/edit-motion.component';
+import { VotebookMotionPreviewComponent } from './views/edit/motion/preview/preview.component';
+import { UpdatePasswordComponent } from './views/reset-password/update-password/update-password.component';
+import { CommitteeViewComponent } from './views/view/committee/committee-view.component';
+import { ConstituencyViewComponent } from './views/view/constituency/constituency-view.component';
 
 import { AppComponent } from './app.component';
 import { BackButtonComponent } from './components/BackButton/back-button.component';
@@ -99,9 +104,19 @@ import { OrderPaperItemComponent } from './components/OrderPaperItem/order-paper
 import { ReportItemComponent } from './components/ReportItem/report-item.component';
 import { VerifyButtonComponent } from './components/VerifyButton/verify-button.component';
 import { StatementItemComponent } from './components/StatementItem/statement-item.component';
-import { EditMotionComponent } from './views/edit/motion/edit-motion.component';
-import { VotebookMotionPreviewComponent } from './views/edit/motion/preview/preview.component';
-import { UpdatePasswordComponent } from './views/reset-password/update-password/update-password.component';
+import { DepartmentViewComponent } from './views/view/department/department-view.component';
+import { EmployeeViewComponent } from './views/view/employee/employee-view.component';
+import { McaViewComponent } from './views/view/mca/mca-view.component';
+import { SubcountyViewComponent } from './views/view/subcounty/subcounty-view.component';
+import { WardViewComponent } from './views/view/ward/ward-view.component';
+import { ActViewComponent } from './views/view/act/act-view.component';
+import { BillViewComponent } from './views/view/bill/bill-view.component';
+import { ReportDocumentViewComponent } from './views/view/report-document/report-document-view.component';
+import { MotionViewComponent } from './views/view/motion/motion-view.component';
+import { PetitionViewComponent } from './views/view/petition/petition-view.component';
+import { OrderPaperDocumentViewComponent } from './views/view/order-paper-document/order-paper-document-view.component';
+import { PaperContentViewComponent } from './views/view/paper-content/paper-content-view.component';
+import { VotebookContentGenerateComponent } from './views/generate/votebook-content/votebook-content-generate.component';
 
 const dbConfig: DBConfig = {
   name: 'MyDb',
@@ -209,6 +224,21 @@ const dbConfig: DBConfig = {
     EditMotionComponent,
     VotebookMotionPreviewComponent,
     UpdatePasswordComponent,
+    CommitteeViewComponent,
+    ConstituencyViewComponent,
+    DepartmentViewComponent,
+    EmployeeViewComponent,
+    McaViewComponent,
+    SubcountyViewComponent,
+    WardViewComponent,
+    ActViewComponent,
+    BillViewComponent,
+    ReportDocumentViewComponent,
+    MotionViewComponent,
+    PetitionViewComponent,
+    OrderPaperDocumentViewComponent,
+    PaperContentViewComponent,
+    VotebookContentGenerateComponent,
   ],
   imports: [
     BrowserModule,

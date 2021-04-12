@@ -30,7 +30,9 @@ export class CanActivateOrderPaper implements CanActivate {
     return this.orderPaperService.getOrderPaper(orderPaperId).pipe(
       take(1),
       map((orderPaper) =>
-        orderPaper ? true : this.router.createUrlTree(['/'])
+        orderPaper && !orderPaper.published
+          ? true
+          : this.router.createUrlTree(['/'])
       )
     );
   }

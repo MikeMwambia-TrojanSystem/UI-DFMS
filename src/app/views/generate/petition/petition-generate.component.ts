@@ -171,8 +171,6 @@ export class PetitionGenerateComponent implements OnInit {
 
     petitioners = petitioners[0].length ? petitioners : [];
 
-    console.log(petitioners);
-
     for (const p of petitioners) {
       this.petitionersName.push(
         p.match(/(?<=name=).+?(?=\|\|\|)/g)
@@ -230,8 +228,6 @@ export class PetitionGenerateComponent implements OnInit {
     this._onCache<string>(
       { url: '/management/petitioners' },
       (form, petitioners) => {
-        console.log(petitioners);
-
         form.patchValue({
           petitioners,
         });

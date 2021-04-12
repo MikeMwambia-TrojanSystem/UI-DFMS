@@ -86,4 +86,8 @@ export class EditContentComponent implements OnInit, OnDestroy {
       },
     });
   }
+
+  onDiscard() {
+    this.location.back();
+  }
 }

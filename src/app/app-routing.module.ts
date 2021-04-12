@@ -63,6 +63,17 @@ import { ListSubcountyComponent } from './views/list/subcounty/list-subcounty.co
 import { PublishStatusComponent } from './views/publish-status/publish-status.component';
 import { ListDepartmentComponent } from './views/list/department/list-department.component';
 import { ReportViewComponent } from './views/view/report/report-view.component';
+import { UpdatePasswordComponent } from './views/reset-password/update-password/update-password.component';
+import { CommitteeViewComponent } from './views/view/committee/committee-view.component';
+import { EditNoticeMotionComponent } from './views/edit/notice-motion/edit-notice-motion.component';
+import { VotebookNoticeMotionPreviewComponent } from './views/edit/notice-motion/preview/preview.component';
+import { EditBillComponent } from './views/edit/bill/edit-bill.component';
+import { VotebookBillPreviewComponent } from './views/edit/bill/preview/preview.component';
+import { EditMotionComponent } from './views/edit/motion/edit-motion.component';
+import { VotebookMotionPreviewComponent } from './views/edit/motion/preview/preview.component';
+import { EditMessageComponent } from './views/edit/message/edit-message.component';
+import { MessagePreviewComponent } from './views/edit/message/preview/preview.component';
+import { ConstituencyViewComponent } from './views/view/constituency/constituency-view.component';
 
 import { MotionResolver } from './shared/resolver/motion/motion.resolver';
 import { CanActivateMotion } from './shared/guard/motion/motion.guard';
@@ -103,23 +114,40 @@ import { ListPersonnelResolver } from './shared/resolver/personnel/list-personne
 import { ListReportResolver } from './shared/resolver/report/list-report.resolver';
 import { CanActivateUploadReport } from './shared/guard/report/upload-report.guard';
 import { ReportResolver } from './shared/resolver/report/report.resolver';
-import { EditMessageComponent } from './views/edit/message/edit-message.component';
-import { MessagePreviewComponent } from './views/edit/message/preview/preview.component';
 import { CanActivateOrderPaper } from './shared/guard/order-paper/order-paper.guard';
 import { OrderPaperResolver } from './shared/resolver/order-paper/order-paper.resolver';
 import { ListOrderPaperResolver } from './shared/resolver/order-paper/list-order-paper.resolver';
-import { CanActivateVotebookOrderPaper } from './shared/guard/votebook/order-paper.guard';
-import { VotebookOrderPaperResolver } from './shared/resolver/votebook/order-paper.resolver';
-import { EditNoticeMotionComponent } from './views/edit/notice-motion/edit-notice-motion.component';
-import { VotebookNoticeMotionPreviewComponent } from './views/edit/notice-motion/preview/preview.component';
-import { EditBillComponent } from './views/edit/bill/edit-bill.component';
-import { VotebookBillPreviewComponent } from './views/edit/bill/preview/preview.component';
-import { EditMotionComponent } from './views/edit/motion/edit-motion.component';
-import { VotebookMotionPreviewComponent } from './views/edit/motion/preview/preview.component';
 import { CanActivateVotebook } from './shared/guard/votebook/votebook.guard';
 import { VotebookResolver } from './shared/resolver/votebook/votebook.resolver';
 import { ListVotebookResolver } from './shared/resolver/votebook/list-votebook.resolver';
-import { UpdatePasswordComponent } from './views/reset-password/update-password/update-password.component';
+import { CanActivateViewCommittee } from './shared/guard/committee/view-committee.guard';
+import { CanActivateViewConstituency } from './shared/guard/constituency/view-constituency.guard';
+import { DepartmentViewComponent } from './views/view/department/department-view.component';
+import { CanActivateViewDepartment } from './shared/guard/department/view-department.guard';
+import { EmployeeViewComponent } from './views/view/employee/employee-view.component';
+import { CanActivateViewPersonnel } from './shared/guard/personnel/view-personnel.guard';
+import { McaViewComponent } from './views/view/mca/mca-view.component';
+import { CanActivateViewMcaEmployee } from './shared/guard/mca-employee/view-mca-employee.guard';
+import { SubcountyViewComponent } from './views/view/subcounty/subcounty-view.component';
+import { CanActivateViewSubcounty } from './shared/guard/subcounty/view-subcounty.guard';
+import { WardViewComponent } from './views/view/ward/ward-view.component';
+import { CanActivateViewWard } from './shared/guard/ward/view-ward.guard';
+import { ActViewComponent } from './views/view/act/act-view.component';
+import { CanActivateViewAct } from './shared/guard/act/view-act.guard';
+import { BillViewComponent } from './views/view/bill/bill-view.component';
+import { CanActivateViewBill } from './shared/guard/bill/view-bill.guard';
+import { ReportDocumentViewComponent } from './views/view/report-document/report-document-view.component';
+import { CanActivateViewUploadReport } from './shared/guard/report/view-report.guard';
+import { MotionViewComponent } from './views/view/motion/motion-view.component';
+import { CanActivateViewMotion } from './shared/guard/motion/view-motion.guard';
+import { PetitionViewComponent } from './views/view/petition/petition-view.component';
+import { CanActivateViewPetition } from './shared/guard/petition/view-petition.guard';
+import { OrderPaperDocumentViewComponent } from './views/view/order-paper-document/order-paper-document-view.component';
+import { CanActivateViewOrderPaper } from './shared/guard/order-paper/view-order-paper.guard';
+import { PaperContentViewComponent } from './views/view/paper-content/paper-content-view.component';
+import { VotebookContentGenerateComponent } from './views/generate/votebook-content/votebook-content-generate.component';
+import { SpeakerResolver } from './shared/resolver/speaker/speaker.resolver';
+import { VotebookOrderPaperResolver } from './shared/resolver/votebook/order-paper.resolver';
 
 const routes: Routes = [
   // Login route
@@ -424,20 +452,31 @@ const routes: Routes = [
         canActivate: [CanActivateOrderPaper],
       },
       {
-        path: 'votebook/:orderPaperId',
+        path: 'votebook',
         component: VotebookGenerateComponent,
-        canActivate: [CanActivateVotebookOrderPaper],
+        resolve: { speaker: SpeakerResolver },
+      },
+      {
+        path: 'votebook/:votebookId',
+        component: VotebookGenerateComponent,
+        canActivate: [CanActivateVotebook],
         resolve: {
+          votebook: VotebookResolver,
+          speaker: SpeakerResolver,
           orderPaper: VotebookOrderPaperResolver,
         },
       },
       {
-        path: 'votebook/:orderPaperId/:votebookId',
+        path: 'votebook-content',
+        component: VotebookContentGenerateComponent,
+      },
+      {
+        path: 'votebook-content/:votebookId',
         component: VotebookGenerateComponent,
-        canActivate: [CanActivateVotebookOrderPaper, CanActivateVotebook],
+        canActivate: [CanActivateVotebook],
         resolve: {
-          orderPaper: VotebookOrderPaperResolver,
           votebook: VotebookResolver,
+          orderPaper: VotebookOrderPaperResolver,
         },
       },
     ],
@@ -447,9 +486,121 @@ const routes: Routes = [
   {
     path: 'view',
     children: [
-      { path: 'order-paper', component: OrderPaperViewComponent },
-      { path: 'order-paper/edit-title', component: EditTitleComponent },
+      // { path: 'order-paper', component: OrderPaperViewComponent },
+      // { path: 'order-paper/edit-title', component: EditTitleComponent },
       { path: 'report', component: ReportViewComponent },
+      {
+        path: 'committee/:id',
+        component: CommitteeViewComponent,
+        canActivate: [CanActivateViewCommittee],
+        resolve: {
+          committee: CommitteeResolver,
+        },
+      },
+      {
+        path: 'constituency/:id',
+        component: ConstituencyViewComponent,
+        canActivate: [CanActivateViewConstituency],
+        resolve: {
+          constituency: ConstituencyResolver,
+        },
+      },
+      {
+        path: 'department/:id',
+        component: DepartmentViewComponent,
+        canActivate: [CanActivateViewDepartment],
+        resolve: {
+          department: DepartmentResolver,
+        },
+      },
+      {
+        path: 'employee/:id',
+        component: EmployeeViewComponent,
+        canActivate: [CanActivateViewPersonnel],
+        resolve: {
+          personnel: PersonnelResolver,
+        },
+      },
+      {
+        path: 'mca/:id',
+        component: McaViewComponent,
+        canActivate: [CanActivateViewMcaEmployee],
+        resolve: {
+          mca: McaResolver,
+        },
+      },
+      {
+        path: 'subcounty/:id',
+        component: SubcountyViewComponent,
+        canActivate: [CanActivateViewSubcounty],
+        resolve: {
+          subcounty: subcountyResolver,
+        },
+      },
+      {
+        path: 'ward/:id',
+        component: WardViewComponent,
+        canActivate: [CanActivateViewWard],
+        resolve: {
+          ward: WardResolver,
+        },
+      },
+      {
+        path: 'act/:id',
+        component: ActViewComponent,
+        canActivate: [CanActivateViewAct],
+        resolve: {
+          act: ActResolver,
+        },
+      },
+      {
+        path: 'bill/:id',
+        component: BillViewComponent,
+        canActivate: [CanActivateViewBill],
+        resolve: {
+          bill: BillResolver,
+        },
+      },
+      {
+        path: 'report/:id',
+        component: ReportDocumentViewComponent,
+        canActivate: [CanActivateViewUploadReport],
+        resolve: {
+          report: ReportResolver,
+        },
+      },
+      {
+        path: 'motion/:id',
+        component: MotionViewComponent,
+        canActivate: [CanActivateViewMotion],
+        resolve: {
+          motion: MotionResolver,
+        },
+      },
+      {
+        path: 'petition/:id',
+        component: PetitionViewComponent,
+        resolve: {
+          petition: PetitionResolver,
+        },
+        canActivate: [CanActivateViewPetition],
+      },
+      {
+        path: 'order-paper/:id',
+        component: OrderPaperDocumentViewComponent,
+        canActivate: [CanActivateViewOrderPaper],
+        resolve: {
+          orderPaper: OrderPaperResolver,
+        },
+      },
+      {
+        path: 'paper-content/:id',
+        component: PaperContentViewComponent,
+        canActivate: [CanActivateViewOrderPaper],
+        resolve: {
+          orderPaper: OrderPaperResolver,
+        },
+      },
     ],
   },
 

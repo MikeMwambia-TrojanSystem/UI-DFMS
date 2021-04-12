@@ -40,8 +40,8 @@ export class ListWardsComponent implements OnInit {
     });
   }
 
-  onSelect({ _id, name }: Ward) {
-    this.cacheService.emit(this._cacheId, { _id, name });
+  onSelect(ward: Ward) {
+    this.cacheService.emit(this._cacheId, ward);
   }
 
   onCreateNew() {

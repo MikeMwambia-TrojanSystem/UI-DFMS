@@ -56,8 +56,6 @@ export class EditBillComponent {
 
     const { orderPaperContent, page, title, form, bills } = cached;
 
-    console.log(bills);
-
     this.orderPaperContent = orderPaperContent;
     this.previousPage = page - 1;
     this.currentPage = page;
@@ -109,5 +107,9 @@ export class EditBillComponent {
     );
 
     this.router.navigate(['/edit/bill/preview']);
+  }
+
+  onDiscard() {
+    this.location.back();
   }
 }

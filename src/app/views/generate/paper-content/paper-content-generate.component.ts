@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Location } from '@angular/common';
 import moment from 'moment';
@@ -23,6 +18,7 @@ import { OrderPaperCached } from '../order-paper/order-paper-generate.component'
 import { OrderPaperService } from 'src/app/services/order-paper.service';
 import { take } from 'rxjs/operators';
 import { OrderPaper } from 'src/app/shared/types/order-paper';
+import { Administration } from '../../management/ad-oath/ad-oath.component';
 
 enum SelectUrl {
   'petitionId' = '/list/petition',
@@ -43,7 +39,6 @@ enum NotificationContent {
   'statementId' = 'id',
   'motionId' = 'id',
   'billsId' = 'id',
-  'adjournment' = 'content',
 }
 
 @Component({
@@ -102,11 +97,6 @@ export class PaperContentGenerateComponent implements OnInit {
       label: 'Bills',
       select: 'billsId',
     },
-    {
-      key: 'adjournment',
-      label: 'Adjournment',
-      generate: 'adjournment',
-    },
   ];
 
   form = this.fb.group({
@@ -115,7 +105,6 @@ export class PaperContentGenerateComponent implements OnInit {
     datePublished: [''],
     publishState: ['draft'],
     published: [false],
-    approvingAccount: ['test', Validators.required],
     approverId: ['12345', Validators.required],
     assemblyNo: ['', Validators.required],
     sessionNo: ['', Validators.required],
@@ -130,7 +119,7 @@ export class PaperContentGenerateComponent implements OnInit {
     motionId: ['', Validators.required],
     motionNoticeId: ['', Validators.required],
     billsId: ['', Validators.required],
-    adjournment: ['', Validators.required],
+    adjournment: ['ADJOURNMENT', Validators.required],
   });
 
   constructor(
@@ -149,23 +138,60 @@ export class PaperContentGenerateComponent implements OnInit {
 
     // Populate content
     this._paperId = this.route.snapshot.params.id;
+    if (this._paperId) {
+      this._mode = 'editing';
+
+      this.route.data
+        .pipe(take(1))
+        .subscribe(({ orderPaper }: { orderPaper: OrderPaper }) => {
+          const {
+            adminstrationOfOath,
+            approvingAccount,
+            bills,
+            communicationFromChainr,
+            messages,
+            motions,
+            noticeOfMotions,
+            papers,
+            petitions,
+            statements,
+            ...others
+          } = orderPaper;
+
+          this.form.patchValue({
+            ...others,
+            approvingAccount: approvingAccount.account,
+            approverId: approvingAccount.approverId,
+            adminContent: this.orderPaperService.checkNone(adminstrationOfOath),
+            communContent: this.orderPaperService.checkNone(
+              communicationFromChainr
+            ),
+            messages: this.orderPaperService.checkNone(messages, (m) =>
+              m
+                .map(
+                  (m) =>
+                    `content=${m.content}|||source=${m.source}|||uploadedLocation=${m.uploadedLocation}`
+                )
+                .join('&&&')
+            ),
+            petitionId: this.orderPaperService.checkNone(petitions),
+            reportId: this.orderPaperService.checkNone(papers),
+            statementId: this.orderPaperService.checkNone(statements),
+            motionId: this.orderPaperService.checkNone(motions),
+            motionNoticeId: this.orderPaperService.checkNone(noticeOfMotions),
+            billsId: this.orderPaperService.checkNone(bills),
+          });
+        });
+    }
 
     const cached = this.cacheService.getData<OrderPaperCached>(
       'GENERATE_ORDER_PAPER'
     );
 
     if (!cached) {
-      this.location.back();
+      this.router.navigate(['/', 'generate', 'order-paper']);
       return;
     }
-
-    this.route.data
-      .pipe(take(1))
-      .subscribe(({ orderPaper }: { orderPaper: OrderPaper }) => {
-        if (orderPaper) {
-          this._mode = 'editing';
-        }
-      });
 
     this.form.patchValue({
       ...cached.form.value,
@@ -173,7 +199,7 @@ export class PaperContentGenerateComponent implements OnInit {
 
     this._populateNotifications();
 
-    console.log(this.form.value);
+    // console.log(this.form.value);
   }
 
   private _onCache<T>(
@@ -200,30 +226,29 @@ export class PaperContentGenerateComponent implements OnInit {
 
   private _populateNotifications() {
     for (const item of this.items) {
-      let contents = (this.form.get(item.key).value as string).split('&&&');
-      contents = contents === [''] ? [] : contents;
+      const value = this.form.get(item.key).value as string;
+      let result: MenuNotification[] = [];
 
-      item.notifications = contents.reduce((result, currentContent) => {
-        if (currentContent.length) {
-          return [
-            {
-              key: currentContent,
-              label: `${item.label} ${
-                NotificationContent[item.key]
-              }: ${_.truncate(
-                (item.key === 'messages'
-                  ? currentContent.match(/(?<=content=).+?(?=\|\|\|)/g)
-                    ? currentContent.match(/(?<=content=).+?(?=\|\|\|)/g)[0]
-                    : ''
-                  : currentContent
-                ).replace(/<[^>]*>/g, '')
-              )}`,
-            },
-            ...result,
-          ];
-        }
-        return result;
-      }, []);
+      if (value !== 'NONE') {
+        let contents = value.split('&&&');
+        contents = contents[0].length ? contents : [];
+
+        result = contents.reduce((result, currentContent) => {
+          if (currentContent.length) {
+            return [
+              ...result,
+              {
+                key: currentContent,
+                type: item.key,
+                content: currentContent,
+              },
+            ];
+          }
+          return result;
+        }, []);
+      }
+
+      item.notifications = result;
     }
   }
 
@@ -243,6 +268,10 @@ export class PaperContentGenerateComponent implements OnInit {
   ) {
     if (type === 'messages') {
       this._onGenerateMessage();
+      return;
+    }
+    if (type === 'adminContent') {
+      this._onGenerateAdminContent();
       return;
     }
 
@@ -281,7 +310,7 @@ export class PaperContentGenerateComponent implements OnInit {
           if (page <= contents.length) {
             contents[page - 1] = content;
           } else {
-            contents.push(content);
+            contents = [content, ...contents];
           }
         }
 
@@ -292,6 +321,32 @@ export class PaperContentGenerateComponent implements OnInit {
         };
       },
       { page: _.toInteger(this.getNoContent(type)) + 1 }
+    );
+  }
+
+  private _onGenerateAdminContent() {
+    this._onCache<Administration>(
+      {
+        url: '/management/oath',
+        queryParams: {
+          select: undefined,
+        },
+      },
+      (data, { name, ward, passport, politicalParty }) => {
+        const value = data.form.get('adminContent').value as string;
+        const content = `name=${name}|||ward=${ward}|||passport=${passport}|||politicalParty=${politicalParty}`;
+        let contents = value.split('&&&');
+
+        if (value.length === 0) {
+          contents = [content];
+        } else {
+          contents = [content, ...contents];
+        }
+
+        data.form.get('adminContent').setValue(contents.join('&&&'));
+
+        return data;
+      }
     );
   }
 
@@ -315,7 +370,7 @@ export class PaperContentGenerateComponent implements OnInit {
           if (page <= contents.length) {
             contents[page - 1] = message;
           } else {
-            contents.push(message);
+            contents = [message, ...contents];
           }
         }
 
@@ -416,5 +471,30 @@ export class PaperContentGenerateComponent implements OnInit {
         }
       );
     }
+  }
+
+  onSkip(key: string) {
+    this.form.get(key).setValue('NONE');
+    this._populateNotifications();
+  }
+
+  onDelete(event: MenuNotification) {
+    let index: number;
+    const item = this.items.find((i) => {
+      index = i.notifications.findIndex(
+        (n) => n.key === event.key && n.type === event.type
+      );
+      return index !== -1;
+    });
+
+    let value = (this.form.get(item.key).value as string).split('&&&');
+    value = value[0] === '' ? [] : value;
+
+    value.splice(index, 1);
+
+    this.form.patchValue({
+      [item.key]: value.join('&&&'),
+    });
+    this._populateNotifications();
   }
 }

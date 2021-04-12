@@ -13,8 +13,8 @@ export class UpdatePasswordComponent implements OnInit {
   form = this.fb.group(
     {
       code: ['', Validators.required],
-      requestId: ['', Validators.required],
-      userId: ['', Validators.required],
+      requestId: [''],
+      userId: [''],
       newPassword: ['', Validators.required],
       rePassword: ['', Validators.required],
       group: ['', Validators.required],
@@ -36,18 +36,6 @@ export class UpdatePasswordComponent implements OnInit {
     this.form.patchValue({
       requestId: queryParams.request_id,
       userId: queryParams.user_id,
-    });
-
-    this.form.valueChanges.subscribe(() => {
-      const invalid = [];
-
-      for (const control in this.form.controls) {
-        if (this.form.controls[control].invalid) {
-          invalid.push(control);
-        }
-      }
-
-      console.log(invalid);
     });
   }
 

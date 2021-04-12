@@ -1,0 +1,47 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Order Paper</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Order Paper No</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="orderPaperNo" type="number" />
+      </mat-form-field>
+
+      <p class="label">Assembly No</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="assemblyNo" type="number" />
+      </mat-form-field>
+
+      <p class="label">Session No</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="sessionNo" type="number" />
+      </mat-form-field>
+
+      <div class="grid">
+        <div class="grid-form">
+          <p class="label">Assembly Sitting No</p>
+          <mat-form-field appearance="standard">
+            <input matInput type="number" disabled />
+          </mat-form-field>
+        </div>
+        <div class="grid-form">
+          <p class="label">Page No</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="pageNoToDate" type="number" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button
+          mat-raised-button
+          type="button"
+          class="btn-save"
+          [routerLink]="['/', 'view', 'paper-content', id]"
+        >
+          View Content
+        </button>
+      </div>
+    </form>
+  </app-center-card>
+</app-background>

@@ -38,16 +38,16 @@ export class Petition {
   datePublished: string;
   dateToBDiscussed: string;
   orderPaperId: string;
-  petitionNumber: 1;
+  petitionNumber: number;
   petitionSignature: string;
   petitionTitle: string;
   petitioners: string[];
-  publishState: "draft" | 'private' | 'public';
+  publishState: 'draft' | 'private' | 'public';
   published: boolean;
   relatedTo: string;
   sponsoredBy: { sponsorName: string; sponsorId: string };
   updatedAt: string;
   uploaded: boolean;
   uploadedFileURL: string;
-  uploadingAccount: { name: string; id: string }
+  uploadingAccount: { name: string; id: string };
 }

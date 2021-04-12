@@ -59,6 +59,13 @@ export class UploadPageComponent implements OnInit {
       case 'annexus':
         this.category = 'Annexus';
         break;
+      case 'oath':
+        this.category = 'Oath';
+        this.accept = 'image/*';
+        break;
+      case 'message':
+        this.category = 'Message';
+        break;
       default:
         break;
     }

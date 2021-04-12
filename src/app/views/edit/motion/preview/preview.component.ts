@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { take } from 'rxjs/operators';
@@ -24,7 +25,8 @@ export class VotebookMotionPreviewComponent implements OnInit {
 
   constructor(
     private cacheService: CacheService,
-    private motionService: MotionService
+    private motionService: MotionService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -42,7 +44,6 @@ export class VotebookMotionPreviewComponent implements OnInit {
       .getMotion(motionId)
       .pipe(take(1))
       .subscribe((motion) => {
-        console.log(motion);
         this.motion = motion;
       });
 
@@ -59,5 +60,9 @@ export class VotebookMotionPreviewComponent implements OnInit {
 
   onComplete() {
     this.cacheService.emit('EDIT_VOTEBOOK_PREVIEW', undefined);
+  }
+
+  onDiscard() {
+    this.location.back();
   }
 }

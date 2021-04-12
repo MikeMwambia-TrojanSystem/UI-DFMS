@@ -1,0 +1,37 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Committee</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Committee Name</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="name" />
+      </mat-form-field>
+
+      <p class="label">Department sighted over Executive</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="departmentInExcecutive" />
+      </mat-form-field>
+
+      <p class="label">Chairman</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="Chairname" />
+      </mat-form-field>
+
+      <p class="label">Vice Chairman</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="viceChair" />
+      </mat-form-field>
+
+      <p class="label">Members</p>
+      <span class="members"
+        >{{ membersName.length }} member{{
+          membersName.length <= 1 ? "" : "s"
+        }}</span
+      >
+      <div class="member-container" *ngFor="let member of membersName">
+        <mat-icon class="member-icon">person_outline</mat-icon>
+        <span>{{ member.name }}</span>
+      </div>
+    </form>
+  </app-center-card>
+</app-background>

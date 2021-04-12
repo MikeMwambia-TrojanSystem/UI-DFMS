@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -22,7 +23,8 @@ export class ContentPreviewComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private cacheService: CacheService
+    private cacheService: CacheService,
+    private location: Location
   ) {}
 
   ngOnInit(): void {
@@ -50,5 +52,9 @@ export class ContentPreviewComponent implements OnInit {
       content: this.content.value,
       page,
     });
+  }
+
+  onDiscard() {
+    this.location.back();
   }
 }

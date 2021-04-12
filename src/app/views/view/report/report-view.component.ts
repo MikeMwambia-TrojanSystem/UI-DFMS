@@ -55,8 +55,6 @@ export class ReportViewComponent implements OnInit {
         throw new Error('NO_SUB');
       }
     } catch (error) {
-      console.log(error);
-
       alert('ERROR');
       this.location.back();
     }
