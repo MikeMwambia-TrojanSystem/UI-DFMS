@@ -1,3 +1,5 @@
+import { BasicDocument } from './_global';
+
 export interface ActPost {
   titleOfAct: string;
   actNo: string;
@@ -23,7 +25,7 @@ export interface ActPost {
   publishStatus: string;
 }
 
-export interface Act {
+export interface Act extends BasicDocument {
   _id: string;
   actNo: number;
   actsSignature: string;

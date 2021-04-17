@@ -1,3 +1,5 @@
+import { BasicDocument } from './_global';
+
 export class PetitionPost {
   petitionSignature: string;
   content: string;
@@ -26,7 +28,7 @@ export class PetitionPost {
   petitionNumber: string;
 }
 
-export class Petition {
+export class Petition extends BasicDocument {
   _id: string;
   approvingAccount: { approverId: string; account: string };
   assemblyId: string;

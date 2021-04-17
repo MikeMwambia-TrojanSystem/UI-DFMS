@@ -194,10 +194,10 @@ export class ActGenerateComponent implements OnInit {
    * After the user had selected the bill, a callback function will get called and update the cached data with the selected information.
    */
   onSelectOriginateBill() {
-    this._onCache<Bill>({ url: '/list/bill' }, (form, { _id, titleOfBill }) => {
+    this._onCache<Bill>({ url: '/list/bill' }, (form, { _id, title }) => {
       form.patchValue({
         billId: _id,
-        originatingBTitle: titleOfBill,
+        originatingBTitle: title,
       });
 
       return form;
@@ -241,6 +241,8 @@ export class ActGenerateComponent implements OnInit {
   onSave(published: boolean) {
     // Subcription callback
     const subCallback = (state: 'public' | 'private' | 'draft') => {
+      this.cacheService.clearCache('GENERATE_ACT');
+
       this.router.navigate(['/list/act'], {
         queryParams: {
           state: state,

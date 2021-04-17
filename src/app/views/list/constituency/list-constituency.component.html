@@ -12,6 +12,8 @@
         [editUrl]="'/create/constituencies/' + con._id"
         (delete)="onDelete(con._id)"
         [published]="state !== 'draft'"
+        [canEdit]="con.canEdit"
+        [canDelete]="con.canDelete"
       >
       </app-list-item>
     </div>

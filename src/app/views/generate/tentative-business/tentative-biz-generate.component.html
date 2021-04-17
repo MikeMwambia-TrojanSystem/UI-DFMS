@@ -1,0 +1,34 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">
+      Generate Tentative Business for Order Paper No. {{ orderPaperNo }}
+    </h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Choose Date</p>
+      <mat-form-field appearance="standard">
+        <input matInput type="date" formControlName="date" />
+        <mat-error *ngIf="form.get('date').hasError('required')"
+          >Please enter date!</mat-error
+        >
+      </mat-form-field>
+
+      <p class="label">Choose Time</p>
+      <mat-form-field appearance="standard">
+        <input matInput type="date" formControlName="time" />
+        <mat-error *ngIf="form.get('time').hasError('required')"
+          >Please enter assembly no!</mat-error
+        >
+      </mat-form-field>
+      <div class="actions">
+        <button
+          mat-raised-button
+          type="button"
+          class="btn-save"
+          (click)="onGenerate()"
+        >
+          Generate Content
+        </button>
+      </div>
+    </form>
+  </app-center-card>
+</app-background>

@@ -16,6 +16,7 @@ import { Bill } from 'src/app/shared/types/bill';
 import { McaEmployee } from 'src/app/shared/types/mca-employee';
 import { Committee } from 'src/app/shared/types/committee';
 import { Report } from 'src/app/shared/types/report';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-bill-generate',
@@ -37,23 +38,20 @@ export class BillGenerateComponent implements OnInit {
     datePassed: new FormControl('', Validators.required),
     uploaded: new FormControl(false),
     uploadedBillURL: new FormControl('', Validators.required),
-    approvingAcc: new FormControl('test approving acc', Validators.required),
-    orderPaperId: new FormControl(
-      '60224665fd0c8e1b11fa85d5',
-      Validators.required
-    ),
+    approvingAcc: new FormControl(''),
+    orderPaperId: new FormControl(''),
     sponsorId: new FormControl('', Validators.required),
     sponsor: new FormControl('', Validators.required),
     relatedTo: new FormControl('', Validators.required),
     assemblyId: new FormControl('60224665fd0c8e1b11fa85d5'),
     published: new FormControl(false),
-    approvingAccId: new FormControl('60224665fd0c8e1b11fa85d5'),
+    approvingAccId: new FormControl(''),
     committeeName: new FormControl('', Validators.required),
     committeeNameId: new FormControl('', Validators.required),
     billUploadedReportURL: new FormControl('', Validators.required),
     status: new FormControl('Accented Bill', Validators.required),
-    uploadingPersonnel: new FormControl('test personnel', Validators.required),
     publishStatus: new FormControl('draft', Validators.required),
+    sponsorDescription: new FormControl('', Validators.required),
   });
 
   constructor(
@@ -61,7 +59,7 @@ export class BillGenerateComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private billService: BillService,
-    private apiService: ApiService
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
@@ -82,13 +80,14 @@ export class BillGenerateComponent implements OnInit {
           firstReadingDate,
           secondReadingDate,
           sponsor,
-          uploadingAccount,
           datePassed,
+          title,
           ...others
         } = bill;
 
         this.form.patchValue({
           ...others,
+          titleOfBill: title || '',
           datePublished: moment(datePublished).toJSON().slice(0, 10),
           firstReadingDate: moment(firstReadingDate).toJSON().slice(0, 10),
           secondReadingDate: moment(secondReadingDate).toJSON().slice(0, 10),
@@ -99,8 +98,6 @@ export class BillGenerateComponent implements OnInit {
           approvingAccId: approvingAccount.approvingAccId,
           committeeName: concernedCommiteeId.committeeName,
           committeeNameId: concernedCommiteeId.committeeNameId,
-          uploadingPersonnel: uploadingAccount.uploadingPersonnel,
-          uploadAccname: uploadingAccount.uploadAccname,
         });
       });
     } else {
@@ -252,6 +249,8 @@ export class BillGenerateComponent implements OnInit {
   onSave(published: boolean) {
     // Subcription callback
     const subCallback = (state: 'public' | 'private' | 'draft') => {
+      this.cacheService.clearCache('GENERATE_BILL');
+
       this.router.navigate(['/list/bill'], {
         queryParams: {
           state: state,
@@ -266,17 +265,50 @@ export class BillGenerateComponent implements OnInit {
     const post = (state: 'public' | 'private' | 'draft') => {
       const value = this.form.value;
 
-      value.published = state === 'public';
       value.publishState = state;
 
       if (this._mode === 'creating') {
-        value.billSignature = new Date().toISOString();
+        value.billSignature = moment().unix();
+        value.uploadingPersonnel = this.accountService.user._id;
 
         this.billService.postBill(value).subscribe(() => subCallback(state));
       } else {
-        value.id = this._billId;
+        const {
+          titleOfBill,
+          billNo,
+          firstReadingDate,
+          secondReadingDate,
+          datePassed,
+          uploadedBillURL,
+          sponsorId,
+          sponsor,
+          relatedTo,
+          committeeName,
+          committeeNameId,
+          billUploadedReportURL,
+          publishStatus,
+          sponsorDescription,
+        } = value;
 
-        this.billService.updateBill(value).subscribe(() => subCallback(state));
+        this.billService
+          .updateBill({
+            id: this._billId,
+            titleOfBill,
+            billNo,
+            firstReadingDate,
+            secondReadingDate,
+            datePassed,
+            uploadedBillURL,
+            sponsorId,
+            sponsor,
+            relatedTo,
+            committeeName,
+            committeeNameId,
+            billUploadedReportURL,
+            publishStatus,
+            sponsorDescription,
+          } as any)
+          .subscribe(() => subCallback(state));
       }
     };
 

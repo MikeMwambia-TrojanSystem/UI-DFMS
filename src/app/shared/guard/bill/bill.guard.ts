@@ -17,7 +17,7 @@ import { BillService } from 'src/app/services/bill.service';
   providedIn: 'root',
 })
 export class CanActivateBill implements CanActivate {
-  constructor(private billService: BillService, private router: Router) { }
+  constructor(private billService: BillService, private router: Router) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -32,7 +32,7 @@ export class CanActivateBill implements CanActivate {
     return this.billService.getBill(billId).pipe(
       take(1),
       map((bill) => {
-        if (bill && bill.publishState !== 'public') {
+        if (bill) {
           return true;
         }
 

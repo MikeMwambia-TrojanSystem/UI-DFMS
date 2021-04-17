@@ -22,6 +22,8 @@ export class StatementItemComponent implements OnInit {
   @Input() state: string;
   @Input() editUrl: string;
   @Input() info: StatementInfo[];
+  @Input() canEdit: boolean;
+  @Input() canDelete: boolean;
   extendedState: string;
 
   ngOnInit() {
@@ -30,10 +32,10 @@ export class StatementItemComponent implements OnInit {
         this.extendedState = 'Draft';
         break;
       case 'private':
-        this.extendedState = 'Privately Published';
+        this.extendedState = 'Private';
         break;
       case 'public':
-        this.extendedState = 'Publicly Published';
+        this.extendedState = 'Public';
         break;
       default:
         break;

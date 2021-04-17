@@ -9,7 +9,7 @@
           formControlName="content"
           placeholder="Motion on Sales Entity"
           cdkTextareaAutosize
-          cdkAutosizeMinRows="1"
+          cdkAutosizeMinRows="2"
         ></textarea>
         <mat-error *ngIf="form.get('content').hasError('required')"
           >Please enter motion content!</mat-error
@@ -24,7 +24,7 @@
       </mat-form-field> -->
       <p class="label">Related To</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="relatedTo" />
+        <input matInput formControlName="relatedTo" placeholder="Related To" />
         <mat-error *ngIf="form.get('relatedTo').hasError('required')"
           >Please enter related to!</mat-error
         >
@@ -47,12 +47,25 @@
         class="custom-btn standalone"
         (buttonClick)="onSelectSponsor()"
       ></app-custom-button>
+      <p class="label">Add Sponsor Description</p>
+      <mat-form-field appearance="standard">
+        <textarea
+          matInput
+          formControlName="sponsorDescription"
+          placeholder="Sponsor Description"
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="2"
+        ></textarea>
+        <mat-error *ngIf="form.get('sponsorDescription').hasError('required')"
+          >Please enter sponsor description!</mat-error
+        >
+      </mat-form-field>
       <p class="label notice">Generate Notice of Motion</p>
-      <mat-radio-group>
-        <mat-radio-button value="true" style="margin-right: 20px"
+      <mat-radio-group formControlName="noticeOfMotion">
+        <mat-radio-button [value]="true" style="margin-right: 20px"
           >Yes</mat-radio-button
         >
-        <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-button [value]="false">No</mat-radio-button>
       </mat-radio-group>
       <div class="actions">
         <button

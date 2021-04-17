@@ -13,6 +13,8 @@
         (select)="onSelect(committee)"
         [editUrl]="'/create/committee/' + committee._id"
         (delete)="onDelete(committee._id)"
+        [canEdit]="committee.canEdit"
+        [canDelete]="committee.canDelete"
       >
       </app-list-item>
     </div>

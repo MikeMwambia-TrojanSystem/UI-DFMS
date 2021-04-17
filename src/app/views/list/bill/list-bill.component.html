@@ -5,7 +5,7 @@
     <div>
       <app-info-item
         *ngFor="let bill of bills"
-        [title]="bill.titleOfBill"
+        [title]="bill.title"
         [date]="bill.datePublished"
         [subjects]="[bill.relatedTo]"
         class="item"
@@ -16,6 +16,8 @@
         (delete)="onDelete(bill._id)"
         [editUrl]="'/generate/bill/' + bill._id"
         (select)="onSelect(bill)"
+        [canEdit]="bill.canEdit"
+        [canDelete]="bill.canDelete"
       >
       </app-info-item>
     </div>

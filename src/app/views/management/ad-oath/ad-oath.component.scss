@@ -34,8 +34,8 @@
 }
 
 .btn-save {
-  background: #008000;
-  color: white;
+  // background: #008000;
+  // color: white;
   font-weight: 400;
   padding: 5px 40px;
   border-radius: 10px;
@@ -49,6 +49,20 @@
   background-color: rgba(0, 0, 0, 0.25);
   position: absolute;
   left: 0;
+}
+
+.finish-container {
+  width: 100%;
+  display: flex;
+
+  .finish {
+    margin: 10px auto;
+  }
+}
+
+button {
+  background: #008000;
+  color: white;
 }
 
 /**

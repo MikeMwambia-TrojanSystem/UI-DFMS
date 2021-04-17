@@ -28,6 +28,7 @@ interface CacheFuncProps<T, U> {
 
 export interface CacheConfigs {
   redirect?: boolean;
+  redirectQueryParams?: Record<string, any>;
 }
 
 /**
@@ -151,6 +152,7 @@ export class CacheService {
           ? this.router.createUrlTree(urlTree, {
               queryParams: {
                 id: cacheId,
+                ...configs.redirectQueryParams,
               },
             })
           : undefined,
@@ -184,7 +186,9 @@ export class CacheService {
   clearCache(id: string): void {
     const data = this._data[id];
     if (data) {
-      data.subscription.unsubscribe();
+      if (data.subscription) {
+        data.subscription.unsubscribe();
+      }
       this._data[id] = undefined;
     }
   }

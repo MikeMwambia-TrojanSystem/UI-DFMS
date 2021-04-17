@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import _ from 'lodash';
 import { Observable, of } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { CacheService } from 'src/app/services/cache.service';
@@ -15,7 +16,6 @@ import { Votebook } from 'src/app/shared/types/votebook';
 })
 export class ListVoteBookComponent implements OnInit {
   private _cacheId: string;
-  private _orderPapers: OrderPaper[];
 
   votebooks: Votebook[];
 
@@ -25,8 +25,7 @@ export class ListVoteBookComponent implements OnInit {
     private route: ActivatedRoute,
     private cacheService: CacheService,
     private votebookService: VotebookService,
-    private router: Router,
-    private orderPaperService: OrderPaperService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -39,24 +38,13 @@ export class ListVoteBookComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ votebooks }: { votebooks: Votebook[] }) => {
-        this.votebooks = votebooks;
-      });
-
-    this.orderPaperService
-      .getOrderPapers()
-      .pipe(take(1))
-      .subscribe((orderPapers) => {
-        this._orderPapers = orderPapers;
+        this.votebooks = _.orderBy(votebooks, 'datePublished', 'desc');
       });
   }
 
   getEditUrl(votebook: Votebook) {
     try {
-      const orderPaperId = this._orderPapers.find(
-        (o) => o.orderPaperNo === votebook.orderPapersNo
-      )._id;
-
-      return `/generate/votebook/${orderPaperId}/${votebook._id}`;
+      return `/generate/votebook/${votebook._id}`;
     } catch (err) {
       return undefined;
     }
@@ -73,8 +61,8 @@ export class ListVoteBookComponent implements OnInit {
   }
 
   onCreateNew() {
-    this.router.navigate(['/list/order-paper'], {
-      queryParams: { select: true, purpose: 'NEW_VOTEBOOK' },
+    this.router.navigate(['/generate/votebook'], {
+      queryParams: { select: false },
     });
   }
 }

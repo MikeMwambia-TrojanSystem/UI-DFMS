@@ -32,7 +32,7 @@ export class CanActivateUploadReport implements CanActivate {
     return this.reportService.getReport(reportId).pipe(
       take(1),
       map((report) => {
-        if (report && report.publishState !== 'public') {
+        if (report) {
           return true;
         }
 

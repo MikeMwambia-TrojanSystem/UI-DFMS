@@ -13,6 +13,8 @@
         [editUrl]="'/create/department/' + department._id"
         (delete)="onDelete(department._id)"
         [published]="state !== 'draft'"
+        [canEdit]="department.canEdit"
+        [canDelete]="department.canDelete"
       >
       </app-list-item>
     </div>

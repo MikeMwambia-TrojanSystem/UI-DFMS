@@ -5,7 +5,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
   templateUrl: './report-item.component.html',
   styleUrls: ['./report-item.component.scss'],
 })
-export class ReportItemComponent {
+export class ReportItemComponent implements OnInit {
   @Output() select = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Input() title: string;
@@ -18,6 +18,21 @@ export class ReportItemComponent {
   @Input() sub: string;
   @Input() state: string;
   @Input() editUrl: string;
+  @Input() canEdit: boolean;
+  @Input() canDelete: boolean;
+  stateExpanded: string;
+
+  ngOnInit() {
+    if (this.state === 'draft') {
+      this.stateExpanded = 'Draft';
+    }
+    if (this.state === 'public') {
+      this.stateExpanded = 'Public';
+    }
+    if (this.state === 'private') {
+      this.stateExpanded = 'Private';
+    }
+  }
 
   onSelect() {
     this.select.emit();

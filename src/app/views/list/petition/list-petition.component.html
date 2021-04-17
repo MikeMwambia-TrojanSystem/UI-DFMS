@@ -16,6 +16,8 @@
         (delete)="onDelete(petition._id)"
         [editUrl]="'/generate/petition/' + petition._id"
         (select)="onSelect(petition)"
+        [canEdit]="petition.canEdit"
+        [canDelete]="petition.canDelete"
       >
       </app-info-item>
     </div>

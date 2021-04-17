@@ -32,7 +32,7 @@ export class CanActivateAct implements CanActivate {
     return this.actService.getAct(actId).pipe(
       take(1),
       map((act) => {
-        if (act && act.publishState !== 'public') {
+        if (act) {
           return true;
         }
 

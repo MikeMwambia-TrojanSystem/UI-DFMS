@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import moment from 'moment';
 import { take } from 'rxjs/operators';
 import { CacheService } from 'src/app/services/cache.service';
 import { MotionService } from 'src/app/services/motion.service';
+import { Department } from 'src/app/shared/types/department';
 import { Motion } from 'src/app/shared/types/motion';
 
 @Component({
@@ -22,12 +24,16 @@ export class MotionGenerateComponent implements OnInit {
     sponsorId: new FormControl('', Validators.required),
     relatedTo: new FormControl('', Validators.required),
     department: new FormControl('', Validators.required),
+    departmentId: new FormControl('', Validators.required),
     resolution: new FormControl('pending', Validators.required),
     assemblyId: new FormControl('2c7d88e9a4a6bc', Validators.required),
-    approver: new FormControl('speaker', Validators.required),
-    approverId: new FormControl('2c7d88e9a4a6bc', Validators.required),
+    approver: new FormControl(''),
+    approverId: new FormControl(''),
     datePublished: new FormControl(''),
-    published: new FormControl(false),
+    noticeOfMotion: new FormControl(false, Validators.required),
+    published: new FormControl('false'),
+    publishState: new FormControl('draft'),
+    sponsorDescription: new FormControl('', Validators.required),
   });
 
   constructor(
@@ -46,14 +52,29 @@ export class MotionGenerateComponent implements OnInit {
 
       this.route.data
         .pipe(take(1))
-        .subscribe(({ motion }: { motion: Motion }) => {
-          const { sponsorId, sponsorName } = motion.sponsoredBy;
-          this.form.patchValue({
-            ...motion,
-            sponsorName,
-            sponsorId,
-          });
-        });
+        .subscribe(
+          ({
+            motion,
+            departments,
+          }: {
+            motion: Motion;
+            departments: Department[];
+          }) => {
+            const { sponsorId, sponsorName } = motion.sponsoredBy;
+            const { department, title } = motion;
+
+            this.form.patchValue({
+              ...motion,
+              content: title,
+              department,
+              departmentId: (
+                departments.find((d) => d.name === department) || { _id: '' }
+              )._id,
+              sponsorName,
+              sponsorId,
+            });
+          }
+        );
     } else {
       this._mode = 'creating';
     }
@@ -128,6 +149,7 @@ export class MotionGenerateComponent implements OnInit {
       (form, { name, _id }) => {
         form.patchValue({
           department: name,
+          departmentId: _id,
         }); // Patch form with selected department
 
         return form;
@@ -160,31 +182,29 @@ export class MotionGenerateComponent implements OnInit {
      * The publish field is depended on function state parameter.
      */
     const post = (state: 'public' | 'private' | 'draft') => {
+      const navigate = () => {
+        this.cacheService.clearCache('GENERATE_MOTION');
+
+        this.router.navigate(['/list/motion'], {
+          queryParams: {
+            state: state,
+          },
+        });
+      };
+
       const value = this.form.value;
 
-      value.published = state;
+      value.publishState = state;
 
       if (this._mode === 'creating') {
         value.datePublished = new Date().toISOString();
-        value.motionSignature = new Date().toISOString();
+        value.motionSignature = moment().unix();
 
-        this.motionService.postMotion(value).subscribe(() => {
-          this.router.navigate(['/list/motion'], {
-            queryParams: {
-              state: state,
-            },
-          });
-        });
+        this.motionService.postMotion(value).subscribe(navigate);
       } else {
         value.id = this._motionId;
 
-        this.motionService.updateMotion(value).subscribe(() => {
-          this.router.navigate(['/list/motion'], {
-            queryParams: {
-              state: state,
-            },
-          });
-        });
+        this.motionService.updateMotion(value).subscribe(navigate);
       }
     };
 

@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { take } from 'rxjs/operators';
 
 import { MenuNotification } from 'src/app/components/MenuContainer/menu-container.component';
+import { AccountService } from 'src/app/services/account.service';
 
 export interface Action {
   label: string;
@@ -20,14 +23,11 @@ interface IntroItem {
   templateUrl: './intro.component.html',
   styleUrls: ['./intro.component.scss'],
 })
-export class IntroComponent {
-  user: string = 'Florence'; // Dynamic username
+export class IntroComponent implements OnInit {
+  user: string;
   county = 'Meru'; // Dynamic county
   date = moment(); // Today
 
-  /**
-   * Predefined intro items
-   */
   introItems: IntroItem[] = [
     {
       label: 'Administration of Oath',
@@ -58,13 +58,7 @@ export class IntroComponent {
           },
         },
       ],
-      notifications: [
-        {
-          label: 'The report on land reforms was published',
-          date: moment().subtract(3, 'hours'),
-          url: '/',
-        },
-      ],
+      notifications: [],
     },
     {
       label: 'Communication from the Chair',
@@ -90,18 +84,7 @@ export class IntroComponent {
           query: { state: 'public' },
         },
       ],
-      notifications: [
-        {
-          label: 'The report on land reforms was published',
-          date: moment().subtract(3, 'hours'),
-          url: '/',
-        },
-        {
-          label: 'The report on land reforms was published',
-          date: moment().subtract(3, 'hours'),
-          url: '/',
-        },
-      ],
+      notifications: [],
     },
     {
       label: 'Messages',
@@ -135,13 +118,7 @@ export class IntroComponent {
           },
         },
       ],
-      notifications: [
-        {
-          label: 'The report on land reforms was published',
-          date: moment().subtract(3, 'hours'),
-          url: '/',
-        },
-      ],
+      notifications: [],
     },
     {
       label: 'Petition',
@@ -172,13 +149,7 @@ export class IntroComponent {
           },
         },
       ],
-      notifications: [
-        {
-          label: 'The report on land reforms was published',
-          date: moment().subtract(3, 'hours'),
-          url: '/',
-        },
-      ],
+      notifications: [],
     },
     {
       label: 'Papers',
@@ -213,13 +184,7 @@ export class IntroComponent {
           url: '/',
         },
       ],
-      notifications: [
-        {
-          label: 'The report on land reforms was published',
-          date: moment().subtract(3, 'hours'),
-          url: '/',
-        },
-      ],
+      notifications: [],
     },
     {
       label: 'Notices of Motions',
@@ -250,13 +215,7 @@ export class IntroComponent {
           },
         },
       ],
-      notifications: [
-        {
-          label: 'The report on land reforms was published',
-          date: moment().subtract(3, 'hours'),
-          url: '/',
-        },
-      ],
+      notifications: [],
     },
     {
       label: 'Statements',
@@ -287,13 +246,7 @@ export class IntroComponent {
           },
         },
       ],
-      notifications: [
-        {
-          label: 'The report on land reforms was published',
-          date: moment().subtract(3, 'hours'),
-          url: '/',
-        },
-      ],
+      notifications: [],
     },
     {
       label: 'Motion',
@@ -324,13 +277,7 @@ export class IntroComponent {
           },
         },
       ],
-      notifications: [
-        {
-          label: 'The report on land reforms was published',
-          date: moment().subtract(3, 'hours'),
-          url: '/',
-        },
-      ],
+      notifications: [],
     },
     {
       label: 'Bills',
@@ -361,13 +308,7 @@ export class IntroComponent {
           },
         },
       ],
-      notifications: [
-        {
-          label: 'The report on land reforms was published',
-          date: moment().subtract(3, 'hours'),
-          url: '/',
-        },
-      ],
+      notifications: [],
     },
     {
       label: 'Acts',
@@ -398,53 +339,7 @@ export class IntroComponent {
           },
         },
       ],
-      notifications: [
-        {
-          label: 'The report on land reforms was published',
-          date: moment().subtract(3, 'hours'),
-          url: '/',
-        },
-      ],
-    },
-    {
-      label: 'Tentative Businesses (Notice Paper)',
-      actions: [
-        {
-          label: 'Generation Tentative Businesses',
-          url: '/edit/content/1',
-          query: {
-            return: '/list/tentative-business',
-          },
-        },
-        {
-          label: 'View Tentative Businesses in draft status',
-          url: '/list/tentative-business',
-          query: {
-            state: 'draft',
-          },
-        },
-        {
-          label: 'View Privately Published Tentative Businesses',
-          url: '/list/tentative-business',
-          query: {
-            state: 'private',
-          },
-        },
-        {
-          label: 'View Published Tentative Businesses',
-          url: '/list/tentative-business',
-          query: {
-            state: 'public',
-          },
-        },
-      ],
-      notifications: [
-        {
-          label: 'The report on land reforms was published',
-          date: moment().subtract(3, 'hours'),
-          url: '/',
-        },
-      ],
+      notifications: [],
     },
     {
       label: 'Order Papers',
@@ -475,13 +370,7 @@ export class IntroComponent {
           },
         },
       ],
-      notifications: [
-        {
-          label: 'The report on land reforms was published',
-          date: moment().subtract(3, 'hours'),
-          url: '/',
-        },
-      ],
+      notifications: [],
     },
     {
       label: 'Votebook',
@@ -512,28 +401,22 @@ export class IntroComponent {
           },
         },
       ],
-      notifications: [
-        {
-          label: 'The report on land reforms was published',
-          date: moment().subtract(3, 'hours'),
-          url: '/',
-        },
-      ],
+      notifications: [],
     },
     {
       label: 'System',
       actions: [
         {
           label: 'Accounts',
-          url: '/management/accounts',
+          url: '/list/personnel',
         },
         {
           label: 'Departments',
-          url: '/management/accounts',
+          url: '/list/department',
         },
         {
           label: 'Committees',
-          url: '/management/accounts',
+          url: '/list/committee',
         },
         {
           label: 'Wards',
@@ -585,4 +468,21 @@ export class IntroComponent {
       ],
     },
   ];
+
+  constructor(private accountService: AccountService, private router: Router) {}
+
+  ngOnInit() {
+    this.accountService
+      .getUser()
+      .pipe(take(1))
+      .subscribe((user) => {
+        this.user = user.username;
+      });
+  }
+
+  onLogOut() {
+    this.accountService.logout();
+
+    this.router.navigate(['/', 'login']);
+  }
 }

@@ -14,6 +14,8 @@
         [editUrl]="'/generate/act/' + act._id"
         (delete)="onDelete(act._id)"
         (select)="onSelect(act)"
+        [canEdit]="act.canEdit"
+        [canDelete]="act.canDelete"
       >
       </app-info-item>
     </div>

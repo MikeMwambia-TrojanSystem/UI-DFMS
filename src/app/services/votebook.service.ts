@@ -72,11 +72,8 @@ export class VotebookService {
       .pipe(switchMap(() => this.fetchVotebook()));
   }
 
-  checkNone(
-    value: any[] | 'NONE',
-    transformation?: (value: any[]) => string
-  ): string {
-    return value === 'NONE'
+  checkNone(value: any[], transformation?: (value: any[]) => string): string {
+    return !value.length
       ? 'NONE'
       : transformation
       ? transformation(value)

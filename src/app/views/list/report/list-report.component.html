@@ -5,7 +5,7 @@
     <div>
       <app-report-item
         *ngFor="let report of reports"
-        [title]="report.titleOfReport"
+        [title]="report.title"
         [date]="report.datePublished"
         [concerning]="[report.relatedTo]"
         [submitted]="report.authorCommitee.name"
@@ -16,6 +16,8 @@
         [editUrl]="'/upload/report/' + report._id"
         (select)="onSelect(report)"
         (delete)="onDelete(report._id)"
+        [canEdit]="report.canEdit"
+        [canDelete]="report.canDelete"
       >
       </app-report-item>
       <div class="list-no-value">

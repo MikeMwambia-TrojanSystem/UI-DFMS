@@ -1,3 +1,5 @@
+import { BasicDocument } from './_global';
+
 export class WardConSub {
   _id: string;
   name: string;
@@ -12,7 +14,7 @@ export class WardConSub {
   updatedAt: string;
 }
 
-export class WardConSubPost {
+export class WardConSubPost extends BasicDocument {
   name: string;
   type: 'subcounty' | 'constituency' | 'ward';
   date: string;

@@ -1,14 +1,11 @@
 import { Location } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AccountService } from 'src/app/services/account.service';
 
-import { ApiService } from 'src/app/services/api.service';
-import { CacheService } from 'src/app/services/cache.service';
 import { PhoneVerification } from 'src/app/shared/types/verification';
 
 @Component({
@@ -18,18 +15,14 @@ import { PhoneVerification } from 'src/app/shared/types/verification';
 export class PhoneVerificationComponent implements OnInit {
   private _verification: PhoneVerification;
   private _user: boolean;
-  private _cacheId: string;
   valid = false;
   redirect: string;
 
   constructor(
     private route: ActivatedRoute,
-    private cacheService: CacheService,
-    private apiService: ApiService,
     private router: Router,
     private location: Location,
-    private accountService: AccountService,
-    private fb: FormBuilder
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
@@ -37,7 +30,6 @@ export class PhoneVerificationComponent implements OnInit {
       const queryParams = this.route.snapshot.queryParams;
       const { request_id, userId, user } = queryParams;
 
-      this._cacheId = queryParams.id;
       this._user = user === 'true';
       this._verification = {
         code: '',
@@ -68,7 +60,7 @@ export class PhoneVerificationComponent implements OnInit {
         .verifyOtp(this._verification)
         .pipe(
           catchError((error: HttpErrorResponse) => {
-            this.router.navigate(['/signup/account']);
+            alert('Invalid OTP');
 
             return throwError(error);
           })
@@ -81,10 +73,5 @@ export class PhoneVerificationComponent implements OnInit {
           });
         });
     }
-    this.apiService.phoneVerification(this._verification).subscribe(() => {
-      if (this._cacheId) {
-        this.cacheService.emit(this._cacheId, null);
-      }
-    });
   }
 }

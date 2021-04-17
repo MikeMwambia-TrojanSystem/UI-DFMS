@@ -27,8 +27,8 @@ export class OrderPaperGenerateComponent implements OnInit {
     datePublished: [''],
     publishState: ['draft'],
     published: [false],
-    approvingAccount: ['test', Validators.required],
-    approverId: ['12345', Validators.required],
+    approvingAccount: [''],
+    approverId: [''],
     assemblyNo: ['', Validators.required],
     sessionNo: ['', Validators.required],
     orderPaperNo: ['', Validators.required],
@@ -43,6 +43,8 @@ export class OrderPaperGenerateComponent implements OnInit {
     motionNoticeId: [''],
     billsId: [''],
     adjournment: ['ADJOURNMENT'],
+    assemblySittingDate: ['', Validators.required],
+    assemblySittingTime: ['', Validators.required],
   });
 
   constructor(

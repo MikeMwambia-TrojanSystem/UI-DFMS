@@ -14,6 +14,8 @@
         [editUrl]="'/create/subcounty/' + subcounty._id"
         (delete)="onDelete(subcounty._id)"
         [published]="state !== 'draft'"
+        [canEdit]="subcounty.canEdit"
+        [canDelete]="subcounty.canDelete"
       >
       </app-list-item>
     </div>

@@ -36,6 +36,28 @@ export class AddPetitionerComponent implements OnInit {
     // Get selectable, cache id from url query
     const queryParams = this.route.snapshot.queryParams;
     this._cacheId = queryParams.id;
+
+    // Populate
+    let array = ((this.cacheService.getData(this._cacheId) as FormGroup).get(
+      'petitioners'
+    ).value as string).split('&&&');
+
+    array = array[0] === '' ? [] : array;
+
+    this.petitioners = array.map((i) =>
+      i.split('|||').reduce<{ name: string; phone: string }>(
+        (result, p, index) => {
+          if (index === 0) {
+            result.name = p.slice(p.indexOf('name=') + 5);
+          } else {
+            result.phone = p.slice(p.indexOf('phone=') + 5);
+          }
+
+          return result;
+        },
+        { name: '', phone: '' }
+      )
+    );
   }
 
   onAdd(): void {

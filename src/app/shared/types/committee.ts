@@ -1,3 +1,5 @@
+import { BasicDocument } from './_global';
+
 export class CommitteePost {
   committeeSignature: string;
   name: string;
@@ -14,27 +16,48 @@ export class CommitteePost {
   assemblyId: string;
 }
 
-export class Committee {
-  committesMembers: string[];
+export class Committee extends BasicDocument {
   _id: string;
-  commiteeSignature: string;
-  name: string;
-  chair: {
-    name: string;
-    id: string;
-  };
-  viceChair: {
-    name: string;
-    id: string;
-  };
-  departmentInExcecutive: string;
   approvingAccount: {
     approverId: string;
     account: string;
   };
-  datePublished: string;
-  published: boolean;
-  assemblyId: string;
+  chair: {
+    name: string;
+    id: string;
+  };
+  committesMembers: string[];
   createdAt: string;
-  updatedAt: string;
+  datePublished: string;
+  departmentInExcecutive: string;
+  name: string;
+  viceChair: {
+    name: string;
+    id: string;
+  };
 }
+
+// export class Committee extends BasicDocument {
+//   committesMembers: string[];
+//   _id: string;
+//   commiteeSignature: string;
+//   name: string;
+//   chair: {
+//     name: string;
+//     id: string;
+//   };
+//   viceChair: {
+//     name: string;
+//     id: string;
+//   };
+//   departmentInExcecutive: string;
+//   approvingAccount: {
+//     approverId: string;
+//     account: string;
+//   };
+//   datePublished: string;
+//   published: boolean;
+//   assemblyId: string;
+//   createdAt: string;
+//   updatedAt: string;
+// }

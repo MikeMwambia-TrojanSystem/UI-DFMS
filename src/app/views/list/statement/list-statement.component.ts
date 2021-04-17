@@ -37,12 +37,12 @@ export class ListStatementComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ statements }: { statements: any[] }) => {
-        this.statements = _.orderBy(statements, 'createdAt', 'desc');
+        this.statements = _.orderBy(statements, 'datePublished', 'desc');
       });
   }
 
   getInfo({
-    statementNo,
+    title,
     subjectOfStatement,
     seeker,
     departmentResponsible,
@@ -51,7 +51,7 @@ export class ListStatementComponent implements OnInit {
     return [
       {
         label: 'Statement No ',
-        content: statementNo.toString(),
+        content: title.toString(),
         class: { common: 'head' },
       },
       {

@@ -73,6 +73,8 @@ export class CreateConstituenciesComponent implements OnInit {
   onSave(published: boolean) {
     // Subcription callback
     const subCallback = () => {
+      this.cacheService.clearCache('CREATE_CONSTITUENCY');
+
       this.router.navigate(['/list/constituency'], {
         queryParams: {
           state: published ? 'published' : 'draft',

@@ -17,6 +17,8 @@ export class InfoItemComponent implements OnInit {
   @Input() state: string;
   @Input() editUrl: string;
   @Input() department: string;
+  @Input() canEdit: boolean;
+  @Input() canDelete: boolean;
   @Output() delete = new EventEmitter<void>();
   @Output() select = new EventEmitter<void>();
   stateExpanded: string;
@@ -26,10 +28,10 @@ export class InfoItemComponent implements OnInit {
       this.stateExpanded = 'Draft';
     }
     if (this.state === 'public') {
-      this.stateExpanded = 'Publicly Published';
+      this.stateExpanded = 'Public';
     }
     if (this.state === 'private') {
-      this.stateExpanded = 'Privately Published';
+      this.stateExpanded = 'Private';
     }
   }
 

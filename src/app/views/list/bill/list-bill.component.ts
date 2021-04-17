@@ -33,7 +33,7 @@ export class ListBillComponent implements OnInit {
 
     // Get Petitions data from resolver
     this.route.data.pipe(take(1)).subscribe(({ bills }: { bills: Bill[] }) => {
-      this.bills = _.orderBy(bills, 'createdAt', 'desc');
+      this.bills = _.orderBy(bills, 'datePublished', 'desc');
     });
   }
 
@@ -66,7 +66,7 @@ export class ListBillComponent implements OnInit {
     });
   }
 
-  onSelect({ titleOfBill, _id }: Bill) {
-    this.cacheService.emit(this._cacheId, { titleOfBill, _id });
+  onSelect(bill: Bill) {
+    this.cacheService.emit(this._cacheId, bill);
   }
 }

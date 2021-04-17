@@ -136,13 +136,13 @@ export class VotebookContentGenerateComponent implements OnInit {
 
   form = this.fb.group({
     datePublished: [''],
-    approvingAccount: ['speaker', Validators.required],
-    approverId: ['12345', Validators.required],
+    approvingAccount: [''],
+    approverId: [''],
     published: [false],
     publishState: ['draft'],
     voteBookSignature: [''],
     orderPaperId: ['', Validators.required],
-    assemblyId: ['', Validators.required],
+    assemblyId: ['1234'],
     assemblyNo: ['', Validators.required],
     orderPapersNo: ['', Validators.required],
     pageNoToDate: ['', Validators.required],
@@ -158,6 +158,9 @@ export class VotebookContentGenerateComponent implements OnInit {
     motions: ['', Validators.required],
     bills: ['', Validators.required],
     adjournment: ['', Validators.required],
+    presiding: ['', Validators.required],
+    presidingPosition: [''],
+    presidingId: [''],
   });
 
   constructor(
@@ -204,7 +207,6 @@ export class VotebookContentGenerateComponent implements OnInit {
 
             const {
               adminstrationOfOath,
-              approvingAccount,
               bills,
               communicationFromChainr,
               messages,
@@ -218,27 +220,33 @@ export class VotebookContentGenerateComponent implements OnInit {
 
             this.form.patchValue({
               ...others,
-              approvingAccount: approvingAccount.account,
-              approverId: approvingAccount.approverId,
-              adminstrationOfOathReply: adminstrationOfOath[0],
-              communicationFromChainr: communicationFromChainr[0],
-              messageContent: messages[0],
-              petionReply: petitions[0],
-              reportReply: papers[0],
-              noticeOfMotionsReply: noticeOfMotions[0],
-              statementReply: statements[0],
-              motions: motions
-                .map(
-                  (m) =>
-                    `content=${m.content}|||source=${m.source}|||motionId=${m.documentId}`
-                )
-                .join('&&&'),
-              bills: motions
-                .map(
-                  (m) =>
-                    `content=${m.content}|||source=${m.source}|||motionId=${m.documentId}`
-                )
-                .join('&&&'),
+              adminstrationOfOathReply: adminstrationOfOath.length
+                ? ''
+                : 'NONE',
+              communicationFromChainr: communicationFromChainr.length
+                ? ''
+                : 'NONE',
+              messageContent: messages.length ? '' : 'NONE',
+              petionReply: petitions.length ? '' : 'NONE',
+              reportReply: papers.length ? '' : 'NONE',
+              noticeOfMotionsReply: noticeOfMotions.length ? '' : 'NONE',
+              statementReply: statements.length ? '' : 'NONE',
+              motions: motions.length
+                ? motions
+                    .map(
+                      (m) =>
+                        `content=${m.content}|||source=${m.source}|||motionId=${m.documentId}`
+                    )
+                    .join('&&&')
+                : 'NONE',
+              bills: bills
+                ? bills
+                    .map(
+                      (m) =>
+                        `content=${m.content}|||source=${m.source}|||motionId=${m.documentId}`
+                    )
+                    .join('&&&')
+                : 'NONE',
             });
           }
         }
@@ -248,7 +256,9 @@ export class VotebookContentGenerateComponent implements OnInit {
     const cachedData = this.cacheService.rehydrate<Cache>('GENERATE_VOTEBOOK');
 
     if (cachedData) {
-      this.form = cachedData.form;
+      this.form.patchValue({
+        ...cachedData.form.getRawValue(),
+      });
     } else {
       this.router.navigate(['/', 'generate', 'votebook']);
     }
@@ -260,6 +270,8 @@ export class VotebookContentGenerateComponent implements OnInit {
       });
 
     this._populateNotifications();
+
+    console.log(this.form.value);
   }
 
   get orderPaperNo(): string | number {
@@ -429,10 +441,7 @@ export class VotebookContentGenerateComponent implements OnInit {
       case 'messageContent':
         return this._onGenerateReply(
           'messageContent',
-          (this._orderPaper.messages === 'NONE'
-            ? []
-            : this._orderPaper.messages
-          ).map((m) => m.content)
+          this._orderPaper.messages.map((m) => m.content)
         );
       case 'petionReply':
         return this._onGenerateWithId<Petition, string>({
@@ -450,9 +459,10 @@ export class VotebookContentGenerateComponent implements OnInit {
           field: 'reportReply',
           orderPaperField: 'papers',
           orderContentMapping: (reports) =>
-            reports.map(
-              (r) =>
-                `<a class="edit-link" href="${r.uploadedFileURL}">Download PDF</a>`
+            reports.map((r) =>
+              r.uploadedFileURL
+                ? `<a class="edit-link" href="${r.uploadedFileURL}">Download PDF</a>`
+                : ''
             ),
           modifyResult: (result) => result,
         });
@@ -465,7 +475,7 @@ export class VotebookContentGenerateComponent implements OnInit {
           url: '/edit/notice-motion',
           field: 'noticeOfMotionsReply',
           orderPaperField: 'noticeOfMotions',
-          orderContentMapping: (motions) => motions.map((m) => m.content),
+          orderContentMapping: (motions) => motions.map((m) => m.title),
           modifyResult: ({ content, status }) =>
             `content=${content}|||status=${status}`,
         });
@@ -476,9 +486,10 @@ export class VotebookContentGenerateComponent implements OnInit {
           field: 'statementReply',
           orderPaperField: 'statements',
           orderContentMapping: (statements) =>
-            statements.map(
-              (s) =>
-                `<a class="edit-link" href="${s.uploadedFileURL}">Download PDF</a>`
+            statements.map((s) =>
+              s.uploadedFileURL
+                ? `<a class="edit-link" href="${s.uploadedFileURL}">Download PDF</a>`
+                : ''
             ),
           modifyResult: (result) => result,
         });
@@ -491,7 +502,7 @@ export class VotebookContentGenerateComponent implements OnInit {
           url: '/edit/motion',
           field: 'motions',
           orderPaperField: 'motions',
-          orderContentMapping: (motions) => motions.map((m) => m.content),
+          orderContentMapping: (motions) => motions.map((m) => m.title),
           modifyResult: ({ content, status, motionId }, { form }) => {
             const value = (form.get('motions').value as string).split('&&&');
             const array = value[0].length
@@ -520,9 +531,10 @@ export class VotebookContentGenerateComponent implements OnInit {
           field: 'bills',
           orderPaperField: 'bills',
           orderContentMapping: (bills) =>
-            bills.map(
-              (b) =>
-                `<a class="edit-link" href="${b.uploadedBillURL}">Download PDF</a>`
+            bills.map((b) =>
+              b.uploadedBillURL
+                ? `<a class="edit-link" href="${b.uploadedBillURL}">Download PDF</a>`
+                : ''
             ),
           modifyResult: ({ content, status, motionId }, { form }) => {
             const value = (form.get('bills').value as string).split('&&&');
@@ -553,6 +565,8 @@ export class VotebookContentGenerateComponent implements OnInit {
 
   onSave(draft: boolean) {
     const subCallback = (state: 'public' | 'private' | 'draft') => {
+      this.cacheService.clearCache('GENERATE_VOTEBOOK');
+
       this.router.navigate(['/list/votebook'], {
         queryParams: {
           state,
@@ -563,7 +577,6 @@ export class VotebookContentGenerateComponent implements OnInit {
     const post = (state: 'public' | 'private' | 'draft') => {
       const value = this.form.value;
 
-      value.published = state === 'public';
       value.publishState = state;
 
       if (this._mode === 'creating') {

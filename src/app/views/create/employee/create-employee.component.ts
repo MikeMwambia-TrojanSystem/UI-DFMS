@@ -72,21 +72,28 @@ export class CreateEmployeeComponent implements OnInit {
 
       this.route.data
         .pipe(take(1))
-        .subscribe(({ personnel }: { personnel: Personnel }) => {
-          const { department, phoneNumber, profilePic, ...others } = personnel;
+        .subscribe(
+          ({
+            personnel,
+            departments,
+          }: {
+            personnel: Personnel;
+            departments: Department[];
+          }) => {
+            const { profilePic, department, ...others } = personnel;
 
-          this.form.patchValue({
-            ...others,
-            phoneNumber: phoneNumber.phoneNumber,
-            deparment: department.name,
-            deptId: department.id,
-            profilePic: profilePic,
-          });
+            this.form.patchValue({
+              ...others,
+              profilePic: profilePic,
+              deparment: department,
+              deptId: departments.find((d) => d.name === department)._id,
+            });
 
-          const index = profilePic.lastIndexOf('amazonaws.com/') + 14;
+            const index = profilePic.lastIndexOf('amazonaws.com/') + 14;
 
-          this.filename = profilePic.substring(index);
-        });
+            this.filename = profilePic.substring(index);
+          }
+        );
     } else {
       this._mode = 'creating';
     }
@@ -170,26 +177,24 @@ export class CreateEmployeeComponent implements OnInit {
    * This function get called when 'Publish' or 'Save as Draft' buttons is clicked.
    */
   onSave(status: boolean) {
-    // After POST
-    const redirecting = () => {
-      this.router.navigate(['/list/personnel'], {
-        queryParams: {
-          state: status ? 'published' : 'draft',
-        },
-      });
-    };
-
     // Subcription callback
     const subCallback = ({ personnelId, request_id }: any) => {
-      if (status === true) {
-        this.router.navigate(['/verification/phone'], {
+      this.cacheService.clearCache('CREATE_PERSONNEL');
+
+      if (request_id) {
+        this.router.navigate(['/verification/personnel'], {
           queryParams: {
             userId: personnelId,
             request_id,
+            state: status ? 'published' : 'draft',
           },
         });
       } else {
-        redirecting();
+        this.router.navigate(['/list/personnel'], {
+          queryParams: {
+            state: status ? 'published' : 'draft',
+          },
+        });
       }
     };
 

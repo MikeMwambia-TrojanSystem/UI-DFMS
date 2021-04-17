@@ -32,10 +32,7 @@ export class CreateCommitteeComponent implements OnInit {
   private _committeeId: string;
   private _cacheId: string;
   form = new FormGroup({
-    commiteeSignature: new FormControl(
-      'e3ee3r9j5j5jgnonr5t46yg668h',
-      Validators.required
-    ),
+    commiteeSignature: new FormControl(''),
     name: new FormControl('', Validators.required),
     Chairname: new FormControl('', Validators.required),
     chairId: new FormControl('', Validators.required),
@@ -317,6 +314,8 @@ export class CreateCommitteeComponent implements OnInit {
   onSave(published: boolean): void {
     // Subcription callback
     const subCallback = () => {
+      this.cacheService.clearCache('CREATE_COMMITTEE');
+
       this.router.navigate(['/list/committee'], {
         queryParams: {
           state: published ? 'published' : 'draft',

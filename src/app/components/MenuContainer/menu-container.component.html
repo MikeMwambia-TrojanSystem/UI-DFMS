@@ -27,7 +27,7 @@
           noti.type === 'adjournment'
         "
       >
-        <span [innerHtml]="noti.content"></span>
+        <span [innerHtml]="noti.content | truncate"></span>
       </div>
       <!-- <div class="top" *ngIf="">
         <p>
@@ -41,7 +41,8 @@
         *ngIf="
           noti.type === 'noticeOfMotionsReply' ||
           noti.type === 'bills' ||
-          noti.type === 'motions'
+          noti.type === 'motions' ||
+          noti.type === 'messages'
         "
       >
         <span>{{ getMessageContent(noti) }}</span>
@@ -62,7 +63,7 @@
       >
       </app-info-item>
       <app-report-item
-        [title]="(getReportContent(noti) | async).titleOfReport"
+        [title]="(getReportContent(noti) | async).title"
         [date]="(getReportContent(noti) | async).datePublished"
         [concerning]="[(getReportContent(noti) | async).relatedTo]"
         [submitted]="(getReportContent(noti) | async).authorCommitee.name"
@@ -76,7 +77,7 @@
       >
       </app-statement-item>
       <app-info-item
-        [title]="(getMotionContent(noti) | async).content"
+        [title]="(getMotionContent(noti) | async).title"
         [date]="(getMotionContent(noti) | async).datePublished"
         [subjects]="[(getMotionContent(noti) | async).relatedTo]"
         [department]="(getMotionContent(noti) | async).department"
@@ -84,7 +85,7 @@
         *ngIf="noti.type === 'motionId'"
       ></app-info-item>
       <app-info-item
-        [title]="(getMotionContent(noti) | async).content"
+        [title]="(getMotionContent(noti) | async).title"
         [date]="(getMotionContent(noti) | async).datePublished"
         [subjects]="[(getMotionContent(noti) | async).relatedTo]"
         [department]="(getMotionContent(noti) | async).department"
@@ -92,7 +93,7 @@
         *ngIf="noti.type === 'motionNoticeId'"
       ></app-info-item>
       <app-info-item
-        [title]="(getBillContent(noti) | async).titleOfBill"
+        [title]="(getBillContent(noti) | async).title"
         [date]="(getBillContent(noti) | async).datePublished"
         [subjects]="[(getBillContent(noti) | async).relatedTo]"
         [sub]="'Bill on'"

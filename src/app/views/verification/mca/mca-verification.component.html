@@ -1,0 +1,19 @@
+<app-background [background]="'green'">
+  <app-center-card>
+    <div class="main">
+      <h2 class="title">Enter Verification Code sent to your phone.</h2>
+      <ng-otp-input
+        (onInputChange)="onOtpChange($event)"
+        [config]="{ length: 6 }"
+      ></ng-otp-input>
+      <button
+        mat-flat-button
+        class="btn"
+        [disabled]="!valid"
+        (click)="onSend()"
+      >
+        Send
+      </button>
+    </div>
+  </app-center-card>
+</app-background>

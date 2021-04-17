@@ -40,6 +40,8 @@ export class AdministrationOathComponent implements OnInit {
   }); // Form group that holds user input
 
   administrations: Administration[] = [];
+  selectable = false;
+  finishable = false;
 
   constructor(
     private router: Router,
@@ -59,6 +61,21 @@ export class AdministrationOathComponent implements OnInit {
   ngOnInit(): void {
     // Get info from url query
     this._cacheId = this.route.snapshot.queryParams.id;
+
+    if (this._cacheId && this._cacheId !== 'GENERATE_ORDER_PAPER') {
+      this.selectable = true;
+    }
+
+    if (this._cacheId === 'GENERATE_ORDER_PAPER') {
+      this.finishable = true;
+
+      // Get Order Paper cached
+      const cached = this.cacheService.getData<Cache>('GENERATE_ORDER_PAPER');
+
+      if (cached) {
+        this.administrations = cached.administrations;
+      }
+    }
 
     // Get cached data
     const cached = this.cacheService.rehydrate<Cache>(CACHE_ID);
@@ -119,16 +136,28 @@ export class AdministrationOathComponent implements OnInit {
   onSave() {
     const ad = this.form.value as Administration;
 
-    this.administrations.push(ad);
-    this.form.reset({
-      name: '',
-      ward: '',
-      passport: '',
-      politicalParty: '',
-    });
+    if (this.administrations.find((a) => a.ward === ad.ward)) {
+      alert('Two administrations represent the same ward is not allow!');
+    } else {
+      this.administrations.push(ad);
+      this.form.reset({
+        name: '',
+        ward: '',
+        passport: '',
+        politicalParty: '',
+      });
+    }
   }
 
   onSelect(ad: Administration) {
     this.cacheService.emit(this._cacheId, ad);
+  }
+
+  onFinish() {
+    if (this._cacheId === 'GENERATE_ORDER_PAPER') {
+      this.cacheService.emit(this._cacheId, this.administrations);
+
+      this.cacheService.clearCache(CACHE_ID);
+    }
   }
 }

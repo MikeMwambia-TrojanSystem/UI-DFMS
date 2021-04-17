@@ -15,6 +15,8 @@ export class ListItemComponent implements OnInit {
   @Input() dateSub: string;
   @Input() published: boolean;
   @Input() editUrl: string;
+  @Input() canEdit: boolean;
+  @Input() canDelete: boolean;
   @Output() delete = new EventEmitter<void>();
   @Output() select = new EventEmitter<void>();
   dateObj: Date;

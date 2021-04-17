@@ -4,12 +4,7 @@
     <form [formGroup]="form" class="form" *ngIf="form">
       <p class="label">Statement No.</p>
       <mat-form-field appearance="standard">
-        <input
-          matInput
-          formControlName="statementNo"
-          placeholder="1258789"
-          type="number"
-        />
+        <input matInput formControlName="statementNo" placeholder="1258789" />
         <mat-error *ngIf="form.get('statementNo').hasError('required')"
           >Please enter statement no.!</mat-error
         >
@@ -18,6 +13,18 @@
         [title]="seekerName || 'Who is Seeking the Statement'"
         (buttonClick)="onSelectSeeker()"
       ></app-custom-button>
+      <p class="label">Add Description of the Statement Seeker</p>
+      <mat-form-field appearance="standard">
+        <textarea
+          matInput
+          formControlName="seekerDescription"
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="2"
+        ></textarea>
+        <mat-error *ngIf="form.get('seekerDescription').hasError('required')"
+          >Please enter the description of statement seeker!
+        </mat-error>
+      </mat-form-field>
       <p class="label">Subject of the Statement</p>
       <mat-form-field appearance="standard">
         <input
@@ -49,7 +56,7 @@
         >
       </mat-form-field>
       <app-custom-button
-        [title]="providerName || 'Select respondent commitee'"
+        [title]="providerName || 'Select Respondent Commitee'"
         (buttonClick)="onSelectRequestTo()"
       ></app-custom-button>
       <p class="label">

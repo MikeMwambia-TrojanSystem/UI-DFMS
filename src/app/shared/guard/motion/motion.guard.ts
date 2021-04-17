@@ -32,7 +32,7 @@ export class CanActivateMotion implements CanActivate {
     return this.motionService.getMotion(motionId).pipe(
       take(1),
       map((motion) => {
-        if (motion && motion.publishState !== 'public') {
+        if (motion) {
           return true;
         }
 

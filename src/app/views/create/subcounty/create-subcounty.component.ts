@@ -71,6 +71,8 @@ export class CreateSubcountyComponent implements OnInit {
   onSave(published: boolean) {
     // Subcription callback
     const subCallback = () => {
+      this.cacheService.clearCache('CREATE_SUBCOUNTY');
+
       this.router.navigate(['/list/subcounty'], {
         queryParams: {
           state: published ? 'published' : 'draft',

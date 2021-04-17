@@ -148,10 +148,27 @@ import { PaperContentViewComponent } from './views/view/paper-content/paper-cont
 import { VotebookContentGenerateComponent } from './views/generate/votebook-content/votebook-content-generate.component';
 import { SpeakerResolver } from './shared/resolver/speaker/speaker.resolver';
 import { VotebookOrderPaperResolver } from './shared/resolver/votebook/order-paper.resolver';
+import { CanActivateAuth } from './shared/guard/auth/auth.guard';
+import { ListNoticeOfMotionComponent } from './views/list/notice-of-motion/list-notice.component';
+import { ListNoticeOfMotionResolver } from './shared/resolver/notice-of-motion/list-notice.resolver';
+import { CanActivateUnAuth } from './shared/guard/auth/unauth.guard';
+import { PersonnelVerificationComponent } from './views/verification/personnel/personnel-verification.component';
+import { McaVerificationComponent } from './views/verification/mca/mca-verification.component';
+import { PersonnelDepartmentResolver } from './shared/resolver/personnel/department.resolver';
+import { AllDepartmentResolver } from './shared/resolver/department/all-department.resolver';
+import { TentativeBusinessGenerateComponent } from './views/generate/tentative-business/tentative-biz-generate.component';
+import { TentativeBusinessContentGenerateComponent } from './views/generate/tentative-business-content/tb-content-generate.component';
+import { CanActivateTentativeBusiness } from './shared/guard/tentative-business/tentative-business.guard';
+import { TentativeBusinessResolver } from './shared/resolver/tentative-business/tentative-business.resolver';
+import { ListTentativeBusinessResolver } from './shared/resolver/tentative-business/list-tentative-business.resolver';
 
 const routes: Routes = [
   // Login route
-  { path: 'login', component: LoginComponent },
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [CanActivateUnAuth],
+  },
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'update-password', component: UpdatePasswordComponent },
 
@@ -161,6 +178,8 @@ const routes: Routes = [
     children: [
       { path: 'phone', component: PhoneVerificationComponent },
       { path: 'email', component: EmailVerificationComponent },
+      { path: 'mca', component: McaVerificationComponent },
+      { path: 'personnel', component: PersonnelVerificationComponent },
     ],
   },
 
@@ -181,6 +200,7 @@ const routes: Routes = [
   //Create parent route
   {
     path: 'create',
+    canActivate: [CanActivateAuth],
     children: [
       { path: 'committee', component: CreateCommitteeComponent },
       {
@@ -222,6 +242,7 @@ const routes: Routes = [
         canActivate: [CanActivatePersonnel],
         resolve: {
           personnel: PersonnelResolver,
+          departments: PersonnelDepartmentResolver,
         },
       },
       { path: 'mca', component: CreateMcaComponent },
@@ -257,6 +278,7 @@ const routes: Routes = [
   //List parent route
   {
     path: 'list',
+    canActivate: [CanActivateAuth],
     children: [
       {
         path: 'committee',
@@ -291,6 +313,13 @@ const routes: Routes = [
         component: ListMotionComponent,
         resolve: {
           motions: ListMotionResolver,
+        },
+      },
+      {
+        path: 'notice-of-motion',
+        component: ListNoticeOfMotionComponent,
+        resolve: {
+          notices: ListNoticeOfMotionResolver,
         },
       },
       {
@@ -333,7 +362,6 @@ const routes: Routes = [
         component: ListVoteBookComponent,
         resolve: {
           votebooks: ListVotebookResolver,
-          orderPapers: ListOrderPaperResolver,
         },
       },
       { path: 'communication', component: ListCommunicationComponent },
@@ -355,6 +383,9 @@ const routes: Routes = [
       {
         path: 'tentative-business',
         component: ListTentativeBusinesssComponent,
+        resolve: {
+          tentativeBusinesses: ListTentativeBusinessResolver,
+        },
       },
       {
         path: 'subcounty',
@@ -376,6 +407,7 @@ const routes: Routes = [
   //Management parent route
   {
     path: 'management',
+    canActivate: [CanActivateAuth],
     children: [
       { path: 'accounts', component: AccountManagementComponent },
       { path: 'oath', component: AdministrationOathComponent },
@@ -391,6 +423,7 @@ const routes: Routes = [
   //Generate parent route
   {
     path: 'generate',
+    canActivate: [CanActivateAuth],
     children: [
       {
         path: 'act',
@@ -423,6 +456,7 @@ const routes: Routes = [
         canActivate: [CanActivateMotion],
         resolve: {
           motion: MotionResolver,
+          departments: AllDepartmentResolver,
         },
       },
       { path: 'petition', component: PetitionGenerateComponent },
@@ -472,11 +506,35 @@ const routes: Routes = [
       },
       {
         path: 'votebook-content/:votebookId',
-        component: VotebookGenerateComponent,
+        component: VotebookContentGenerateComponent,
         canActivate: [CanActivateVotebook],
         resolve: {
           votebook: VotebookResolver,
           orderPaper: VotebookOrderPaperResolver,
+        },
+      },
+      {
+        path: 'tentative-business',
+        component: TentativeBusinessGenerateComponent,
+      },
+      {
+        path: 'tentative-business-content',
+        component: TentativeBusinessContentGenerateComponent,
+      },
+      {
+        path: 'tentative-business/:id',
+        component: TentativeBusinessGenerateComponent,
+        canActivate: [CanActivateTentativeBusiness],
+        resolve: {
+          tentativeBusiness: TentativeBusinessResolver,
+        },
+      },
+      {
+        path: 'tentative-business-content/:id',
+        component: TentativeBusinessContentGenerateComponent,
+        canActivate: [CanActivateTentativeBusiness],
+        resolve: {
+          tentativeBusiness: TentativeBusinessResolver,
         },
       },
     ],
@@ -485,6 +543,7 @@ const routes: Routes = [
   //View parent route
   {
     path: 'view',
+    canActivate: [CanActivateAuth],
     children: [
       // { path: 'order-paper', component: OrderPaperViewComponent },
       // { path: 'order-paper/edit-title', component: EditTitleComponent },
@@ -519,6 +578,7 @@ const routes: Routes = [
         canActivate: [CanActivateViewPersonnel],
         resolve: {
           personnel: PersonnelResolver,
+          departments: PersonnelDepartmentResolver,
         },
       },
       {
@@ -607,6 +667,7 @@ const routes: Routes = [
   //Edit parent route
   {
     path: 'edit',
+    canActivate: [CanActivateAuth],
     children: [
       {
         path: 'votebook',
@@ -664,6 +725,7 @@ const routes: Routes = [
   //Upload parent route
   {
     path: 'upload',
+    canActivate: [CanActivateAuth],
     children: [
       { path: 'statement', component: StatementUploadComponent },
       {
@@ -685,22 +747,29 @@ const routes: Routes = [
   },
 
   //Report Methods
-  { path: 'report-methods', component: ReportMethodsComponent },
+  {
+    path: 'report-methods',
+    component: ReportMethodsComponent,
+    canActivate: [CanActivateAuth],
+  },
 
   //Intro
   {
     path: 'intro',
     component: IntroComponent,
+    canActivate: [CanActivateAuth],
   },
 
   //Publish Status
   {
     path: 'publish-status',
     component: PublishStatusComponent,
+    canActivate: [CanActivateAuth],
   },
   {
     path: 'publish-status/:id',
     component: PublishStatusComponent,
+    canActivate: [CanActivateAuth],
   },
 
   // Fallback

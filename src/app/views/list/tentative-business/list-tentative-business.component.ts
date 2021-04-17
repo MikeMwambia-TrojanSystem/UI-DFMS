@@ -1,55 +1,53 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-
-interface TentativeBusiness {
-  title: string;
-  date: string;
-  state: string;
-}
+import { take } from 'rxjs/operators';
+import { CacheService } from 'src/app/services/cache.service';
+import { TentativeBusinessService } from 'src/app/services/tentative-business.service';
+import { TentativeBusiness } from 'src/app/shared/types/tentative-business';
 
 @Component({
   templateUrl: './list-tentative-business.component.html',
   styleUrls: ['./list-tentative-business.component.scss'],
 })
 export class ListTentativeBusinesssComponent implements OnInit {
-  /**
-   * Tentative Businesses mock data
-   */
-  tentativeBussinesses: TentativeBusiness[] = [
-    {
-      title: 'development of Food Banks',
-      date: '9/3/2008',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      title: 'development of Food Banks',
-      date: '9/3/2008',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      title: 'development of Food Banks',
-      date: '9/3/2008',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-    {
-      title: 'development of Food Banks',
-      date: '9/3/2008',
-      state: 'Draft', // This value is just for example, the real value should be depending on the data from backend.
-    },
-  ];
+  private _cacheId: string;
+  tentativeBusinesses: TentativeBusiness[];
 
-  selectabe: boolean;
-  state: string; // This props is just for example and should be deleted when implementing a fetch request to backend.
+  selectable: boolean;
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private tentativeBusinessService: TentativeBusinessService,
+    private cacheService: CacheService
+  ) {}
 
   ngOnInit(): void {
-    this.selectabe = this.route.snapshot.queryParams.select || false;
+    const queryParams = this.route.snapshot.queryParams;
+    this.selectable = queryParams.select || false;
+    this._cacheId = queryParams.id;
 
-    /**
-     * These lines are just for dynamic state example and should be deleted when implementing a fetch request to backend.
-     */
-    this.state = this.route.snapshot.queryParams.state;
-    //=====================================================================
+    this.route.data
+      .pipe(take(1))
+      .subscribe(
+        ({
+          tentativeBusinesses,
+        }: {
+          tentativeBusinesses: TentativeBusiness[];
+        }) => {
+          this.tentativeBusinesses = tentativeBusinesses;
+        }
+      );
+  }
+
+  onSelect(tentativeBusinesses: TentativeBusiness) {
+    this.cacheService.emit(this._cacheId, tentativeBusinesses);
+  }
+
+  onDelete(tentativeBusinesses: TentativeBusiness) {
+    this.tentativeBusinessService
+      .deleteTentativeBusiness(tentativeBusinesses._id)
+      .subscribe(() => {
+        window.location.reload();
+      });
   }
 }

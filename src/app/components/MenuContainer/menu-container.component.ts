@@ -88,7 +88,7 @@ export class MenuContainerComponent {
       take(1),
       map(
         ({
-          statementNo,
+          title,
           subjectOfStatement,
           seeker,
           departmentResponsible,
@@ -96,7 +96,7 @@ export class MenuContainerComponent {
         }) => [
           {
             label: 'Statement No ',
-            content: statementNo.toString(),
+            content: title.toString(),
             class: { common: 'head' },
           },
           {
@@ -145,10 +145,10 @@ export class MenuContainerComponent {
 
   getMessageContent(noti: MenuNotification) {
     return _.truncate(
-      (noti.content.match(/(?<=content=).+?(?=\|\|\|)/g)
-        ? noti.content.match(/(?<=content=).+?(?=\|\|\|)/g)[0]
-        : ''
-      ).replace(/<[^>]*>/g, '')
+      (noti.content.match(/(?<=content=).+?(?=\|\|\|)/g) || [''])[0].replace(
+        /<[^>]*>/g,
+        ''
+      )
     );
   }
 

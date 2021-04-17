@@ -13,6 +13,8 @@
         (delete)="onDelete(ward._id)"
         (select)="onSelect(ward)"
         [published]="state !== 'draft'"
+        [canEdit]="ward.canEdit"
+        [canDelete]="ward.canDelete"
       >
       </app-list-item>
     </div>

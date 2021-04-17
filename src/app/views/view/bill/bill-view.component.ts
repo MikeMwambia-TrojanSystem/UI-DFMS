@@ -33,7 +33,6 @@ export class BillViewComponent implements OnInit {
     committeeNameId: [{ value: '', disabled: true }],
     billUploadedReportURL: [{ value: '', disabled: true }],
     status: [{ value: '', disabled: true }],
-    uploadingPersonnel: [{ value: '', disabled: true }],
     publishStatus: [{ value: '', disabled: true }],
   });
 
@@ -65,8 +64,6 @@ export class BillViewComponent implements OnInit {
         approvingAccId: approvingAccount.approvingAccId,
         committeeName: concernedCommiteeId.committeeName,
         committeeNameId: concernedCommiteeId.committeeNameId,
-        uploadingPersonnel: uploadingAccount.uploadingPersonnel,
-        uploadAccname: uploadingAccount.uploadAccname,
       });
     });
   }

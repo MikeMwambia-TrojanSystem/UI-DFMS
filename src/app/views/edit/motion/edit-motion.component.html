@@ -21,7 +21,7 @@
           <mat-label>Select Motion</mat-label>
           <mat-select [formControl]="motionId">
             <mat-option *ngFor="let motion of motions" [value]="motion._id">{{
-              motion.content
+              motion.title
             }}</mat-option>
           </mat-select>
         </mat-form-field>

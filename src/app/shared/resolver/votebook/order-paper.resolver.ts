@@ -18,7 +18,7 @@ export class VotebookOrderPaperResolver implements Resolve<OrderPaper> {
   resolve(
     route: ActivatedRouteSnapshot
   ): OrderPaper | Promise<OrderPaper> | Observable<OrderPaper> {
-    const votebookId = route.params.orderPaperId;
+    const votebookId = route.params.votebookId;
 
     return this.votebookService.getVotebook(votebookId).pipe(
       take(1),

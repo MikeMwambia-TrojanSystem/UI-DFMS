@@ -44,6 +44,18 @@
           (buttonClick)="onSelectCommittee()"
         ></app-custom-button>
       </div>
+      <p class="label">Add Sponsor Description</p>
+      <mat-form-field appearance="standard">
+        <textarea
+          matInput
+          formControlName="sponsorDescription"
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="2"
+        ></textarea>
+        <mat-error *ngIf="form.get('sponsorDescription').hasError('required')"
+          >Please enter sponsor description!</mat-error
+        >
+      </mat-form-field>
       <div class="date-container">
         <div class="date">
           <p class="label">Date Published</p>

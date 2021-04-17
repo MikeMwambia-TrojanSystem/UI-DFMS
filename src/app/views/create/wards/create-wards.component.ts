@@ -68,6 +68,8 @@ export class CreateWardsComponent implements OnInit {
   onSave(published: boolean) {
     // Subcription callback
     const subCallback = () => {
+      this.cacheService.clearCache('CREATE_WARD');
+
       this.router.navigate(['/list/wards'], {
         queryParams: {
           state: published ? 'published' : 'draft',

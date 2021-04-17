@@ -36,7 +36,7 @@ export class ListMcaEmployeeComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ mcaEmployees }: { mcaEmployees: McaEmployee[] }) => {
-        this.mcaEmployees = _.orderBy(mcaEmployees, 'createdAt', 'desc');
+        this.mcaEmployees = _.orderBy(mcaEmployees, 'dateCreated', 'desc');
       });
   }
 

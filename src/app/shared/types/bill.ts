@@ -1,3 +1,5 @@
+import { BasicDocument } from './_global';
+
 export class BillPost {
   titleOfBill: string;
   billNo: string;
@@ -24,28 +26,58 @@ export class BillPost {
   publishStatus: string;
 }
 
-export class Bill {
+export class Bill extends BasicDocument {
   _id: string;
-  approvingAccount: { approvingAcc: string; approvingAccId: string };
-  assemblyId: string;
+  approvingAccount: {
+    approvingAcc: string;
+    approvingAccId: string;
+  };
   billNo: number;
-  billSignature: string;
-  billUploadedReportURL: string;
-  concernedCommiteeId: { committeeName: string; committeeNameId: string };
-  createdAt: string;
+  concernedCommiteeId: {
+    committeeName: string;
+    committeeNameId: string;
+  };
   datePassed: string;
   datePublished: string;
   firstReadingDate: string;
-  orderPaperId: string;
   publishState: 'draft' | 'private' | 'public';
-  published: boolean
+  published: boolean;
   relatedTo: string;
   secondReadingDate: string;
-  sponsor: { name: string; id: string }
+  sponsor: {
+    name: string;
+    id: string;
+  };
   status: string;
-  titleOfBill: string;
-  updatedAt: string;
-  uploaded: true
+  title: string;
   uploadedBillURL: string;
-  uploadingAccount: { uploadAccname: string, uploadingPersonnel: string }
+  uploadingAccount: {
+    uploadAccount: string;
+    uploadId: string;
+  };
 }
+// export class Bill extends BasicDocument {
+//   _id: string;
+//   approvingAccount: { approvingAcc: string; approvingAccId: string };
+//   assemblyId: string;
+//   billNo: number;
+//   billSignature: string;
+//   billUploadedReportURL: string;
+//   concernedCommiteeId: { committeeName: string; committeeNameId: string };
+//   createdAt: string;
+//   datePassed: string;
+//   datePublished: string;
+//   firstReadingDate: string;
+//   orderPaperId: string;
+//   publishState: 'draft' | 'private' | 'public';
+//   published: boolean;
+//   relatedTo: string;
+//   secondReadingDate: string;
+//   sponsor: { name: string; id: string };
+//   status: string;
+//   titleOfBill: string;
+//   updatedAt: string;
+//   uploaded: true;
+//   uploadedBillURL: string;
+//   uploadingAccount: { uploadAccname: string; uploadingPersonnel: string };
+// }

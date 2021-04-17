@@ -25,9 +25,6 @@ export class ReportDocumentViewComponent {
     originatingDocType: [{ value: '', disabled: true }],
     originatingDocTypeId: [{ value: '', disabled: true }],
     editors: [{ value: '', disabled: true }],
-    pageNo: [{ value: '', disabled: true }],
-    content: [{ value: '', disabled: true }],
-    author: [{ value: '', disabled: true }],
     uploaded: [{ value: false, disabled: true }],
     uploadedFileURL: [{ value: '', disabled: true }],
     uploadingAccount: [{ value: '', disabled: true }],
@@ -74,7 +71,6 @@ export class ReportDocumentViewComponent {
           annexus,
           approvingAccount,
           authorCommitee,
-          content,
           originatingDocument,
           dueDate,
           uploadingAccount,
@@ -91,9 +87,6 @@ export class ReportDocumentViewComponent {
           originatingDocType: originatingDocument.type,
           originatingDocTypeId: originatingDocument.id,
           editors: editors.join('&&&'),
-          pageNo: content[0].pageNo,
-          content: content[0].content,
-          author: content[0].author,
           uploadingAccount: uploadingAccount.name,
           uploaderId: uploadingAccount.id,
           account: approvingAccount.account,
@@ -185,7 +178,7 @@ export class ReportDocumentViewComponent {
           .getBill(id)
           .pipe(take(1))
           .subscribe((bill) => {
-            this.originatingName = bill ? bill.titleOfBill : '';
+            this.originatingName = bill ? bill.title : '';
           });
       }
       if (type === 'statement') {

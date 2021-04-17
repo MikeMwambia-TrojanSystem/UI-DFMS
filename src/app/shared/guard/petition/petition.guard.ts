@@ -17,7 +17,10 @@ import { PetitionService } from 'src/app/services/petition.service';
   providedIn: 'root',
 })
 export class CanActivatePetition implements CanActivate {
-  constructor(private petitionService: PetitionService, private router: Router) { }
+  constructor(
+    private petitionService: PetitionService,
+    private router: Router
+  ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
@@ -32,7 +35,7 @@ export class CanActivatePetition implements CanActivate {
     return this.petitionService.getPetition(petitionId).pipe(
       take(1),
       map((petition) => {
-        if (petition && petition.publishState !== 'public') {
+        if (petition) {
           return true;
         }
 

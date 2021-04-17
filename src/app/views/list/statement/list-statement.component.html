@@ -12,6 +12,8 @@
         [info]="getInfo(statement)"
         (delete)="onDelete(statement._id)"
         (select)="onSelect(statement)"
+        [canEdit]="statement.canEdit"
+        [canDelete]="statement.canDelete"
       >
       </app-statement-item>
     </div>

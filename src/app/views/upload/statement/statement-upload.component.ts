@@ -40,9 +40,10 @@ export class StatementUploadComponent implements OnInit {
     assemblyId: new FormControl('602651242ed6962b8b5be6f9'),
     published: new FormControl(false),
     datePublished: new FormControl(''),
-    approverId: new FormControl('565564564654564564545645646'),
-    account: new FormControl('Speaker'),
+    approverId: new FormControl(''),
+    account: new FormControl(''),
     publishState: new FormControl(''),
+    seekerDescription: new FormControl('', Validators.required),
   });
 
   filename: string;
@@ -51,8 +52,7 @@ export class StatementUploadComponent implements OnInit {
     private cacheService: CacheService,
     private router: Router,
     private route: ActivatedRoute,
-    private statementService: StatementService,
-    private apiService: ApiService
+    private statementService: StatementService
   ) {}
 
   ngOnInit(): void {
@@ -69,21 +69,21 @@ export class StatementUploadComponent implements OnInit {
         .pipe(take(1))
         .subscribe(({ statement }: { statement: Statement }) => {
           const {
-            approvingAccount,
             seeker,
             statementProvider,
             dateStatementSought,
             dateStatementToResponded,
+            seekerDescription,
+            title,
             ...others
           } = statement;
 
           this.form.patchValue({
             ...others,
+            statementNo: title ? title.toString() : '',
             seeker: seeker.name || '',
             seekerId: seeker.id || '',
-            seekerPostition: seeker.position || '',
-            account: approvingAccount.account || '',
-            approverId: approvingAccount.approverId || '',
+            seekerDescription: seekerDescription || '',
             department: statementProvider.department || '',
             statementProviderId: statementProvider.id || '',
             statementProvider: statementProvider.name || '',
@@ -242,7 +242,6 @@ export class StatementUploadComponent implements OnInit {
     const post = (state: 'public' | 'private' | 'draft') => {
       const value = this.form.value;
 
-      value.published = state === 'public';
       value.publishState = state;
 
       if (this._mode === 'creating') {
@@ -261,8 +260,37 @@ export class StatementUploadComponent implements OnInit {
       } else {
         value.id = this._statementId;
 
+        const {
+          statementNo,
+          seeker,
+          seekerId,
+          subjectOfStatement,
+          statementProvider,
+          statementProviderId,
+          department,
+          departmentResponsible,
+          dateStatementSought,
+          dateStatementToResponded,
+          uploadedFileURL,
+          seekerDescription,
+        } = value;
+
         this.statementService
-          .updateStatement(value)
+          .updateStatement({
+            statementNo,
+            seeker,
+            seekerId,
+            subjectOfStatement,
+            statementProvider,
+            statementProviderId,
+            department,
+            departmentResponsible,
+            dateStatementSought,
+            dateStatementToResponded,
+            uploadedFileURL,
+            seekerDescription,
+            id: this._statementId,
+          } as any)
           .subscribe(() => subCallback(state));
       }
     };

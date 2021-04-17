@@ -25,20 +25,8 @@ enum SelectUrl {
   'reportId' = '/list/report',
   'statementId' = '/list/statement',
   'motionId' = '/list/motion',
-  'motionNoticeId' = '/list/motion',
+  'motionNoticeId' = '/list/notice-of-motion',
   'billsId' = '/list/bill',
-}
-
-enum NotificationContent {
-  'adminContent' = 'content',
-  'communContent' = 'content',
-  'messages' = 'content',
-  'petitionId' = 'id',
-  'reportId' = 'id',
-  'motionNoticeId' = 'id',
-  'statementId' = 'id',
-  'motionId' = 'id',
-  'billsId' = 'id',
 }
 
 @Component({
@@ -105,7 +93,7 @@ export class PaperContentGenerateComponent implements OnInit {
     datePublished: [''],
     publishState: ['draft'],
     published: [false],
-    approverId: ['12345', Validators.required],
+    approverId: [''],
     assemblyNo: ['', Validators.required],
     sessionNo: ['', Validators.required],
     orderPaperNo: ['', Validators.required],
@@ -120,6 +108,8 @@ export class PaperContentGenerateComponent implements OnInit {
     motionNoticeId: ['', Validators.required],
     billsId: ['', Validators.required],
     adjournment: ['ADJOURNMENT', Validators.required],
+    assemblySittingDate: [''],
+    assemblySittingTime: [''],
   });
 
   constructor(
@@ -188,14 +178,16 @@ export class PaperContentGenerateComponent implements OnInit {
       'GENERATE_ORDER_PAPER'
     );
 
-    if (!cached) {
+    if (!cached && this._mode === 'creating') {
       this.router.navigate(['/', 'generate', 'order-paper']);
       return;
     }
 
-    this.form.patchValue({
-      ...cached.form.value,
-    });
+    if (cached) {
+      this.form.patchValue({
+        ...cached.form.value,
+      });
+    }
 
     this._populateNotifications();
 
@@ -325,28 +317,56 @@ export class PaperContentGenerateComponent implements OnInit {
   }
 
   private _onGenerateAdminContent() {
-    this._onCache<Administration>(
+    const value = this.form.get('adminContent').value as string;
+
+    let array = value.split('&&&');
+    array = array[0] === '' ? [] : array;
+
+    const admins = array.map((i) =>
+      i.split('|||').reduce<Administration>(
+        (result, a, index) => {
+          switch (index) {
+            case 0:
+              result.name = a.slice(a.indexOf('name=') + 5);
+              break;
+            case 1:
+              result.ward = a.slice(a.indexOf('ward=') + 5);
+              break;
+            case 2:
+              result.passport = a.slice(a.indexOf('passport=') + 9);
+              break;
+            case 3:
+              result.politicalParty = a.slice(
+                a.indexOf('politicalParty=') + 15
+              );
+              break;
+            default:
+              break;
+          }
+
+          return result;
+        },
+        { name: '', ward: '', passport: '', politicalParty: '' }
+      )
+    );
+
+    this._onCache<Administration[]>(
       {
         url: '/management/oath',
         queryParams: {
           select: undefined,
         },
       },
-      (data, { name, ward, passport, politicalParty }) => {
-        const value = data.form.get('adminContent').value as string;
-        const content = `name=${name}|||ward=${ward}|||passport=${passport}|||politicalParty=${politicalParty}`;
-        let contents = value.split('&&&');
-
-        if (value.length === 0) {
-          contents = [content];
-        } else {
-          contents = [content, ...contents];
-        }
-
-        data.form.get('adminContent').setValue(contents.join('&&&'));
+      (data, administrations) => {
+        const content = administrations.map(
+          ({ name, ward, passport, politicalParty }) =>
+            `name=${name}|||ward=${ward}|||passport=${passport}|||politicalParty=${politicalParty}`
+        );
+        data.form.get('adminContent').setValue(content.join('&&&'));
 
         return data;
-      }
+      },
+      { administrations: admins }
     );
   }
 
@@ -421,6 +441,8 @@ export class PaperContentGenerateComponent implements OnInit {
 
   onSave(draft: boolean) {
     const subCallback = (state: 'public' | 'private' | 'draft') => {
+      this.cacheService.clearCache('GENERATE_ORDER_PAPER');
+
       this.router.navigate(['/list/order-paper'], {
         queryParams: {
           state,
@@ -431,7 +453,6 @@ export class PaperContentGenerateComponent implements OnInit {
     const post = (state: 'public' | 'private' | 'draft') => {
       const value = this.form.value;
 
-      value.published = state === 'public';
       value.publishState = state;
 
       if (this._mode === 'creating') {
@@ -442,10 +463,8 @@ export class PaperContentGenerateComponent implements OnInit {
           .postOrderPaper(value)
           .subscribe(() => subCallback(state));
       } else {
-        value.id = this._paperId;
-
         this.orderPaperService
-          .updateOrderPaper(value)
+          .updateOrderPaper({ ...value, id: this._paperId })
           .subscribe(() => subCallback(state));
       }
     };

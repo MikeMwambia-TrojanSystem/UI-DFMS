@@ -6,6 +6,17 @@
       <app-list-item
         *ngFor="let mcaEmployee of mcaEmployees"
         [title]="mcaEmployee.name"
+        [pic]="mcaEmployee.profilePic"
+        [selectable]="selectable"
+        (select)="onSelect(mcaEmployee)"
+        [editUrl]="'/create/mca/' + mcaEmployee._id"
+        (delete)="onDelete(mcaEmployee._id)"
+        [canEdit]="mcaEmployee.canEdit"
+        [canDelete]="mcaEmployee.canDelete"
+      ></app-list-item>
+      <!-- <app-list-item
+        *ngFor="let mcaEmployee of mcaEmployees"
+        [title]="mcaEmployee.name"
         [subtitle]="mcaEmployee.ward.wardName"
         [pic]="mcaEmployee.profilePic"
         [selectable]="selectable"
@@ -13,7 +24,9 @@
         [editUrl]="'/create/mca/' + mcaEmployee._id"
         [published]="mcaEmployee.status"
         (delete)="onDelete(mcaEmployee._id)"
-      ></app-list-item>
+        [canEdit]="mcaEmployee.canEdit"
+        [canDelete]="mcaEmployee.canDelete"
+      ></app-list-item> -->
     </div>
     <div class="list-no-value">
       <p *ngIf="!mcaEmployees.length">No Employees Listed!</p>

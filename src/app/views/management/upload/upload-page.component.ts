@@ -54,10 +54,10 @@ export class UploadPageComponent implements OnInit {
         break;
       case 'report':
         this.category = 'Report';
-        this.accept = 'image/*,application/pdf';
         break;
       case 'annexus':
         this.category = 'Annexus';
+        this.accept = 'image/*,application/pdf';
         break;
       case 'oath':
         this.category = 'Oath';

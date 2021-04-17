@@ -1,11 +1,11 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-order-paper-item',
   templateUrl: './order-paper-item.component.html',
   styleUrls: ['./order-paper-item.component.scss'],
 })
-export class OrderPaperItemComponent {
+export class OrderPaperItemComponent implements OnInit {
   @Output() select = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Output() edit = new EventEmitter<void>();
@@ -17,6 +17,21 @@ export class OrderPaperItemComponent {
   @Input() state: string;
   @Input() editUrl: string;
   @Input() downloadUrl: string;
+  @Input() canEdit: boolean;
+  @Input() canDelete: boolean;
+  stateExpanded: string;
+
+  ngOnInit() {
+    if (this.state === 'draft') {
+      this.stateExpanded = 'Draft';
+    }
+    if (this.state === 'public') {
+      this.stateExpanded = 'Public';
+    }
+    if (this.state === 'private') {
+      this.stateExpanded = 'Private';
+    }
+  }
 
   onDelete() {
     this.delete.emit();

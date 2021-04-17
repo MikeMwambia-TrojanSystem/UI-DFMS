@@ -1,3 +1,5 @@
+import { BasicDocument } from './_global';
+
 export class ReportPost {
   reportSignature: string;
   titleOfReport: string;
@@ -28,38 +30,38 @@ export class ReportPost {
   publishStatus: string;
 }
 
-export class Report {
+export class Report extends BasicDocument {
   _id: string;
   annexus: { name: string; id: string; uploaded: string; uploadingUrl: string };
   approvingAccount: {
     approverId: string;
     account: string;
   };
-  assemblyId: string;
+  // assemblyId: string;
   authorCommitee: {
     name: string;
     id: string;
   };
-  content: [
-    {
-      pageNo: string;
-      content: string;
-      author: string;
-    }
-  ];
-  createdAt: string;
+  // content: [
+  //   {
+  //     pageNo: string;
+  //     content: string;
+  //     author: string;
+  //   }
+  // ];
+  // createdAt: string;
   datePublished: string;
   dueDate: string;
   editors: string[];
-  orderPaperId: string;
+  // orderPaperId: string;
   originatingDocument: { type: string; id: string };
   publishState: 'draft' | 'private' | 'public';
   published: boolean;
   relatedTo: string;
-  reportSignature: string;
-  titleOfReport: string;
-  updatedAt: string;
-  uploaded: boolean;
+  // reportSignature: string;
+  title: string;
+  // updatedAt: string;
+  // uploaded: boolean;
   uploadedFileURL: string;
   uploadingAccount: { name: string; id: string };
 }

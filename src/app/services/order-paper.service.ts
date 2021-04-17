@@ -22,12 +22,11 @@ export class OrderPaperService {
   }
 
   getOrderPapers(): Observable<OrderPaper[]> {
-    return this.fetchOrderPapers();
-    // return this._orderPapers.pipe(
-    //   switchMap((orderPapers) =>
-    //     iif(() => this._fetched, of(orderPapers), this.fetchOrderPapers())
-    //   )
-    // );
+    return this._orderPapers.pipe(
+      switchMap((orderPapers) =>
+        iif(() => this._fetched, of(orderPapers), this.fetchOrderPapers())
+      )
+    );
   }
 
   getOrderPaper(id: string): Observable<OrderPaper> {
@@ -98,11 +97,8 @@ export class OrderPaperService {
     );
   }
 
-  checkNone(
-    value: any[] | 'NONE',
-    transformation?: (value: any[]) => string
-  ): string {
-    return value === 'NONE'
+  checkNone(value: any[], transformation?: (value: any[]) => string): string {
+    return !value.length
       ? 'NONE'
       : transformation
       ? transformation(value)

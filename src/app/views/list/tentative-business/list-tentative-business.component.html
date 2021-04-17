@@ -1,12 +1,25 @@
 <app-background>
   <app-center-card>
-    <h1 class="title">Tentative Business List</h1>
+    <h1 class="title">Tentative Businesses</h1>
     <app-search-bar></app-search-bar>
     <div>
-      <app-communication-item *ngFor="let tentativeBusiness of tentativeBussinesses" [title]="tentativeBusiness.title"
-        [date]="tentativeBusiness.date" class="item" [selectable]="selectabe" [state]="tentativeBusiness.state"
-        [sub]="'Tentative Business on the'" [state]="state">
-      </app-communication-item>
+      <app-order-paper-item
+        *ngFor="let tb of tentativeBusinesses"
+        [date]="tb.datePublished"
+        class="item"
+        [selectable]="selectable"
+        [sub]="'Tentative Business'"
+        [state]="tb.publishState"
+        [editUrl]="'/generate/tentative-business/' + tb._id"
+        (delete)="onDelete(tb)"
+        (select)="onSelect(tb)"
+        [canEdit]="tb.canEdit"
+        [canDelete]="tb.canDelete"
+      >
+      </app-order-paper-item>
+    </div>
+    <div class="list-no-value">
+      <p *ngIf="!tentativeBusinesses.length">No Tentative Businesses Listed!</p>
     </div>
   </app-center-card>
 </app-background>

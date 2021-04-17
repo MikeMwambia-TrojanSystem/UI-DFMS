@@ -22,7 +22,7 @@
           <mat-label>Select Bill</mat-label>
           <mat-select [formControl]="motionId">
             <mat-option *ngFor="let bill of bills" [value]="bill._id">{{
-              bill.titleOfBill
+              bill.title
             }}</mat-option>
           </mat-select>
         </mat-form-field>

@@ -22,18 +22,23 @@
     >
     <div class="state" *ngIf="state">
       <div class="dot"></div>
-      <span class="label">{{ state }}</span>
+      <span class="label">{{ stateExpanded }}</span>
     </div>
   </div>
   <button mat-button *ngIf="selectable" class="btn" (click)="onSelect()">
     Select
   </button>
 </div>
-<div class="list-actions" *ngIf="state !== 'public' && !selectable">
-  <a [routerLink]="[editUrl]">
+<div class="list-actions" *ngIf="!selectable">
+  <a [routerLink]="[editUrl]" *ngIf="canEdit">
     <button mat-button class="list-actions-btn edit">Edit</button>
   </a>
-  <button mat-button class="list-actions-btn delete" (click)="onDelete()">
+  <button
+    mat-button
+    class="list-actions-btn delete"
+    (click)="onDelete()"
+    *ngIf="canDelete"
+  >
     Delete
   </button>
 </div>

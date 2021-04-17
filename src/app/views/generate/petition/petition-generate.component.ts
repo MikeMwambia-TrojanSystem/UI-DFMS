@@ -12,6 +12,7 @@ import { Petition } from 'src/app/shared/types/petition';
 import { Upload } from 'src/app/shared/types/upload';
 import { Committee } from 'src/app/shared/types/committee';
 import { McaEmployee } from 'src/app/shared/types/mca-employee';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-petition-generate',
@@ -29,13 +30,13 @@ export class PetitionGenerateComponent implements OnInit {
     sponsorName: new FormControl('', Validators.required),
     department: new FormControl('', Validators.required),
     relatedTo: new FormControl('', Validators.required),
-    orderPaperId: new FormControl('60224665fd0c8e1b11fa85d5'),
+    orderPaperId: new FormControl(''),
     assemblyId: new FormControl('60224665fd0c8e1b11fa85d5'),
     datePublished: new FormControl(''),
     published: new FormControl(false),
     sponsorId: new FormControl('', Validators.required),
-    approverId: new FormControl('60224665fd0c8e1b11fa85d5'),
-    account: new FormControl('Speaker'),
+    approverId: new FormControl(''),
+    account: new FormControl(''),
     concernedCommitee: new FormControl('', Validators.required),
     concernedCommiteeId: new FormControl('', Validators.required),
     dateCommitteResponse: new FormControl('', Validators.required),
@@ -44,8 +45,8 @@ export class PetitionGenerateComponent implements OnInit {
     petitioners: new FormControl('', Validators.required),
     uploaded: new FormControl(false),
     uploadedFileURL: new FormControl('', Validators.required),
-    uploader: new FormControl('test uploader'),
-    uploaderId: new FormControl('60224665fd0c8e1b11fa85d5'),
+    uploader: new FormControl(''),
+    uploaderId: new FormControl(''),
     petitionNumber: new FormControl('', Validators.required),
   });
 
@@ -56,7 +57,7 @@ export class PetitionGenerateComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private petitionService: PetitionService,
-    private apiService: ApiService
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
@@ -288,6 +289,8 @@ export class PetitionGenerateComponent implements OnInit {
   onSave(published: boolean) {
     // Subcription callback
     const subCallback = (state: 'public' | 'private' | 'draft') => {
+      this.cacheService.clearCache('GENERATE_PETITION');
+
       this.router.navigate(['/list/petition'], {
         queryParams: {
           state: state,
@@ -302,12 +305,14 @@ export class PetitionGenerateComponent implements OnInit {
     const post = (state: 'public' | 'private' | 'draft') => {
       const value = this.form.value;
 
-      value.published = state === 'public';
       value.publishState = state;
 
       if (this._mode === 'creating') {
         value.datePublished = moment().toISOString();
         value.petitionSignature = moment().unix();
+        value.uploader = this.accountService.user.username;
+        value.uploaderId = this.accountService.user._id;
+        value.account = this.accountService.user.username;
 
         this.petitionService
           .postPetition(value)

@@ -35,7 +35,7 @@ export class CanActivatePersonnel implements CanActivate {
     return this.personnelService.getPersonnel(personnelId).pipe(
       take(1),
       map((personnel) => {
-        if (personnel && personnel.status === false) {
+        if (personnel) {
           return true;
         }
 

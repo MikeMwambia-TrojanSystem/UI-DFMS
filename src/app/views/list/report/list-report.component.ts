@@ -35,7 +35,7 @@ export class ListReportComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ reports }: { reports: Report[] }) => {
-        this.reports = _.orderBy(reports, 'createdAt', 'desc');
+        this.reports = _.orderBy(reports, 'datePublished', 'desc');
       });
   }
 

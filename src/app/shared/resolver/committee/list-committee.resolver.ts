@@ -26,10 +26,10 @@ export class ListCommitteeResolver implements Resolve<Committee[]> {
     const published = queryState ? queryState === 'published' : true;
 
     return this.commiteeService.fetchCommittees().pipe(
-      take(1),
-      map((committees) =>
-        committees.filter((committee) => committee.published === published)
-      )
+      take(1)
+      // map((committees) =>
+      //   committees.filter((committee) => committee.published === published)
+      // )
     );
   }
 }

@@ -5,7 +5,7 @@ import { NgOtpInputModule } from 'ng-otp-input';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { QuillModule } from 'ngx-quill';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
 
@@ -117,6 +117,13 @@ import { PetitionViewComponent } from './views/view/petition/petition-view.compo
 import { OrderPaperDocumentViewComponent } from './views/view/order-paper-document/order-paper-document-view.component';
 import { PaperContentViewComponent } from './views/view/paper-content/paper-content-view.component';
 import { VotebookContentGenerateComponent } from './views/generate/votebook-content/votebook-content-generate.component';
+import { HttpRequestInterceptor } from './shared/interceptor/with-credentials';
+import { TruncatePipe } from './shared/pipe/truncate.pipe';
+import { ListNoticeOfMotionComponent } from './views/list/notice-of-motion/list-notice.component';
+import { McaVerificationComponent } from './views/verification/mca/mca-verification.component';
+import { PersonnelVerificationComponent } from './views/verification/personnel/personnel-verification.component';
+import { TentativeBusinessGenerateComponent } from './views/generate/tentative-business/tentative-biz-generate.component';
+import { TentativeBusinessContentGenerateComponent } from './views/generate/tentative-business-content/tb-content-generate.component';
 
 const dbConfig: DBConfig = {
   name: 'MyDb',
@@ -239,6 +246,12 @@ const dbConfig: DBConfig = {
     OrderPaperDocumentViewComponent,
     PaperContentViewComponent,
     VotebookContentGenerateComponent,
+    TruncatePipe,
+    ListNoticeOfMotionComponent,
+    McaVerificationComponent,
+    PersonnelVerificationComponent,
+    TentativeBusinessGenerateComponent,
+    TentativeBusinessContentGenerateComponent,
   ],
   imports: [
     BrowserModule,
@@ -267,7 +280,13 @@ const dbConfig: DBConfig = {
     PdfJsViewerModule,
     NgxIndexedDBModule.forRoot(dbConfig),
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: HttpRequestInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

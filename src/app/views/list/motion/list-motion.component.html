@@ -16,6 +16,8 @@
         [editUrl]="'/generate/motion/' + motion._id"
         (delete)="onDelete(motion._id)"
         (select)="onSelect(motion)"
+        [canEdit]="motion.canEdit"
+        [canDelete]="motion.canDelete"
       ></app-info-item>
     </div>
     <div class="list-no-value">

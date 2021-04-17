@@ -33,7 +33,7 @@ export class CanActivateWard implements CanActivate {
     return this.wardService.getWard(wardId).pipe(
       take(1),
       map((ward) => {
-        if (ward && !ward.published) {
+        if (ward) {
           return true;
         }
 

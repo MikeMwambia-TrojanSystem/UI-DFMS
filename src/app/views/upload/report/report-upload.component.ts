@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import moment from 'moment';
-import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { Subject } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
+import { AccountService } from 'src/app/services/account.service';
 
-import { ApiService } from 'src/app/services/api.service';
 import { BillService } from 'src/app/services/bill.service';
 import {
   CacheConfigs,
@@ -20,7 +19,7 @@ import { StatementService } from 'src/app/services/statement.service';
 import { Committee } from 'src/app/shared/types/committee';
 import { Personnel } from 'src/app/shared/types/personnel';
 import { Report } from 'src/app/shared/types/report';
-import { Upload, UploadPost } from 'src/app/shared/types/upload';
+import { Upload } from 'src/app/shared/types/upload';
 
 type Cache = {
   form: FormGroup;
@@ -48,15 +47,12 @@ export class ReportUploadComponent {
     originatingDocType: new FormControl('', Validators.required),
     originatingDocTypeId: new FormControl('', Validators.required),
     editors: new FormControl('', Validators.required),
-    pageNo: new FormControl(''),
-    content: new FormControl(''),
-    author: new FormControl('', Validators.required),
     uploaded: new FormControl(false),
     uploadedFileURL: new FormControl(''),
-    uploadingAccount: new FormControl('60266ae8c8e745386efc6d36'),
-    uploaderId: new FormControl('60266ae8c8e745386efc6d36'),
-    account: new FormControl('speaker'),
-    approverId: new FormControl('60266ae8c8e745386efc6d36'),
+    uploadingAccount: new FormControl(''),
+    uploaderId: new FormControl(''),
+    account: new FormControl(''),
+    approverId: new FormControl(''),
     annexusName: new FormControl(''),
     annexusId: new FormControl(''),
     uploadedAnexux: new FormControl(false),
@@ -83,12 +79,11 @@ export class ReportUploadComponent {
     private router: Router,
     private route: ActivatedRoute,
     private reportService: ReportService,
-    private apiService: ApiService,
     private personnelService: PersonnelService,
     private petitionService: PetitionService,
     private statementService: StatementService,
     private billService: BillService,
-    private ngxIndexedDBService: NgxIndexedDBService
+    private accountService: AccountService
   ) {}
 
   ngOnInit(): void {
@@ -108,12 +103,12 @@ export class ReportUploadComponent {
             annexus,
             approvingAccount,
             authorCommitee,
-            content,
             originatingDocument,
             dueDate,
             uploadingAccount,
             editors,
             uploadedFileURL,
+            title,
             ...others
           } = report;
 
@@ -125,9 +120,6 @@ export class ReportUploadComponent {
             originatingDocType: originatingDocument.type,
             originatingDocTypeId: originatingDocument.id,
             editors: editors.join('&&&'),
-            pageNo: content[0].pageNo,
-            content: content[0].content,
-            author: content[0].author,
             uploadingAccount: uploadingAccount.name,
             uploaderId: uploadingAccount.id,
             account: approvingAccount.account,
@@ -136,7 +128,8 @@ export class ReportUploadComponent {
             annexusId: annexus.id,
             uploadedAnexux: annexus.uploaded,
             uploadingUrl: annexus.uploadingUrl,
-            uploadedFileURL: uploadedFileURL,
+            uploadedFileURL,
+            titleOfReport: title,
           });
 
           this.reportName = uploadedFileURL.length
@@ -251,7 +244,7 @@ export class ReportUploadComponent {
           .getBill(id)
           .pipe(take(1))
           .subscribe((bill) => {
-            this.originatingName = bill ? bill.titleOfBill : '';
+            this.originatingName = bill ? bill.title : '';
           });
       }
       if (type === 'statement') {
@@ -318,7 +311,7 @@ export class ReportUploadComponent {
       ({ form, report, annexus }, { name, _id }) => {
         form.patchValue({
           authorCommitee: name,
-          author: name,
+          // author: name,
           authorCommiteeId: _id,
         }); // Patch form with selected committee
 
@@ -425,6 +418,8 @@ export class ReportUploadComponent {
   onSave(content: boolean) {
     const post = (state: 'draft' | 'private' | 'public') => {
       const navigating = () => {
+        this.cacheService.clearCache('UPLOAD_REPORT');
+
         this.router.navigate(['/list/report'], {
           queryParams: {
             state: state,
@@ -434,17 +429,51 @@ export class ReportUploadComponent {
       const value = this.form.value;
 
       value.publishState = state;
-      value.published = state === 'public';
 
       if (this._mode === 'creating') {
         value.reportSignature = moment().unix();
         value.datePublished = moment().toISOString();
+        value.uploadingAccount = this.accountService.user.username;
+        value.uploaderId = this.accountService.user._id;
 
         this.reportService.postReport(value).subscribe(navigating);
       } else {
-        value.id = this._reportId;
+        const {
+          titleOfReport,
+          authorCommitee,
+          authorCommiteeId,
+          dueDate,
+          originatingDocType,
+          originatingDocTypeId,
+          editors,
+          uploadedFileURL,
+          annexusName,
+          annexusId,
+          uploadedAnexux,
+          uploadingUrl,
+          relatedTo,
+          publishState,
+        } = value;
 
-        this.reportService.updateReport(value).subscribe(navigating);
+        this.reportService
+          .updateReport({
+            id: this._reportId,
+            titleOfReport,
+            authorCommitee,
+            authorCommiteeId,
+            dueDate,
+            originatingDocType,
+            originatingDocTypeId,
+            editors,
+            uploadedFileURL,
+            annexusName,
+            annexusId,
+            uploadedAnexux,
+            uploadingUrl,
+            relatedTo,
+            publishState,
+          } as any)
+          .subscribe(navigating);
       }
     };
 

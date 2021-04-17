@@ -78,6 +78,8 @@ export class CreateDepartmentComponent implements OnInit {
   onSave(published: boolean) {
     // Subcription callback
     const subCallback = () => {
+      this.cacheService.clearCache('CREATE_DEPARTMENT');
+
       this.router.navigate(['/list/department'], {
         queryParams: {
           state: published ? 'published' : 'draft',

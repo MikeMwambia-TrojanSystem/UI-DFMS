@@ -36,7 +36,7 @@ export class CanActivateConstituency implements CanActivate {
     return this.constituencyService.getConstituency(constituencyId).pipe(
       take(1),
       map((constituency) => {
-        if (constituency && !constituency.published) {
+        if (constituency) {
           return true;
         }
 

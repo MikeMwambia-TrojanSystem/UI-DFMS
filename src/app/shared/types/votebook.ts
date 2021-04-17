@@ -1,3 +1,5 @@
+import { BasicDocument } from './_global';
+
 export class VotebookPost {
   datePublished: string;
   approvingAccount: string;
@@ -24,15 +26,13 @@ export class VotebookPost {
   adjournment: string;
 }
 
-export class Votebook {
+export class Votebook extends BasicDocument {
   adjournment: string;
   adminstrationOfOath: string[];
-  approvingAccount: { account: string; approverId: string };
-  assemblyId: string;
   assemblyNo: number;
+  author: string;
   bills: { content: string; source: string; documentId: string }[];
   communicationFromChainr: string[];
-  createdAt: string;
   datePublished: string;
   messages: string[];
   motions: { content: string; source: string; documentId: string }[];
@@ -40,12 +40,35 @@ export class Votebook {
   orderPapersNo: number;
   papers: string[];
   petitions: string[];
-  publishState: 'draft';
+  publishState: 'draft' | 'private' | 'public';
   published: boolean;
   sessionNo: number;
   statements: string[];
-  updatedAt: string;
-  voteBookSignature: string;
-  votebookNo: number;
   _id: string;
 }
+
+// export class Votebook extends BasicDocument {
+//   adjournment: string;
+//   adminstrationOfOath: string[];
+//   approvingAccount: { account: string; approverId: string };
+//   assemblyId: string;
+//   assemblyNo: number;
+//   bills: { content: string; source: string; documentId: string }[];
+//   communicationFromChainr: string[];
+//   createdAt: string;
+//   datePublished: string;
+//   messages: string[];
+//   motions: { content: string; source: string; documentId: string }[];
+//   noticeOfMotions: string[];
+//   orderPapersNo: number;
+//   papers: string[];
+//   petitions: string[];
+//   publishState: 'draft';
+//   published: boolean;
+//   sessionNo: number;
+//   statements: string[];
+//   updatedAt: string;
+//   voteBookSignature: string;
+//   votebookNo: number;
+//   _id: string;
+// }

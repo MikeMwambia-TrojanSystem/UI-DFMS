@@ -36,7 +36,7 @@ export class CanActivateSubcounty implements CanActivate {
     return this.subcountyService.getSubCounty(subcountyId).pipe(
       take(1),
       map((subcounty) => {
-        if (subcounty && !subcounty.published) {
+        if (subcounty) {
           return true;
         }
 

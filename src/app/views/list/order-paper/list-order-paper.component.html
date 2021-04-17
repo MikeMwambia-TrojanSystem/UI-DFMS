@@ -14,6 +14,8 @@
         [editUrl]="'/generate/order-paper/' + orderPaper._id"
         (delete)="onDelete(orderPaper)"
         (select)="onSelect(orderPaper)"
+        [canEdit]="orderPaper.canEdit"
+        [canDelete]="orderPaper.canDelete"
       >
       </app-order-paper-item>
     </div>

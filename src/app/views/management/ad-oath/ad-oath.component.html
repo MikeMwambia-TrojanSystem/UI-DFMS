@@ -46,8 +46,19 @@
       [title]="ad.name"
       [subtitle]="ad.ward"
       [pic]="ad.passport"
-      [selectable]="true"
+      [selectable]="selectable"
       (select)="onSelect(ad)"
     ></app-management-item>
+    <div class="finish-container" *ngIf="finishable">
+      <button
+        mat-raised-button
+        class="finish"
+        mat-button
+        [disabled]="!administrations.length"
+        (click)="onFinish()"
+      >
+        Finish
+      </button>
+    </div>
   </app-center-card>
 </app-background>

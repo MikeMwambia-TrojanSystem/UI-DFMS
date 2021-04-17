@@ -6,13 +6,13 @@
       <app-list-item
         *ngFor="let personnel of personnels"
         [title]="personnel.name"
-        [subtitle]="personnel.department.name"
         [pic]="personnel.profilePic"
         [selectable]="selectable"
-        [published]="personnel.status"
         [editUrl]="'/create/employee/' + personnel._id"
         (delete)="onDelete(personnel._id)"
         (select)="onSelect(personnel)"
+        [canEdit]="personnel.canEdit"
+        [canDelete]="personnel.canDelete"
       ></app-list-item>
     </div>
     <div class="list-no-value">

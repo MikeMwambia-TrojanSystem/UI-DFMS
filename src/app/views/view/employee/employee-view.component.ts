@@ -1,16 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs/operators';
+import { Department } from 'src/app/shared/types/department';
 
 import { Personnel } from 'src/app/shared/types/personnel';
-import { PhoneVerification } from 'src/app/shared/types/verification';
-
-type Cache = {
-  form: FormGroup;
-  filename: string;
-  verification?: PhoneVerification;
-};
 
 @Component({
   templateUrl: './employee-view.component.html',
@@ -42,19 +36,27 @@ export class EmployeeViewComponent implements OnInit {
   ngOnInit(): void {
     this.route.data
       .pipe(take(1))
-      .subscribe(({ personnel }: { personnel: Personnel }) => {
-        const { department, phoneNumber, profilePic, ...others } = personnel;
+      .subscribe(
+        ({
+          personnel,
+          departments,
+        }: {
+          personnel: Personnel;
+          departments: Department[];
+        }) => {
+          const { department, phoneNumber, profilePic, ...others } = personnel;
 
-        this.form.patchValue({
-          ...others,
-          phoneNumber: phoneNumber.phoneNumber,
-          deparment: department.name,
-          deptId: department.id,
-          profilePic: profilePic,
-        });
+          this.form.patchValue({
+            ...others,
+            phoneNumber: phoneNumber,
+            deparment: department,
+            deptId: departments.find((d) => d.name === department)._id,
+            profilePic: profilePic,
+          });
 
-        this.profilePic = profilePic;
-      });
+          this.profilePic = profilePic;
+        }
+      );
   }
 
   get department(): string {
