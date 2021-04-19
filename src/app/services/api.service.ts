@@ -137,7 +137,7 @@ export class ApiService {
 
   createTentativeBusiness(tb: TentativeBusinessPost) {
     return this._postRequest<TentativeBusinessPost, TentativeBusiness>(
-      'orderPaper/createTentativeBusiness',
+      'tentativeBiz/create',
       tb
     );
   }
@@ -212,7 +212,9 @@ export class ApiService {
   }
 
   getTentativeBusinesses() {
-    return this._getRequest<TentativeBusiness>('orderPaper/getTentativeBiz');
+    return this._getRequest<TentativeBusiness>(
+      'tentativeBiz/getAllTentativeBiz'
+    );
   }
 
   //DELETEs
@@ -287,7 +289,7 @@ export class ApiService {
 
   deleteTentativeBusiness(id: string) {
     return this._deleteRequest<TentativeBusiness>(
-      'orderPaper/deleteTentativeBusiness',
+      'tentativeBiz/deleteSpecificBiz',
       id
     );
   }
@@ -389,7 +391,7 @@ export class ApiService {
 
   updateTentativeBusiness(tb: TentativeBusinessPost) {
     return this._updateRequest<TentativeBusinessPost, TentativeBusiness>(
-      'orderPaper/updateTentativeBusiness',
+      'tentativeBiz/updateSpecificBiz',
       tb
     );
   }

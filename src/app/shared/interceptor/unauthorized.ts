@@ -4,11 +4,11 @@ import {
   HttpInterceptor,
   HttpHandler,
   HttpRequest,
-  HttpResponse,
+  HttpErrorResponse,
 } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { AccountService } from 'src/app/services/account.service';
 
 @Injectable()
@@ -20,12 +20,12 @@ export class HttpResponseUnauthorizedIntercepter implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
-      tap((e) => {
-        if (e instanceof HttpResponse && e.status === 401) {
+      catchError((e: HttpErrorResponse) => {
+        if (e instanceof HttpErrorResponse && e.status === 401) {
           this.accountService.logout();
         }
 
-        return e;
+        return throwError(e);
       })
     );
   }

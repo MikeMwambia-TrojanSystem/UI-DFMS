@@ -59,10 +59,7 @@
         <div class="grid-form">
           <p class="label">Assembly Sitting Time</p>
           <mat-form-field appearance="standard">
-            <mat-select formControlName="assemblySittingDate">
-              <mat-option value="Morning">Morning</mat-option>
-              <mat-option value="Afternoon">Afternoon</mat-option>
-            </mat-select>
+            <input formControlName="assemblySittingDate" matInput type="date" />
             <mat-error
               *ngIf="form.get('assemblySittingDate').hasError('required')"
               >Please enter sitting time!</mat-error

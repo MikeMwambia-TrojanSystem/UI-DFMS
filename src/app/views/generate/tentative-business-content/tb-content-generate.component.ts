@@ -77,8 +77,8 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
   ];
 
   form = this.fb.group({
-    date: ['', Validators.required],
-    time: ['', Validators.required],
+    assemblySittingDate: ['', Validators.required],
+    assemblySittingTime: ['', Validators.required],
     tentativeBusinessSignature: [''],
     assemblyId: ['12345'],
     datePublished: [''],
@@ -172,7 +172,7 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
       });
     }
 
-    if (!this.orderPaperNo || !this.form.get('date').value) {
+    if (!this.orderPaperNo || !this.form.get('assemblySittingDate').value) {
       this.router.navigate(['/intro']);
     }
 

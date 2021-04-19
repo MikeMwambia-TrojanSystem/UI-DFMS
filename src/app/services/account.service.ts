@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
 import { AppAccount } from '../shared/types/account';
@@ -10,7 +11,7 @@ import { ApiService } from './api.service';
 export class AccountService {
   private _user = new BehaviorSubject<AppAccount>(undefined);
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private router: Router) {}
 
   get user() {
     return this._user.getValue();
@@ -96,5 +97,6 @@ export class AccountService {
     localStorage.removeItem('user');
 
     this._user.next(undefined);
+    this.router.navigate(['/', 'login']);
   }
 }

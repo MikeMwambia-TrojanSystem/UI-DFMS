@@ -34,10 +34,10 @@ export class CanActivateVotebook implements CanActivate {
       switchMap((votebook) =>
         votebook
           ? this.orderPaperService.getOrderPaperByNo(votebook.orderPapersNo)
-          : of(this.router.createUrlTree(['/']))
+          : of(this.router.createUrlTree(['/intro']))
       ),
       map((orderPaper) =>
-        orderPaper ? true : this.router.createUrlTree(['/'])
+        orderPaper ? true : this.router.createUrlTree(['/intro'])
       )
     );
   }

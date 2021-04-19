@@ -482,7 +482,5 @@ export class IntroComponent implements OnInit {
 
   onLogOut() {
     this.accountService.logout();
-
-    this.router.navigate(['/', 'login']);
   }
 }

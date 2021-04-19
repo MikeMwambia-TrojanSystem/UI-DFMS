@@ -6,16 +6,16 @@
     <form [formGroup]="form" class="form">
       <p class="label">Choose Date</p>
       <mat-form-field appearance="standard">
-        <input matInput type="date" formControlName="date" />
-        <mat-error *ngIf="form.get('date').hasError('required')"
+        <input matInput type="date" formControlName="assemblySittingDate" />
+        <mat-error *ngIf="form.get('assemblySittingDate').hasError('required')"
           >Please enter date!</mat-error
         >
       </mat-form-field>
 
       <p class="label">Choose Time</p>
       <mat-form-field appearance="standard">
-        <input matInput type="date" formControlName="time" />
-        <mat-error *ngIf="form.get('time').hasError('required')"
+        <input matInput type="date" formControlName="assemblySittingTime" />
+        <mat-error *ngIf="form.get('assemblySittingTime').hasError('required')"
           >Please enter assembly no!</mat-error
         >
       </mat-form-field>

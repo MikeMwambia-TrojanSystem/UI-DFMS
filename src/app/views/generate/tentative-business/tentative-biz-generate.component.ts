@@ -18,8 +18,8 @@ export class TentativeBusinessGenerateComponent implements OnInit {
   orderPaperNo: number;
 
   form = this.fb.group({
-    date: ['', Validators.required],
-    time: ['', Validators.required],
+    assemblySittingDate: ['', Validators.required],
+    assemblySittingTime: ['', Validators.required],
   });
 
   constructor(
