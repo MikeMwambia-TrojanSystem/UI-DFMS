@@ -43,6 +43,13 @@
   border-radius: 15px;
 }
 
+
+.create {
+  margin: 5px 0;
+  color: #008000;
+}
+
+
 /**
   * Selectors to overwrite Material Input styling.
   * :host is needed to prevent the style bleeding into other components.

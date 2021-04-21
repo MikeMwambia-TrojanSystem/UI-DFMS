@@ -1,3 +1,4 @@
+import { CommentStmt } from '@angular/compiler';
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, iif, Observable, of } from "rxjs";
 import { map, switchMap, tap } from "rxjs/operators";
@@ -27,7 +28,8 @@ export class PetitionService {
   }
 
   getPetition(id: string): Observable<Petition> {
-    return this._petitions.pipe(switchMap((petitions) => iif(() => this._fetched, of(petitions), this.fetchPetitions())), map((petitions) => petitions.find(p => p._id === id)))
+    return this._petitions.pipe(switchMap((petitions) => iif(() => this._fetched, of(petitions), 
+    this.fetchPetitions())), map((petitions) => petitions.find(p => p._id === id)))
   }
 
   fetchPetitions(): Observable<Petition[]> {

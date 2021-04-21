@@ -40,7 +40,7 @@ const errorHandler = (error: HttpErrorResponse) => {
   providedIn: 'root',
 })
 export class ApiService {
-  private _baseUrl = 'https://web.jonikisecurity.com/';
+  private _baseUrl = 'http://localhost:3000/';//'https://web.jonikisecurity.com/';
   private _timeout = 60 * 1000;
 
   constructor(private http: HttpClient) {}
@@ -430,7 +430,7 @@ export class ApiService {
   // VERIFICATION
   verifyAccount(form: any): Observable<any> {
     return this.http
-      .post(this._baseUrl + 'akuru/verifyCode', undefined, { params: form })
+      .put(this._baseUrl + 'akuru/verifyCode', undefined, { params: form })
       .pipe(catchError(errorHandler));
   }
 

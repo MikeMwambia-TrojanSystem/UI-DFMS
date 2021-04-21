@@ -41,6 +41,7 @@ export class PhoneVerificationComponent implements OnInit {
     }
   }
 
+
   /**
    * Check if the otp is filled or not
    */
@@ -55,7 +56,6 @@ export class PhoneVerificationComponent implements OnInit {
   onSend() {
     if (this._user) {
       this._verification.db = 'users';
-
       this.accountService
         .verifyOtp(this._verification)
         .pipe(
@@ -67,6 +67,25 @@ export class PhoneVerificationComponent implements OnInit {
         )
         .subscribe(() => {
           this.router.navigate(['/create/mca'], {
+            queryParams: {
+              user: true,
+            },
+          });
+        });
+    }else{
+      console.log(this._verification);
+      this._verification.db = 'users';
+      this.accountService
+        .verifyOtp(this._verification)
+        .pipe(
+          catchError((error: HttpErrorResponse) => {
+            alert('Invalid OTP');
+
+            return throwError(error);
+          })
+        )
+        .subscribe(() => {
+          this.router.navigate(['/intro'], {
             queryParams: {
               user: true,
             },

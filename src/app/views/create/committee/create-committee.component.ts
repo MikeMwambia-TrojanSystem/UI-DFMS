@@ -7,9 +7,10 @@ import { CacheService } from 'src/app/services/cache.service';
 import { CommitteeService } from 'src/app/services/committee.service';
 import { McaEmployeeService } from 'src/app/services/mca-employee.service';
 import { Committee, CommitteePost } from 'src/app/shared/types/committee';
+import moment from 'moment';
 
 interface CommitteeForm {
-  committeeSignature: string;
+  commiteeSignature: string;
   name: string;
   Chairname: string;
   chairId: string;
@@ -326,7 +327,7 @@ export class CreateCommitteeComponent implements OnInit {
     const value = this.form.value;
 
     value.published = published;
-
+    value.signature = moment().unix();
     if (this._mode === 'creating') {
       value.datePublished = new Date().toISOString();
 
