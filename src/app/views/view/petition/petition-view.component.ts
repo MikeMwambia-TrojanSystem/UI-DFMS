@@ -23,8 +23,8 @@ export class PetitionViewComponent implements OnInit {
     datePublished: [{ value: '', disabled: true }],
     published: [{ value: false, disabled: true }],
     sponsorId: [{ value: '', disabled: true }],
-    approverId: [{ value: '', disabled: true }],
-    account: [{ value: '', disabled: true }],
+    // approverId: [{ value: '', disabled: true }],
+    // account: [{ value: '', disabled: true }],
     concernedCommitee: [{ value: '', disabled: true }],
     concernedCommiteeId: [{ value: '', disabled: true }],
     dateCommitteResponse: [{ value: '', disabled: true }],
@@ -33,8 +33,8 @@ export class PetitionViewComponent implements OnInit {
     petitioners: [{ value: '', disabled: true }],
     uploaded: [{ value: false, disabled: true }],
     uploadedFileURL: [{ value: '', disabled: true }],
-    uploader: [{ value: '', disabled: true }],
-    uploaderId: [{ value: '', disabled: true }],
+    // uploader: [{ value: '', disabled: true }],
+    // uploaderId: [{ value: '', disabled: true }],
     petitionNumber: [{ value: '', disabled: true }],
   });
 
@@ -62,8 +62,8 @@ export class PetitionViewComponent implements OnInit {
           ...others,
           sponsorName: sponsoredBy.sponsorName,
           sponsorId: sponsoredBy.sponsorId,
-          approverId: approvingAccount.approverId,
-          account: approvingAccount.account,
+          // approverId: approvingAccount.approverId,
+          //           account: approvingAccount.account,
           concernedCommitee: concernedCommitee.name,
           concernedCommiteeId: concernedCommitee.id,
           dateCommitteResponse: moment(dateCommitteResponse)
@@ -72,8 +72,8 @@ export class PetitionViewComponent implements OnInit {
           datePresented: moment(datePresented).toJSON().slice(0, 10),
           dateToBDiscussed: moment(dateToBDiscussed).toJSON().slice(0, 10),
           petitioners: petitioners.join('&&&'),
-          uploader: uploadingAccount.name,
-          uploaderId: uploadingAccount.id,
+          // uploader: uploadingAccount.name,
+          // uploaderId: uploadingAccount.id,
         });
       });
 

@@ -41,10 +41,11 @@ export class CreateCommitteeComponent implements OnInit {
     viceChairId: new FormControl('', Validators.required),
     committesMembers: new FormControl('', Validators.required),
     departmentInExcecutive: new FormControl('', Validators.required),
-    approverId: new FormControl('2c82d1f29d2f1ce', Validators.required),
+    approverId: new FormControl(''),
     published: new FormControl(false),
-    assemblyId: new FormControl('2c82d1f29d2f1ce', Validators.required),
-    account: new FormControl('Speaker', Validators.required),
+    publishState: new FormControl('draft'),
+    assemblyId: new FormControl('123'),
+    account: new FormControl(''),
     datePublished: new FormControl(''),
   }); // Form group that holds user input
 
@@ -128,7 +129,7 @@ export class CreateCommitteeComponent implements OnInit {
 
     let members = committesMembers.split('&&&');
 
-    members = members[0].length ? members : [];
+    members = members.filter((m) => m.length);
 
     for (const memberId of members.filter(
       (memberId) => memberId !== chairId && memberId !== viceChairId
@@ -325,6 +326,10 @@ export class CreateCommitteeComponent implements OnInit {
     };
 
     const value = this.form.value;
+    value.publishState = published ? 'published' : 'draft';
+    value.committesMembers = `${value.committesMembers}${
+      value.committesMembers.indexOf('&&&') === -1 ? '&&&' : ''
+    }`;
 
     if (this._mode === 'creating') {
       value.commiteeSignature = moment().unix();

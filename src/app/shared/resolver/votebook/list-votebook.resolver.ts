@@ -16,7 +16,7 @@ export class ListVotebookResolver implements Resolve<Votebook[]> {
   ): Votebook[] | Promise<Votebook[]> | Observable<Votebook[]> {
     const publishState = route.queryParams.state || 'public';
 
-    return this.votebookService.getVotebooks().pipe(
+    return this.votebookService.fetchVotebook().pipe(
       take(1),
       map((votebooks) =>
         votebooks.filter((v) => v.publishState === publishState)

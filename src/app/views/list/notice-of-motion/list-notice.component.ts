@@ -71,4 +71,11 @@ export class ListNoticeOfMotionComponent implements OnInit {
   onSelect(motion: Motion) {
     this.cacheService.emit(this._cacheId, motion);
   }
+
+  onDelete(id: string) {
+    alert('NO API');
+    // this.noticeOfMotions.deleteMotion(id).subscribe(() => {
+    //   window.location.reload(); // Reload page when successfully deleting motion
+    // });
+  }
 }

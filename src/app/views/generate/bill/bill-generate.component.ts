@@ -38,14 +38,14 @@ export class BillGenerateComponent implements OnInit {
     datePassed: new FormControl('', Validators.required),
     uploaded: new FormControl(false),
     uploadedBillURL: new FormControl('', Validators.required),
-    approvingAcc: new FormControl(''),
+    // approvingAcc: new FormControl(''),
     orderPaperId: new FormControl(''),
     sponsorId: new FormControl('', Validators.required),
     sponsor: new FormControl('', Validators.required),
     relatedTo: new FormControl('', Validators.required),
     assemblyId: new FormControl('60224665fd0c8e1b11fa85d5'),
     published: new FormControl(false),
-    approvingAccId: new FormControl(''),
+    // approvingAccId: new FormControl(''),
     committeeName: new FormControl('', Validators.required),
     committeeNameId: new FormControl('', Validators.required),
     billUploadedReportURL: new FormControl('', Validators.required),
@@ -88,14 +88,28 @@ export class BillGenerateComponent implements OnInit {
         this.form.patchValue({
           ...others,
           titleOfBill: title || '',
-          datePublished: moment(datePublished).toJSON().slice(0, 10),
-          firstReadingDate: moment(firstReadingDate).toJSON().slice(0, 10),
-          secondReadingDate: moment(secondReadingDate).toJSON().slice(0, 10),
-          datePassed: moment(datePassed).toJSON().slice(0, 10),
-          approvingAcc: approvingAccount.approvingAcc,
+          datePublished: moment(datePublished)
+            .toJSON()
+            .slice(datePublished.indexOf('T') - 10, datePublished.indexOf('T')),
+          firstReadingDate: moment(firstReadingDate)
+            .toJSON()
+            .slice(
+              firstReadingDate.indexOf('T') - 10,
+              firstReadingDate.indexOf('T')
+            ),
+          secondReadingDate: moment(secondReadingDate)
+            .toJSON()
+            .slice(
+              secondReadingDate.indexOf('T') - 10,
+              secondReadingDate.indexOf('T')
+            ),
+          datePassed: moment(datePassed)
+            .toJSON()
+            .slice(datePassed.indexOf('T') - 10, datePassed.indexOf('T')),
+          // approvingAcc: approvingAccount.approvingAcc,
           sponsorId: sponsor.id,
           sponsor: sponsor.name,
-          approvingAccId: approvingAccount.approvingAccId,
+          // approvingAccId: approvingAccount.approvingAccId,
           committeeName: concernedCommiteeId.committeeName,
           committeeNameId: concernedCommiteeId.committeeNameId,
         });
@@ -269,46 +283,12 @@ export class BillGenerateComponent implements OnInit {
 
       if (this._mode === 'creating') {
         value.billSignature = moment().unix();
-        value.uploadingPersonnel = this.accountService.user._id;
 
         this.billService.postBill(value).subscribe(() => subCallback(state));
       } else {
-        const {
-          titleOfBill,
-          billNo,
-          firstReadingDate,
-          secondReadingDate,
-          datePassed,
-          uploadedBillURL,
-          sponsorId,
-          sponsor,
-          relatedTo,
-          committeeName,
-          committeeNameId,
-          billUploadedReportURL,
-          publishStatus,
-          sponsorDescription,
-        } = value;
+        value.id = this._billId;
 
-        this.billService
-          .updateBill({
-            id: this._billId,
-            titleOfBill,
-            billNo,
-            firstReadingDate,
-            secondReadingDate,
-            datePassed,
-            uploadedBillURL,
-            sponsorId,
-            sponsor,
-            relatedTo,
-            committeeName,
-            committeeNameId,
-            billUploadedReportURL,
-            publishStatus,
-            sponsorDescription,
-          } as any)
-          .subscribe(() => subCallback(state));
+        this.billService.updateBill(value).subscribe(() => subCallback(state));
       }
     };
 

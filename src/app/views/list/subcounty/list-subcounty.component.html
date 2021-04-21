@@ -6,7 +6,7 @@
       <app-list-item
         *ngFor="let subcounty of subCounties"
         [title]="subcounty.name"
-        [subtitle]="subcounty.date"
+        [subtitle]="subcounty.createdAt"
         [isSubDate]="true"
         [dateSub]="'Published'"
         [selectable]="selectable"

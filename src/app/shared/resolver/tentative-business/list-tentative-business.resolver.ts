@@ -20,7 +20,7 @@ export class ListTentativeBusinessResolver
     | Observable<TentativeBusiness[]> {
     const publishState = route.queryParams.state || 'public';
 
-    return this.tentativeBusinessService.getTentativeBusinesses().pipe(
+    return this.tentativeBusinessService.fetchTentativeBusinesses().pipe(
       take(1),
       map((tentativeBusiness) =>
         tentativeBusiness.filter((t) => t.publishState === publishState)

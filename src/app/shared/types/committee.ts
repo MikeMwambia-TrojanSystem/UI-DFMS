@@ -17,47 +17,28 @@ export class CommitteePost {
 }
 
 export class Committee extends BasicDocument {
-  _id: string;
   approvingAccount: {
     approverId: string;
     account: string;
   };
+  assemblyId: string;
   chair: {
     name: string;
     id: string;
   };
+  commiteeSignature: string;
   committesMembers: string[];
   createdAt: string;
   datePublished: string;
   departmentInExcecutive: string;
   name: string;
+  publishState: 'draft' | 'published';
+  published: boolean;
   viceChair: {
     name: string;
     id: string;
   };
+  _id: string;
+  // Missing not important
+  updatedAt: string;
 }
-
-// export class Committee extends BasicDocument {
-//   committesMembers: string[];
-//   _id: string;
-//   commiteeSignature: string;
-//   name: string;
-//   chair: {
-//     name: string;
-//     id: string;
-//   };
-//   viceChair: {
-//     name: string;
-//     id: string;
-//   };
-//   departmentInExcecutive: string;
-//   approvingAccount: {
-//     approverId: string;
-//     account: string;
-//   };
-//   datePublished: string;
-//   published: boolean;
-//   assemblyId: string;
-//   createdAt: string;
-//   updatedAt: string;
-// }

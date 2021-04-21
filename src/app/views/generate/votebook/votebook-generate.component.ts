@@ -9,6 +9,8 @@ import {
   CachedCallback,
   CacheService,
 } from 'src/app/services/cache.service';
+import { OrderPaperService } from 'src/app/services/order-paper.service';
+import { VotebookService } from 'src/app/services/votebook.service';
 import { McaEmployee } from 'src/app/shared/types/mca-employee';
 import { OrderPaper } from 'src/app/shared/types/order-paper';
 import { Speaker } from 'src/app/shared/types/speaker';
@@ -29,29 +31,13 @@ export class VotebookGenerateComponent implements OnInit, OnDestroy {
   private _cacheId: string;
 
   form = this.fb.group({
-    datePublished: [''],
-    approvingAccount: [''],
-    approverId: [''],
-    published: [false],
-    publishState: ['draft'],
-    voteBookSignature: [''],
     orderPaperId: [{ value: '', disabled: true }, Validators.required],
     assemblyId: [{ value: '1234', disabled: true }],
     assemblyNo: [{ value: '', disabled: true }, Validators.required],
     orderPapersNo: [{ value: '', disabled: true }, Validators.required],
     pageNoToDate: [{ value: '', disabled: true }, Validators.required],
     sessionNo: [{ value: '', disabled: true }, Validators.required],
-    votebookNo: ['1', Validators.required],
-    adminstrationOfOathReply: [''],
-    communicationFromChainr: [''],
-    messageContent: [''],
-    petionReply: [''],
-    reportReply: [''],
-    noticeOfMotionsReply: [''],
-    statementReply: [''],
-    motions: [''],
-    bills: [''],
-    adjournment: [''],
+    votebookNo: ['', Validators.required],
     presiding: ['', Validators.required],
     presidingPosition: [''],
     presidingId: [''],
@@ -90,36 +76,21 @@ export class VotebookGenerateComponent implements OnInit, OnDestroy {
             this._votebookId = votebook._id;
 
             const {
-              bills,
-              messages,
-              motions,
-              noticeOfMotions,
-              papers,
-              petitions,
-              statements,
-              ...others
+              assemblyId,
+              assemblyNo,
+              orderPapersNo,
+              sessionNo,
+              votebookNo,
             } = votebook;
 
             this.form.patchValue({
-              ...others,
-              messageContent: messages,
-              petionReply: petitions,
-              reportReply: papers,
-              noticeOfMotionsReply: noticeOfMotions,
-              statementReply: statements,
               pageNoToDate: orderPaper.pageNoToDate,
-              motions: motions
-                .map(
-                  (m) =>
-                    `content=${m.content}|||source=${m.source}|||motionId=${m.documentId}`
-                )
-                .join('&&&'),
-              bills: motions
-                .map(
-                  (m) =>
-                    `content=${m.content}|||source=${m.source}|||motionId=${m.documentId}`
-                )
-                .join('&&&'),
+              orderPaperId: orderPaper._id,
+              assemblyId,
+              assemblyNo,
+              orderPapersNo,
+              sessionNo,
+              votebookNo,
             });
           }
         }
@@ -222,6 +193,7 @@ export class VotebookGenerateComponent implements OnInit, OnDestroy {
           orderPapersNo: orderPaperNo,
           pageNoToDate,
           sessionNo,
+          votebookNo: orderPaperNo,
         });
 
         return { form };

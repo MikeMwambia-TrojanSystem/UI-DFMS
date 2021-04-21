@@ -49,6 +49,8 @@ export class CreateEmployeeComponent implements OnInit {
     extraQualification: new FormControl('', Validators.required),
     deparment: new FormControl('', Validators.required),
     deptId: new FormControl('', Validators.required),
+    published: new FormControl(false),
+    publishState: new FormControl('draft'),
   });
 
   filename: string;
@@ -200,7 +202,7 @@ export class CreateEmployeeComponent implements OnInit {
 
     const value = this.form.value;
 
-    value.status = status;
+    value.publishState = status ? 'published' : 'draft';
 
     if (this._mode === 'creating') {
       value.dateCreated = moment().unix();

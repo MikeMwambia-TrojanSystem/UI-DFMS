@@ -23,6 +23,8 @@ export class CreateConstituenciesComponent implements OnInit {
     subCounty: new FormControl('', Validators.required),
     type: new FormControl('constituency', Validators.required),
     assemblyId: new FormControl('2d7c88e7a78c', Validators.required),
+    publishState: new FormControl('draft'),
+    published: new FormControl(false),
   }); // Form group that holds user input
 
   county = 'Meru'; // Dynamic county name;
@@ -84,11 +86,9 @@ export class CreateConstituenciesComponent implements OnInit {
 
     const value = this.form.value;
 
-    value.published = published;
+    value.publishState = published ? 'published' : 'draft';
 
     if (this._mode === 'creating') {
-      value.date = new Date().toISOString();
-
       this.wardConSubService
         .postWardConSub(value, 'constituency')
         .subscribe(subCallback);

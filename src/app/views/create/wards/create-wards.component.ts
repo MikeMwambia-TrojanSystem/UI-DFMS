@@ -22,7 +22,8 @@ export class CreateWardsComponent implements OnInit {
     subCounty: new FormControl('', Validators.required),
     type: new FormControl('ward', Validators.required),
     assemblyId: new FormControl('2d7cc79s2af', Validators.required),
-    date: new FormControl(''),
+    published: new FormControl(false),
+    publishState: new FormControl('draft'),
   });
   county = 'Meru'; // Dynamic county name
 
@@ -78,12 +79,9 @@ export class CreateWardsComponent implements OnInit {
     };
 
     const value = this.form.value;
-
-    value.published = published;
+    value.publishState = published ? 'published' : 'draft';
 
     if (this._mode === 'creating') {
-      value.date = new Date().toISOString();
-
       this.wardConSubService
         .postWardConSub(value, 'ward')
         .subscribe(subCallback);

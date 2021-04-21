@@ -16,7 +16,7 @@ export class ListOrderPaperResolver implements Resolve<OrderPaper[]> {
   ): OrderPaper[] | Promise<OrderPaper[]> | Observable<OrderPaper[]> {
     const publishState = route.queryParams.state || 'public';
 
-    return this.orderPaperService.getOrderPapers().pipe(
+    return this.orderPaperService.fetchOrderPapers().pipe(
       take(1),
       map((orderPapers) =>
         orderPapers.filter((o) => o.publishState === publishState)

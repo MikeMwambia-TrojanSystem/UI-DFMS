@@ -1,0 +1,88 @@
+:host {
+  padding: 25px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.date {
+  font-size: 13px;
+  margin-bottom: 5px;
+
+  .highlight {
+    color: #008000;
+  }
+}
+
+.related {
+  margin-bottom: 5px;
+}
+
+.department {
+  margin-bottom: 5px;
+}
+
+.sponsored {
+  margin-bottom: 5px;
+}
+
+.highlight {
+  font-weight: 500;
+}
+
+.icon {
+  color: #008000;
+  margin-right: 20px;
+  font-size: 35px;
+  height: 35px;
+  width: 35px;
+  cursor: pointer;
+}
+
+.btn {
+  margin-left: auto;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+
+  span {
+    margin-right: 5px;
+  }
+}
+
+.state {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+
+  .dot {
+    padding: 4px;
+    border-radius: 100%;
+    background: gray;
+    margin-right: 5px;
+  }
+
+  .label {
+    font-style: italic;
+  }
+}

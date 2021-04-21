@@ -22,11 +22,11 @@ export class ListWardResolver implements Resolve<Ward[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Ward[]> | Promise<Ward[]> | Ward[] {
-    const publishState = route.queryParams.state !== 'draft';
+    const publishState = route.queryParams.state || 'published';
 
     return this.wardConSubService.getWards().pipe(
       take(1),
-      map((wards) => wards.filter((w) => w.published === publishState))
+      map((wards) => wards.filter((w) => w.publishState === publishState))
     );
   }
 }

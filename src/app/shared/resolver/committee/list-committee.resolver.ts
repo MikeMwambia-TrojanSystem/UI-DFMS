@@ -22,14 +22,15 @@ export class ListCommitteeResolver implements Resolve<Committee[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Committee[]> | Promise<Committee[]> | Committee[] {
-    const queryState = route.queryParams.state;
-    const published = queryState ? queryState === 'published' : true;
+    const publishState = route.queryParams.state || 'published';
 
     return this.commiteeService.fetchCommittees().pipe(
-      take(1)
-      // map((committees) =>
-      //   committees.filter((committee) => committee.published === published)
-      // )
+      take(1),
+      map((committees) =>
+        committees.filter(
+          (committee) => committee.publishState === publishState
+        )
+      )
     );
   }
 }

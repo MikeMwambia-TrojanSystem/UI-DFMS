@@ -33,6 +33,7 @@ export interface MenuItem {
   generate?: string;
   notifications?: MenuNotification[];
   disabled?: boolean;
+  orderPaperField?: string;
 }
 
 @Component({

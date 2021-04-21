@@ -159,6 +159,8 @@ import { TentativeBusinessContentGenerateComponent } from './views/generate/tent
 import { CanActivateTentativeBusiness } from './shared/guard/tentative-business/tentative-business.guard';
 import { TentativeBusinessResolver } from './shared/resolver/tentative-business/tentative-business.resolver';
 import { ListTentativeBusinessResolver } from './shared/resolver/tentative-business/list-tentative-business.resolver';
+import { CanActivateTentativeBusinessOrderPaper } from './shared/guard/tentative-business/order-paper.guard';
+import { TentativeBusinessOrderPaperResolver } from './shared/resolver/tentative-business/order-paper.resolver';
 
 const routes: Routes = [
   // Login route
@@ -508,159 +510,174 @@ const routes: Routes = [
         canActivate: [CanActivateVotebook],
         resolve: {
           votebook: VotebookResolver,
-          orderPaper: VotebookOrderPaperResolver,
         },
       },
       {
         path: 'tentative-business',
         component: TentativeBusinessGenerateComponent,
+        canActivate: [CanActivateTentativeBusinessOrderPaper],
+        resolve: {
+          orderPaper: TentativeBusinessOrderPaperResolver,
+        },
       },
       {
         path: 'tentative-business-content',
         component: TentativeBusinessContentGenerateComponent,
+        canActivate: [CanActivateTentativeBusinessOrderPaper],
+        resolve: {
+          orderPaper: TentativeBusinessOrderPaperResolver,
+        },
       },
       {
         path: 'tentative-business/:id',
         component: TentativeBusinessGenerateComponent,
-        canActivate: [CanActivateTentativeBusiness],
+        canActivate: [
+          CanActivateTentativeBusiness,
+          CanActivateTentativeBusinessOrderPaper,
+        ],
         resolve: {
           tentativeBusiness: TentativeBusinessResolver,
+          orderPaper: TentativeBusinessOrderPaperResolver,
         },
       },
       {
         path: 'tentative-business-content/:id',
         component: TentativeBusinessContentGenerateComponent,
-        canActivate: [CanActivateTentativeBusiness],
+        canActivate: [
+          CanActivateTentativeBusiness,
+          CanActivateTentativeBusinessOrderPaper,
+        ],
         resolve: {
           tentativeBusiness: TentativeBusinessResolver,
+          orderPaper: TentativeBusinessOrderPaperResolver,
         },
       },
     ],
   },
 
   //View parent route
-  // {
-  //   path: 'view',
-  //   canActivate: [CanActivateAuth],
-  //   children: [
-  //     // { path: 'order-paper', component: OrderPaperViewComponent },
-  //     // { path: 'order-paper/edit-title', component: EditTitleComponent },
-  //     { path: 'report', component: ReportViewComponent },
-  //     {
-  //       path: 'committee/:id',
-  //       component: CommitteeViewComponent,
-  //       canActivate: [CanActivateViewCommittee],
-  //       resolve: {
-  //         committee: CommitteeResolver,
-  //       },
-  //     },
-  //     {
-  //       path: 'constituency/:id',
-  //       component: ConstituencyViewComponent,
-  //       canActivate: [CanActivateViewConstituency],
-  //       resolve: {
-  //         constituency: ConstituencyResolver,
-  //       },
-  //     },
-  //     {
-  //       path: 'department/:id',
-  //       component: DepartmentViewComponent,
-  //       canActivate: [CanActivateViewDepartment],
-  //       resolve: {
-  //         department: DepartmentResolver,
-  //       },
-  //     },
-  //     {
-  //       path: 'employee/:id',
-  //       component: EmployeeViewComponent,
-  //       canActivate: [CanActivateViewPersonnel],
-  //       resolve: {
-  //         personnel: PersonnelResolver,
-  //         departments: PersonnelDepartmentResolver,
-  //       },
-  //     },
-  //     {
-  //       path: 'mca/:id',
-  //       component: McaViewComponent,
-  //       canActivate: [CanActivateViewMcaEmployee],
-  //       resolve: {
-  //         mca: McaResolver,
-  //       },
-  //     },
-  //     {
-  //       path: 'subcounty/:id',
-  //       component: SubcountyViewComponent,
-  //       canActivate: [CanActivateViewSubcounty],
-  //       resolve: {
-  //         subcounty: subcountyResolver,
-  //       },
-  //     },
-  //     {
-  //       path: 'ward/:id',
-  //       component: WardViewComponent,
-  //       canActivate: [CanActivateViewWard],
-  //       resolve: {
-  //         ward: WardResolver,
-  //       },
-  //     },
-  //     {
-  //       path: 'act/:id',
-  //       component: ActViewComponent,
-  //       canActivate: [CanActivateViewAct],
-  //       resolve: {
-  //         act: ActResolver,
-  //       },
-  //     },
-  //     {
-  //       path: 'bill/:id',
-  //       component: BillViewComponent,
-  //       canActivate: [CanActivateViewBill],
-  //       resolve: {
-  //         bill: BillResolver,
-  //       },
-  //     },
-  //     {
-  //       path: 'report/:id',
-  //       component: ReportDocumentViewComponent,
-  //       canActivate: [CanActivateViewUploadReport],
-  //       resolve: {
-  //         report: ReportResolver,
-  //       },
-  //     },
-  //     {
-  //       path: 'motion/:id',
-  //       component: MotionViewComponent,
-  //       canActivate: [CanActivateViewMotion],
-  //       resolve: {
-  //         motion: MotionResolver,
-  //       },
-  //     },
-  //     {
-  //       path: 'petition/:id',
-  //       component: PetitionViewComponent,
-  //       resolve: {
-  //         petition: PetitionResolver,
-  //       },
-  //       canActivate: [CanActivateViewPetition],
-  //     },
-  //     {
-  //       path: 'order-paper/:id',
-  //       component: OrderPaperDocumentViewComponent,
-  //       canActivate: [CanActivateViewOrderPaper],
-  //       resolve: {
-  //         orderPaper: OrderPaperResolver,
-  //       },
-  //     },
-  //     {
-  //       path: 'paper-content/:id',
-  //       component: PaperContentViewComponent,
-  //       canActivate: [CanActivateViewOrderPaper],
-  //       resolve: {
-  //         orderPaper: OrderPaperResolver,
-  //       },
-  //     },
-  //   ],
-  // },
+  {
+    path: 'view',
+    canActivate: [CanActivateAuth],
+    children: [
+      // { path: 'order-paper', component: OrderPaperViewComponent },
+      // { path: 'order-paper/edit-title', component: EditTitleComponent },
+      { path: 'report', component: ReportViewComponent },
+      {
+        path: 'committee/:id',
+        component: CommitteeViewComponent,
+        canActivate: [CanActivateViewCommittee],
+        resolve: {
+          committee: CommitteeResolver,
+        },
+      },
+      {
+        path: 'constituency/:id',
+        component: ConstituencyViewComponent,
+        canActivate: [CanActivateViewConstituency],
+        resolve: {
+          constituency: ConstituencyResolver,
+        },
+      },
+      {
+        path: 'department/:id',
+        component: DepartmentViewComponent,
+        canActivate: [CanActivateViewDepartment],
+        resolve: {
+          department: DepartmentResolver,
+        },
+      },
+      {
+        path: 'employee/:id',
+        component: EmployeeViewComponent,
+        canActivate: [CanActivateViewPersonnel],
+        resolve: {
+          personnel: PersonnelResolver,
+          departments: PersonnelDepartmentResolver,
+        },
+      },
+      {
+        path: 'mca/:id',
+        component: McaViewComponent,
+        canActivate: [CanActivateViewMcaEmployee],
+        resolve: {
+          mca: McaResolver,
+        },
+      },
+      {
+        path: 'subcounty/:id',
+        component: SubcountyViewComponent,
+        canActivate: [CanActivateViewSubcounty],
+        resolve: {
+          subcounty: subcountyResolver,
+        },
+      },
+      {
+        path: 'ward/:id',
+        component: WardViewComponent,
+        canActivate: [CanActivateViewWard],
+        resolve: {
+          ward: WardResolver,
+        },
+      },
+      {
+        path: 'act/:id',
+        component: ActViewComponent,
+        canActivate: [CanActivateViewAct],
+        resolve: {
+          act: ActResolver,
+        },
+      },
+      {
+        path: 'bill/:id',
+        component: BillViewComponent,
+        canActivate: [CanActivateViewBill],
+        resolve: {
+          bill: BillResolver,
+        },
+      },
+      {
+        path: 'report/:id',
+        component: ReportDocumentViewComponent,
+        canActivate: [CanActivateViewUploadReport],
+        resolve: {
+          report: ReportResolver,
+        },
+      },
+      {
+        path: 'motion/:id',
+        component: MotionViewComponent,
+        canActivate: [CanActivateViewMotion],
+        resolve: {
+          motion: MotionResolver,
+        },
+      },
+      {
+        path: 'petition/:id',
+        component: PetitionViewComponent,
+        resolve: {
+          petition: PetitionResolver,
+        },
+        canActivate: [CanActivateViewPetition],
+      },
+      {
+        path: 'order-paper/:id',
+        component: OrderPaperDocumentViewComponent,
+        canActivate: [CanActivateViewOrderPaper],
+        resolve: {
+          orderPaper: OrderPaperResolver,
+        },
+      },
+      {
+        path: 'paper-content/:id',
+        component: PaperContentViewComponent,
+        canActivate: [CanActivateViewOrderPaper],
+        resolve: {
+          orderPaper: OrderPaperResolver,
+        },
+      },
+    ],
+  },
 
   //Edit parent route
   {

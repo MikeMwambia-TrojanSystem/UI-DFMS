@@ -433,47 +433,14 @@ export class ReportUploadComponent {
       if (this._mode === 'creating') {
         value.reportSignature = moment().unix();
         value.datePublished = moment().toISOString();
-        value.uploadingAccount = this.accountService.user.username;
-        value.uploaderId = this.accountService.user._id;
+        // value.uploadingAccount = this.accountService.user.username;
+        // value.uploaderId = this.accountService.user._id;
 
         this.reportService.postReport(value).subscribe(navigating);
       } else {
-        const {
-          titleOfReport,
-          authorCommitee,
-          authorCommiteeId,
-          dueDate,
-          originatingDocType,
-          originatingDocTypeId,
-          editors,
-          uploadedFileURL,
-          annexusName,
-          annexusId,
-          uploadedAnexux,
-          uploadingUrl,
-          relatedTo,
-          publishState,
-        } = value;
+        value.id = this._reportId;
 
-        this.reportService
-          .updateReport({
-            id: this._reportId,
-            titleOfReport,
-            authorCommitee,
-            authorCommiteeId,
-            dueDate,
-            originatingDocType,
-            originatingDocTypeId,
-            editors,
-            uploadedFileURL,
-            annexusName,
-            annexusId,
-            uploadedAnexux,
-            uploadingUrl,
-            relatedTo,
-            publishState,
-          } as any)
-          .subscribe(navigating);
+        this.reportService.updateReport(value).subscribe(navigating);
       }
     };
 

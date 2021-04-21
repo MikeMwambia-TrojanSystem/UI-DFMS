@@ -163,27 +163,9 @@ export class WardConSubService {
     data: WardConSubPost,
     type: 'ward' | 'constituency' | 'subcounty'
   ) {
-    return this.apiService.createWardConSub(data).pipe(
-      tap(({ message }) => {
-        if (this._fetched) {
-          if (type === 'ward') {
-            this._wards.next([...this._wards.getValue(), message as Ward]);
-          }
-          if (type === 'constituency') {
-            this._constituencies.next([
-              ...this._constituencies.getValue(),
-              message as Constituency,
-            ]);
-          }
-          if (type === 'subcounty') {
-            this._subCounties.next([
-              ...this._subCounties.getValue(),
-              message as SubCounty,
-            ]);
-          }
-        }
-      })
-    );
+    return this.apiService
+      .createWardConSub(data)
+      .pipe(switchMap(() => this.fetchWardConSubs()));
   }
 
   deleteWardConSub<T>(id: string) {
@@ -191,46 +173,8 @@ export class WardConSubService {
   }
 
   updateWardConSub<T, U>(item: U, type: 'ward' | 'constituency' | 'subcounty') {
-    return this.apiService.updateWardConSub<T, U>(item).pipe(
-      tap((result) => {
-        if (type === 'ward') {
-          const ward = (result as unknown) as Ward;
-          const newWards = this._wards.getValue();
-          const index = newWards.findIndex((w) => w._id === ward._id);
-
-          newWards[index] = {
-            ...ward,
-          };
-
-          this._wards.next(newWards);
-        }
-        if (type === 'constituency') {
-          const constituency = (result as unknown) as Constituency;
-          const newConstituenies = this._constituencies.getValue();
-          const index = newConstituenies.findIndex(
-            (c) => c._id === constituency._id
-          );
-
-          newConstituenies[index] = {
-            ...constituency,
-          };
-
-          this._constituencies.next(newConstituenies);
-        }
-        if (type === 'subcounty') {
-          const subCounty = (result as unknown) as SubCounty;
-          const newSubCounties = this._subCounties.getValue();
-          const index = newSubCounties.findIndex(
-            (s) => s._id === subCounty._id
-          );
-
-          newSubCounties[index] = {
-            ...subCounty,
-          };
-
-          this._subCounties.next(newSubCounties);
-        }
-      })
-    );
+    return this.apiService
+      .updateWardConSub<T, U>(item)
+      .pipe(switchMap(() => this.fetchWardConSubs()));
   }
 }

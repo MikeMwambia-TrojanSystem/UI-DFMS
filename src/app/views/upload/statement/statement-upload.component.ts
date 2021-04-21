@@ -40,8 +40,8 @@ export class StatementUploadComponent implements OnInit {
     assemblyId: new FormControl('602651242ed6962b8b5be6f9'),
     published: new FormControl(false),
     datePublished: new FormControl(''),
-    approverId: new FormControl(''),
-    account: new FormControl(''),
+    // approverId: new FormControl(''),
+    // account: new FormControl(''),
     publishState: new FormControl(''),
     seekerDescription: new FormControl('', Validators.required),
   });
@@ -226,7 +226,7 @@ export class StatementUploadComponent implements OnInit {
   onSave(published: boolean) {
     // Subscription Callback
     const subCallback = (state: 'public' | 'private' | 'draft') => {
-      this.cacheService.clearCache(this._cacheId);
+      this.cacheService.clearCache('UPLOAD_STATEMENT');
 
       this.router.navigate(['/list/statement'], {
         queryParams: {
@@ -260,37 +260,8 @@ export class StatementUploadComponent implements OnInit {
       } else {
         value.id = this._statementId;
 
-        const {
-          statementNo,
-          seeker,
-          seekerId,
-          subjectOfStatement,
-          statementProvider,
-          statementProviderId,
-          department,
-          departmentResponsible,
-          dateStatementSought,
-          dateStatementToResponded,
-          uploadedFileURL,
-          seekerDescription,
-        } = value;
-
         this.statementService
-          .updateStatement({
-            statementNo,
-            seeker,
-            seekerId,
-            subjectOfStatement,
-            statementProvider,
-            statementProviderId,
-            department,
-            departmentResponsible,
-            dateStatementSought,
-            dateStatementToResponded,
-            uploadedFileURL,
-            seekerDescription,
-            id: this._statementId,
-          } as any)
+          .updateStatement(value)
           .subscribe(() => subCallback(state));
       }
     };

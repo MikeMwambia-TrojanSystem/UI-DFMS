@@ -32,14 +32,19 @@ export class Bill extends BasicDocument {
     approvingAcc: string;
     approvingAccId: string;
   };
+  assemblyId: string;
+  billSignature: string;
   billNo: number;
+  billUploadedReportURL: string;
   concernedCommiteeId: {
     committeeName: string;
     committeeNameId: string;
   };
+  createdAt: string;
   datePassed: string;
   datePublished: string;
   firstReadingDate: string;
+  orderPaperId: string;
   publishState: 'draft' | 'private' | 'public';
   published: boolean;
   relatedTo: string;
@@ -48,8 +53,10 @@ export class Bill extends BasicDocument {
     name: string;
     id: string;
   };
+  sponsorDescription: string;
   status: string;
   title: string;
+  uploaded: boolean;
   uploadedBillURL: string;
   uploadingAccount: {
     uploadAccount: string;

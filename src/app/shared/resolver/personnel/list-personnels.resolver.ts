@@ -22,11 +22,13 @@ export class ListPersonnelResolver implements Resolve<Personnel[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Personnel[]> | Promise<Personnel[]> | Personnel[] {
-    const publishState = route.queryParams.state !== 'draft';
+    const publishState = route.queryParams.state || 'published';
 
     return this.personnelService.fetchPersonnels().pipe(
-      take(1)
-      // map((personnels) => personnels.filter((p) => p.status === publishState))
+      take(1),
+      map((personnels) =>
+        personnels.filter((p) => p.publishState === publishState)
+      )
     );
   }
 }

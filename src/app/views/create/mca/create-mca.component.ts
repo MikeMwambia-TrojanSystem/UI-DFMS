@@ -35,7 +35,7 @@ export class CreateMcaComponent implements OnInit {
       Validators.required
     ),
     dateCreated: new FormControl(''),
-    group: new FormControl('MCA', Validators.required),
+    group: new FormControl('MCA'),
     name: new FormControl('', Validators.required),
     phoneNumber: new FormControl({ value: '', disabled: this._createdUser }, [
       Validators.required,
@@ -51,6 +51,8 @@ export class CreateMcaComponent implements OnInit {
     termOfService: new FormControl(''),
     ward: new FormControl('', Validators.required),
     wardId: new FormControl('', Validators.required),
+    published: new FormControl(false),
+    publishState: new FormControl('draft'),
   });
 
   filename: string;
@@ -84,8 +86,12 @@ export class CreateMcaComponent implements OnInit {
 
           this.form.patchValue({
             ...others,
-            termStart: moment(termStart, 'Do MMMM YYYY').toJSON().slice(0, 10),
-            termEnd: moment(termEnd, 'Do MMMM YYYY').toJSON().slice(0, 10),
+            termStart: moment(termStart, 'Do MMMM YYYY')
+              .toJSON()
+              .slice(termStart.indexOf('T') - 10, termStart.indexOf('T')),
+            termEnd: moment(termEnd, 'Do MMMM YYYY')
+              .toJSON()
+              .slice(termEnd.indexOf('T') - 10, termEnd.indexOf('T')),
           });
 
           const index = mca.profilePic.lastIndexOf('amazonaws.com/') + 14;
@@ -213,8 +219,8 @@ export class CreateMcaComponent implements OnInit {
 
     const value = this.form.value;
 
-    value.status = published;
     value.termOfService = transform();
+    value.publishState = published;
 
     if (this._mode === 'creating') {
       value.dateCreated = moment().toISOString();
@@ -224,6 +230,7 @@ export class CreateMcaComponent implements OnInit {
       this.mcaEmployeeService.postMca(value).subscribe(subCallback);
     } else {
       value.id = this._mcaId;
+      value.group = 'mca';
 
       this.mcaEmployeeService.updateMca(value).subscribe(subCallback);
     }

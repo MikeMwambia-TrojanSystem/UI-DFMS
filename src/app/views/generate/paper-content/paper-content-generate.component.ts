@@ -36,8 +36,8 @@ enum SelectUrl {
 })
 export class PaperContentGenerateComponent implements OnInit {
   private _cacheId: string;
-  private _paperId: string;
   private _mode: 'creating' | 'editing' = 'creating';
+  paperId: string;
 
   items: MenuItem[] = [
     {
@@ -127,8 +127,8 @@ export class PaperContentGenerateComponent implements OnInit {
     this._cacheId = queryParams.id;
 
     // Populate content
-    this._paperId = this.route.snapshot.params.id;
-    if (this._paperId) {
+    this.paperId = this.route.snapshot.params.id;
+    if (this.paperId) {
       this._mode = 'editing';
 
       this.route.data
@@ -203,7 +203,7 @@ export class PaperContentGenerateComponent implements OnInit {
     this.cacheService.cacheFunc<OrderPaperCached, T>({
       id: 'GENERATE_ORDER_PAPER',
       cacheId: this._cacheId,
-      urlParamer: this._paperId,
+      urlParamer: this.paperId,
       returnUrl: '/generate/paper-content',
       navigateUrl: url,
       navigateUrlQuery: queryParams,
@@ -221,7 +221,7 @@ export class PaperContentGenerateComponent implements OnInit {
       const value = this.form.get(item.key).value as string;
       let result: MenuNotification[] = [];
 
-      if (value !== 'NONE') {
+      if (value !== 'NONE' && value !== 'none') {
         let contents = value.split('&&&');
         contents = contents[0].length ? contents : [];
 
@@ -464,7 +464,7 @@ export class PaperContentGenerateComponent implements OnInit {
           .subscribe(() => subCallback(state));
       } else {
         this.orderPaperService
-          .updateOrderPaper({ ...value, id: this._paperId })
+          .updateOrderPaper({ ...value, id: this.paperId })
           .subscribe(() => subCallback(state));
       }
     };
@@ -493,7 +493,7 @@ export class PaperContentGenerateComponent implements OnInit {
   }
 
   onSkip(key: string) {
-    this.form.get(key).setValue('NONE');
+    this.form.get(key).setValue(this._mode === 'creating' ? 'NONE' : 'none');
     this._populateNotifications();
   }
 

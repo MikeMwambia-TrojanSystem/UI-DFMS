@@ -16,7 +16,6 @@ export class PersonnelPost {
 }
 
 export class Personnel extends BasicDocument {
-  _id: string;
   author: string;
   createdAt: string;
   department: string;
@@ -29,7 +28,10 @@ export class Personnel extends BasicDocument {
   name: string;
   phoneNumber: string;
   profilePic: string;
+  publishState: 'draft' | 'published';
+  published: boolean;
   termOfService: 'Permanent' | 'Contract' | 'Outsourced';
+  _id: string;
 }
 
 // export class Personnel extends BasicDocument {

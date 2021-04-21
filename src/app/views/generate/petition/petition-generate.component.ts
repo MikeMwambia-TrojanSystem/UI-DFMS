@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  Validators,
+  AbstractControl,
+} from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { map, take } from 'rxjs/operators';
 import moment from 'moment';
@@ -28,15 +33,15 @@ export class PetitionGenerateComponent implements OnInit {
     petitionSignature: new FormControl(''),
     content: new FormControl('', Validators.required),
     sponsorName: new FormControl('', Validators.required),
-    department: new FormControl('', Validators.required),
+    // department: new FormControl(''),
     relatedTo: new FormControl('', Validators.required),
     orderPaperId: new FormControl(''),
     assemblyId: new FormControl('60224665fd0c8e1b11fa85d5'),
     datePublished: new FormControl(''),
     published: new FormControl(false),
     sponsorId: new FormControl('', Validators.required),
-    approverId: new FormControl(''),
-    account: new FormControl(''),
+    // approverId: new FormControl(''),
+    // account: new FormControl(''),
     concernedCommitee: new FormControl('', Validators.required),
     concernedCommiteeId: new FormControl('', Validators.required),
     dateCommitteResponse: new FormControl('', Validators.required),
@@ -45,8 +50,8 @@ export class PetitionGenerateComponent implements OnInit {
     petitioners: new FormControl('', Validators.required),
     uploaded: new FormControl(false),
     uploadedFileURL: new FormControl('', Validators.required),
-    uploader: new FormControl(''),
-    uploaderId: new FormControl(''),
+    // uploader: new FormControl(''),
+    // uploaderId: new FormControl(''),
     petitionNumber: new FormControl('', Validators.required),
   });
 
@@ -81,6 +86,7 @@ export class PetitionGenerateComponent implements OnInit {
             dateToBDiscussed,
             sponsoredBy,
             uploadingAccount,
+            petitioners,
             ...others
           } = petition;
 
@@ -88,17 +94,32 @@ export class PetitionGenerateComponent implements OnInit {
             ...others,
             sponsorName: sponsoredBy.sponsorName,
             sponsorId: sponsoredBy.sponsorId,
-            approverId: approvingAccount.approverId,
-            account: approvingAccount.account,
+            // approverId: approvingAccount.approverId,
+            // account: approvingAccount.account,
             concernedCommitee: concernedCommitee.name,
             concernedCommiteeId: concernedCommitee.id,
             dateCommitteResponse: moment(dateCommitteResponse)
               .toJSON()
-              .slice(0, 10),
-            datePresented: moment(datePresented).toJSON().slice(0, 10),
-            dateToBDiscussed: moment(dateToBDiscussed).toJSON().slice(0, 10),
-            uploader: uploadingAccount.name,
-            uploaderId: uploadingAccount.id,
+              .slice(
+                dateCommitteResponse.indexOf('T') - 10,
+                dateCommitteResponse.indexOf('T')
+              ),
+            datePresented: moment(datePresented)
+              .toJSON()
+              .slice(
+                datePresented.indexOf('T') - 10,
+                datePresented.indexOf('T')
+              ),
+            dateToBDiscussed: moment(dateToBDiscussed)
+              .toJSON()
+              .slice(
+                dateToBDiscussed.indexOf('T') - 10,
+                dateToBDiscussed.indexOf('T')
+              ),
+
+            petitioners: petitioners[0],
+            // uploader: uploadingAccount.uploadAccount,
+            // uploaderId: uploadingAccount.uploadId,
           });
         });
     } else {
@@ -166,9 +187,9 @@ export class PetitionGenerateComponent implements OnInit {
   }
 
   async updatePetitionersList() {
-    let petitioners = (this.form.value.petitioners as string).split('&&&');
-
-    petitioners = petitioners[0].length ? petitioners : [];
+    const petitioners = (this.form.value.petitioners as string)
+      .split('&&&')
+      .filter((p) => p.length);
 
     for (const p of petitioners) {
       this.petitionersName.push(
@@ -191,7 +212,7 @@ export class PetitionGenerateComponent implements OnInit {
         form.patchValue({
           concernedCommitee: name,
           concernedCommiteeId: _id,
-          department: departmentInExcecutive,
+          // department: departmentInExcecutive,
         }); // Patch form with selected committee
 
         return form;
@@ -308,9 +329,9 @@ export class PetitionGenerateComponent implements OnInit {
       if (this._mode === 'creating') {
         value.datePublished = moment().toISOString();
         value.petitionSignature = moment().unix();
-        value.uploader = this.accountService.user.username;
-        value.uploaderId = this.accountService.user._id;
-        value.account = this.accountService.user.username;
+        // value.uploader = this.accountService.user.username;
+        // value.uploaderId = this.accountService.user._id;
+        // value.account = this.accountService.user.username;
 
         this.petitionService
           .postPetition(value)

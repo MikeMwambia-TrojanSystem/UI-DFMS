@@ -18,7 +18,10 @@
             class="btn"
             *ngIf="item.select"
             (click)="onSelect(item.select)"
-            [disabled]="form.get(item.key).value === 'NONE'"
+            [disabled]="
+              form.get(item.key).value === 'NONE' ||
+              form.get(item.key).value === 'none'
+            "
           >
             Select
           </button>
@@ -27,7 +30,10 @@
             class="btn"
             *ngIf="item.generate"
             (click)="onGenerate(item.generate)"
-            [disabled]="form.get(item.key).value === 'NONE'"
+            [disabled]="
+              form.get(item.key).value === 'NONE' ||
+              form.get(item.key).value === 'none'
+            "
           >
             Generate
           </button>
@@ -35,7 +41,10 @@
             mat-stroked-button
             class="btn"
             (click)="onSkip(item.key)"
-            [disabled]="form.get(item.key).value === 'NONE'"
+            [disabled]="
+              form.get(item.key).value === 'NONE' ||
+              form.get(item.key).value === 'none'
+            "
           >
             Skip
           </button>
@@ -53,7 +62,8 @@
     <a
       style="color: #008000; margin: 0; margin-top: -30px"
       [routerLink]="['/', 'generate', 'tentative-business']"
-      [queryParams]="{ 'order-paper': this.form.get('orderPaperNo').value }"
+      [queryParams]="{ 'order-paper': this.paperId }"
+      *ngIf="this.paperId"
     >
       Generate Tentative Bussiness
     </a>

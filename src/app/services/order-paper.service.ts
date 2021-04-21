@@ -99,7 +99,7 @@ export class OrderPaperService {
 
   checkNone(value: any[], transformation?: (value: any[]) => string): string {
     return !value.length
-      ? 'NONE'
+      ? 'none'
       : transformation
       ? transformation(value)
       : value.join('&&&');
