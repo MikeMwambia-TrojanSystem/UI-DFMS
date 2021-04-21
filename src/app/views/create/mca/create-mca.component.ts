@@ -182,13 +182,13 @@ export class CreateMcaComponent implements OnInit {
   // This function is called when 'Save as Draft' or 'Save MCA' buttons are clicked
   onSave(published: boolean) {
     // Subcription callback
-    const subCallback = ({ mcaId, request_id }: any) => {
+    const subCallback = ({ _mcaId, request_id }: any) => {
       this.cacheService.clearCache('CREATE_MCA');
 
       if (request_id) {
         this.router.navigate(['/verification/mca'], {
           queryParams: {
-            userId: mcaId,
+            userId: _mcaId,
             request_id,
             state: published ? 'published' : 'draft',
           },
@@ -219,6 +219,7 @@ export class CreateMcaComponent implements OnInit {
     if (this._mode === 'creating') {
       value.dateCreated = moment().toISOString();
       value.signature = moment().unix();
+      value.published = false;
 
       this.mcaEmployeeService.postMca(value).subscribe(subCallback);
     } else {

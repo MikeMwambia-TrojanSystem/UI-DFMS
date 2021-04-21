@@ -79,7 +79,6 @@ export class PetitionGenerateComponent implements OnInit {
             dateCommitteResponse,
             datePresented,
             dateToBDiscussed,
-            petitioners,
             sponsoredBy,
             uploadingAccount,
             ...others
@@ -98,7 +97,6 @@ export class PetitionGenerateComponent implements OnInit {
               .slice(0, 10),
             datePresented: moment(datePresented).toJSON().slice(0, 10),
             dateToBDiscussed: moment(dateToBDiscussed).toJSON().slice(0, 10),
-            petitioners: petitioners.join('&&&'),
             uploader: uploadingAccount.name,
             uploaderId: uploadingAccount.id,
           });

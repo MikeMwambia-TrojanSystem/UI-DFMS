@@ -326,10 +326,10 @@ export class CreateCommitteeComponent implements OnInit {
 
     const value = this.form.value;
 
-    value.published = published;
-    value.signature = moment().unix();
     if (this._mode === 'creating') {
+      value.commiteeSignature = moment().unix();
       value.datePublished = new Date().toISOString();
+      value.published = false;
 
       this.committeeService.postCommittee(value).subscribe(subCallback);
     } else {
@@ -363,7 +363,7 @@ export class CreateCommitteeComponent implements OnInit {
     members.splice(memberIndex, 1);
 
     this.form.patchValue({
-      committesMembers: members,
+      committesMembers: members.join('&&&'),
     });
 
     const index = this.membersName.findIndex(
