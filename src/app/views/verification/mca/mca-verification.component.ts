@@ -33,14 +33,14 @@ export class McaVerificationComponent implements OnInit {
   ngOnInit(): void {
     try {
       const queryParams = this.route.snapshot.queryParams;
-      const { request_id, mcaId, state } = queryParams;
+      const { request_id, userId, state } = queryParams;
 
       this._valid = true;
       this._state = state;
       this._verification = {
         code: '',
         request_id,
-        userId: mcaId,
+        userId,
       };
     } catch (error) {
       this.location.back();

@@ -34,7 +34,6 @@ export class CreateMcaComponent implements OnInit {
       '603cbd73bd0107cf86d79170',
       Validators.required
     ),
-    commiteesInvolved: new FormArray([]),
     dateCreated: new FormControl(''),
     group: new FormControl('MCA', Validators.required),
     name: new FormControl('', Validators.required),
