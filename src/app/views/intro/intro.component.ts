@@ -30,97 +30,6 @@ export class IntroComponent implements OnInit {
 
   introItems: IntroItem[] = [
     {
-      label: 'Administration of Oath',
-      actions: [
-        {
-          label: 'Generation Oath',
-          url: '/management/oath',
-        },
-        {
-          label: 'View Oath in Draft Status',
-          url: '/management/oath',
-          query: {
-            state: 'draft',
-          },
-        },
-        {
-          label: 'View Privately Published Oath',
-          url: '/management/oath',
-          query: {
-            state: 'private',
-          },
-        },
-        {
-          label: 'View Published Oath',
-          url: '/management/oath',
-          query: {
-            state: 'public',
-          },
-        },
-      ],
-      notifications: [],
-    },
-    {
-      label: 'Communication from the Chair',
-      actions: [
-        {
-          label: 'Generation Communication',
-          url: '/edit/content/1',
-          query: { return: '/list/communication' },
-        },
-        {
-          label: 'View Communication in draft status',
-          url: '/list/communication',
-          query: { state: 'draft' },
-        },
-        {
-          label: 'View Privately Published Communication',
-          url: '/list/communication',
-          query: { state: 'private' },
-        },
-        {
-          label: 'View Published Communications',
-          url: '/list/communication',
-          query: { state: 'public' },
-        },
-      ],
-      notifications: [],
-    },
-    {
-      label: 'Messages',
-      actions: [
-        {
-          label: 'Generation Messages',
-          url: '/edit/content/1',
-          query: {
-            return: '/list/message',
-          },
-        },
-        {
-          label: 'View Messages in draft status',
-          url: '/list/message',
-          query: {
-            state: 'draft',
-          },
-        },
-        {
-          label: 'View Privately Published Messages',
-          url: '/list/message',
-          query: {
-            state: 'private',
-          },
-        },
-        {
-          label: 'View Published Messages',
-          url: '/list/message',
-          query: {
-            state: 'public',
-          },
-        },
-      ],
-      notifications: [],
-    },
-    {
       label: 'Petition',
       actions: [
         {
@@ -459,13 +368,7 @@ export class IntroComponent implements OnInit {
           url: '/create/mca',
         },
       ],
-      notifications: [
-        {
-          label: 'The report on land reforms was published',
-          date: moment().subtract(3, 'hours'),
-          url: '/',
-        },
-      ],
+      notifications: [],
     },
   ];
 

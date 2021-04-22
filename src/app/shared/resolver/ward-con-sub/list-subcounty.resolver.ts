@@ -22,12 +22,12 @@ export class ListSubCountyResolver implements Resolve<SubCounty[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<SubCounty[]> | Promise<SubCounty[]> | SubCounty[] {
-    const publishState = route.queryParams.state !== 'draft';
+    const publishState = route.queryParams.state || 'published';
 
     return this.wardConSubService.getSubCounties().pipe(
       take(1),
       map((subcounties) =>
-        subcounties.filter((s) => s.published === publishState)
+        subcounties.filter((s) => s.publishState === publishState)
       )
     );
   }

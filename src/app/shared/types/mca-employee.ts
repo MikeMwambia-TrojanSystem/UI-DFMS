@@ -1,16 +1,25 @@
 import { BasicDocument } from './_global';
 
 export class McaEmployee extends BasicDocument {
-  _id: string;
   dateCreated: string;
   name: string;
   phoneNumber: string;
   politicalParty: string;
   positionStatus: string;
   profilePic: string;
+  publishState: boolean;
+  published: boolean;
   termOfService: string;
   ward: string;
   wardId: string;
+  _id: string;
+
+  //Missing
+  group: string;
+  verified: boolean;
+  assemblyId: string;
+  signature: string;
+  status: string;
 }
 
 // export class McaEmployee extends BasicDocument {

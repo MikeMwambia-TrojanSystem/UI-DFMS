@@ -22,11 +22,13 @@ export class ListDepartmentResolver implements Resolve<Department[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Department[]> | Promise<Department[]> | Department[] {
-    const published = route.queryParams.state !== 'draft';
+    const publishState = route.queryParams.state || 'published';
 
     return this.departmentService.fetchDepartments().pipe(
       take(1),
-      map((departments) => departments.filter((d) => d.published === published))
+      map((departments) =>
+        departments.filter((d) => d.publishState === publishState)
+      )
     );
   }
 }

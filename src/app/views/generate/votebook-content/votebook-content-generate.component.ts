@@ -76,10 +76,10 @@ interface OnGenerateWithIdProps<T, U> {
   styleUrls: ['./votebook-content-generate.component.scss'],
 })
 export class VotebookContentGenerateComponent implements OnInit {
-  private _orderPaper: OrderPaper;
   private _mode: 'creating' | 'editing' = 'creating';
   private _votebookId: string;
   private _cacheId: string;
+  orderPaper: OrderPaper;
 
   items: MenuItem[] = [
     {
@@ -185,72 +185,54 @@ export class VotebookContentGenerateComponent implements OnInit {
     // Get resolved order paper data
     this.route.data
       .pipe(take(1))
-      .subscribe(
-        ({
-          votebook,
-          orderPaper,
-        }: {
-          votebook: Votebook;
-          orderPaper: OrderPaper;
-        }) => {
-          if (orderPaper) {
-            const { _id } = orderPaper;
+      .subscribe(({ votebook }: { votebook: Votebook }) => {
+        if (votebook) {
+          this._mode = 'editing';
+          this._votebookId = votebook._id;
 
-            this.form.patchValue({
-              orderPaperId: _id,
-            });
-          }
+          const {
+            adminstrationOfOath,
+            bills,
+            communicationFromChainr,
+            messages,
+            motions,
+            noticeOfMotions,
+            papers,
+            petitions,
+            statements,
+            approvingAccount,
+            presiding,
+            ...others
+          } = votebook;
 
-          if (votebook) {
-            this._mode = 'editing';
-            this._votebookId = votebook._id;
-
-            const {
-              adminstrationOfOath,
-              bills,
-              communicationFromChainr,
-              messages,
-              motions,
-              noticeOfMotions,
-              papers,
-              petitions,
-              statements,
-              ...others
-            } = votebook;
-
-            this.form.patchValue({
-              ...others,
-              adminstrationOfOathReply: adminstrationOfOath.length
-                ? ''
-                : 'NONE',
-              communicationFromChainr: communicationFromChainr.length
-                ? ''
-                : 'NONE',
-              messageContent: messages.length ? '' : 'NONE',
-              petionReply: petitions.length ? '' : 'NONE',
-              reportReply: papers.length ? '' : 'NONE',
-              noticeOfMotionsReply: noticeOfMotions.length ? '' : 'NONE',
-              statementReply: statements.length ? '' : 'NONE',
-              motions: motions.length
-                ? motions
-                    .map(
-                      (m) =>
-                        `content=${m.content}|||source=${m.source}|||motionId=${m.documentId}`
-                    )
-                    .join('&&&')
-                : 'NONE',
-              bills: bills
-                ? bills
-                    .map(
-                      (m) =>
-                        `content=${m.content}|||source=${m.source}|||motionId=${m.documentId}`
-                    )
-                    .join('&&&')
-                : 'NONE',
-            });
-          }
+          this.form.patchValue({
+            ...others,
+            approvingAccount: approvingAccount.account,
+            approverId: approvingAccount.approverId,
+            adminstrationOfOathReply: adminstrationOfOath.join('&&&'),
+            communicationFromChainr: communicationFromChainr.join('&&&'),
+            messageContent: messages.join('&&&'),
+            petionReply: petitions.join('&&&'),
+            reportReply: papers.join('&&&'),
+            noticeOfMotionsReply: noticeOfMotions.join('&&&'),
+            statementReply: statements.join('&&&'),
+            motions: motions
+              .filter((m) => m.content)
+              .map(
+                (m) =>
+                  `content=${m.content}|||source=${m.source}|||motionId=${m.documentId}`
+              )
+              .join('&&&'),
+            bills: bills
+              .filter((m) => m.content)
+              .map(
+                (m) =>
+                  `content=${m.content}|||source=${m.source}|||billId=${m.documentId}`
+              )
+              .join('&&&'),
+          });
         }
-      );
+      });
 
     // Get cached data
     const cachedData = this.cacheService.rehydrate<Cache>('GENERATE_VOTEBOOK');
@@ -265,8 +247,47 @@ export class VotebookContentGenerateComponent implements OnInit {
 
     this.orderPaperService
       .getOrderPaper(this.form.get('orderPaperId').value)
+      .pipe(take(1))
       .subscribe((orderPaper) => {
-        this._orderPaper = orderPaper;
+        this.orderPaper = orderPaper;
+
+        const {
+          adminstrationOfOath,
+          messages,
+          petitions,
+          papers,
+          noticeOfMotions,
+          statements,
+        } = orderPaper;
+        const {
+          adminstrationOfOathReply,
+          communicationFromChainr,
+          messageContent,
+          petionReply,
+          reportReply,
+          noticeOfMotionsReply,
+          statementReply,
+          motions,
+          bills,
+        } = this.form.value;
+
+        this.form.patchValue({
+          adminstrationOfOathReply: adminstrationOfOath.length
+            ? adminstrationOfOathReply
+            : 'NONE',
+          communicationFromChainr: orderPaper.communicationFromChainr.length
+            ? communicationFromChainr
+            : 'NONE',
+          messageContent: messages.length ? messageContent : 'NONE',
+          petionReply: petitions.length ? petionReply : 'NONE',
+          reportReply: papers.length ? reportReply : 'NONE',
+          noticeOfMotionsReply: noticeOfMotions.length
+            ? noticeOfMotionsReply
+            : 'NONE',
+          statementReply: statements.length ? statementReply : 'NONE',
+          motions: orderPaper.motions.length ? motions : 'NONE',
+          bills: orderPaper.bills.length ? bills : 'NONE',
+        });
       });
 
     this._populateNotifications();
@@ -344,7 +365,7 @@ export class VotebookContentGenerateComponent implements OnInit {
         map<T[], T[]>((items) =>
           (items as any).filter(
             (i) =>
-              (this._orderPaper[orderPaperField] as any).find(
+              (this.orderPaper[orderPaperField] as any).find(
                 (id: string) => id === i._id
               ) !== undefined
           )
@@ -421,27 +442,22 @@ export class VotebookContentGenerateComponent implements OnInit {
       case 'adminstrationOfOathReply':
         return this._onGenerateReply(
           'adminstrationOfOathReply',
-          this.votebookService
-            .checkNone(this._orderPaper.adminstrationOfOath)
-            .split('&&&')
-            .map((a) =>
-              a
-                .split('|||')
-                .find((f) => f.includes('name='))
-                .slice(5)
-            )
+          this.orderPaper.adminstrationOfOath.map((a) =>
+            a
+              .split('|||')
+              .find((f) => f.includes('name='))
+              .slice(5)
+          )
         );
       case 'communicationFromChainr':
         return this._onGenerateReply(
           'communicationFromChainr',
-          this.votebookService
-            .checkNone(this._orderPaper.communicationFromChainr)
-            .split('&&&')
+          this.orderPaper.communicationFromChainr
         );
       case 'messageContent':
         return this._onGenerateReply(
           'messageContent',
-          this._orderPaper.messages.map((m) => m.content)
+          this.orderPaper.messages.map((m) => m.content)
         );
       case 'petionReply':
         return this._onGenerateWithId<Petition, string>({
@@ -524,7 +540,7 @@ export class VotebookContentGenerateComponent implements OnInit {
       case 'bills':
         return this._onGenerateWithId<
           Bill,
-          { content: string; status: string; motionId: string }
+          { content: string; status: string; billId: string }
         >({
           observable: this.billService.getBills(),
           url: '/edit/bill',
@@ -536,19 +552,17 @@ export class VotebookContentGenerateComponent implements OnInit {
                 ? `<a class="edit-link" href="${b.uploadedBillURL}">Download PDF</a>`
                 : ''
             ),
-          modifyResult: ({ content, status, motionId }, { form }) => {
+          modifyResult: ({ content, status, billId }, { form }) => {
             const value = (form.get('bills').value as string).split('&&&');
             const array = value[0].length
               ? value.filter(
                   (v) =>
-                    !v
-                      .split('|||')
-                      .find((v) => v.includes(`motionId=${motionId}`))
+                    !v.split('|||').find((v) => v.includes(`billId=${billId}`))
                 )
               : [];
 
             array.push(
-              `content=${content}|||status=${status}|||motionId=${motionId}`
+              `content=${content}|||status=${status}|||billId=${billId}`
             );
 
             return array.join('&&&');
@@ -556,7 +570,7 @@ export class VotebookContentGenerateComponent implements OnInit {
         });
       case 'adjournment':
         return this._onGenerateReply('adjournment', [
-          this._orderPaper.adjournment,
+          this.orderPaper.adjournment,
         ]);
       default:
         break;

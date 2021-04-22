@@ -40,8 +40,6 @@ import { StatementUploadComponent } from './views/upload/statement/statement-upl
 import { ReportUploadComponent } from './views/upload/report/report-upload.component';
 import { PaperContentGenerateComponent } from './views/generate/paper-content/paper-content-generate.component';
 import { VotebookGenerateComponent } from './views/generate/votebook/votebook-generate.component';
-import { OrderPaperViewComponent } from './views/view/order-paper/order-paper-view.component';
-import { EditTitleComponent } from './views/view/order-paper/edit-title/edit-title.component';
 import { EditPaperComponent } from './views/edit/paper/edit-paper.component';
 import { ContentPreviewComponent } from './views/edit/content/preview/preview.component';
 import { ListActComponent } from './views/list/act/list-act.component';
@@ -161,6 +159,8 @@ import { TentativeBusinessContentGenerateComponent } from './views/generate/tent
 import { CanActivateTentativeBusiness } from './shared/guard/tentative-business/tentative-business.guard';
 import { TentativeBusinessResolver } from './shared/resolver/tentative-business/tentative-business.resolver';
 import { ListTentativeBusinessResolver } from './shared/resolver/tentative-business/list-tentative-business.resolver';
+import { CanActivateTentativeBusinessOrderPaper } from './shared/guard/tentative-business/order-paper.guard';
+import { TentativeBusinessOrderPaperResolver } from './shared/resolver/tentative-business/order-paper.resolver';
 
 const routes: Routes = [
   // Login route
@@ -510,31 +510,46 @@ const routes: Routes = [
         canActivate: [CanActivateVotebook],
         resolve: {
           votebook: VotebookResolver,
-          orderPaper: VotebookOrderPaperResolver,
         },
       },
       {
         path: 'tentative-business',
         component: TentativeBusinessGenerateComponent,
+        canActivate: [CanActivateTentativeBusinessOrderPaper],
+        resolve: {
+          orderPaper: TentativeBusinessOrderPaperResolver,
+        },
       },
       {
         path: 'tentative-business-content',
         component: TentativeBusinessContentGenerateComponent,
+        canActivate: [CanActivateTentativeBusinessOrderPaper],
+        resolve: {
+          orderPaper: TentativeBusinessOrderPaperResolver,
+        },
       },
       {
         path: 'tentative-business/:id',
         component: TentativeBusinessGenerateComponent,
-        canActivate: [CanActivateTentativeBusiness],
+        canActivate: [
+          CanActivateTentativeBusiness,
+          CanActivateTentativeBusinessOrderPaper,
+        ],
         resolve: {
           tentativeBusiness: TentativeBusinessResolver,
+          orderPaper: TentativeBusinessOrderPaperResolver,
         },
       },
       {
         path: 'tentative-business-content/:id',
         component: TentativeBusinessContentGenerateComponent,
-        canActivate: [CanActivateTentativeBusiness],
+        canActivate: [
+          CanActivateTentativeBusiness,
+          CanActivateTentativeBusinessOrderPaper,
+        ],
         resolve: {
           tentativeBusiness: TentativeBusinessResolver,
+          orderPaper: TentativeBusinessOrderPaperResolver,
         },
       },
     ],

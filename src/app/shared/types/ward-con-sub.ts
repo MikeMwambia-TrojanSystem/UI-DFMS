@@ -1,17 +1,19 @@
 import { BasicDocument } from './_global';
 
 export class WardConSub {
-  _id: string;
-  name: string;
-  county: string;
-  subCounty: string;
-  constituency: string;
   assemblyId: string;
-  type: 'subcounty' | 'constituency' | 'ward';
-  date: string;
-  published: boolean;
+  constituency?: string;
   createdAt: string;
+  name: string;
+  published: boolean;
+  publishState: 'draft' | 'published';
+  subCounty?: string;
+  type: 'subcounty' | 'constituency' | 'ward';
+  _id: string;
+  // Missing not important
   updatedAt: string;
+  // county?: string;
+  // date: string;
 }
 
 export class WardConSubPost extends BasicDocument {

@@ -33,7 +33,7 @@ export class ListBillComponent implements OnInit {
 
     // Get Petitions data from resolver
     this.route.data.pipe(take(1)).subscribe(({ bills }: { bills: Bill[] }) => {
-      this.bills = _.orderBy(bills, 'datePublished', 'desc');
+      this.bills = _.orderBy(bills, 'createdAt', 'desc');
     });
   }
 

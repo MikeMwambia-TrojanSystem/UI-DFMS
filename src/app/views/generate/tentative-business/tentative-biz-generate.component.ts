@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 import { CacheService } from 'src/app/services/cache.service';
+import { OrderPaper } from 'src/app/shared/types/order-paper';
 
 export interface OrderPaperCached {
   form: FormGroup;
@@ -15,11 +17,13 @@ export interface OrderPaperCached {
 })
 export class TentativeBusinessGenerateComponent implements OnInit {
   private _tentativeBizId: string;
-  orderPaperNo: number;
+  orderPaper: OrderPaper;
 
   form = this.fb.group({
-    assemblySittingDate: ['', Validators.required],
-    assemblySittingTime: ['', Validators.required],
+    orderPaperId: ['', Validators.required],
+    dateOfContent: ['', Validators.required],
+    dayOfContent: ['', Validators.required],
+    time: ['', Validators.required],
   });
 
   constructor(
@@ -30,11 +34,11 @@ export class TentativeBusinessGenerateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.orderPaperNo = this.route.snapshot.queryParams['order-paper'];
-
-    if (!this.orderPaperNo) {
-      this.router.navigate(['/intro']);
-    }
+    this.route.data
+      .pipe(take(1))
+      .subscribe(({ orderPaper }: { orderPaper: OrderPaper }) => {
+        this.orderPaper = orderPaper;
+      });
   }
 
   onGenerate() {
@@ -52,7 +56,7 @@ export class TentativeBusinessGenerateComponent implements OnInit {
     } else {
       this.router.navigate(['/generate/tentative-business-content'], {
         queryParams: {
-          'order-paper': this.orderPaperNo,
+          'order-paper': this.orderPaper._id,
         },
       });
     }

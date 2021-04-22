@@ -3,13 +3,13 @@
     <h1 class="title">Motions</h1>
     <app-search-bar></app-search-bar>
     <div *ngIf="motions.length">
-      <app-info-item
+      <app-motion-item
         *ngFor="let motion of motions"
-        [title]="motion.content"
-        [date]="motion.datePublished"
-        [subjects]="[motion.relatedTo]"
-        [department]="motion.department"
+        [content]="motion.title"
         [sponsored]="motion.sponsoredBy.sponsorName"
+        [relatedTo]="motion.relatedTo"
+        [department]="motion.department"
+        [date]="motion.datePublished"
         class="item"
         [selectable]="selectable"
         [state]="motion.publishState"
@@ -18,7 +18,7 @@
         (select)="onSelect(motion)"
         [canEdit]="motion.canEdit"
         [canDelete]="motion.canDelete"
-      ></app-info-item>
+      ></app-motion-item>
     </div>
     <div class="list-no-value">
       <p *ngIf="!motions.length">No Motions Listed!</p>

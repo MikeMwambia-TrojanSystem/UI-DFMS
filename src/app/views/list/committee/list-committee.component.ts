@@ -14,7 +14,7 @@ import { CommitteeService } from 'src/app/services/committee.service';
 })
 export class ListCommitteeComponent implements OnInit {
   private _cacheId: string;
-  private _state: 'draft' | 'published';
+  state: 'draft' | 'published';
   committees: Committee[];
   selectable = false; // Whether the list is selectable
 
@@ -30,7 +30,7 @@ export class ListCommitteeComponent implements OnInit {
     const queryParams = this.route.snapshot.queryParams;
     this.selectable = queryParams.select === 'true' || false;
     this._cacheId = queryParams.id;
-    this._state = queryParams.state;
+    this.state = queryParams.state;
 
     // Get Commitees data from resolver
     this.route.data
@@ -54,7 +54,7 @@ export class ListCommitteeComponent implements OnInit {
         queryParams: {
           select: this.selectable,
           id: this._cacheId,
-          state: this._state,
+          state: this.state,
         },
       }),
       () => {

@@ -6,6 +6,7 @@ export class Department extends BasicDocument {
   createdAt: string;
   members: string[];
   name: string;
+  publishState: 'draft' | 'published';
   published: boolean;
   updatedAt: string;
 }

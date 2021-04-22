@@ -125,6 +125,7 @@ import { PersonnelVerificationComponent } from './views/verification/personnel/p
 import { TentativeBusinessGenerateComponent } from './views/generate/tentative-business/tentative-biz-generate.component';
 import { TentativeBusinessContentGenerateComponent } from './views/generate/tentative-business-content/tb-content-generate.component';
 import { HttpResponseUnauthorizedIntercepter } from './shared/interceptor/unauthorized';
+import { MotionItemComponent } from './components/MotionItem/motion-item.component';
 
 const dbConfig: DBConfig = {
   name: 'MyDb',
@@ -253,6 +254,7 @@ const dbConfig: DBConfig = {
     PersonnelVerificationComponent,
     TentativeBusinessGenerateComponent,
     TentativeBusinessContentGenerateComponent,
+    MotionItemComponent,
   ],
   imports: [
     BrowserModule,

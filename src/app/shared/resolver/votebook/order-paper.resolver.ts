@@ -23,7 +23,9 @@ export class VotebookOrderPaperResolver implements Resolve<OrderPaper> {
     return this.votebookService.getVotebook(votebookId).pipe(
       take(1),
       switchMap((votebook) =>
-        this.orderPaperService.getOrderPaperByNo(votebook.orderPapersNo)
+        this.orderPaperService
+          .getOrderPaperByNo(votebook.orderPapersNo)
+          .pipe(take(1))
       )
     );
   }

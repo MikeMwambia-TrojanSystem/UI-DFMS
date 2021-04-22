@@ -20,7 +20,8 @@ export class CreateDepartmentComponent implements OnInit {
     name: new FormControl('', Validators.required),
     assemblyId: new FormControl('2d887s61a', Validators.required),
     published: new FormControl(false),
-    members: new FormArray([]),
+    publishState: new FormControl('draft'),
+    members: new FormControl(''),
   }); // Form group that holds user input
 
   county = 'Meru'; // Dynamic county name;
@@ -47,14 +48,10 @@ export class CreateDepartmentComponent implements OnInit {
         .pipe(take(1))
         .subscribe(({ department }: { department: Department }) => {
           const { members, ...others } = department;
-          const membersControl = this.form.get('members') as FormArray;
-
-          for (const member of members) {
-            membersControl.push(new FormControl(member));
-          }
 
           this.form.patchValue({
             ...others,
+            members: members.join('&&&'),
           });
         });
     } else {
@@ -89,16 +86,19 @@ export class CreateDepartmentComponent implements OnInit {
 
     const value = this.form.value;
 
-    value.published = published;
+    value.publishState = published ? 'published' : 'draft';
+    value.members = `${value.members}${
+      value.members.indexOf('&&&') === -1 ? '&&&' : ''
+    }`;
 
     if (this._mode === 'creating') {
       this.departmentService.postDepartment(value).subscribe(subCallback);
     } else {
       value.id = this._departmentId;
 
-      if (!(value.members as string[]).length) {
-        value.members = '[]';
-      }
+      // if (!(value.members as string[]).length) {
+      //   value.members = '[]';
+      // }
 
       this.departmentService.updateDepartment(value).subscribe(subCallback);
     }

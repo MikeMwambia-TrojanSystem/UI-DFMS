@@ -22,11 +22,11 @@ export class ListConstituencyResolver implements Resolve<Constituency[]> {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<Constituency[]> | Promise<Constituency[]> | Constituency[] {
-    const publishState = route.queryParams.state !== 'draft';
+    const publishState = route.queryParams.state || 'published';
 
     return this.wardConSubService.getConstituencies().pipe(
       take(1),
-      map((cons) => cons.filter((c) => c.published === publishState))
+      map((cons) => cons.filter((c) => c.publishState === publishState))
     );
   }
 }

@@ -20,7 +20,8 @@ export class CreateSubcountyComponent implements OnInit {
     name: new FormControl('', Validators.required),
     type: new FormControl('subcounty', Validators.required),
     assemblyId: new FormControl('2d7c82a9c', Validators.required),
-    date: new FormControl(''),
+    published: new FormControl(false),
+    publishState: new FormControl('draft'),
   });
 
   county = 'Meru';
@@ -81,11 +82,9 @@ export class CreateSubcountyComponent implements OnInit {
     };
 
     const value = this.form.value;
-    value.published = published;
+    value.publishState = published ? 'published' : 'draft';
 
     if (this._mode === 'creating') {
-      value.date = new Date().toISOString();
-
       this.wardConSubService
         .postWardConSub(value, 'subcounty')
         .subscribe(subCallback);

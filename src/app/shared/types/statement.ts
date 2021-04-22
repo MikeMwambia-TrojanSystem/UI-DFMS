@@ -12,7 +12,12 @@ export interface StatementPost {
 }
 
 export interface Statement extends BasicDocument {
-  _id: string;
+  approvingAccount: {
+    account: string;
+    approverId: string;
+  };
+  assemblyId: string;
+  createdAt: string;
   datePublished: string;
   dateStatementSought: string;
   dateStatementToResponded: string;
@@ -29,14 +34,18 @@ export interface Statement extends BasicDocument {
     department: string;
     id: string;
   };
+  statementSignature: string;
   status: string;
   subjectOfStatement: string;
   title: number;
+  updatedAt: string;
+  uploaded: true;
   uploadedFileURL: string;
   uploadingAccount: {
     name: string;
     id: string;
   };
+  _id: string;
 }
 
 // export interface Statement extends BasicDocument {

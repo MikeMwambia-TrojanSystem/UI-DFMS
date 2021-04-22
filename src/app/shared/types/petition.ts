@@ -29,7 +29,6 @@ export class PetitionPost {
 }
 
 export class Petition extends BasicDocument {
-  _id: string;
   approvingAccount: { approverId: string; account: string };
   assemblyId: string;
   concernedCommitee: { name: string; id: string };
@@ -42,14 +41,15 @@ export class Petition extends BasicDocument {
   orderPaperId: string;
   petitionNumber: number;
   petitionSignature: string;
-  petitionTitle: string;
   petitioners: string[];
   publishState: 'draft' | 'private' | 'public';
   published: boolean;
   relatedTo: string;
   sponsoredBy: { sponsorName: string; sponsorId: string };
+  title: string;
   updatedAt: string;
   uploaded: boolean;
   uploadedFileURL: string;
-  uploadingAccount: { name: string; id: string };
+  uploadingAccount: { uploadAccount: string; uploadId: string };
+  _id: string;
 }

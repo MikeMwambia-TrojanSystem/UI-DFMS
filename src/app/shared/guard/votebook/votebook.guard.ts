@@ -5,7 +5,7 @@ import {
   Router,
   UrlTree,
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 import { OrderPaperService } from 'src/app/services/order-paper.service';
 import { VotebookService } from 'src/app/services/votebook.service';
@@ -33,11 +33,15 @@ export class CanActivateVotebook implements CanActivate {
       take(1),
       switchMap((votebook) =>
         votebook
-          ? this.orderPaperService.getOrderPaperByNo(votebook.orderPapersNo)
+          ? this.orderPaperService
+              .getOrderPaperByNo(votebook.orderPapersNo)
+              .pipe(
+                take(1),
+                map((orderPaper) =>
+                  orderPaper ? true : this.router.createUrlTree(['/intro'])
+                )
+              )
           : of(this.router.createUrlTree(['/intro']))
-      ),
-      map((orderPaper) =>
-        orderPaper ? true : this.router.createUrlTree(['/intro'])
       )
     );
   }
