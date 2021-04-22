@@ -331,11 +331,6 @@ export class CreateCommitteeComponent implements OnInit {
       value.committesMembers.indexOf('&&&') === -1 ? '&&&' : ''
     }`;
 
-<<<<<<< HEAD
-    value.published = published;
-    value.commiteeSignature = moment().unix();
-=======
->>>>>>> 973528c09c48fcd5c7ea29d5fc15b3701775c938
     if (this._mode === 'creating') {
       value.commiteeSignature = moment().unix();
       value.datePublished = new Date().toISOString();
