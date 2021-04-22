@@ -1,0 +1,38 @@
+<div class="main">
+  <div class="info">
+    <span class="number">Act NO: {{ number }}</span>
+    <span class="title">{{ title }}</span>
+    <span class="sponsor"
+      >Sponsor by
+      <span class="highlight">{{ sponsor }}</span>
+    </span>
+    <span class="related"
+      >Related to
+      <span class="highlight">{{ relatedTo }}</span>
+    </span>
+    <span class="date"
+      >Published on
+      <span class="highlight">{{ date | date: "dd MMMM, yyyy" }}</span></span
+    >
+    <div class="state" *ngIf="state">
+      <div class="dot"></div>
+      <span class="label">{{ stateExpanded }}</span>
+    </div>
+  </div>
+  <button mat-button *ngIf="selectable" class="btn" (click)="onSelect()">
+    Select
+  </button>
+</div>
+<div class="list-actions" *ngIf="!selectable">
+  <a [routerLink]="[editUrl]" *ngIf="canEdit">
+    <button mat-button class="list-actions-btn edit">Edit</button>
+  </a>
+  <button
+    mat-button
+    class="list-actions-btn delete"
+    (click)="onDelete()"
+    *ngIf="canDelete"
+  >
+    Delete
+  </button>
+</div>

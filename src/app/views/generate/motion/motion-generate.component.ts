@@ -185,11 +185,19 @@ export class MotionGenerateComponent implements OnInit {
       const navigate = () => {
         this.cacheService.clearCache('GENERATE_MOTION');
 
-        this.router.navigate(['/list/motion'], {
-          queryParams: {
-            state: state,
-          },
-        });
+        if (this.form.get('noticeOfMotion').value) {
+          this.router.navigate(['/list/notice-of-motion'], {
+            queryParams: {
+              state: state,
+            },
+          });
+        } else {
+          this.router.navigate(['/list/motion'], {
+            queryParams: {
+              state: state,
+            },
+          });
+        }
       };
 
       const value = this.form.value;

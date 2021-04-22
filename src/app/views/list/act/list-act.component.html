@@ -3,11 +3,13 @@
     <h1 class="title">Acts</h1>
     <app-search-bar></app-search-bar>
     <div>
-      <app-info-item
+      <app-act-item
         *ngFor="let act of acts"
+        [number]="act.actNo"
         [title]="act.titleOfAct"
         [date]="act.datePublished"
-        [subjects]="[act.relatedTo]"
+        [relatedTo]="act.relatedTo"
+        [sponsor]="act.sponsorId.sponsorName"
         class="item"
         [selectable]="selectable"
         [state]="act.publishState"
@@ -17,7 +19,7 @@
         [canEdit]="act.canEdit"
         [canDelete]="act.canDelete"
       >
-      </app-info-item>
+      </app-act-item>
     </div>
     <div class="list-no-value">
       <p *ngIf="!acts.length">No Acts Listed!</p>

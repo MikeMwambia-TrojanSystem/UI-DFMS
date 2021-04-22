@@ -26,7 +26,10 @@ export class ListMotionResolver implements Resolve<Motion[]> {
     return this.motionService.fetchMotions().pipe(
       take(1),
       map((motions) =>
-        motions.filter((motion) => motion.publishState === publishState)
+        motions.filter(
+          (motion) =>
+            motion.publishState === publishState && !motion.noticeOfMotion
+        )
       )
     );
   }
