@@ -327,7 +327,7 @@ export class CreateCommitteeComponent implements OnInit {
     const value = this.form.value;
 
     value.published = published;
-    value.signature = moment().unix();
+    value.commiteeSignature = moment().unix();
     if (this._mode === 'creating') {
       value.datePublished = new Date().toISOString();
 

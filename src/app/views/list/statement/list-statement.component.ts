@@ -50,7 +50,7 @@ export class ListStatementComponent implements OnInit {
   }: Statement): StatementInfo[] {
     return [
       {
-        label: 'Statement No ',
+        label: 'Statement No',
         content: title.toString(),
         class: { common: 'head' },
       },
