@@ -15,6 +15,7 @@
         [published]="state !== 'draft'"
         [canEdit]="department.canEdit"
         [canDelete]="department.canDelete"
+        [viewUrl]="'/view/department/' + department._id"
       >
       </app-list-item>
     </div>

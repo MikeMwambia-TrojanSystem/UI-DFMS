@@ -16,6 +16,7 @@
         [published]="state !== 'draft'"
         [canEdit]="subcounty.canEdit"
         [canDelete]="subcounty.canDelete"
+        [viewUrl]="'/view/subcounty/' + subcounty._id"
       >
       </app-list-item>
     </div>

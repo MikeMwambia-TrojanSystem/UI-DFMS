@@ -18,6 +18,7 @@
         (select)="onSelect(motion)"
         [canEdit]="motion.canEdit"
         [canDelete]="motion.canDelete"
+        [viewUrl]="'/view/motion/' + motion._id"
       ></app-motion-item>
     </div>
     <div class="list-no-value">

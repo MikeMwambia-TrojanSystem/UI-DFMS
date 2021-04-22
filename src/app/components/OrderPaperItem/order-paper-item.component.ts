@@ -16,6 +16,7 @@ export class OrderPaperItemComponent implements OnInit {
   @Input() sub: string;
   @Input() state: string;
   @Input() editUrl: string;
+  @Input() viewUrl: string;
   @Input() downloadUrl: string;
   @Input() canEdit: boolean;
   @Input() canDelete: boolean;

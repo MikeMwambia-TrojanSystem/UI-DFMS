@@ -18,6 +18,7 @@ export class ReportItemComponent implements OnInit {
   @Input() sub: string;
   @Input() state: string;
   @Input() editUrl: string;
+  @Input() viewUrl: string;
   @Input() canEdit: boolean;
   @Input() canDelete: boolean;
   stateExpanded: string;

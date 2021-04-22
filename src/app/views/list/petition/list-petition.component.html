@@ -18,6 +18,7 @@
         (select)="onSelect(petition)"
         [canEdit]="petition.canEdit"
         [canDelete]="petition.canDelete"
+        [viewUrl]="'/view/petition/' + petition._id"
       >
       </app-info-item>
     </div>

@@ -18,6 +18,7 @@
         (delete)="onDelete(report._id)"
         [canEdit]="report.canEdit"
         [canDelete]="report.canDelete"
+        [viewUrl]="'/view/report/' + report._id"
       >
       </app-report-item>
       <div class="list-no-value">

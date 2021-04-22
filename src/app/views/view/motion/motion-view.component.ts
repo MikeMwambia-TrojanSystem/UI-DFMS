@@ -22,6 +22,7 @@ export class MotionViewComponent implements OnInit {
     approverId: [{ value: '', disabled: true }],
     datePublished: [{ value: '', disabled: true }],
     published: [{ value: false, disabled: true }],
+    noticeOfMotion: [{ value: false, disabled: true }],
   });
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {}

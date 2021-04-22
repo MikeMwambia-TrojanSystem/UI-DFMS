@@ -13,6 +13,7 @@
         (delete)="onDelete(mcaEmployee._id)"
         [canEdit]="mcaEmployee.canEdit"
         [canDelete]="mcaEmployee.canDelete"
+        [viewUrl]="'/view/mca/' + mcaEmployee._id"
       ></app-list-item>
       <!-- <app-list-item
         *ngFor="let mcaEmployee of mcaEmployees"

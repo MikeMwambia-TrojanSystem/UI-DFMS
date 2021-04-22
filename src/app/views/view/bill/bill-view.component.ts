@@ -49,6 +49,7 @@ export class BillViewComponent implements OnInit {
         sponsor,
         uploadingAccount,
         datePassed,
+        title,
         ...others
       } = bill;
 
@@ -64,6 +65,7 @@ export class BillViewComponent implements OnInit {
         approvingAccId: approvingAccount.approvingAccId,
         committeeName: concernedCommiteeId.committeeName,
         committeeNameId: concernedCommiteeId.committeeNameId,
+        titleOfBill: title,
       });
     });
   }

@@ -21,6 +21,7 @@ export class StatementItemComponent implements OnInit {
   @Input() selectable: boolean;
   @Input() state: string;
   @Input() editUrl: string;
+  @Input() viewUrl: string;
   @Input() info: StatementInfo[];
   @Input() canEdit: boolean;
   @Input() canDelete: boolean;

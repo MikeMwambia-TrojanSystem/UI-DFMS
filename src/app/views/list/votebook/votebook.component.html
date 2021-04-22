@@ -16,6 +16,7 @@
         (select)="onSelect(votebook)"
         [canEdit]="votebook.canEdit"
         [canDelete]="votebook.canDelete"
+        [viewUrl]="'/view/votebook/' + votebook._id"
       >
       </app-order-paper-item>
     </div>

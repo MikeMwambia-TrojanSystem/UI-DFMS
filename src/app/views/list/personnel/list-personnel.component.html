@@ -13,6 +13,7 @@
         (select)="onSelect(personnel)"
         [canEdit]="personnel.canEdit"
         [canDelete]="personnel.canDelete"
+        [viewUrl]="'/view/personnel/' + personnel._id"
       ></app-list-item>
     </div>
     <div class="list-no-value">

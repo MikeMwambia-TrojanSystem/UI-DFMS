@@ -14,6 +14,7 @@ export class ActItemComponent implements OnInit {
   @Input() selectable: boolean;
   @Input() state: string;
   @Input() editUrl: string;
+  @Input() viewUrl: string;
   @Input() department: string;
   @Input() canEdit: boolean;
   @Input() canDelete: boolean;

@@ -14,6 +14,7 @@ export class MotionItemComponent implements OnInit {
   @Input() selectable: boolean;
   @Input() state: string;
   @Input() editUrl: string;
+  @Input() viewUrl: string;
   @Input() canEdit: boolean;
   @Input() canDelete: boolean;
   @Output() delete = new EventEmitter<void>();

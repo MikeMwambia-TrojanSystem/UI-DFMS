@@ -76,6 +76,7 @@ export class ReportDocumentViewComponent {
           uploadingAccount,
           editors,
           uploadedFileURL,
+          title,
           ...others
         } = report;
 
@@ -96,6 +97,7 @@ export class ReportDocumentViewComponent {
           uploadedAnexux: annexus.uploaded,
           uploadingUrl: annexus.uploadingUrl,
           uploadedFileURL: uploadedFileURL,
+          titleOfReport: title,
         });
 
         this.reportName = uploadedFileURL.length

@@ -28,6 +28,9 @@
   </a>
 </div>
 <div class="list-actions" *ngIf="!selectable">
+  <a [routerLink]="[viewUrl]">
+    <button mat-button class="list-actions-btn edit">View</button>
+  </a>
   <a [routerLink]="[editUrl]" *ngIf="canEdit">
     <button mat-button class="list-actions-btn edit">Edit</button>
   </a>

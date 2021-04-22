@@ -15,6 +15,7 @@
         [published]="state !== 'draft'"
         [canEdit]="ward.canEdit"
         [canDelete]="ward.canDelete"
+        [viewUrl]="'/view/ward/' + ward._id"
       >
       </app-list-item>
     </div>

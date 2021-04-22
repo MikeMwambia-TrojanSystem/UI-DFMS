@@ -28,11 +28,11 @@
       </mat-form-field>
 
       <p class="label notice">Generate Notice of Motion</p>
-      <mat-radio-group [disabled]="true">
-        <mat-radio-button value="true" style="margin-right: 20px"
+      <mat-radio-group [disabled]="true" formControlName="noticeOfMotion">
+        <mat-radio-button [value]="true" style="margin-right: 20px"
           >Yes</mat-radio-button
         >
-        <mat-radio-button value="false">No</mat-radio-button>
+        <mat-radio-button [value]="false">No</mat-radio-button>
       </mat-radio-group>
     </form>
   </app-center-card>

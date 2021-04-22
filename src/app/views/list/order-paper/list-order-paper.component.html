@@ -16,6 +16,7 @@
         (select)="onSelect(orderPaper)"
         [canEdit]="orderPaper.canEdit"
         [canDelete]="orderPaper.canDelete"
+        [viewUrl]="'/view/order-paper/' + orderPaper._id"
       >
       </app-order-paper-item>
     </div>

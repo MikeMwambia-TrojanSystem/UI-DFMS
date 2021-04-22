@@ -15,6 +15,7 @@
         (delete)="onDelete(committee._id)"
         [canEdit]="committee.canEdit"
         [canDelete]="committee.canDelete"
+        [viewUrl]="'/view/committee/' + committee._id"
       >
       </app-list-item>
     </div>

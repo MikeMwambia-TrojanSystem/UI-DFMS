@@ -19,6 +19,7 @@ export class InfoItemComponent implements OnInit {
   @Input() department: string;
   @Input() canEdit: boolean;
   @Input() canDelete: boolean;
+  @Input() viewUrl: string;
   @Output() delete = new EventEmitter<void>();
   @Output() select = new EventEmitter<void>();
   stateExpanded: string;

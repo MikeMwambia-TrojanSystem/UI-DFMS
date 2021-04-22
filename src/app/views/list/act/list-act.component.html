@@ -18,6 +18,7 @@
         (select)="onSelect(act)"
         [canEdit]="act.canEdit"
         [canDelete]="act.canDelete"
+        [viewUrl]="'/view/act/' + act._id"
       >
       </app-act-item>
     </div>
