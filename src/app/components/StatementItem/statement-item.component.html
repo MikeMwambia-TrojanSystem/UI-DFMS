@@ -18,7 +18,7 @@
   </button>
 </div>
 <div class="list-actions" *ngIf="!selectable">
-  <a [routerLink]="[viewUrl]" *ngIf="viewUrl">
+  <a [routerLink]="[viewUrl]" *ngIf="viewUrl" target="_blank">
     <button mat-button class="list-actions-btn edit">View</button>
   </a>
   <a [routerLink]="[editUrl]" *ngIf="canEdit">

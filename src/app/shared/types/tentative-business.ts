@@ -18,7 +18,28 @@ export class TentativeBusinessPost {
 }
 
 export class TentativeBusiness extends BasicDocument {
-  _id: string;
+  author: string;
+  authorName: string;
+  bills: string[];
+  canApprove: boolean;
+  canDelete: boolean;
+  canEdit: boolean;
+  createdAt: string;
+  dateOfContent: string;
+  dayOfContent: string;
+  motions: string[];
+  noticeOfMotions: string[];
+  orderPaperId: string;
+  papers: string[];
+  petitions: string[];
   published: boolean;
   publishState: 'draft' | 'private' | 'public';
+  statements: string[];
+  timeOfContent: string;
+  updatedAt: string;
+  _id: string;
+}
+
+export class TentativeBusinessWithOrderNumber extends TentativeBusiness {
+  orderPaperNo: number;
 }

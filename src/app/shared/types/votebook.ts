@@ -54,6 +54,7 @@ export class Votebook extends BasicDocument {
   approvingAccount: { account: string; approverId: string };
   assemblyId: string;
   assemblyNo: number;
+  authorName: string;
   bills: { content: string; source: string; documentId: string }[];
   communicationFromChainr: string[];
   createdAt: string;

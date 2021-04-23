@@ -128,6 +128,10 @@ import { HttpResponseUnauthorizedIntercepter } from './shared/interceptor/unauth
 import { MotionItemComponent } from './components/MotionItem/motion-item.component';
 import { ActItemComponent } from './components/ActItem/act-item.component';
 import { StatementViewComponent } from './views/view/statement/statement-view.component';
+import { VotebookViewComponent } from './views/view/votebook/votebook-view.component';
+import { VotebookContentViewComponent } from './views/view/votebook-content/votebook-content-view.component';
+import { TentativeBusinessViewComponent } from './views/view/tentative-business/tentative-biz-view.component';
+import { TentativeBusinessContentViewComponent } from './views/view/tentative-business-content/tb-content-view.component';
 
 const dbConfig: DBConfig = {
   name: 'MyDb',
@@ -259,6 +263,10 @@ const dbConfig: DBConfig = {
     MotionItemComponent,
     ActItemComponent,
     StatementViewComponent,
+    VotebookViewComponent,
+    VotebookContentViewComponent,
+    TentativeBusinessViewComponent,
+    TentativeBusinessContentViewComponent,
   ],
   imports: [
     BrowserModule,

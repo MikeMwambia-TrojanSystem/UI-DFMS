@@ -88,6 +88,7 @@ export class PaperContentViewComponent implements OnInit {
   });
 
   authorName: string;
+  paperId: string;
 
   constructor(
     private fb: FormBuilder,
@@ -99,48 +100,47 @@ export class PaperContentViewComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ orderPaper }: { orderPaper: OrderPaper }) => {
-        if (orderPaper) {
-          const {
-            approvingAccount,
-            messages,
-            adminstrationOfOath,
-            communicationFromChainr,
-            petitions,
-            papers,
-            statements,
-            motions,
-            noticeOfMotions,
-            bills,
-            authorName,
-            ...others
-          } = orderPaper;
+        const {
+          approvingAccount,
+          messages,
+          adminstrationOfOath,
+          communicationFromChainr,
+          petitions,
+          papers,
+          statements,
+          motions,
+          noticeOfMotions,
+          bills,
+          authorName,
+          ...others
+        } = orderPaper;
 
-          this.form.patchValue({
-            ...others,
-            approvingAccount: approvingAccount.account,
-            approverId: approvingAccount.approverId,
-            adminContent: this.orderPaperService.checkNone(adminstrationOfOath),
-            communContent: this.orderPaperService.checkNone(
-              communicationFromChainr
-            ),
-            messages: this.orderPaperService.checkNone(messages, (m) =>
-              m
-                .map(
-                  (m) =>
-                    `content=${m.content}|||source=${m.source}|||uploadedLocation=${m.uploadedLocation}`
-                )
-                .join('&&&')
-            ),
-            petitionId: this.orderPaperService.checkNone(petitions),
-            reportId: this.orderPaperService.checkNone(papers),
-            statementId: this.orderPaperService.checkNone(statements),
-            motionId: this.orderPaperService.checkNone(motions),
-            motionNoticeId: this.orderPaperService.checkNone(noticeOfMotions),
-            billsId: this.orderPaperService.checkNone(bills),
-          });
+        this.form.patchValue({
+          ...others,
+          approvingAccount: approvingAccount.account,
+          approverId: approvingAccount.approverId,
+          adminContent: this.orderPaperService.checkNone(adminstrationOfOath),
+          communContent: this.orderPaperService.checkNone(
+            communicationFromChainr
+          ),
+          messages: this.orderPaperService.checkNone(messages, (m) =>
+            m
+              .map(
+                (m) =>
+                  `content=${m.content}|||source=${m.source}|||uploadedLocation=${m.uploadedLocation}`
+              )
+              .join('&&&')
+          ),
+          petitionId: this.orderPaperService.checkNone(petitions),
+          reportId: this.orderPaperService.checkNone(papers),
+          statementId: this.orderPaperService.checkNone(statements),
+          motionId: this.orderPaperService.checkNone(motions),
+          motionNoticeId: this.orderPaperService.checkNone(noticeOfMotions),
+          billsId: this.orderPaperService.checkNone(bills),
+        });
 
-          this.authorName = authorName;
-        }
+        this.authorName = authorName;
+        this.paperId = orderPaper._id;
       });
 
     this._populateNotifications();

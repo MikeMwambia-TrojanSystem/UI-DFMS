@@ -1,7 +1,8 @@
 <app-background>
   <app-center-card>
     <h1 class="title">
-      Generate Tentative Business for Order Paper No. {{ orderPaperNo }}
+      Generate Tentative Business for Order Paper No.
+      {{ orderPaper.orderPaperNo }}
     </h1>
     <app-menu-container
       *ngFor="let item of items; let i = index"
@@ -29,7 +30,7 @@
             mat-stroked-button
             class="btn"
             (click)="onSkip(item.key)"
-            [disabled]="form.get(item.key).value === 'NONE'"
+            [disabled]="form.get(item.key).value !== ''"
           >
             Skip
           </button>

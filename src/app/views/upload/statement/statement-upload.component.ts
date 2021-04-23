@@ -44,6 +44,7 @@ export class StatementUploadComponent implements OnInit {
     // account: new FormControl(''),
     publishState: new FormControl(''),
     seekerDescription: new FormControl('', Validators.required),
+    relatedTo: new FormControl('', Validators.required),
   });
 
   filename: string;

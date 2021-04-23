@@ -15,6 +15,9 @@ import {
   CacheService,
 } from 'src/app/services/cache.service';
 import { TentativeBusinessService } from 'src/app/services/tentative-business.service';
+import { take } from 'rxjs/operators';
+import { OrderPaper } from 'src/app/shared/types/order-paper';
+import { TentativeBusiness } from 'src/app/shared/types/tentative-business';
 
 enum SelectUrl {
   'petitionId' = '/list/petition',
@@ -41,7 +44,7 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
   private _cacheId: string;
   private _tbId: string;
   private _mode: 'creating' | 'editing' = 'creating';
-  orderPaperNo: number;
+  orderPaper: OrderPaper;
 
   items: MenuItem[] = [
     {
@@ -78,21 +81,17 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
 
   form = this.fb.group({
     orderPaperId: ['', Validators.required],
-    dateOfContent: ['', Validators.required],
-    dayOfContent: ['', Validators.required],
     time: ['', Validators.required],
-    tentativeBusinessSignature: [''],
-    assemblyId: ['12345'],
-    datePublished: [''],
-    publishState: ['draft'],
-    published: [false],
-    orderPaperNo: ['', Validators.required],
+    dayOfContent: ['', Validators.required],
+    dateOfContent: ['', Validators.required],
     petitionId: ['', Validators.required],
     reportId: ['', Validators.required],
+    motionNoticeId: ['', Validators.required],
     statementId: ['', Validators.required],
     motionId: ['', Validators.required],
-    motionNoticeId: ['', Validators.required],
     billsId: ['', Validators.required],
+    datePublished: [''],
+    publishState: ['draft', Validators.required],
   });
 
   constructor(
@@ -108,63 +107,53 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
     // Get cache id
     const queryParams = this.route.snapshot.queryParams;
     this._cacheId = queryParams.id;
-    this.orderPaperNo = queryParams['order-paper'];
-    this.form.patchValue({
-      orderPaperNo: this.orderPaperNo,
-    });
+
+    // Get Order paper resolve data
+    this.route.data
+      .pipe(take(1))
+      .subscribe(({ orderPaper }: { orderPaper: OrderPaper }) => {
+        this.orderPaper = orderPaper;
+      });
 
     // Populate content
-    // this._paperId = this.route.snapshot.params.id;
-    // if (this._paperId) {
-    //   this._mode = 'editing';
 
-    //   this.route.data
-    //     .pipe(take(1))
-    //     .subscribe(({ orderPaper }: { orderPaper: OrderPaper }) => {
-    //       const {
-    //         adminstrationOfOath,
-    //         approvingAccount,
-    //         bills,
-    //         communicationFromChainr,
-    //         messages,
-    //         motions,
-    //         noticeOfMotions,
-    //         papers,
-    //         petitions,
-    //         statements,
-    //         ...others
-    //       } = orderPaper;
+    this.route.data
+      .pipe(take(1))
+      .subscribe(
+        ({ tentativeBusiness }: { tentativeBusiness: TentativeBusiness }) => {
+          if (tentativeBusiness) {
+            this._mode = 'editing';
+            this._tbId = tentativeBusiness._id;
 
-    //       this.form.patchValue({
-    //         ...others,
-    //         approvingAccount: approvingAccount.account,
-    //         approverId: approvingAccount.approverId,
-    //         adminContent: this.orderPaperService.checkNone(adminstrationOfOath),
-    //         communContent: this.orderPaperService.checkNone(
-    //           communicationFromChainr
-    //         ),
-    //         messages: this.orderPaperService.checkNone(messages, (m) =>
-    //           m
-    //             .map(
-    //               (m) =>
-    //                 `content=${m.content}|||source=${m.source}|||uploadedLocation=${m.uploadedLocation}`
-    //             )
-    //             .join('&&&')
-    //         ),
-    //         petitionId: this.orderPaperService.checkNone(petitions),
-    //         reportId: this.orderPaperService.checkNone(papers),
-    //         statementId: this.orderPaperService.checkNone(statements),
-    //         motionId: this.orderPaperService.checkNone(motions),
-    //         motionNoticeId: this.orderPaperService.checkNone(noticeOfMotions),
-    //         billsId: this.orderPaperService.checkNone(bills),
-    //       });
-    //     });
-    // }
+            const {
+              bills,
+              motions,
+              noticeOfMotions,
+              papers,
+              petitions,
+              statements,
+            } = tentativeBusiness;
+
+            this.form.patchValue({
+              petitionId: this.tentativeBusinessService.checkNone(petitions),
+              reportId: this.tentativeBusinessService.checkNone(papers),
+              motionNoticeId: this.tentativeBusinessService.checkNone(
+                noticeOfMotions
+              ),
+              statementId: this.tentativeBusinessService.checkNone(statements),
+              motionId: this.tentativeBusinessService.checkNone(motions),
+              billsId: this.tentativeBusinessService.checkNone(bills),
+            });
+          }
+        }
+      );
 
     const cached = this.cacheService.getData<TentativeCached>(CACHE_ID);
 
     if (!cached && this._mode === 'creating') {
-      this.router.navigate(['/', 'generate', 'tentative-business']);
+      this.router.navigate(['/', 'generate', 'tentative-business'], {
+        queryParams: { 'order-paper': this.orderPaper._id },
+      });
       return;
     }
 
@@ -172,10 +161,6 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
       this.form.patchValue({
         ...cached.form.value,
       });
-    }
-
-    if (!this.orderPaperNo || !this.form.get('assemblySittingDate').value) {
-      this.router.navigate(['/intro']);
     }
 
     this._populateNotifications();
@@ -282,7 +267,7 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
       {
         redirect: true,
         redirectQueryParams: {
-          'order-paper': this.orderPaperNo,
+          'order-paper': this.orderPaper._id,
         },
       }
     );
@@ -306,7 +291,6 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
 
       if (this._mode === 'creating') {
         value.datePublished = new Date().toISOString();
-        value.tentativeBusinessSignature = moment().unix();
 
         this.tentativeBusinessService
           .postTentativeBusiness(value)

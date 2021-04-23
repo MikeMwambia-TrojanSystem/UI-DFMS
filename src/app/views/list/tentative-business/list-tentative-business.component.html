@@ -5,10 +5,11 @@
     <div>
       <app-order-paper-item
         *ngFor="let tb of tentativeBusinesses"
-        [date]="tb.datePublished"
+        [date]="tb.createdAt"
         class="item"
         [selectable]="selectable"
-        [sub]="'Tentative Business'"
+        [sub]="'Tentative Business on Order Paper'"
+        [number]="tb.orderPaperNo"
         [state]="tb.publishState"
         [editUrl]="'/generate/tentative-business/' + tb._id"
         (delete)="onDelete(tb)"

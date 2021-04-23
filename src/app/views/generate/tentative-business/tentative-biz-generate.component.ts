@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
+import moment from 'moment';
+
 import { CacheService } from 'src/app/services/cache.service';
 import { OrderPaper } from 'src/app/shared/types/order-paper';
+import { TentativeBusiness } from 'src/app/shared/types/tentative-business';
 
 export interface OrderPaperCached {
   form: FormGroup;
@@ -15,7 +19,8 @@ export interface OrderPaperCached {
   templateUrl: './tentative-biz-generate.component.html',
   styleUrls: ['./tentative-biz-generate.component.scss'],
 })
-export class TentativeBusinessGenerateComponent implements OnInit {
+export class TentativeBusinessGenerateComponent implements OnInit, OnDestroy {
+  private $onDestroy = new Subject();
   private _tentativeBizId: string;
   orderPaper: OrderPaper;
 
@@ -34,11 +39,50 @@ export class TentativeBusinessGenerateComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    // Get resolved data
     this.route.data
       .pipe(take(1))
-      .subscribe(({ orderPaper }: { orderPaper: OrderPaper }) => {
-        this.orderPaper = orderPaper;
+      .subscribe(
+        ({
+          orderPaper,
+          tentativeBusiness,
+        }: {
+          orderPaper: OrderPaper;
+          tentativeBusiness: TentativeBusiness;
+        }) => {
+          this.orderPaper = orderPaper;
+          this.form.get('orderPaperId').setValue(orderPaper._id);
+
+          if (tentativeBusiness) {
+            const {
+              orderPaperId,
+              dateOfContent,
+              dayOfContent,
+              timeOfContent,
+            } = tentativeBusiness;
+
+            this.form.patchValue({
+              orderPaperId,
+              dateOfContent,
+              dayOfContent,
+              time: timeOfContent,
+            });
+
+            this._tentativeBizId = tentativeBusiness._id;
+          }
+        }
+      );
+
+    this.form
+      .get('dateOfContent')
+      .valueChanges.pipe(takeUntil(this.$onDestroy))
+      .subscribe((v) => {
+        this.form.get('dayOfContent').setValue(moment(v).format('dddd'));
       });
+  }
+
+  ngOnDestroy() {
+    this.$onDestroy.next();
   }
 
   onGenerate() {

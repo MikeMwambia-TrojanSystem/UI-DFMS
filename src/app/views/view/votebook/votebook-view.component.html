@@ -1,11 +1,11 @@
 <app-background>
   <app-center-card>
-    <h1 class="title">Generate an Votes and Procedures</h1>
+    <h1 class="title">Votes and Procedures</h1>
     <form [formGroup]="form" class="form">
-      <app-custom-button
-        [title]="orderPaperNo ? orderPaperNo : 'Order Paper No'"
-        (buttonClick)="onSelectOrderPaper()"
-      ></app-custom-button>
+      <p class="label">Order Paper No</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="orderPapersNo" />
+      </mat-form-field>
 
       <p class="label">Assembly No</p>
       <mat-form-field appearance="standard">
@@ -17,7 +17,7 @@
         <input matInput formControlName="sessionNo" type="number" />
       </mat-form-field>
 
-      <!-- <div class="grid">
+      <div class="grid">
         <div class="grid-form">
           <p class="label">Assembly Sitting No</p>
           <mat-form-field appearance="standard">
@@ -30,12 +30,7 @@
             <input matInput formControlName="pageNoToDate" type="number" />
           </mat-form-field>
         </div>
-      </div> -->
-
-      <p class="label">Page No</p>
-      <mat-form-field appearance="standard">
-        <input matInput formControlName="pageNoToDate" type="number" />
-      </mat-form-field>
+      </div>
 
       <p class="label">Select Presiding Officer</p>
       <mat-form-field appearance="standard">
@@ -56,7 +51,7 @@
         appearance="standard"
         *ngIf="presidingPosition === 'Speaker of the Assembly'"
       >
-        <input matInput [value]="this.form.get('presiding').value" disabled />
+        <input matInput formControlName="presiding" />
       </mat-form-field>
 
       <p class="label" *ngIf="presidingPosition === 'Speaker of the Assembly'">
@@ -66,26 +61,33 @@
         appearance="standard"
         *ngIf="presidingPosition === 'Speaker of the Assembly'"
       >
-        <input matInput value="Speaker of the Assembly" disabled />
+        <input matInput formControlName="presidingPosition" />
       </mat-form-field>
 
-      <app-custom-button
-        [title]="memberName.length ? memberName : 'Select Member'"
-        (buttonClick)="onSelectMca()"
+      <p
+        class="label"
         *ngIf="presidingPosition === 'Member of the Speaker Parliament'"
-      ></app-custom-button>
+      >
+        Member
+      </p>
+      <mat-form-field
+        appearance="standard"
+        *ngIf="presidingPosition === 'Member of the Speaker Parliament'"
+      >
+        <input matInput formControlName="presiding" />
+      </mat-form-field>
 
       <div class="actions">
         <button
           mat-raised-button
           type="button"
           class="btn-save"
-          [disabled]="form.invalid || !valid"
-          (click)="onGenerate()"
+          [routerLink]="['/', 'view', 'votebook-content', id]"
         >
-          Generate Content
+          View Content
         </button>
       </div>
     </form>
+    <p class="view-author" *ngIf="authorName">Author: {{ authorName }}</p>
   </app-center-card>
 </app-background>

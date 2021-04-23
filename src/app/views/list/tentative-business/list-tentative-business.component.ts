@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs/operators';
+import _ from 'lodash';
+
 import { CacheService } from 'src/app/services/cache.service';
 import { TentativeBusinessService } from 'src/app/services/tentative-business.service';
-import { TentativeBusiness } from 'src/app/shared/types/tentative-business';
+import {
+  TentativeBusiness,
+  TentativeBusinessWithOrderNumber,
+} from 'src/app/shared/types/tentative-business';
+import { OrderPaper } from 'src/app/shared/types/order-paper';
 
 @Component({
   templateUrl: './list-tentative-business.component.html',
@@ -32,9 +38,14 @@ export class ListTentativeBusinesssComponent implements OnInit {
         ({
           tentativeBusinesses,
         }: {
-          tentativeBusinesses: TentativeBusiness[];
+          tentativeBusinesses: TentativeBusinessWithOrderNumber[];
         }) => {
-          this.tentativeBusinesses = tentativeBusinesses;
+          console.log(tentativeBusinesses);
+          this.tentativeBusinesses = _.orderBy(
+            tentativeBusinesses,
+            'createdAt',
+            'desc'
+          );
         }
       );
   }

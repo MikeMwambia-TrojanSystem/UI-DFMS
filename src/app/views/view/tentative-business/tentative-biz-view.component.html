@@ -2,35 +2,34 @@
   <app-center-card>
     <h1 class="title">
       Generate Tentative Business for Order Paper No.
-      {{ orderPaper.orderPaperNo }}
+      {{ orderPaperNo }}
     </h1>
     <form [formGroup]="form" class="form">
       <p class="label">Choose Date</p>
       <mat-form-field appearance="standard">
         <input matInput type="date" formControlName="dateOfContent" />
-        <mat-error *ngIf="form.get('dateOfContent').hasError('required')"
-          >Please enter date!</mat-error
-        >
       </mat-form-field>
 
       <p class="label">Choose Time</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="time" />
-        <mat-error *ngIf="form.get('time').hasError('required')"
-          >Please enter time!</mat-error
-        >
       </mat-form-field>
       <div class="actions">
         <button
           mat-raised-button
           type="button"
           class="btn-save"
-          (click)="onGenerate()"
-          [disabled]="form.invalid"
+          [routerLink]="[
+            '/',
+            'view',
+            'tentative-business-content',
+            tentativeBizId
+          ]"
         >
-          Generate Content
+          View Content
         </button>
       </div>
     </form>
+    <p class="view-author" *ngIf="authorName">Author: {{ authorName }}</p>
   </app-center-card>
 </app-background>

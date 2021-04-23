@@ -100,4 +100,8 @@ export class TentativeBusinessService {
       })
     );
   }
+
+  checkNone(field: string[]): string {
+    return field.length ? field.join('&&&') : 'NONE';
+  }
 }

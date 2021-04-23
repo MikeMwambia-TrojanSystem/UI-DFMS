@@ -81,6 +81,7 @@ export class VotebookGenerateComponent implements OnInit, OnDestroy {
               orderPapersNo,
               sessionNo,
               votebookNo,
+              presiding,
             } = votebook;
 
             this.form.patchValue({
@@ -91,6 +92,9 @@ export class VotebookGenerateComponent implements OnInit, OnDestroy {
               orderPapersNo,
               sessionNo,
               votebookNo,
+              presiding: presiding.name,
+              presidingPosition: presiding.position,
+              presidingId: presiding.id,
             });
           }
         }

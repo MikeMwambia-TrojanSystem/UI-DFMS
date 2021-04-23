@@ -8,10 +8,6 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 0;
-
-  .info {
-    margin-right: 20px;
-  }
 }
 
 .label {
@@ -24,14 +20,8 @@
   align-items: center;
 }
 
-.btn {
-  border-color: #008000;
-  color: #008000;
-  border-radius: 10px;
-  padding: 0;
-  width: 85px;
-  line-height: 30px;
-  margin: 0 5px;
+.btn-container {
+  margin: 0 10px;
 
   &:first-child {
     margin-left: 0;
@@ -40,10 +30,37 @@
   &:last-child {
     margin-right: 0;
   }
+}
+
+.btn {
+  border-color: #008000;
+  color: #008000;
+  border-radius: 10px;
+  width: 100px;
 
   &[disabled] {
     border-color: #ccc;
   }
+}
+
+.actions {
+  margin: 15px 0;
+  margin-top: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.btn-draft {
+  color: #008000;
+}
+
+.btn-save {
+  background: #008000;
+  color: white;
+  font-weight: 400;
+  padding: 3px 25px;
+  border-radius: 10px;
 }
 
 :host ::ng-deep {

@@ -162,6 +162,11 @@ import { ListTentativeBusinessResolver } from './shared/resolver/tentative-busin
 import { CanActivateTentativeBusinessOrderPaper } from './shared/guard/tentative-business/order-paper.guard';
 import { TentativeBusinessOrderPaperResolver } from './shared/resolver/tentative-business/order-paper.resolver';
 import { StatementViewComponent } from './views/view/statement/statement-view.component';
+import { VotebookViewComponent } from './views/view/votebook/votebook-view.component';
+import { VotebookContentViewComponent } from './views/view/votebook-content/votebook-content-view.component';
+import { TentativeBusinessOrderPaperEditResolver } from './shared/resolver/tentative-business/edit-order-paper.resolver';
+import { TentativeBusinessViewComponent } from './views/view/tentative-business/tentative-biz-view.component';
+import { TentativeBusinessContentViewComponent } from './views/view/tentative-business-content/tb-content-view.component';
 
 const routes: Routes = [
   // Login route
@@ -532,25 +537,19 @@ const routes: Routes = [
       {
         path: 'tentative-business/:id',
         component: TentativeBusinessGenerateComponent,
-        canActivate: [
-          CanActivateTentativeBusiness,
-          CanActivateTentativeBusinessOrderPaper,
-        ],
+        canActivate: [CanActivateTentativeBusiness],
         resolve: {
           tentativeBusiness: TentativeBusinessResolver,
-          orderPaper: TentativeBusinessOrderPaperResolver,
+          orderPaper: TentativeBusinessOrderPaperEditResolver,
         },
       },
       {
         path: 'tentative-business-content/:id',
         component: TentativeBusinessContentGenerateComponent,
-        canActivate: [
-          CanActivateTentativeBusiness,
-          CanActivateTentativeBusinessOrderPaper,
-        ],
+        canActivate: [CanActivateTentativeBusiness],
         resolve: {
           tentativeBusiness: TentativeBusinessResolver,
-          orderPaper: TentativeBusinessOrderPaperResolver,
+          orderPaper: TentativeBusinessOrderPaperEditResolver,
         },
       },
     ],
@@ -683,6 +682,41 @@ const routes: Routes = [
         canActivate: [CanActivateViewOrderPaper],
         resolve: {
           orderPaper: OrderPaperResolver,
+        },
+      },
+      {
+        path: 'votebook/:votebookId',
+        component: VotebookViewComponent,
+        canActivate: [CanActivateVotebook],
+        resolve: {
+          votebook: VotebookResolver,
+          orderPaper: VotebookOrderPaperResolver,
+        },
+      },
+      {
+        path: 'votebook-content/:votebookId',
+        component: VotebookContentViewComponent,
+        canActivate: [CanActivateVotebook],
+        resolve: {
+          votebook: VotebookResolver,
+        },
+      },
+      {
+        path: 'tentative-business/:id',
+        component: TentativeBusinessViewComponent,
+        canActivate: [CanActivateTentativeBusiness],
+        resolve: {
+          tentativeBusiness: TentativeBusinessResolver,
+          orderPaper: TentativeBusinessOrderPaperEditResolver,
+        },
+      },
+      {
+        path: 'tentative-business-content/:id',
+        component: TentativeBusinessContentViewComponent,
+        canActivate: [CanActivateTentativeBusiness],
+        resolve: {
+          tentativeBusiness: TentativeBusinessResolver,
+          orderPaper: TentativeBusinessOrderPaperEditResolver,
         },
       },
     ],
