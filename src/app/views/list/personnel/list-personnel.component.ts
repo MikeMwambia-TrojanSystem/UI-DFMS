@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import _ from 'lodash';
 
 import { CacheService } from 'src/app/services/cache.service';
 import { PersonnelService } from 'src/app/services/personnel.service';
 import { Personnel } from 'src/app/shared/types/personnel';
+import { DepartmentService } from 'src/app/services/department.service';
 
 @Component({
   templateUrl: './list-personnel.component.html',
@@ -14,6 +15,7 @@ import { Personnel } from 'src/app/shared/types/personnel';
 export class ListPersonnelComponent implements OnInit {
   private _cacheId: string;
   private _state: 'draft' | 'private' | 'public';
+  private _personnels: Personnel[];
   personnels: Personnel[];
   selectable = false; // Whether the list is selectable
 
@@ -21,7 +23,8 @@ export class ListPersonnelComponent implements OnInit {
     private route: ActivatedRoute,
     private personnelService: PersonnelService,
     private cacheService: CacheService,
-    private router: Router
+    private router: Router,
+    private departmentService: DepartmentService
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +38,9 @@ export class ListPersonnelComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ personnels }: { personnels: Personnel[] }) => {
-        this.personnels = _.orderBy(personnels, 'createdAt', 'desc');
+        const ordered = _.orderBy(personnels, 'createdAt', 'desc');
+        this._personnels = ordered;
+        this.personnels = ordered;
       });
   }
 
@@ -70,5 +75,37 @@ export class ListPersonnelComponent implements OnInit {
 
   onSelect(personnel: Personnel) {
     this.cacheService.emit(this._cacheId, personnel);
+  }
+
+  onApprove({ profilePic, department, _id, ...others }: Personnel) {
+    this.departmentService
+      .getDepartments()
+      .pipe(
+        switchMap((departments) =>
+          this.personnelService.updatePersonnel({
+            ...others,
+            profilePic: profilePic,
+            deparment: department,
+            deptId: departments.find((d) => d.name === department)._id,
+            published: true,
+            id: _id,
+          } as any)
+        )
+      )
+      .subscribe(({ personnelId, request_id }: any) => {
+        this.router.navigate(['/verification/personnel'], {
+          queryParams: {
+            userId: personnelId,
+            request_id,
+            state: 'published',
+          },
+        });
+      });
+  }
+
+  onSearch(query: string) {
+    this.personnels = this._personnels.filter((i) =>
+      _.lowerCase(i.name).includes(_.lowerCase(query))
+    );
   }
 }

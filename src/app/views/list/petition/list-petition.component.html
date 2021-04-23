@@ -1,7 +1,7 @@
 <app-background>
   <app-center-card>
     <h1 class="title">Petitions</h1>
-    <app-search-bar></app-search-bar>
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
     <div>
       <app-info-item
         *ngFor="let petition of petitions"
@@ -19,6 +19,8 @@
         [canEdit]="petition.canEdit"
         [canDelete]="petition.canDelete"
         [viewUrl]="'/view/petition/' + petition._id"
+        [canApprove]="petition.canApprove"
+        (approve)="onApprove(petition)"
       >
       </app-info-item>
     </div>

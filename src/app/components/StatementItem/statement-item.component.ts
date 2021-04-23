@@ -18,6 +18,7 @@ export type StatementInfo = {
 export class StatementItemComponent implements OnInit {
   @Output() delete = new EventEmitter<void>();
   @Output() select = new EventEmitter<void>();
+  @Output() approve = new EventEmitter<void>();
   @Input() selectable: boolean;
   @Input() state: string;
   @Input() editUrl: string;
@@ -25,6 +26,7 @@ export class StatementItemComponent implements OnInit {
   @Input() info: StatementInfo[];
   @Input() canEdit: boolean;
   @Input() canDelete: boolean;
+  @Input() canApprove: boolean;
   extendedState: string;
 
   ngOnInit() {
@@ -49,5 +51,9 @@ export class StatementItemComponent implements OnInit {
 
   onSelect() {
     this.select.emit();
+  }
+
+  onApprove() {
+    this.approve.emit();
   }
 }

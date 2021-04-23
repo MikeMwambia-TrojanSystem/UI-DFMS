@@ -19,7 +19,9 @@ export class InfoItemComponent implements OnInit {
   @Input() department: string;
   @Input() canEdit: boolean;
   @Input() canDelete: boolean;
+  @Input() canApprove: boolean;
   @Input() viewUrl: string;
+  @Output() approve = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Output() select = new EventEmitter<void>();
   stateExpanded: string;
@@ -42,5 +44,9 @@ export class InfoItemComponent implements OnInit {
 
   onSelect() {
     this.select.emit();
+  }
+
+  onApprove() {
+    this.approve.emit();
   }
 }

@@ -14,8 +14,9 @@ import { CommitteeService } from 'src/app/services/committee.service';
 })
 export class ListCommitteeComponent implements OnInit {
   private _cacheId: string;
-  state: 'draft' | 'published';
+  private _committees: Committee[];
   committees: Committee[];
+  state: 'draft' | 'published';
   selectable = false; // Whether the list is selectable
 
   constructor(
@@ -36,7 +37,9 @@ export class ListCommitteeComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ committees }: { committees: Committee[] }) => {
-        this.committees = _.orderBy(committees, 'createdAt', 'desc');
+        const ordered = _.orderBy(committees, 'createdAt', 'desc');
+        this._committees = ordered;
+        this.committees = ordered;
       });
   }
 
@@ -73,5 +76,37 @@ export class ListCommitteeComponent implements OnInit {
     this.committeeService.deleteCommittee(id).subscribe(() => {
       window.location.reload();
     });
+  }
+
+  onApprove({
+    committesMembers,
+    _id,
+    chair,
+    viceChair,
+    approvingAccount,
+    ...others
+  }: Committee) {
+    this.committeeService
+      .updateCommittee({
+        ...others,
+        Chairname: chair.name,
+        chairId: chair.id,
+        viceChair: viceChair.name,
+        viceChairId: viceChair.id,
+        approverId: approvingAccount.approverId,
+        account: approvingAccount.account,
+        committesMembers: committesMembers.join('&&&'),
+        published: true,
+        id: _id,
+      } as any)
+      .subscribe(() => {
+        window.location.reload();
+      });
+  }
+
+  onSearch(query: string) {
+    this.committees = this._committees.filter((i) =>
+      _.lowerCase(i.name).includes(_.lowerCase(query))
+    );
   }
 }

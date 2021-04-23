@@ -1,7 +1,7 @@
 <app-background>
   <app-center-card>
     <h1 class="title">MCA Lists</h1>
-    <app-search-bar></app-search-bar>
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
     <div *ngIf="mcaEmployees.length">
       <app-list-item
         *ngFor="let mcaEmployee of mcaEmployees"
@@ -14,6 +14,8 @@
         [canEdit]="mcaEmployee.canEdit"
         [canDelete]="mcaEmployee.canDelete"
         [viewUrl]="'/view/mca/' + mcaEmployee._id"
+        [canApprove]="mcaEmployee.canApprove"
+        (approve)="onApprove(mcaEmployee)"
       ></app-list-item>
       <!-- <app-list-item
         *ngFor="let mcaEmployee of mcaEmployees"

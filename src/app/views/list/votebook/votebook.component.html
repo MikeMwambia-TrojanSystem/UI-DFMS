@@ -1,7 +1,7 @@
 <app-background>
   <app-center-card>
     <h1 class="title">Votebooks</h1>
-    <app-search-bar></app-search-bar>
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
     <div>
       <app-order-paper-item
         *ngFor="let votebook of votebooks"
@@ -17,6 +17,8 @@
         [canEdit]="votebook.canEdit"
         [canDelete]="votebook.canDelete"
         [viewUrl]="'/view/votebook/' + votebook._id"
+        [canApprove]="votebook.canApprove"
+        (approve)="onApprove(votebook)"
       >
       </app-order-paper-item>
     </div>

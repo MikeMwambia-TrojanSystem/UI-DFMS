@@ -16,7 +16,8 @@ import { StatementInfo } from 'src/app/components/StatementItem/statement-item.c
 export class ListStatementComponent implements OnInit {
   private _cacheId: string;
   private _state: 'draft' | 'private' | 'public';
-  statements: any[];
+  private _statements: Statement[];
+  statements: Statement[];
   selectable: boolean;
 
   constructor(
@@ -37,7 +38,9 @@ export class ListStatementComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ statements }: { statements: any[] }) => {
-        this.statements = _.orderBy(statements, 'datePublished', 'desc');
+        const ordered = _.orderBy(statements, 'datePublished', 'desc');
+        this._statements = ordered;
+        this.statements = ordered;
       });
   }
 
@@ -107,5 +110,37 @@ export class ListStatementComponent implements OnInit {
 
   onSelect(statement: Statement) {
     this.cacheService.emit(this._cacheId, statement);
+  }
+
+  onApprove({
+    seeker,
+    statementProvider,
+    seekerDescription,
+    title,
+    _id,
+    ...others
+  }: Statement) {
+    this.statementService
+      .updateStatement({
+        ...others,
+        statementNo: title.toString(),
+        seeker: seeker.name,
+        seekerId: seeker.id,
+        seekerDescription: seekerDescription,
+        department: statementProvider.department,
+        statementProviderId: statementProvider.id,
+        statementProvider: statementProvider.name,
+        published: true,
+        id: _id,
+      } as any)
+      .subscribe(() => {
+        window.location.reload();
+      });
+  }
+
+  onSearch(query: string) {
+    this.statements = this._statements.filter((i) =>
+      _.lowerCase(i.title).includes(_.lowerCase(query))
+    );
   }
 }

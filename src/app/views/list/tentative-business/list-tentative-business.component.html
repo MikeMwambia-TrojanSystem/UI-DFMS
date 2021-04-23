@@ -1,7 +1,7 @@
 <app-background>
   <app-center-card>
     <h1 class="title">Tentative Businesses</h1>
-    <app-search-bar></app-search-bar>
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
     <div>
       <app-order-paper-item
         *ngFor="let tb of tentativeBusinesses"
@@ -17,6 +17,8 @@
         [canEdit]="tb.canEdit"
         [canDelete]="tb.canDelete"
         [viewUrl]="'/view/tentative-business/' + tb._id"
+        [canApprove]="tb.canApprove"
+        (approve)="onApprove(tb)"
       >
       </app-order-paper-item>
     </div>

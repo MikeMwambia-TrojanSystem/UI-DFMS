@@ -14,6 +14,7 @@ import { Report } from 'src/app/shared/types/report';
 export class ListReportComponent implements OnInit {
   private _cacheId: string;
   private _state: 'draft' | 'private' | 'public';
+  private _reports: Report[];
   reports: Report[];
   selectable: boolean;
 
@@ -35,7 +36,9 @@ export class ListReportComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ reports }: { reports: Report[] }) => {
-        this.reports = _.orderBy(reports, 'datePublished', 'desc');
+        const ordered = _.orderBy(reports, 'datePublished', 'desc');
+        this._reports = ordered;
+        this.reports = ordered;
       });
   }
 
@@ -70,5 +73,49 @@ export class ListReportComponent implements OnInit {
 
   onSelect(report: Report) {
     this.cacheService.emit(this._cacheId, report);
+  }
+
+  onApprove({
+    annexus,
+    approvingAccount,
+    authorCommitee,
+    originatingDocument,
+    uploadingAccount,
+    editors,
+    uploadedFileURL,
+    title,
+    _id,
+    ...others
+  }: Report) {
+    this.reportService
+      .updateReport({
+        ...others,
+        authorCommitee: authorCommitee.name,
+        authorCommiteeId: authorCommitee.id,
+        originatingDocType: originatingDocument.type,
+        originatingDocTypeId: originatingDocument.id,
+        editors: editors.join('&&&'),
+        uploadingAccount: uploadingAccount.name,
+        uploaderId: uploadingAccount.id,
+        account: approvingAccount.account,
+        approverId: approvingAccount.approverId,
+        annexusName: annexus.name,
+        annexusId: annexus.id,
+        uploadedAnexux: annexus.uploaded,
+        uploadingUrl: annexus.uploadingUrl,
+        uploadedFileURL,
+        titleOfReport: title,
+        published: true,
+        id: _id,
+      } as any)
+      .subscribe(() => {
+        window.location.reload();
+      });
+  }
+
+  onSearch(query: string) {
+    this.reports = this._reports.filter((i) =>
+      _.lowerCase(i.title).includes(_.lowerCase(query))
+    );
   }
 }

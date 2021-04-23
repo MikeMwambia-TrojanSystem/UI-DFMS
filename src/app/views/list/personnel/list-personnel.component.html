@@ -1,7 +1,7 @@
 <app-background>
   <app-center-card>
     <h1 class="title">Personnel List</h1>
-    <app-search-bar></app-search-bar>
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
     <div>
       <app-list-item
         *ngFor="let personnel of personnels"
@@ -14,6 +14,8 @@
         [canEdit]="personnel.canEdit"
         [canDelete]="personnel.canDelete"
         [viewUrl]="'/view/personnel/' + personnel._id"
+        [canApprove]="personnel.canApprove"
+        (approve)="onApprove(personnel)"
       ></app-list-item>
     </div>
     <div class="list-no-value">

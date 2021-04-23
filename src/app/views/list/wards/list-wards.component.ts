@@ -15,8 +15,9 @@ import { WardConSubService } from 'src/app/services/ward-con-sub.service';
 export class ListWardsComponent implements OnInit {
   private _cacheId: string;
   // private _state: 'draft' | 'published';
-  state: 'draft' | 'published';
+  private _wards: Ward[] = [];
   wards: Ward[] = [];
+  state: 'draft' | 'published';
   selectable = false; // Whether the list is selectable
 
   constructor(
@@ -36,7 +37,9 @@ export class ListWardsComponent implements OnInit {
 
     // Get Wards data from resolver
     this.route.data.pipe(take(1)).subscribe(({ wards }: { wards: Ward[] }) => {
-      this.wards = _.orderBy(wards, 'createdAt', 'desc');
+      const ordered = _.orderBy(wards, 'createdAt', 'desc');
+      this._wards = ordered;
+      this.wards = ordered;
     });
   }
 
@@ -72,5 +75,26 @@ export class ListWardsComponent implements OnInit {
     this.wardConSubService.deleteWardConSub(id).subscribe(() => {
       window.location.reload();
     });
+  }
+
+  onApprove({ _id, ...others }: Ward) {
+    this.wardConSubService
+      .updateWardConSub(
+        {
+          ...others,
+          published: true,
+          id: _id,
+        } as any,
+        'ward'
+      )
+      .subscribe(() => {
+        window.location.reload();
+      });
+  }
+
+  onSearch(query: string) {
+    this.wards = this._wards.filter((i) =>
+      _.lowerCase(i.name).includes(_.lowerCase(query))
+    );
   }
 }

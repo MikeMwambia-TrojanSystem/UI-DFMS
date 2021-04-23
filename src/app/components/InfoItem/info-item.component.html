@@ -37,8 +37,16 @@
   </button>
 </div>
 <div class="list-actions" *ngIf="!selectable">
+  <button
+    mat-button
+    class="list-actions-btn edit"
+    *ngIf="canApprove"
+    (click)="onApprove()"
+  >
+    Approve
+  </button>
   <a [routerLink]="[viewUrl]" *ngIf="viewUrl" target="_blank">
-    <button mat-button class="list-actions-btn edit">View</button>
+    <button mat-button class="list-actions-btn">View</button>
   </a>
   <a [routerLink]="[editUrl]" *ngIf="canEdit">
     <button mat-button class="list-actions-btn edit">Edit</button>

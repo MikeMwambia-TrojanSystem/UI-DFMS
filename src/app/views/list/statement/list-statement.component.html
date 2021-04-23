@@ -1,7 +1,7 @@
 <app-background>
   <app-center-card>
     <h1 class="title">Statements</h1>
-    <app-search-bar></app-search-bar>
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
     <div>
       <app-statement-item
         *ngFor="let statement of statements"
@@ -15,6 +15,8 @@
         [canEdit]="statement.canEdit"
         [canDelete]="statement.canDelete"
         [viewUrl]="'/view/statement/' + statement._id"
+        [canApprove]="statement.canApprove"
+        (approve)="onApprove(statement)"
       >
       </app-statement-item>
     </div>

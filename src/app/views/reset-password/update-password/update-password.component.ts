@@ -51,7 +51,6 @@ export class UpdatePasswordComponent implements OnInit {
   }
 
   onUpdate() {
-    console.log(this.form.value);
     this.accountService.updatePassword(this.form.value).subscribe(() => {
       this.router.navigate(['/login']);
     });

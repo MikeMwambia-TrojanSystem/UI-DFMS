@@ -14,8 +14,9 @@ import { DepartmentService } from 'src/app/services/department.service';
 export class ListDepartmentComponent implements OnInit {
   private _cacheId: string;
   // private _state: 'draft' | 'published';
-  state: 'draft' | 'published';
+  private _departments: Department[] = [];
   departments: Department[] = [];
+  state: 'draft' | 'published';
   selectable: boolean;
 
   constructor(
@@ -37,7 +38,9 @@ export class ListDepartmentComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ departments }: { departments: Department[] }) => {
-        this.departments = _.orderBy(departments, 'createdAt', 'desc');
+        const ordered = _.orderBy(departments, 'createdAt', 'desc');
+        this._departments = ordered;
+        this.departments = ordered;
       });
   }
 
@@ -77,5 +80,24 @@ export class ListDepartmentComponent implements OnInit {
     this.departmentService.deleteDepartment(id).subscribe(() => {
       window.location.reload();
     });
+  }
+
+  onApprove({ members, _id, ...others }: Department) {
+    this.departmentService
+      .updateDepartment({
+        ...others,
+        members: members.join('&&&'),
+        published: true,
+        id: _id,
+      } as any)
+      .subscribe(() => {
+        window.location.reload();
+      });
+  }
+
+  onSearch(query: string) {
+    this.departments = this._departments.filter((i) =>
+      _.lowerCase(i.name).includes(_.lowerCase(query))
+    );
   }
 }

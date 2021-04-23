@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import _ from 'lodash';
 import { Observable, of } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 import { CacheService } from 'src/app/services/cache.service';
 import { OrderPaperService } from 'src/app/services/order-paper.service';
 import { VotebookService } from 'src/app/services/votebook.service';
@@ -16,7 +16,7 @@ import { Votebook } from 'src/app/shared/types/votebook';
 })
 export class ListVoteBookComponent implements OnInit {
   private _cacheId: string;
-
+  private _votebooks: Votebook[];
   votebooks: Votebook[];
 
   selectable: boolean;
@@ -25,6 +25,7 @@ export class ListVoteBookComponent implements OnInit {
     private route: ActivatedRoute,
     private cacheService: CacheService,
     private votebookService: VotebookService,
+    private orderPaperService: OrderPaperService,
     private router: Router
   ) {}
 
@@ -38,7 +39,9 @@ export class ListVoteBookComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ votebooks }: { votebooks: Votebook[] }) => {
-        this.votebooks = _.orderBy(votebooks, 'datePublished', 'desc');
+        const ordered = _.orderBy(votebooks, 'datePublished', 'desc');
+        this._votebooks = ordered;
+        this.votebooks = ordered;
       });
   }
 
@@ -64,5 +67,72 @@ export class ListVoteBookComponent implements OnInit {
     this.router.navigate(['/generate/votebook'], {
       queryParams: { select: false },
     });
+  }
+
+  onApprove({
+    _id,
+    presiding,
+    orderPapersNo,
+    adminstrationOfOath,
+    bills,
+    communicationFromChainr,
+    messages,
+    motions,
+    noticeOfMotions,
+    papers,
+    petitions,
+    statements,
+    approvingAccount,
+    ...others
+  }: Votebook) {
+    this.orderPaperService
+      .getOrderPaperByNo(orderPapersNo)
+      .pipe(
+        switchMap((orderPaper) =>
+          this.votebookService.updateVotebook({
+            ...others,
+            pageNoToDate: orderPaper.pageNoToDate,
+            orderPaperId: orderPaper._id,
+            orderPapersNo: orderPapersNo,
+            presiding: presiding.name,
+            presidingPosition: presiding.position,
+            presidingId: presiding.id,
+            approvingAccount: approvingAccount.account,
+            approverId: approvingAccount.approverId,
+            adminstrationOfOathReply: adminstrationOfOath.join('&&&'),
+            communicationFromChainr: communicationFromChainr.join('&&&'),
+            messageContent: messages.join('&&&'),
+            petionReply: petitions.join('&&&'),
+            reportReply: papers.join('&&&'),
+            noticeOfMotionsReply: noticeOfMotions.join('&&&'),
+            statementReply: statements.join('&&&'),
+            motions: motions
+              .filter((m) => m.content)
+              .map(
+                (m) =>
+                  `content=${m.content}|||source=${m.source}|||motionId=${m.documentId}`
+              )
+              .join('&&&'),
+            bills: bills
+              .filter((m) => m.content)
+              .map(
+                (m) =>
+                  `content=${m.content}|||source=${m.source}|||billId=${m.documentId}`
+              )
+              .join('&&&'),
+            published: true,
+            id: _id,
+          } as any)
+        )
+      )
+      .subscribe(() => {
+        window.location.reload();
+      });
+  }
+
+  onSearch(query: string) {
+    this.votebooks = this._votebooks.filter((i) =>
+      i.votebookNo.toString().includes(_.lowerCase(query))
+    );
   }
 }

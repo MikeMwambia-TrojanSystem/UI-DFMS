@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import _ from 'lodash-es';
-import { take } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { CacheService } from 'src/app/services/cache.service';
+import { DepartmentService } from 'src/app/services/department.service';
 
 import { MotionService } from 'src/app/services/motion.service';
 import { Motion } from 'src/app/shared/types/motion';
@@ -15,6 +16,7 @@ import { Motion } from 'src/app/shared/types/motion';
 export class ListMotionComponent implements OnInit {
   private _cacheId: string;
   private _state: 'draft' | 'private' | 'public';
+  private _motions: Motion[];
   motions: Motion[];
   selectable: boolean;
 
@@ -22,7 +24,8 @@ export class ListMotionComponent implements OnInit {
     private route: ActivatedRoute,
     private motionService: MotionService,
     private cacheService: CacheService,
-    private router: Router
+    private router: Router,
+    private departmentService: DepartmentService
   ) {}
 
   ngOnInit(): void {
@@ -36,7 +39,9 @@ export class ListMotionComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ motions }: { motions: Motion[] }) => {
-        this.motions = _.orderBy(motions, 'createdAt', 'desc');
+        const ordered = _.orderBy(motions, 'createdAt', 'desc');
+        this._motions = ordered;
+        this.motions = ordered;
       });
   }
 
@@ -71,5 +76,35 @@ export class ListMotionComponent implements OnInit {
 
   onSelect(motion: Motion) {
     this.cacheService.emit(this._cacheId, motion);
+  }
+
+  onApprove({ sponsoredBy, department, title, _id, ...others }: Motion) {
+    this.departmentService
+      .getDepartments()
+      .pipe(
+        switchMap((departments) => {
+          return this.motionService.updateMotion({
+            ...others,
+            content: title,
+            department,
+            departmentId: (
+              departments.find((d) => d.name === department) || { _id: '' }
+            )._id,
+            sponsorName: sponsoredBy.sponsorName,
+            sponsorId: sponsoredBy.sponsorId,
+            published: true,
+            id: _id,
+          } as any);
+        })
+      )
+      .subscribe(() => {
+        window.location.reload();
+      });
+  }
+
+  onSearch(query: string) {
+    this.motions = this._motions.filter((i) =>
+      _.lowerCase(i.title).includes(_.lowerCase(query))
+    );
   }
 }

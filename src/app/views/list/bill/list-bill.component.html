@@ -1,7 +1,7 @@
 <app-background>
   <app-center-card>
     <h1 class="title">Bills</h1>
-    <app-search-bar></app-search-bar>
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
     <div>
       <app-info-item
         *ngFor="let bill of bills"
@@ -16,9 +16,11 @@
         (delete)="onDelete(bill._id)"
         [editUrl]="'/generate/bill/' + bill._id"
         (select)="onSelect(bill)"
+        (approve)="onApprove(bill)"
         [canEdit]="bill.canEdit"
         [canDelete]="bill.canDelete"
         [viewUrl]="'/view/bill/' + bill._id"
+        [canApprove]="bill.canApprove"
       >
       </app-info-item>
     </div>

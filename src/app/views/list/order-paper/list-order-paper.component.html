@@ -1,7 +1,7 @@
 <app-background>
   <app-center-card>
     <h1 class="title">Order Papers</h1>
-    <app-search-bar></app-search-bar>
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
     <div>
       <app-order-paper-item
         *ngFor="let orderPaper of orderPapers"
@@ -17,6 +17,8 @@
         [canEdit]="orderPaper.canEdit"
         [canDelete]="orderPaper.canDelete"
         [viewUrl]="'/view/order-paper/' + orderPaper._id"
+        [canApprove]="orderPaper.canApprove"
+        (approve)="onApprove(orderPaper)"
       >
       </app-order-paper-item>
     </div>

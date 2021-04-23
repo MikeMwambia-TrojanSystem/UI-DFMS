@@ -14,6 +14,7 @@ import { Bill } from 'src/app/shared/types/bill';
 export class ListBillComponent implements OnInit {
   private _cacheId: string;
   private _state: 'draft' | 'private' | 'public';
+  private _bills: Bill[];
   bills: Bill[];
   selectable: boolean;
 
@@ -33,7 +34,9 @@ export class ListBillComponent implements OnInit {
 
     // Get Petitions data from resolver
     this.route.data.pipe(take(1)).subscribe(({ bills }: { bills: Bill[] }) => {
-      this.bills = _.orderBy(bills, 'createdAt', 'desc');
+      const ordered = _.orderBy(bills, 'createdAt', 'desc');
+      this._bills = ordered;
+      this.bills = ordered;
     });
   }
 
@@ -68,5 +71,28 @@ export class ListBillComponent implements OnInit {
 
   onSelect(bill: Bill) {
     this.cacheService.emit(this._cacheId, bill);
+  }
+
+  onApprove({ concernedCommiteeId, sponsor, title, _id, ...others }: Bill) {
+    this.billService
+      .updateBill({
+        ...others,
+        titleOfBill: title || '',
+        sponsorId: sponsor.id,
+        sponsor: sponsor.name,
+        committeeName: concernedCommiteeId.committeeName,
+        committeeNameId: concernedCommiteeId.committeeNameId,
+        published: true,
+        id: _id,
+      } as any)
+      .subscribe(() => {
+        window.location.reload();
+      });
+  }
+
+  onSearch(query: string) {
+    this.bills = this._bills.filter((i) =>
+      _.lowerCase(i.title).includes(_.lowerCase(query))
+    );
   }
 }

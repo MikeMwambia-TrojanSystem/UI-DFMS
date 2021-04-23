@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import _ from 'lodash-es';
-import { take } from 'rxjs/operators';
+import { switchMap, take } from 'rxjs/operators';
 import { CacheService } from 'src/app/services/cache.service';
+import { DepartmentService } from 'src/app/services/department.service';
+import { MotionService } from 'src/app/services/motion.service';
 
-import { NoticeOfMotionService } from 'src/app/services/notice-of-motion.service';
-import { Department } from 'src/app/shared/types/department';
 import { Motion } from 'src/app/shared/types/motion';
 
 @Component({
@@ -15,13 +15,16 @@ import { Motion } from 'src/app/shared/types/motion';
 export class ListNoticeOfMotionComponent implements OnInit {
   private _cacheId: string;
   private _state: 'draft' | 'private' | 'public';
+  private _noticeOfMotions: Motion[];
   noticeOfMotions: Motion[];
   selectable: boolean;
 
   constructor(
     private route: ActivatedRoute,
     private cacheService: CacheService,
-    private router: Router
+    private router: Router,
+    private motionService: MotionService,
+    private departmentService: DepartmentService
   ) {}
 
   ngOnInit(): void {
@@ -35,7 +38,9 @@ export class ListNoticeOfMotionComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ notices }: { notices: Motion[] }) => {
-        this.noticeOfMotions = _.orderBy(notices, 'createdAt', 'desc');
+        const ordered = _.orderBy(notices, 'createdAt', 'desc');
+        this._noticeOfMotions = ordered;
+        this.noticeOfMotions = ordered;
       });
   }
 
@@ -73,9 +78,38 @@ export class ListNoticeOfMotionComponent implements OnInit {
   }
 
   onDelete(id: string) {
-    alert('NO API');
-    // this.noticeOfMotions.deleteMotion(id).subscribe(() => {
-    //   window.location.reload(); // Reload page when successfully deleting motion
-    // });
+    this.motionService.deleteMotion(id).subscribe(() => {
+      window.location.reload(); // Reload page when successfully deleting motion
+    });
+  }
+
+  onApprove({ sponsoredBy, department, title, _id, ...others }: Motion) {
+    this.departmentService
+      .getDepartments()
+      .pipe(
+        switchMap((departments) => {
+          return this.motionService.updateMotion({
+            ...others,
+            content: title,
+            department,
+            departmentId: (
+              departments.find((d) => d.name === department) || { _id: '' }
+            )._id,
+            sponsorName: sponsoredBy.sponsorName,
+            sponsorId: sponsoredBy.sponsorId,
+            published: true,
+            id: _id,
+          } as any);
+        })
+      )
+      .subscribe(() => {
+        window.location.reload();
+      });
+  }
+
+  onSearch(query: string) {
+    this.noticeOfMotions = this._noticeOfMotions.filter((i) =>
+      _.lowerCase(i.title).includes(_.lowerCase(query))
+    );
   }
 }

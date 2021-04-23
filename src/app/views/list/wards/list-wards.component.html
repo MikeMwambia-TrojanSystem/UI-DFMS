@@ -1,7 +1,7 @@
 <app-background>
   <app-center-card>
     <h1 class="title">Wards List</h1>
-    <app-search-bar></app-search-bar>
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
     <div *ngIf="wards.length">
       <app-list-item
         *ngFor="let ward of wards"
@@ -16,6 +16,8 @@
         [canEdit]="ward.canEdit"
         [canDelete]="ward.canDelete"
         [viewUrl]="'/view/ward/' + ward._id"
+        [canApprove]="ward.canApprove"
+        (approve)="onApprove(ward)"
       >
       </app-list-item>
     </div>

@@ -17,6 +17,8 @@ export class MotionItemComponent implements OnInit {
   @Input() viewUrl: string;
   @Input() canEdit: boolean;
   @Input() canDelete: boolean;
+  @Input() canApprove: boolean;
+  @Output() approve = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Output() select = new EventEmitter<void>();
   stateExpanded: string;
@@ -39,5 +41,9 @@ export class MotionItemComponent implements OnInit {
 
   onSelect() {
     this.select.emit();
+  }
+
+  onApprove() {
+    this.approve.emit();
   }
 }

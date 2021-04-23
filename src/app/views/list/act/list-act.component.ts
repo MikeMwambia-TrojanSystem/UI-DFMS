@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
 import _ from 'lodash';
+import moment from 'moment';
 
 import { ActService } from 'src/app/services/act.service';
 import { CacheService } from 'src/app/services/cache.service';
@@ -14,6 +15,7 @@ import { Act } from 'src/app/shared/types/act';
 export class ListActComponent implements OnInit {
   private _cacheId: string;
   private _state: 'draft' | 'private' | 'public';
+  private _acts: Act[];
   acts: Act[];
   selectable: boolean;
 
@@ -33,7 +35,9 @@ export class ListActComponent implements OnInit {
 
     // Get Acts data from resolver
     this.route.data.pipe(take(1)).subscribe(({ acts }: { acts: Act[] }) => {
-      this.acts = _.orderBy(acts, 'createdAt', 'desc');
+      const ordered = _.orderBy(acts, 'createdAt', 'desc');
+      this._acts = ordered;
+      this.acts = ordered;
     });
   }
 
@@ -68,5 +72,38 @@ export class ListActComponent implements OnInit {
 
   onSelect({ titleOfAct, _id }: Act) {
     this.cacheService.emit(this._cacheId, { titleOfAct, _id });
+  }
+
+  onApprove({
+    concernedCommiteeId,
+    originatingBillId,
+    sponsorId,
+    _id,
+    ...others
+  }: Act) {
+    this.actService
+      .updateAct({
+        ...others,
+        originatingBTitle: originatingBillId.originatingBTitle,
+        billId: originatingBillId.originatingBId,
+        sponsorId: sponsorId.sponsorId,
+        sponsorName: sponsorId.sponsorName,
+        concernedCommiteeId: concernedCommiteeId.committeeNameId,
+        committeeName: concernedCommiteeId.committeeName,
+        committeeNameId: concernedCommiteeId.committeeNameId,
+        published: true,
+        id: _id,
+      } as any)
+      .subscribe(() => {
+        window.location.reload();
+      });
+  }
+
+  onSearch(query: string) {
+    this.acts = this._acts.filter(
+      (i) =>
+        _.lowerCase(i.titleOfAct).includes(_.lowerCase(query)) ||
+        i.actNo.toString().includes(query)
+    );
   }
 }

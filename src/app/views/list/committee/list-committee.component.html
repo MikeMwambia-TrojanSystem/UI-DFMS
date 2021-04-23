@@ -1,7 +1,7 @@
 <app-background>
   <app-center-card>
     <h1 class="title">Committee List</h1>
-    <app-search-bar></app-search-bar>
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
     <div *ngIf="committees.length">
       <app-list-item
         *ngFor="let committee of committees"
@@ -13,9 +13,11 @@
         (select)="onSelect(committee)"
         [editUrl]="'/create/committee/' + committee._id"
         (delete)="onDelete(committee._id)"
+        (approve)="onApprove(committee)"
         [canEdit]="committee.canEdit"
         [canDelete]="committee.canDelete"
         [viewUrl]="'/view/committee/' + committee._id"
+        [canApprove]="committee.canApprove"
       >
       </app-list-item>
     </div>

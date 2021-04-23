@@ -14,8 +14,9 @@ import { WardConSubService } from 'src/app/services/ward-con-sub.service';
 export class ListConstituencyComponent implements OnInit {
   private _cacheId: string;
   private _state: 'draft' | 'published';
-  state: 'draft' | 'published';
+  private _constituencies: Constituency[] = [];
   constituencies: Constituency[] = [];
+  state: 'draft' | 'published';
 
   selectable = false; // Whether the list is selectable
 
@@ -38,7 +39,9 @@ export class ListConstituencyComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ constituencies }: { constituencies: Constituency[] }) => {
-        this.constituencies = _.orderBy(constituencies, 'createdAt', 'desc');
+        const ordered = _.orderBy(constituencies, 'createdAt', 'desc');
+        this._constituencies = ordered;
+        this.constituencies = ordered;
       });
   }
 
@@ -76,5 +79,26 @@ export class ListConstituencyComponent implements OnInit {
     this.wardConSubService.deleteWardConSub<Constituency>(id).subscribe(() => {
       window.location.reload();
     });
+  }
+
+  onApprove({ _id, ...others }: Constituency) {
+    this.wardConSubService
+      .updateWardConSub(
+        {
+          ...others,
+          published: true,
+          id: _id,
+        } as any,
+        'constituency'
+      )
+      .subscribe(() => {
+        window.location.reload();
+      });
+  }
+
+  onSearch(query: string) {
+    this.constituencies = this._constituencies.filter((i) =>
+      _.lowerCase(i.name).includes(_.lowerCase(query))
+    );
   }
 }

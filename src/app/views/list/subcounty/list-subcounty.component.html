@@ -1,7 +1,7 @@
 <app-background>
   <app-center-card>
     <h1 class="title">Subcounty List</h1>
-    <app-search-bar></app-search-bar>
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
     <div *ngIf="subCounties.length">
       <app-list-item
         *ngFor="let subcounty of subCounties"
@@ -17,6 +17,8 @@
         [canEdit]="subcounty.canEdit"
         [canDelete]="subcounty.canDelete"
         [viewUrl]="'/view/subcounty/' + subcounty._id"
+        [canApprove]="subcounty.canApprove"
+        (approve)="onApprove(subcounty)"
       >
       </app-list-item>
     </div>

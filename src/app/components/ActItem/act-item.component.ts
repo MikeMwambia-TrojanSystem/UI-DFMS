@@ -18,8 +18,10 @@ export class ActItemComponent implements OnInit {
   @Input() department: string;
   @Input() canEdit: boolean;
   @Input() canDelete: boolean;
+  @Input() canApprove: boolean;
   @Output() delete = new EventEmitter<void>();
   @Output() select = new EventEmitter<void>();
+  @Output() approve = new EventEmitter<void>();
   stateExpanded: string;
 
   ngOnInit() {
@@ -40,5 +42,9 @@ export class ActItemComponent implements OnInit {
 
   onSelect() {
     this.select.emit();
+  }
+
+  onApprove() {
+    this.approve.emit();
   }
 }

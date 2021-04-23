@@ -191,8 +191,6 @@ export class PaperContentGenerateComponent implements OnInit {
     }
 
     this._populateNotifications();
-
-    // console.log(this.form.value);
   }
 
   private _onCache<T>(

@@ -1,7 +1,7 @@
 <app-background>
   <app-center-card>
     <h1 class="title">Constituency List</h1>
-    <app-search-bar></app-search-bar>
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
     <div *ngIf="constituencies.length">
       <app-list-item
         *ngFor="let con of constituencies"
@@ -15,6 +15,8 @@
         [canEdit]="con.canEdit"
         [canDelete]="con.canDelete"
         [viewUrl]="'/view/constituency/' + con._id"
+        [canApprove]="con.canApprove"
+        (approve)="onApprove(con)"
       >
       </app-list-item>
     </div>

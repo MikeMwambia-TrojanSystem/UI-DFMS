@@ -38,7 +38,7 @@ export interface Statement extends BasicDocument {
   statementSignature: string;
   status: string;
   subjectOfStatement: string;
-  title: number;
+  title: string;
   updatedAt: string;
   uploaded: true;
   uploadedFileURL: string;

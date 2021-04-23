@@ -15,8 +15,9 @@ import { Petition } from 'src/app/shared/types/petition';
 export class ListPetitionComponent implements OnInit {
   private _cacheId: string;
   private _state: 'draft' | 'private' | 'public';
-  petitions: any[];
+  private _petitions: Petition[];
   selectable: boolean;
+  petitions: Petition[];
 
   constructor(
     private route: ActivatedRoute,
@@ -36,7 +37,9 @@ export class ListPetitionComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ petitions }: { petitions: any[] }) => {
-        this.petitions = _.orderBy(petitions, 'createdAt', 'desc');
+        const ordered = _.orderBy(petitions, 'createdAt', 'desc');
+        this._petitions = ordered;
+        this.petitions = ordered;
       });
   }
 
@@ -71,5 +74,39 @@ export class ListPetitionComponent implements OnInit {
 
   onSelect({ _id, content }: Petition) {
     this.cacheService.emit(this._cacheId, { _id, content });
+  }
+
+  onApprove({
+    approvingAccount,
+    concernedCommitee,
+    dateCommitteResponse,
+    datePresented,
+    dateToBDiscussed,
+    sponsoredBy,
+    uploadingAccount,
+    petitioners,
+    _id,
+    ...others
+  }: Petition) {
+    this.petitionService
+      .updatePetition({
+        ...others,
+        sponsorName: sponsoredBy.sponsorName,
+        sponsorId: sponsoredBy.sponsorId,
+        concernedCommitee: concernedCommitee.name,
+        concernedCommiteeId: concernedCommitee.id,
+        petitioners: petitioners[0],
+        published: true,
+        id: _id,
+      } as any)
+      .subscribe(() => {
+        window.location.reload();
+      });
+  }
+
+  onSearch(query: string) {
+    this.petitions = this._petitions.filter((i) =>
+      _.lowerCase(i.title).includes(_.lowerCase(query))
+    );
   }
 }

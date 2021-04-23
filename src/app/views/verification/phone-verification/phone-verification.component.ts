@@ -41,7 +41,6 @@ export class PhoneVerificationComponent implements OnInit {
     }
   }
 
-
   /**
    * Check if the otp is filled or not
    */
@@ -72,8 +71,7 @@ export class PhoneVerificationComponent implements OnInit {
             },
           });
         });
-    }else{
-      console.log(this._verification);
+    } else {
       this._verification.db = 'users';
       this.accountService
         .verifyOtp(this._verification)

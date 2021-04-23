@@ -8,6 +8,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export class ReportItemComponent implements OnInit {
   @Output() select = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
+  @Output() approve = new EventEmitter<void>();
   @Input() title: string;
   @Input() date: string;
   @Input() concerning: string[] = [];
@@ -21,6 +22,7 @@ export class ReportItemComponent implements OnInit {
   @Input() viewUrl: string;
   @Input() canEdit: boolean;
   @Input() canDelete: boolean;
+  @Input() canApprove: boolean;
   stateExpanded: string;
 
   ngOnInit() {
@@ -41,5 +43,9 @@ export class ReportItemComponent implements OnInit {
 
   onDelete() {
     this.delete.emit();
+  }
+
+  onApprove() {
+    this.approve.emit();
   }
 }

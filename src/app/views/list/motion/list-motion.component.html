@@ -1,7 +1,7 @@
 <app-background>
   <app-center-card>
     <h1 class="title">Motions</h1>
-    <app-search-bar></app-search-bar>
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
     <div *ngIf="motions.length">
       <app-motion-item
         *ngFor="let motion of motions"
@@ -19,6 +19,8 @@
         [canEdit]="motion.canEdit"
         [canDelete]="motion.canDelete"
         [viewUrl]="'/view/motion/' + motion._id"
+        [canApprove]="motion.canApprove"
+        (approve)="onApprove(motion)"
       ></app-motion-item>
     </div>
     <div class="list-no-value">

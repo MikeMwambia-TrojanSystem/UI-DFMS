@@ -9,6 +9,7 @@ export class OrderPaperItemComponent implements OnInit {
   @Output() select = new EventEmitter<void>();
   @Output() delete = new EventEmitter<void>();
   @Output() edit = new EventEmitter<void>();
+  @Output() approve = new EventEmitter<void>();
   @Input() number: number;
   @Input() date: string;
   @Input() views: string;
@@ -20,6 +21,7 @@ export class OrderPaperItemComponent implements OnInit {
   @Input() downloadUrl: string;
   @Input() canEdit: boolean;
   @Input() canDelete: boolean;
+  @Input() canApprove: boolean;
   stateExpanded: string;
 
   ngOnInit() {
@@ -42,5 +44,9 @@ export class OrderPaperItemComponent implements OnInit {
 
   onSelect() {
     this.select.emit();
+  }
+
+  onApprove() {
+    this.approve.emit();
   }
 }

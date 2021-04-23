@@ -1,7 +1,7 @@
 <app-background>
   <app-center-card>
     <h1 class="title">Reports</h1>
-    <app-search-bar></app-search-bar>
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
     <div>
       <app-report-item
         *ngFor="let report of reports"
@@ -19,6 +19,8 @@
         [canEdit]="report.canEdit"
         [canDelete]="report.canDelete"
         [viewUrl]="'/view/report/' + report._id"
+        [canApprove]="report.canApprove"
+        (approve)="onApprove(report)"
       >
       </app-report-item>
       <div class="list-no-value">

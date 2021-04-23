@@ -13,6 +13,7 @@ import { WardConSubService } from 'src/app/services/ward-con-sub.service';
 })
 export class ListSubcountyComponent implements OnInit {
   private _cacheId: string;
+  private _subCounties: SubCounty[] = [];
   // private _state: 'draft' | 'published';
   state: 'draft' | 'published';
   subCounties: SubCounty[] = [];
@@ -37,7 +38,9 @@ export class ListSubcountyComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ subCounties }: { subCounties: SubCounty[] }) => {
-        this.subCounties = _.orderBy(subCounties, 'createdAt', 'desc');
+        const ordered = _.orderBy(subCounties, 'createdAt', 'desc');
+        this._subCounties = ordered;
+        this.subCounties = ordered;
       });
   }
 
@@ -75,5 +78,26 @@ export class ListSubcountyComponent implements OnInit {
     this.wardConSubService.deleteWardConSub(id).subscribe(() => {
       window.location.reload();
     });
+  }
+
+  onApprove({ _id, ...others }: SubCounty) {
+    this.wardConSubService
+      .updateWardConSub(
+        {
+          ...others,
+          published: true,
+          id: _id,
+        } as any,
+        'subcounty'
+      )
+      .subscribe(() => {
+        window.location.reload();
+      });
+  }
+
+  onSearch(query: string) {
+    this.subCounties = this._subCounties.filter((i) =>
+      _.lowerCase(i.name).includes(_.lowerCase(query))
+    );
   }
 }

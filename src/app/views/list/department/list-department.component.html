@@ -1,7 +1,7 @@
 <app-background>
   <app-center-card>
     <h1 class="title">Department List</h1>
-    <app-search-bar></app-search-bar>
+    <app-search-bar (search)="onSearch($event)"></app-search-bar>
     <div *ngIf="departments.length">
       <app-list-item
         *ngFor="let department of departments"
@@ -16,6 +16,8 @@
         [canEdit]="department.canEdit"
         [canDelete]="department.canDelete"
         [viewUrl]="'/view/department/' + department._id"
+        [canApprove]="department.canApprove"
+        (approve)="onApprove(department)"
       >
       </app-list-item>
     </div>

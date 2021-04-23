@@ -291,8 +291,6 @@ export class VotebookContentGenerateComponent implements OnInit {
       });
 
     this._populateNotifications();
-
-    console.log(this.form.value);
   }
 
   get orderPaperNo(): string | number {
