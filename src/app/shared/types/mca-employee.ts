@@ -1,6 +1,7 @@
 import { BasicDocument } from './_global';
 
 export class McaEmployee extends BasicDocument {
+  authorName: string;
   dateCreated: string;
   name: string;
   phoneNumber: string;

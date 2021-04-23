@@ -17,6 +17,7 @@ export interface Statement extends BasicDocument {
     approverId: string;
   };
   assemblyId: string;
+  authorName: string;
   createdAt: string;
   datePublished: string;
   dateStatementSought: string;

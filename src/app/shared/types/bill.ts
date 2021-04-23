@@ -33,6 +33,7 @@ export class Bill extends BasicDocument {
     approvingAccId: string;
   };
   assemblyId: string;
+  authorName: string;
   billSignature: string;
   billNo: number;
   billUploadedReportURL: string;

@@ -1,0 +1,61 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Statement</h1>
+    <form [formGroup]="form" class="form" *ngIf="form">
+      <p class="label">Statement No.</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="statementNo" />
+      </mat-form-field>
+
+      <p class="label">Who is Seeking the Statement</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="seeker" />
+      </mat-form-field>
+
+      <p class="label">Description of the Statement Seeker</p>
+      <mat-form-field appearance="standard">
+        <textarea
+          matInput
+          formControlName="seekerDescription"
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="2"
+        ></textarea>
+      </mat-form-field>
+
+      <p class="label">Subject of the Statement</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="subjectOfStatement" />
+      </mat-form-field>
+
+      <p class="label">Date When the Statement was Sought</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="dateStatementSought" type="date" />
+      </mat-form-field>
+
+      <p class="label">Date When the Statement would be Responded to?</p>
+      <mat-form-field appearance="standard">
+        <input
+          matInput
+          formControlName="dateStatementToResponded"
+          type="date"
+        />
+      </mat-form-field>
+
+      <p class="label">Respondent Commitee</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="statementProvider" />
+      </mat-form-field>
+
+      <p class="label">Department responsible for providing the statement</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="departmentResponsible" />
+      </mat-form-field>
+
+      <p class="label">Uploaded Statement File</p>
+      <a [href]="fileUrl" target="_blank" class="document-link">{{
+        fileUrl
+      }}</a>
+    </form>
+    <p class="view-author" *ngIf="authorName">Author: {{ authorName }}</p>
+  </app-center-card>
+</app-background>

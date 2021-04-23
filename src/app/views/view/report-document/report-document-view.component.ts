@@ -53,6 +53,7 @@ export class ReportDocumentViewComponent {
   annexus: File;
   annexusName: string;
   annexusUrl: string;
+  authorName: string;
 
   constructor(
     private fb: FormBuilder,
@@ -77,6 +78,7 @@ export class ReportDocumentViewComponent {
           editors,
           uploadedFileURL,
           title,
+          authorName,
           ...others
         } = report;
 
@@ -109,6 +111,7 @@ export class ReportDocumentViewComponent {
 
         this.annexusName = annexus.name;
         this.annexusUrl = annexus.uploadingUrl;
+        this.authorName = authorName;
       });
 
     // Updating information when first time opening this page

@@ -4,9 +4,9 @@ import _ from 'lodash';
 
 import { Administration } from 'src/app/views/management/ad-oath/ad-oath.component';
 import { PetitionService } from 'src/app/services/petition.service';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Petition } from 'src/app/shared/types/petition';
-import { map, take } from 'rxjs/operators';
+import { catchError, map, take } from 'rxjs/operators';
 import { ReportService } from 'src/app/services/report.service';
 import { Report } from 'src/app/shared/types/report';
 import { Statement } from 'src/app/shared/types/statement';
@@ -58,31 +58,41 @@ export class MenuContainerComponent {
   ) {}
 
   getAdminContent(noti: MenuNotification): Administration {
-    const content = noti.content.split('|||');
+    try {
+      const content = noti.content.split('|||');
 
-    return {
-      name: content.find((c) => c.includes('name=')).slice(5),
-      ward: content.find((c) => c.includes('ward=')).slice(5),
-      passport: content.find((c) => c.includes('passport=')).slice(9),
-      politicalParty: content
-        .find((c) => c.includes('politicalParty='))
-        .slice(15),
-    };
+      return {
+        name: content.find((c) => c.includes('name=')).slice(5),
+        ward: content.find((c) => c.includes('ward=')).slice(5),
+        passport: content.find((c) => c.includes('passport=')).slice(9),
+        politicalParty: content
+          .find((c) => c.includes('politicalParty='))
+          .slice(15),
+      };
+    } catch (error) {
+      return undefined;
+    }
   }
 
   getPetitionContent(noti: MenuNotification): Observable<Petition> {
     const id = noti.content;
 
-    return this.petitionService.getPetition(id).pipe(take(1));
+    return this.petitionService.getPetition(id).pipe(
+      take(1),
+      catchError(() => of(undefined))
+    );
   }
 
   getReportContent(noti: MenuNotification): Observable<Report> {
     const id = noti.content;
 
-    return this.reportService.getReport(id).pipe(take(1));
+    return this.reportService.getReport(id).pipe(
+      take(1),
+      catchError(() => of(undefined))
+    );
   }
 
-  getStatementContent(noti: MenuNotification): Observable<StatementInfo[]> {
+  getStatementContentInfo(noti: MenuNotification): Observable<StatementInfo[]> {
     const id = noti.content;
 
     return this.statementService.getStatement(id).pipe(
@@ -94,6 +104,7 @@ export class MenuContainerComponent {
           seeker,
           departmentResponsible,
           datePublished,
+          _id,
         }) => [
           {
             label: 'Statement No ',
@@ -124,33 +135,50 @@ export class MenuContainerComponent {
             },
           },
         ]
-      )
+      ),
+      catchError(() => of(undefined))
+    );
+  }
+
+  getStatementContent(noti: MenuNotification): Observable<Statement> {
+    const id = noti.content;
+
+    return this.statementService.getStatement(id).pipe(
+      take(1),
+      catchError(() => of(undefined))
     );
   }
 
   getMotionContent(noti: MenuNotification): Observable<Motion> {
     const id = noti.content;
 
-    return this.motionService.getMotion(id).pipe(take(1));
+    return this.motionService.getMotion(id).pipe(
+      take(1),
+      catchError(() => of(undefined))
+    );
   }
 
   getBillContent(noti: MenuNotification): Observable<Bill> {
     const id = noti.content;
 
-    return this.billService.getBill(id).pipe(take(1));
+    return this.billService.getBill(id).pipe(
+      take(1),
+      catchError(() => of(undefined))
+    );
   }
 
   getGeneratedContent(noti: MenuNotification) {
-    return _.truncate(noti.content.replace(/<[^>]*>/g, ''));
+    const content = noti.content.replace(/<[^>]*>/g, '');
+    const length = _.toInteger((content.length / 100) * 50);
+    return _.truncate(content, { length: length > 50 ? length : 50 });
   }
 
   getMessageContent(noti: MenuNotification) {
-    return _.truncate(
-      (noti.content.match(/(?<=content=).+?(?=\|\|\|)/g) || [''])[0].replace(
-        /<[^>]*>/g,
-        ''
-      )
-    );
+    const content = (noti.content.match(/(?<=content=).+?(?=\|\|\|)/g) || [
+      '',
+    ])[0].replace(/<[^>]*>/g, '');
+    const length = _.toInteger((content.length / 100) * 50);
+    return _.truncate(content, { length: length > 50 ? length : 50 });
   }
 
   getNoticeMotionContent(noti: MenuNotification) {

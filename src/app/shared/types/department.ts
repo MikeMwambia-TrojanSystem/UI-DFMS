@@ -3,6 +3,7 @@ import { BasicDocument } from './_global';
 export class Department extends BasicDocument {
   _id: string;
   assemblyId: string;
+  authorName: string;
   createdAt: string;
   members: string[];
   name: string;

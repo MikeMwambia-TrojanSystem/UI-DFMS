@@ -110,6 +110,7 @@ export class PaperContentGenerateComponent implements OnInit {
     adjournment: ['ADJOURNMENT', Validators.required],
     assemblySittingDate: [''],
     assemblySittingTime: [''],
+    assemblySittingPeriod: [''],
   });
 
   constructor(
@@ -422,7 +423,7 @@ export class PaperContentGenerateComponent implements OnInit {
       const index = ids.findIndex((id) => id === _id);
 
       if (index !== -1) {
-        ids.splice(index, 1);
+        return { form };
       } else {
         ids.push(_id);
       }

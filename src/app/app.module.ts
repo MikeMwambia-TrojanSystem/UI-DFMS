@@ -127,6 +127,7 @@ import { TentativeBusinessContentGenerateComponent } from './views/generate/tent
 import { HttpResponseUnauthorizedIntercepter } from './shared/interceptor/unauthorized';
 import { MotionItemComponent } from './components/MotionItem/motion-item.component';
 import { ActItemComponent } from './components/ActItem/act-item.component';
+import { StatementViewComponent } from './views/view/statement/statement-view.component';
 
 const dbConfig: DBConfig = {
   name: 'MyDb',
@@ -257,6 +258,7 @@ const dbConfig: DBConfig = {
     TentativeBusinessContentGenerateComponent,
     MotionItemComponent,
     ActItemComponent,
+    StatementViewComponent,
   ],
   imports: [
     BrowserModule,

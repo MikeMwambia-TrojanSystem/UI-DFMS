@@ -25,6 +25,8 @@ export class MotionViewComponent implements OnInit {
     noticeOfMotion: [{ value: false, disabled: true }],
   });
 
+  authorName: string;
+
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
   ngOnInit() {
@@ -37,6 +39,8 @@ export class MotionViewComponent implements OnInit {
           sponsorName,
           sponsorId,
         });
+
+        this.authorName = motion.authorName;
       });
   }
 }

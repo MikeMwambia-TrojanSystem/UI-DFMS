@@ -30,6 +30,7 @@ export class EmployeeViewComponent implements OnInit {
   });
 
   profilePic: string;
+  authorName: string;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
@@ -44,7 +45,13 @@ export class EmployeeViewComponent implements OnInit {
           personnel: Personnel;
           departments: Department[];
         }) => {
-          const { department, phoneNumber, profilePic, ...others } = personnel;
+          const {
+            department,
+            phoneNumber,
+            profilePic,
+            authorName,
+            ...others
+          } = personnel;
 
           this.form.patchValue({
             ...others,
@@ -55,6 +62,7 @@ export class EmployeeViewComponent implements OnInit {
           });
 
           this.profilePic = profilePic;
+          this.authorName = authorName;
         }
       );
   }

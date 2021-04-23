@@ -21,6 +21,7 @@ export class WardViewComponent implements OnInit {
     date: [{ value: '', disabled: true }],
   });
   county = 'Meru'; // Dynamic county name
+  authorName: string;
 
   constructor(
     private fb: FormBuilder,
@@ -35,6 +36,8 @@ export class WardViewComponent implements OnInit {
       this.form.patchValue({
         ...ward,
       });
+
+      this.authorName = ward.authorName;
     });
   }
 }

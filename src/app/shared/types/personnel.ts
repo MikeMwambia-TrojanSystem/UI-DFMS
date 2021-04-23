@@ -17,6 +17,7 @@ export class PersonnelPost {
 
 export class Personnel extends BasicDocument {
   author: string;
+  authorName: string;
   createdAt: string;
   department: string;
   educationLevel:

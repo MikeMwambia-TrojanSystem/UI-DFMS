@@ -19,6 +19,7 @@ export class MotionPost {
 export class Motion extends BasicDocument {
   _id: string;
   author: string;
+  authorName: string;
   createdAt: string;
   datePublished: string;
   department: string;

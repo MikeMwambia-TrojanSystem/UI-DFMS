@@ -2,6 +2,7 @@ import { BasicDocument } from './_global';
 
 export class WardConSub {
   assemblyId: string;
+  authorName: string;
   constituency?: string;
   createdAt: string;
   name: string;

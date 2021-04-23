@@ -51,56 +51,117 @@
         [title]="getAdminContent(noti).name"
         [subtitle]="getAdminContent(noti).ward"
         [pic]="getAdminContent(noti).passport"
-        *ngIf="noti.type === 'adminContent'"
+        *ngIf="noti.type === 'adminContent' && getAdminContent(noti)"
       ></app-management-item>
+      <div *ngIf="noti.type === 'adminContent' && !getAdminContent(noti)">
+        <span>No Content Found!</span>
+      </div>
       <app-info-item
         [title]="(getPetitionContent(noti) | async).content"
         [date]="(getPetitionContent(noti) | async).datePublished"
         [subjects]="[(getPetitionContent(noti) | async).relatedTo]"
         [sponsored]="(getPetitionContent(noti) | async).sponsoredBy.sponsorName"
         [sub]="'Petition on'"
-        *ngIf="noti.type === 'petitionId'"
+        *ngIf="noti.type === 'petitionId' && (getPetitionContent(noti) | async)"
+        [viewUrl]="'/view/petition/' + (getPetitionContent(noti) | async)._id"
       >
       </app-info-item>
+      <div
+        *ngIf="
+          noti.type === 'petitionId' &&
+          (getPetitionContent(noti) | async) === undefined
+        "
+      >
+        <span>No Petition Found!</span>
+      </div>
       <app-report-item
         [title]="(getReportContent(noti) | async).title"
         [date]="(getReportContent(noti) | async).datePublished"
         [concerning]="[(getReportContent(noti) | async).relatedTo]"
         [submitted]="(getReportContent(noti) | async).authorCommitee.name"
         [sub]="'Report on'"
-        *ngIf="noti.type === 'reportId'"
+        *ngIf="noti.type === 'reportId' && (getReportContent(noti) | async)"
+        [viewUrl]="'/view/report/' + (getReportContent(noti) | async)._id"
       >
       </app-report-item>
+      <div
+        *ngIf="
+          noti.type === 'reportId' &&
+          (getReportContent(noti) | async) === undefined
+        "
+      >
+        <span>No Paper Found!</span>
+      </div>
       <app-statement-item
-        [info]="getStatementContent(noti) | async"
-        *ngIf="noti.type === 'statementId'"
+        [info]="getStatementContentInfo(noti) | async"
+        *ngIf="
+          noti.type === 'statementId' && (getStatementContent(noti) | async)
+        "
+        [viewUrl]="'/view/statement/' + (getStatementContent(noti) | async)._id"
       >
       </app-statement-item>
+      <div
+        *ngIf="
+          noti.type === 'statementId' &&
+          (getStatementContent(noti) | async) === undefined
+        "
+      >
+        <span>No Statement Found!</span>
+      </div>
       <app-info-item
         [title]="(getMotionContent(noti) | async).title"
         [date]="(getMotionContent(noti) | async).datePublished"
         [subjects]="[(getMotionContent(noti) | async).relatedTo]"
         [department]="(getMotionContent(noti) | async).department"
         [sponsored]="(getMotionContent(noti) | async).sponsoredBy.sponsorName"
-        *ngIf="noti.type === 'motionId'"
+        *ngIf="noti.type === 'motionId' && (getMotionContent(noti) | async)"
+        [viewUrl]="'/view/motion/' + (getMotionContent(noti) | async)._id"
       ></app-info-item>
+      <div
+        *ngIf="
+          noti.type === 'motionId' &&
+          (getMotionContent(noti) | async) === undefined
+        "
+      >
+        <span>No Motion Found!</span>
+      </div>
       <app-info-item
         [title]="(getMotionContent(noti) | async).title"
         [date]="(getMotionContent(noti) | async).datePublished"
         [subjects]="[(getMotionContent(noti) | async).relatedTo]"
         [department]="(getMotionContent(noti) | async).department"
         [sponsored]="(getMotionContent(noti) | async).sponsoredBy.sponsorName"
-        *ngIf="noti.type === 'motionNoticeId'"
+        *ngIf="
+          noti.type === 'motionNoticeId' && (getMotionContent(noti) | async)
+        "
+        [viewUrl]="'/view/motion/' + (getMotionContent(noti) | async)._id"
       ></app-info-item>
+      <div
+        *ngIf="
+          noti.type === 'motionNoticeId' &&
+          (getMotionContent(noti) | async) === undefined
+        "
+      >
+        <span>No Notice of Motion Found!</span>
+      </div>
       <app-info-item
         [title]="(getBillContent(noti) | async).title"
         [date]="(getBillContent(noti) | async).datePublished"
         [subjects]="[(getBillContent(noti) | async).relatedTo]"
         [sub]="'Bill on'"
         [status]="(getBillContent(noti) | async).status"
-        *ngIf="noti.type === 'billsId'"
+        *ngIf="noti.type === 'billsId' && (getBillContent(noti) | async)"
+        [viewUrl]="'/view/bill/' + (getBillContent(noti) | async)._id"
       >
       </app-info-item>
+      <div
+        *ngIf="
+          noti.type === 'billsId' &&
+          (getBillContent(noti) | async) === undefined
+        "
+      >
+        <span>No Bill Found!</span>
+      </div>
       <div class="bottom">
         <button mat-button class="view" *ngIf="!noView">View</button>
         <button

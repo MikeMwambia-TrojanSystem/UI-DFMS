@@ -38,6 +38,8 @@ export class ActViewComponent implements OnInit {
     billNo: [{ value: '', disabled: true }],
   });
 
+  authorName: string;
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -53,6 +55,7 @@ export class ActViewComponent implements OnInit {
         sponsorId,
         uploadingAccount,
         datePublished,
+        authorName,
         ...others
       } = act;
 
@@ -79,6 +82,8 @@ export class ActViewComponent implements OnInit {
             billNo: bill.billNo,
           });
         });
+
+      this.authorName = authorName;
     });
   }
 

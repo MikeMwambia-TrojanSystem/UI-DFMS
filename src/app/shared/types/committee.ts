@@ -22,6 +22,7 @@ export class Committee extends BasicDocument {
     account: string;
   };
   assemblyId: string;
+  authorName: string;
   chair: {
     name: string;
     id: string;

@@ -29,6 +29,7 @@ export class CommitteeViewComponent implements OnInit {
     datePublished: [{ value: '', disabled: true }],
   });
   membersName: { name: string; _id: string }[] = []; // Committees Memebers name.
+  authorName: string;
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +42,7 @@ export class CommitteeViewComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ committee }: { committee: Committee }) => {
-        const { committesMembers, ...others } = committee;
+        const { committesMembers, authorName, ...others } = committee;
 
         this.form.patchValue({
           ...others,
@@ -53,6 +54,8 @@ export class CommitteeViewComponent implements OnInit {
           account: committee.approvingAccount.account,
           committesMembers: committesMembers.join('&&&'),
         });
+
+        this.authorName = authorName;
 
         // Update members name from form committesMembers ids
         this.updateMembersList();

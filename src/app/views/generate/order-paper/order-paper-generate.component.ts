@@ -45,6 +45,7 @@ export class OrderPaperGenerateComponent implements OnInit {
     adjournment: ['ADJOURNMENT'],
     assemblySittingDate: ['', Validators.required],
     assemblySittingTime: ['', Validators.required],
+    assemblySittingPeriod: ['', Validators.required],
   });
 
   constructor(

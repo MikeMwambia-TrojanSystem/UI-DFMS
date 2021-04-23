@@ -36,6 +36,8 @@ export class BillViewComponent implements OnInit {
     publishStatus: [{ value: '', disabled: true }],
   });
 
+  authorName: string;
+
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
@@ -50,6 +52,7 @@ export class BillViewComponent implements OnInit {
         uploadingAccount,
         datePassed,
         title,
+        authorName,
         ...others
       } = bill;
 
@@ -67,6 +70,8 @@ export class BillViewComponent implements OnInit {
         committeeNameId: concernedCommiteeId.committeeNameId,
         titleOfBill: title,
       });
+
+      this.authorName = authorName;
     });
   }
 

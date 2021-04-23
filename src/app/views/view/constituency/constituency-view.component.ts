@@ -22,6 +22,7 @@ export class ConstituencyViewComponent implements OnInit {
   }); // Form group that holds user input
 
   county = 'Meru'; // Dynamic county name;
+  authorName: string;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
@@ -32,6 +33,8 @@ export class ConstituencyViewComponent implements OnInit {
         this.form.patchValue({
           ...constituency,
         });
+
+        this.authorName = constituency.authorName;
       });
   }
 }

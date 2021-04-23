@@ -37,6 +37,7 @@ export class OrderPaper extends BasicDocument {
   approvingAccount: { account: string; approverId: string };
   assemblyNo: number;
   author: string;
+  authorName: string;
   bills: string[];
   communicationFromChainr: string[];
   createdAt: string;

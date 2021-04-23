@@ -31,12 +31,13 @@ export class McaViewComponent implements OnInit {
   });
 
   profilePic: string;
+  authorName: string;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.data.pipe(take(1)).subscribe(({ mca }: { mca: McaEmployee }) => {
-      const { termOfService, ...others } = mca;
+      const { termOfService, authorName, ...others } = mca;
       const [termStart, termEnd] = termOfService.split(' to ');
 
       this.form.patchValue({
@@ -46,6 +47,7 @@ export class McaViewComponent implements OnInit {
       });
 
       this.profilePic = mca.profilePic;
+      this.authorName = authorName;
     });
   }
 }

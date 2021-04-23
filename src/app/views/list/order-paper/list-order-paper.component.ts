@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+import _ from 'lodash';
+
 import { CacheService } from 'src/app/services/cache.service';
 import { OrderPaperService } from 'src/app/services/order-paper.service';
-
 import { OrderPaper } from 'src/app/shared/types/order-paper';
 
 @Component({
@@ -31,7 +32,7 @@ export class ListOrderPaperComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ orderPapers }: { orderPapers: OrderPaper[] }) => {
-        this.orderPapers = orderPapers;
+        this.orderPapers = _.orderBy(orderPapers, 'datePublished', 'desc');
       });
   }
 

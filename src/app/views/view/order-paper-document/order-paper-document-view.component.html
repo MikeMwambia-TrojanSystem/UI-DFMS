@@ -19,15 +19,33 @@
 
       <div class="grid">
         <div class="grid-form">
-          <p class="label">Assembly Sitting No</p>
+          <p class="label">Assembly Sitting Period</p>
           <mat-form-field appearance="standard">
-            <input matInput type="number" disabled />
+            <mat-select formControlName="assemblySittingPeriod">
+              <mat-option value="Morning">Morning</mat-option>
+              <mat-option value="Afternoon">Afternoon</mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
         <div class="grid-form">
           <p class="label">Page No</p>
           <mat-form-field appearance="standard">
             <input matInput formControlName="pageNoToDate" type="number" />
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="grid-form">
+          <p class="label">Assembly Sitting Date</p>
+          <mat-form-field appearance="standard">
+            <input formControlName="assemblySittingDate" matInput type="date" />
+          </mat-form-field>
+        </div>
+        <div class="grid-form">
+          <p class="label">Input Exact Time</p>
+          <mat-form-field appearance="standard">
+            <input matInput formControlName="assemblySittingTime" />
           </mat-form-field>
         </div>
       </div>
@@ -43,5 +61,6 @@
         </button>
       </div>
     </form>
+    <p class="view-author" *ngIf="authorName">Author: {{ authorName }}</p>
   </app-center-card>
 </app-background>

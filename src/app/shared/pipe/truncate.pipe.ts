@@ -6,6 +6,7 @@ import _ from 'lodash';
 })
 export class TruncatePipe implements PipeTransform {
   transform(value: string): string {
-    return _.truncate(value);
+    const length = _.toInteger((value.length / 100) * 50);
+    return _.truncate(value, { length: length > 50 ? length : 50 });
   }
 }

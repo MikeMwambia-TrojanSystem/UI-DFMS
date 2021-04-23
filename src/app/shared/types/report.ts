@@ -42,6 +42,7 @@ export class Report extends BasicDocument {
     name: string;
     id: string;
   };
+  authorName: string;
   // content: [
   //   {
   //     pageNo: string;

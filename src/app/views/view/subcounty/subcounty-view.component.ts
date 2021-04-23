@@ -17,6 +17,7 @@ export class SubcountyViewComponent implements OnInit {
   });
 
   county = 'Meru'; // Dynamic county name;
+  authorName: string;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
@@ -27,6 +28,8 @@ export class SubcountyViewComponent implements OnInit {
         this.form.patchValue({
           ...subcounty,
         });
+
+        this.authorName = subcounty.authorName;
       });
   }
 }

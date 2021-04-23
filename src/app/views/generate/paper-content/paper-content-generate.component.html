@@ -41,10 +41,7 @@
             mat-stroked-button
             class="btn"
             (click)="onSkip(item.key)"
-            [disabled]="
-              form.get(item.key).value === 'NONE' ||
-              form.get(item.key).value === 'none'
-            "
+            [disabled]="form.get(item.key).value !== ''"
           >
             Skip
           </button>

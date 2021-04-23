@@ -72,6 +72,12 @@ textarea {
   margin: 20px 0;
 }
 
+.view-author {
+  margin-top: -20px !important;
+  text-align: right;
+  font-size: 14px;
+}
+
 // Material Overriding CSS
 .mat-radio-button.mat-accent .mat-radio-inner-circle,
 .mat-radio-button.mat-accent

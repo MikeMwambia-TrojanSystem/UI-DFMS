@@ -18,6 +18,7 @@ export class DepartmentViewComponent implements OnInit {
   }); // Form group that holds user input
 
   county = 'Meru'; // Dynamic county name;
+  authorName: string;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
@@ -25,7 +26,7 @@ export class DepartmentViewComponent implements OnInit {
     this.route.data
       .pipe(take(1))
       .subscribe(({ department }: { department: Department }) => {
-        const { members, ...others } = department;
+        const { members, authorName, ...others } = department;
         const membersControl = this.form.get('members') as FormArray;
 
         for (const member of members) {
@@ -35,6 +36,8 @@ export class DepartmentViewComponent implements OnInit {
         this.form.patchValue({
           ...others,
         });
+
+        this.authorName = authorName;
       });
   }
 }

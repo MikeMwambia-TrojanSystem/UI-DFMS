@@ -161,6 +161,7 @@ import { TentativeBusinessResolver } from './shared/resolver/tentative-business/
 import { ListTentativeBusinessResolver } from './shared/resolver/tentative-business/list-tentative-business.resolver';
 import { CanActivateTentativeBusinessOrderPaper } from './shared/guard/tentative-business/order-paper.guard';
 import { TentativeBusinessOrderPaperResolver } from './shared/resolver/tentative-business/order-paper.resolver';
+import { StatementViewComponent } from './views/view/statement/statement-view.component';
 
 const routes: Routes = [
   // Login route
@@ -659,6 +660,14 @@ const routes: Routes = [
           petition: PetitionResolver,
         },
         canActivate: [CanActivateViewPetition],
+      },
+      {
+        path: 'statement/:id',
+        component: StatementViewComponent,
+        resolve: {
+          statement: StatementResolver,
+        },
+        canActivate: [CanActivateStatement],
       },
       {
         path: 'order-paper/:id',

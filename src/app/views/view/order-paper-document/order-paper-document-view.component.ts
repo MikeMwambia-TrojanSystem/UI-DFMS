@@ -33,7 +33,12 @@ export class OrderPaperDocumentViewComponent implements OnInit {
     motionNoticeId: [{ value: '', disabled: true }],
     billsId: [{ value: '', disabled: true }],
     adjournment: [{ value: '', disabled: true }],
+    assemblySittingDate: [{ value: '', disabled: true }],
+    assemblySittingTime: [{ value: '', disabled: true }],
+    assemblySittingPeriod: [{ value: '', disabled: true }],
   });
+
+  authorName: string;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
@@ -52,6 +57,7 @@ export class OrderPaperDocumentViewComponent implements OnInit {
           papers,
           petitions,
           statements,
+          authorName,
           _id,
           ...others
         } = orderPaper;
@@ -62,6 +68,7 @@ export class OrderPaperDocumentViewComponent implements OnInit {
           approverId: approvingAccount.approverId,
         });
         this.id = _id;
+        this.authorName = authorName;
       });
   }
 }

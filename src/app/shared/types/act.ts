@@ -31,6 +31,7 @@ export interface Act extends BasicDocument {
   actsSignature: string;
   approvingAccount: { approvingAcc: string; approvingAccId: string };
   assemblyId: string;
+  authorName: string;
   concernedCommiteeId: { committeeName: string; committeeNameId: string };
   createdAt: string;
   datePublished: string;

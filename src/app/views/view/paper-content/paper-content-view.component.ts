@@ -87,6 +87,8 @@ export class PaperContentViewComponent implements OnInit {
     adjournment: [{ value: '', disabled: true }],
   });
 
+  authorName: string;
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
@@ -109,6 +111,7 @@ export class PaperContentViewComponent implements OnInit {
             motions,
             noticeOfMotions,
             bills,
+            authorName,
             ...others
           } = orderPaper;
 
@@ -135,6 +138,8 @@ export class PaperContentViewComponent implements OnInit {
             motionNoticeId: this.orderPaperService.checkNone(noticeOfMotions),
             billsId: this.orderPaperService.checkNone(bills),
           });
+
+          this.authorName = authorName;
         }
       });
 
