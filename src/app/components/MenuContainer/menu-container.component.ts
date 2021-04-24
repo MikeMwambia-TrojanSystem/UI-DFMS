@@ -27,13 +27,14 @@ export interface MenuNotification {
 }
 
 export interface MenuItem {
-  key: string;
+  key?: string;
   label: string;
   select?: string;
   generate?: string;
   notifications?: MenuNotification[];
   disabled?: boolean;
   orderPaperField?: string;
+  actions?: any[];
 }
 
 @Component({

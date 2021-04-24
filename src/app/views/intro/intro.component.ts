@@ -3,19 +3,13 @@ import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { take } from 'rxjs/operators';
 
-import { MenuNotification } from 'src/app/components/MenuContainer/menu-container.component';
+import { MenuItem, MenuNotification } from 'src/app/components/MenuContainer/menu-container.component';
 import { AccountService } from 'src/app/services/account.service';
 
 export interface Action {
   label: string;
   url?: string;
   query?: Record<string, string>;
-}
-
-interface IntroItem {
-  label: string;
-  actions: Action[];
-  notifications: MenuNotification[];
 }
 
 @Component({
@@ -28,7 +22,7 @@ export class IntroComponent implements OnInit {
   county = 'Meru'; // Dynamic county
   date = moment(); // Today
 
-  introItems: IntroItem[] = [
+  introItems: MenuItem[] = [
     {
       label: 'Petition',
       actions: [
@@ -58,7 +52,6 @@ export class IntroComponent implements OnInit {
           },
         },
       ],
-      notifications: [],
     },
     {
       label: 'Papers',
@@ -93,7 +86,6 @@ export class IntroComponent implements OnInit {
           url: '/',
         },
       ],
-      notifications: [],
     },
     {
       label: 'Notices of Motions',
@@ -124,7 +116,6 @@ export class IntroComponent implements OnInit {
           },
         },
       ],
-      notifications: [],
     },
     {
       label: 'Statements',
@@ -155,7 +146,6 @@ export class IntroComponent implements OnInit {
           },
         },
       ],
-      notifications: [],
     },
     {
       label: 'Motion',
@@ -186,7 +176,6 @@ export class IntroComponent implements OnInit {
           },
         },
       ],
-      notifications: [],
     },
     {
       label: 'Bills',
@@ -217,7 +206,6 @@ export class IntroComponent implements OnInit {
           },
         },
       ],
-      notifications: [],
     },
     {
       label: 'Acts',
@@ -248,7 +236,6 @@ export class IntroComponent implements OnInit {
           },
         },
       ],
-      notifications: [],
     },
     {
       label: 'Order Papers',
@@ -279,7 +266,6 @@ export class IntroComponent implements OnInit {
           },
         },
       ],
-      notifications: [],
     },
     {
       label: 'Votebook',
@@ -310,7 +296,6 @@ export class IntroComponent implements OnInit {
           },
         },
       ],
-      notifications: [],
     },
     {
       label: 'System',
@@ -368,7 +353,6 @@ export class IntroComponent implements OnInit {
           url: '/create/mca',
         },
       ],
-      notifications: [],
     },
   ];
 
