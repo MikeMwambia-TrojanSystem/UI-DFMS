@@ -56,6 +56,7 @@ export class CreateMcaComponent implements OnInit {
   });
 
   filename: string;
+  authorName: string;
 
   constructor(
     private cacheService: CacheService,
@@ -81,22 +82,19 @@ export class CreateMcaComponent implements OnInit {
       this.route.data
         .pipe(take(1))
         .subscribe(({ mca }: { mca: McaEmployee }) => {
-          const { termOfService, ...others } = mca;
+          const { termOfService, authorName, ...others } = mca;
           const [termStart, termEnd] = termOfService.split(' to ');
 
           this.form.patchValue({
             ...others,
-            termStart: moment(termStart, 'Do MMMM YYYY')
-              .toJSON()
-              .slice(termStart.indexOf('T') - 10, termStart.indexOf('T')),
-            termEnd: moment(termEnd, 'Do MMMM YYYY')
-              .toJSON()
-              .slice(termEnd.indexOf('T') - 10, termEnd.indexOf('T')),
+            termStart: moment(termStart, 'Do MMMM YYYY').toJSON().slice(0, 10),
+            termEnd: moment(termEnd, 'Do MMMM YYYY').toJSON().slice(0, 10),
           });
 
           const index = mca.profilePic.lastIndexOf('amazonaws.com/') + 14;
 
           this.filename = mca.profilePic.substring(index);
+          this.authorName = authorName;
         });
     } else {
       this._mode = 'creating';
@@ -187,52 +185,63 @@ export class CreateMcaComponent implements OnInit {
 
   // This function is called when 'Save as Draft' or 'Save MCA' buttons are clicked
   onSave(published: boolean) {
-    // Subcription callback
-    const subCallback = ({ _mcaId, request_id }: any) => {
-      this.cacheService.clearCache('CREATE_MCA');
+    try {
+      // Subcription callback
+      const subCallback = ({ _mcaId, request_id }: any) => {
+        this.cacheService.clearCache('CREATE_MCA');
 
-      if (request_id) {
-        this.router.navigate(['/verification/mca'], {
-          queryParams: {
-            userId: _mcaId,
-            request_id,
-            state: published ? 'published' : 'draft',
-          },
-        });
-      } else {
         this.router.navigate(['/list/mca-employee'], {
           queryParams: {
             state: published ? 'published' : 'draft',
           },
         });
-      }
-    };
 
-    // Transform form termStart and termEnd values into a single termOfService string for API parameter.
-    const transform = () => {
+        // if (request_id) {
+        //   this.router.navigate(['/verification/mca'], {
+        //     queryParams: {
+        //       userId: _mcaId,
+        //       request_id,
+        //       state: published ? 'published' : 'draft',
+        //     },
+        //   });
+        // } else {
+        //   this.router.navigate(['/list/mca-employee'], {
+        //     queryParams: {
+        //       state: published ? 'published' : 'draft',
+        //     },
+        //   });
+        // }
+      };
+
+      // Transform form termStart and termEnd values into a single termOfService string for API parameter.
+      const transform = () => {
+        const value = this.form.value;
+        const termStart = moment(value.termStart).format('Do MMMM YYYY');
+        const termEnd = moment(value.termEnd).format('Do MMMM YYYY');
+
+        return `${termStart} to ${termEnd}`;
+      };
+
       const value = this.form.value;
-      const termStart = moment(value.termStart).format('Do MMMM YYYY');
-      const termEnd = moment(value.termEnd).format('Do MMMM YYYY');
 
-      return `${termStart} to ${termEnd}`;
-    };
+      value.termOfService = transform();
+      value.publishState = published;
 
-    const value = this.form.value;
+      if (this._mode === 'creating') {
+        value.dateCreated = moment().toISOString();
+        value.signature = moment().unix();
+        value.published = false;
 
-    value.termOfService = transform();
-    value.publishState = published;
+        this.mcaEmployeeService.postMca(value).subscribe(subCallback);
+      } else {
+        value.id = this._mcaId;
+        value.group = 'mca';
+        value.authorName = this.authorName;
 
-    if (this._mode === 'creating') {
-      value.dateCreated = moment().toISOString();
-      value.signature = moment().unix();
-      value.published = false;
-
-      this.mcaEmployeeService.postMca(value).subscribe(subCallback);
-    } else {
-      value.id = this._mcaId;
-      value.group = 'mca';
-
-      this.mcaEmployeeService.updateMca(value).subscribe(subCallback);
+        this.mcaEmployeeService.updateMca(value).subscribe(subCallback);
+      }
+    } catch (error) {
+      alert('Invalid date input');
     }
   }
 }

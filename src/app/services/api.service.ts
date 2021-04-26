@@ -32,7 +32,7 @@ interface ApiResponse<T> {
 }
 
 const errorHandler = (error: HttpErrorResponse) => {
-  alert(error.error.error || 'ERROR');
+  alert('Error refresh page and try again if it persists call support');
   return throwError(error);
 };
 
@@ -40,8 +40,8 @@ const errorHandler = (error: HttpErrorResponse) => {
   providedIn: 'root',
 })
 export class ApiService {
-  private _baseUrl = 'http://localhost:3000/'; //'https://web.jonikisecurity.com/';
-  // private _baseUrl = 'https://web.jonikisecurity.com/';
+  // private _baseUrl = 'http://localhost:3000/'; //'https://web.jonikisecurity.com/';
+  private _baseUrl = 'https://web.jonikisecurity.com/';
   private _timeout = 60 * 1000;
 
   constructor(private http: HttpClient) {}

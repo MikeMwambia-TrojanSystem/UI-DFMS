@@ -131,6 +131,8 @@ export class CreateCommitteeComponent implements OnInit {
 
     members = members.filter((m) => m.length);
 
+    console.log(members);
+
     for (const memberId of members.filter(
       (memberId) => memberId !== chairId && memberId !== viceChairId
     )) {
@@ -138,7 +140,7 @@ export class CreateCommitteeComponent implements OnInit {
         .getMcaEmployee(memberId)
         .pipe(
           take(1),
-          map((employee) => employee.name)
+          map((employee) => (employee ? employee.name : 'No employee found'))
         )
         .toPromise();
 

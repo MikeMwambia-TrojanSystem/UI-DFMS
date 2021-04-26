@@ -13,7 +13,7 @@
         (select)="onSelect(personnel)"
         [canEdit]="personnel.canEdit"
         [canDelete]="personnel.canDelete"
-        [viewUrl]="'/view/personnel/' + personnel._id"
+        [viewUrl]="'/view/employee/' + personnel._id"
         [canApprove]="personnel.canApprove"
         (approve)="onApprove(personnel)"
       ></app-list-item>

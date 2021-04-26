@@ -3,7 +3,10 @@ import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { take } from 'rxjs/operators';
 
-import { MenuItem, MenuNotification } from 'src/app/components/MenuContainer/menu-container.component';
+import {
+  MenuItem,
+  MenuNotification,
+} from 'src/app/components/MenuContainer/menu-container.component';
 import { AccountService } from 'src/app/services/account.service';
 
 export interface Action {
@@ -349,8 +352,16 @@ export class IntroComponent implements OnInit {
           url: '/create/employee',
         },
         {
+          label: 'View Employee profile',
+          url: '/list/personnel',
+        },
+        {
           label: 'Create MCA Profile',
           url: '/create/mca',
+        },
+        {
+          label: 'View MCA profile',
+          url: '/list/mca-employee',
         },
       ],
     },

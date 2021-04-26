@@ -50,13 +50,11 @@
   >
     Delete
   </button>
-</div>
-<div class="list-actions" *ngIf="state === 'public' && !selectable">
   <button
     mat-button
     class="list-actions-btn edit"
     (click)="onDownload()"
-    *ngIf="downloadUrl"
+    *ngIf="state === 'public'"
   >
     Download
   </button>

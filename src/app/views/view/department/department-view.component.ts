@@ -27,11 +27,11 @@ export class DepartmentViewComponent implements OnInit {
       .pipe(take(1))
       .subscribe(({ department }: { department: Department }) => {
         const { members, authorName, ...others } = department;
-        const membersControl = this.form.get('members') as FormArray;
+        // const membersControl = this.form.get('members') as FormArray;
 
-        for (const member of members) {
-          membersControl.push(new FormControl(member));
-        }
+        // for (const member of members) {
+        //   membersControl.push(new FormControl(member));
+        // }
 
         this.form.patchValue({
           ...others,

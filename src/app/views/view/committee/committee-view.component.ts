@@ -74,7 +74,7 @@ export class CommitteeViewComponent implements OnInit {
 
     let members = committesMembers.split('&&&');
 
-    members = members[0].length ? members : [];
+    members = members.filter((m) => m.length);
 
     for (const memberId of members.filter(
       (memberId) => memberId !== chairId && memberId !== viceChairId
@@ -83,7 +83,7 @@ export class CommitteeViewComponent implements OnInit {
         .getMcaEmployee(memberId)
         .pipe(
           take(1),
-          map((employee) => employee.name)
+          map((employee) => (employee ? employee.name : 'no Member Found'))
         )
         .toPromise();
 
