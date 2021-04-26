@@ -266,7 +266,7 @@ export class ApiService {
   }
 
   deleteAct(id: string) {
-    return this._deleteRequest<Act>('act/delete', id);
+    return this._deleteRequest<Act>('acts/delete', id);
   }
 
   deletePersonnel(id: string) {

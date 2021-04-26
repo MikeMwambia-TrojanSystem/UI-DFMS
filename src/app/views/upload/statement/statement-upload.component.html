@@ -36,11 +36,11 @@
           >Please enter subject of the statement!
         </mat-error>
       </mat-form-field>
-      <p class="label">Related To</p>
+      <p class="label">Related To (Maximum 5 words)</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="relatedTo" />
         <mat-error *ngIf="form.get('relatedTo').hasError('required')"
-          >Please enter related to information!
+          >Please enter related to information!(Maximum 5 words)
         </mat-error>
       </mat-form-field>
       <p class="label">Date When the Statement was Sought</p>
