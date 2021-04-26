@@ -66,7 +66,7 @@ export class ListNoticeOfMotionComponent implements OnInit {
       }
     );
 
-    this.router.navigate(['/generate/motion'], {
+    this.router.navigate(['/generate/notice-of-motion'], {
       queryParams: {
         id: 'LIST_NEW_MOTION',
       },

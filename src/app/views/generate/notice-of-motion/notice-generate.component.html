@@ -1,0 +1,92 @@
+<app-background>
+  <app-center-card>
+    <h1 class="title">Generate and File a Notice of Motion</h1>
+    <form [formGroup]="form" class="form">
+      <p class="label">Motion Content</p>
+      <mat-form-field appearance="standard">
+        <textarea
+          matInput
+          formControlName="content"
+          placeholder="Motion on Sales Entity"
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="2"
+        ></textarea>
+        <mat-error *ngIf="form.get('content').hasError('required')"
+          >Please enter motion content!</mat-error
+        >
+      </mat-form-field>
+      <!-- <p class="label">Subject Matter of the Motion</p>
+      <mat-form-field appearance="standard">
+        <input matInput placeholder="Motion on Braerd and Barrrityr" />
+      <mat-error *ngIf="form.get('subject').hasError('required')"
+          >Please enter subject matter!</mat-error
+        >
+      </mat-form-field> -->
+      <p class="label">Related To</p>
+      <mat-form-field appearance="standard">
+        <input matInput formControlName="relatedTo" placeholder="Related To" />
+        <mat-error *ngIf="form.get('relatedTo').hasError('required')"
+          >Please enter related to!</mat-error
+        >
+      </mat-form-field>
+      <app-custom-button
+        [title]="
+          form.get('department').value.length
+            ? form.get('department').value
+            : 'Select Department'
+        "
+        class="custom-btn standalone"
+        (buttonClick)="onSelectDepartment()"
+      ></app-custom-button>
+      <app-custom-button
+        [title]="
+          form.get('sponsorName').value.length
+            ? form.get('sponsorName').value
+            : 'Select Sponsor'
+        "
+        class="custom-btn standalone"
+        (buttonClick)="onSelectSponsor()"
+      ></app-custom-button>
+      <p class="label">Add Sponsor Description</p>
+      <mat-form-field appearance="standard">
+        <textarea
+          matInput
+          formControlName="sponsorDescription"
+          placeholder="Sponsor Description"
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="2"
+        ></textarea>
+        <mat-error *ngIf="form.get('sponsorDescription').hasError('required')"
+          >Please enter sponsor description!</mat-error
+        >
+      </mat-form-field>
+      <p class="label notice">Generate Notice of Motion</p>
+      <mat-radio-group formControlName="noticeOfMotion">
+        <mat-radio-button [value]="true" style="margin-right: 20px"
+          >Yes</mat-radio-button
+        >
+        <mat-radio-button [value]="false">No</mat-radio-button>
+      </mat-radio-group>
+      <div class="actions">
+        <button
+          mat-button
+          type="button"
+          class="btn-draft"
+          [disabled]="form.invalid"
+          (click)="onSave(false)"
+        >
+          Save as Draft
+        </button>
+        <button
+          mat-raised-button
+          type="submit"
+          class="btn-save"
+          [disabled]="form.invalid"
+          (click)="onSave(true)"
+        >
+          Publish Motion
+        </button>
+      </div>
+    </form>
+  </app-center-card>
+</app-background>

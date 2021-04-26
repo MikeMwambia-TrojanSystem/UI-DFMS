@@ -132,6 +132,7 @@ import { VotebookViewComponent } from './views/view/votebook/votebook-view.compo
 import { VotebookContentViewComponent } from './views/view/votebook-content/votebook-content-view.component';
 import { TentativeBusinessViewComponent } from './views/view/tentative-business/tentative-biz-view.component';
 import { TentativeBusinessContentViewComponent } from './views/view/tentative-business-content/tb-content-view.component';
+import { NoticeGenerateComponent } from './views/generate/notice-of-motion/notice-generate.component';
 
 const dbConfig: DBConfig = {
   name: 'MyDb',
@@ -267,6 +268,7 @@ const dbConfig: DBConfig = {
     VotebookContentViewComponent,
     TentativeBusinessViewComponent,
     TentativeBusinessContentViewComponent,
+    NoticeGenerateComponent,
   ],
   imports: [
     BrowserModule,

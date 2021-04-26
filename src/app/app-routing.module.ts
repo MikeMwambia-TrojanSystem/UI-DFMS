@@ -167,6 +167,7 @@ import { VotebookContentViewComponent } from './views/view/votebook-content/vote
 import { TentativeBusinessOrderPaperEditResolver } from './shared/resolver/tentative-business/edit-order-paper.resolver';
 import { TentativeBusinessViewComponent } from './views/view/tentative-business/tentative-biz-view.component';
 import { TentativeBusinessContentViewComponent } from './views/view/tentative-business-content/tb-content-view.component';
+import { NoticeGenerateComponent } from './views/generate/notice-of-motion/notice-generate.component';
 
 const routes: Routes = [
   // Login route
@@ -459,6 +460,19 @@ const routes: Routes = [
       {
         path: 'motion/:id',
         component: MotionGenerateComponent,
+        canActivate: [CanActivateMotion],
+        resolve: {
+          motion: MotionResolver,
+          departments: AllDepartmentResolver,
+        },
+      },
+      {
+        path: 'notice-of-motion',
+        component: NoticeGenerateComponent,
+      },
+      {
+        path: 'notice-of-motion/:id',
+        component: NoticeGenerateComponent,
         canActivate: [CanActivateMotion],
         resolve: {
           motion: MotionResolver,
