@@ -11,7 +11,7 @@ import { CacheService } from 'src/app/services/cache.service';
 })
 export class VotebookNoticeMotionPreviewComponent implements OnInit {
   content = new FormControl('', Validators.required);
-  status = new FormControl({ value: '', disabled: true }, Validators.required);
+  status = new FormControl({ value: '', disabled: true });
 
   page = 'Order Paper on the Development of Kura';
 

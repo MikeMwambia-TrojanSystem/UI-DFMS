@@ -89,4 +89,8 @@ export class StatementService {
       .updateStatement(statement)
       .pipe(switchMap(() => this.fetchStatements()));
   }
+
+  approveStatement(id: string) {
+    return this.apiService.approve('statement', id);
+  }
 }

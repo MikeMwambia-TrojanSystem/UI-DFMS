@@ -30,6 +30,7 @@ export interface Act extends BasicDocument {
   actNo: number;
   actsSignature: string;
   approvingAccount: { approvingAcc: string; approvingAccId: string };
+  approver: string;
   assemblyId: string;
   authorName: string;
   concernedCommiteeId: { committeeName: string; committeeNameId: string };

@@ -37,7 +37,8 @@ export class Report extends BasicDocument {
     approverId: string;
     account: string;
   };
-  // assemblyId: string;
+  assemblyId: string;
+  approver: string;
   authorCommitee: {
     name: string;
     id: string;
@@ -50,7 +51,7 @@ export class Report extends BasicDocument {
   //     author: string;
   //   }
   // ];
-  // createdAt: string;
+  createdAt: string;
   datePublished: string;
   dueDate: string;
   editors: string[];
@@ -61,8 +62,8 @@ export class Report extends BasicDocument {
   relatedTo: string;
   // reportSignature: string;
   title: string;
-  // updatedAt: string;
-  // uploaded: boolean;
+  updatedAt: string;
+  uploaded: boolean;
   uploadedFileURL: string;
   uploadingAccount: { name: string; id: string };
 }

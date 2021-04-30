@@ -56,14 +56,6 @@
         </div>
       </div>
     </app-menu-container>
-    <a
-      style="color: #008000; margin: 0; margin-top: -30px"
-      [routerLink]="['/', 'generate', 'tentative-business']"
-      [queryParams]="{ 'order-paper': this.paperId }"
-      *ngIf="this.paperId"
-    >
-      Generate Tentative Bussiness
-    </a>
     <div class="actions">
       <button
         mat-button

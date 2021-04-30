@@ -1,6 +1,6 @@
 <app-background>
   <app-center-card>
-    <h1 class="title">Generate an Votes and Procedures</h1>
+    <h1 class="title">Generate Votes and Proceedings</h1>
     <form [formGroup]="form" class="form">
       <app-custom-button
         [title]="orderPaperNo ? orderPaperNo : 'Order Paper No'"
@@ -9,12 +9,12 @@
 
       <p class="label">Assembly No</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="assemblyNo" type="number" />
+        <input matInput formControlName="assemblyNo" />
       </mat-form-field>
 
       <p class="label">Session No</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="sessionNo" type="number" />
+        <input matInput formControlName="sessionNo" />
       </mat-form-field>
 
       <!-- <div class="grid">

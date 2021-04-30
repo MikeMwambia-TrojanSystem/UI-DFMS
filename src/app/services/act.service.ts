@@ -88,4 +88,8 @@ export class ActService {
       })
     );
   }
+
+  approveAct(id: string) {
+    return this.apiService.approve('acts', id);
+  }
 }

@@ -380,10 +380,14 @@ export class VotebookContentGenerateComponent implements OnInit {
           (cached, result) => {
             const { form, ...others } = cached;
 
+            const value = (form.get(field).value as string).split('&&&');
+            const array = value[0].length ? value : [];
             const modified = modifyResult(result, cached);
 
+            array.push(modified);
+
             form.patchValue({
-              [field]: modified,
+              [field]: array.join('&&&'),
             });
 
             return {
@@ -490,8 +494,9 @@ export class VotebookContentGenerateComponent implements OnInit {
           field: 'noticeOfMotionsReply',
           orderPaperField: 'noticeOfMotions',
           orderContentMapping: (motions) => motions.map((m) => m.title),
-          modifyResult: ({ content, status }) =>
-            `content=${content}|||status=${status}`,
+          modifyResult: ({ content }) => content,
+          // modifyResult: ({ content, status }) =>
+          //   `content=${content}|||status=${status}`,
         });
       case 'statementReply':
         return this._onGenerateWithId<Statement, string>({
@@ -551,6 +556,7 @@ export class VotebookContentGenerateComponent implements OnInit {
                 : ''
             ),
           modifyResult: ({ content, status, billId }, { form }) => {
+            console.log({ content, status, billId });
             const value = (form.get('bills').value as string).split('&&&');
             const array = value[0].length
               ? value.filter(

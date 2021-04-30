@@ -39,6 +39,8 @@ export class ActViewComponent implements OnInit {
   });
 
   authorName: string;
+  approver: string;
+  approvedAt: string;
 
   constructor(
     private fb: FormBuilder,
@@ -56,6 +58,8 @@ export class ActViewComponent implements OnInit {
         uploadingAccount,
         datePublished,
         authorName,
+        approver,
+        updatedAt,
         ...others
       } = act;
 
@@ -84,6 +88,8 @@ export class ActViewComponent implements OnInit {
         });
 
       this.authorName = authorName;
+      this.approvedAt = moment(updatedAt).format('Do MMMM YYYY');
+      this.approver = approver;
     });
   }
 

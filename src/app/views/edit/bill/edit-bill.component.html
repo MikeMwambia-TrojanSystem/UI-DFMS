@@ -16,11 +16,12 @@
             <mat-option value="pending">Pending</mat-option>
             <mat-option value="approved">Approved</mat-option>
             <mat-option value="declined">Declined</mat-option>
+            <mat-option value="bill deferred">Bill Deferred</mat-option>
           </mat-select>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Select Bill</mat-label>
-          <mat-select [formControl]="motionId">
+          <mat-select [formControl]="billId">
             <mat-option *ngFor="let bill of bills" [value]="bill._id">{{
               bill.title
             }}</mat-option>
@@ -52,7 +53,7 @@
         <button
           mat-raised-button
           class="publish-btn"
-          [disabled]="content.invalid || status.invalid || motionId.invalid"
+          [disabled]="content.invalid || status.invalid || billId.invalid"
           (click)="onPublish()"
         >
           Save Content

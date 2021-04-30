@@ -74,29 +74,10 @@ export class ListActComponent implements OnInit {
     this.cacheService.emit(this._cacheId, { titleOfAct, _id });
   }
 
-  onApprove({
-    concernedCommiteeId,
-    originatingBillId,
-    sponsorId,
-    _id,
-    ...others
-  }: Act) {
-    this.actService
-      .updateAct({
-        ...others,
-        originatingBTitle: originatingBillId.originatingBTitle,
-        billId: originatingBillId.originatingBId,
-        sponsorId: sponsorId.sponsorId,
-        sponsorName: sponsorId.sponsorName,
-        concernedCommiteeId: concernedCommiteeId.committeeNameId,
-        committeeName: concernedCommiteeId.committeeName,
-        committeeNameId: concernedCommiteeId.committeeNameId,
-        published: true,
-        id: _id,
-      } as any)
-      .subscribe(() => {
-        window.location.reload();
-      });
+  onApprove({ _id }: Act) {
+    this.actService.approveAct(_id).subscribe(() => {
+      window.location.reload();
+    });
   }
 
   onSearch(query: string) {

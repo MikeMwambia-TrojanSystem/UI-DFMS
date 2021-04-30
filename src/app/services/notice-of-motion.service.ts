@@ -59,4 +59,8 @@ export class NoticeOfMotionService {
       map(({ message }) => (Array.isArray(message) ? message : []))
     );
   }
+
+  approveNotice(id: string) {
+    return this.apiService.approve('motion', id);
+  }
 }

@@ -16,7 +16,7 @@ export class EditNoticeMotionComponent {
   private _orderPaperId: string;
 
   content = new FormControl('', Validators.required);
-  status = new FormControl('', Validators.required);
+  status = new FormControl('');
 
   words = 0;
   previousPage: number;

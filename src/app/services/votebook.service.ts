@@ -79,4 +79,8 @@ export class VotebookService {
       ? transformation(value)
       : value.join('&&&');
   }
+
+  approveVotebook(id: string) {
+    return this.apiService.approve('votebook', id);
+  }
 }

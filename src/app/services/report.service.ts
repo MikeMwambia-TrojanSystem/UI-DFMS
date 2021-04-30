@@ -90,4 +90,8 @@ export class ReportService {
       })
     );
   }
+
+  approveReport(id: string) {
+    return this.apiService.approve('report', id);
+  }
 }

@@ -32,6 +32,7 @@ export class Bill extends BasicDocument {
     approvingAcc: string;
     approvingAccId: string;
   };
+  approver: string;
   assemblyId: string;
   authorName: string;
   billSignature: string;
@@ -57,6 +58,7 @@ export class Bill extends BasicDocument {
   sponsorDescription: string;
   status: string;
   title: string;
+  updatedAt: string;
   uploaded: boolean;
   uploadedBillURL: string;
   uploadingAccount: {

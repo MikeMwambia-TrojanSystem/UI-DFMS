@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import _ from 'lodash';
-import { Observable, of } from 'rxjs';
-import { map, switchMap, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { CacheService } from 'src/app/services/cache.service';
-import { OrderPaperService } from 'src/app/services/order-paper.service';
 import { VotebookService } from 'src/app/services/votebook.service';
-import { OrderPaper } from 'src/app/shared/types/order-paper';
 import { Votebook } from 'src/app/shared/types/votebook';
 
 @Component({
@@ -25,7 +22,6 @@ export class ListVoteBookComponent implements OnInit {
     private route: ActivatedRoute,
     private cacheService: CacheService,
     private votebookService: VotebookService,
-    private orderPaperService: OrderPaperService,
     private router: Router
   ) {}
 
@@ -69,65 +65,10 @@ export class ListVoteBookComponent implements OnInit {
     });
   }
 
-  onApprove({
-    _id,
-    presiding,
-    orderPapersNo,
-    adminstrationOfOath,
-    bills,
-    communicationFromChainr,
-    messages,
-    motions,
-    noticeOfMotions,
-    papers,
-    petitions,
-    statements,
-    approvingAccount,
-    ...others
-  }: Votebook) {
-    this.orderPaperService
-      .getOrderPaperByNo(orderPapersNo)
-      .pipe(
-        switchMap((orderPaper) =>
-          this.votebookService.updateVotebook({
-            ...others,
-            pageNoToDate: orderPaper.pageNoToDate,
-            orderPaperId: orderPaper._id,
-            orderPapersNo: orderPapersNo,
-            presiding: presiding.name,
-            presidingPosition: presiding.position,
-            presidingId: presiding.id,
-            approvingAccount: approvingAccount.account,
-            approverId: approvingAccount.approverId,
-            adminstrationOfOathReply: adminstrationOfOath.join('&&&'),
-            communicationFromChainr: communicationFromChainr.join('&&&'),
-            messageContent: messages.join('&&&'),
-            petionReply: petitions.join('&&&'),
-            reportReply: papers.join('&&&'),
-            noticeOfMotionsReply: noticeOfMotions.join('&&&'),
-            statementReply: statements.join('&&&'),
-            motions: motions
-              .filter((m) => m.content)
-              .map(
-                (m) =>
-                  `content=${m.content}|||source=${m.source}|||motionId=${m.documentId}`
-              )
-              .join('&&&'),
-            bills: bills
-              .filter((m) => m.content)
-              .map(
-                (m) =>
-                  `content=${m.content}|||source=${m.source}|||billId=${m.documentId}`
-              )
-              .join('&&&'),
-            published: true,
-            id: _id,
-          } as any)
-        )
-      )
-      .subscribe(() => {
-        window.location.reload();
-      });
+  onApprove({ _id }: Votebook) {
+    this.votebookService.approveVotebook(_id).subscribe(() => {
+      window.location.reload();
+    });
   }
 
   onSearch(query: string) {

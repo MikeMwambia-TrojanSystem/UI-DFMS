@@ -75,42 +75,10 @@ export class ListReportComponent implements OnInit {
     this.cacheService.emit(this._cacheId, report);
   }
 
-  onApprove({
-    annexus,
-    approvingAccount,
-    authorCommitee,
-    originatingDocument,
-    uploadingAccount,
-    editors,
-    uploadedFileURL,
-    title,
-    _id,
-    ...others
-  }: Report) {
-    this.reportService
-      .updateReport({
-        ...others,
-        authorCommitee: authorCommitee.name,
-        authorCommiteeId: authorCommitee.id,
-        originatingDocType: originatingDocument.type,
-        originatingDocTypeId: originatingDocument.id,
-        editors: editors.join('&&&'),
-        uploadingAccount: uploadingAccount.name,
-        uploaderId: uploadingAccount.id,
-        account: approvingAccount.account,
-        approverId: approvingAccount.approverId,
-        annexusName: annexus.name,
-        annexusId: annexus.id,
-        uploadedAnexux: annexus.uploaded,
-        uploadingUrl: annexus.uploadingUrl,
-        uploadedFileURL,
-        titleOfReport: title,
-        published: true,
-        id: _id,
-      } as any)
-      .subscribe(() => {
-        window.location.reload();
-      });
+  onApprove({ _id }: Report) {
+    this.reportService.approveReport(_id).subscribe(() => {
+      window.location.reload();
+    });
   }
 
   onSearch(query: string) {

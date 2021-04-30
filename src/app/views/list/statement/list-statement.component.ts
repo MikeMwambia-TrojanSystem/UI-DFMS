@@ -112,30 +112,10 @@ export class ListStatementComponent implements OnInit {
     this.cacheService.emit(this._cacheId, statement);
   }
 
-  onApprove({
-    seeker,
-    statementProvider,
-    seekerDescription,
-    title,
-    _id,
-    ...others
-  }: Statement) {
-    this.statementService
-      .updateStatement({
-        ...others,
-        statementNo: title.toString(),
-        seeker: seeker.name,
-        seekerId: seeker.id,
-        seekerDescription: seekerDescription,
-        department: statementProvider.department,
-        statementProviderId: statementProvider.id,
-        statementProvider: statementProvider.name,
-        published: true,
-        id: _id,
-      } as any)
-      .subscribe(() => {
-        window.location.reload();
-      });
+  onApprove({ _id }: Statement) {
+    this.statementService.approveStatement(_id).subscribe(() => {
+      window.location.reload();
+    });
   }
 
   onSearch(query: string) {

@@ -76,28 +76,10 @@ export class ListPetitionComponent implements OnInit {
     this.cacheService.emit(this._cacheId, { _id, content });
   }
 
-  onApprove({
-    approvingAccount,
-    concernedCommitee,
-    dateCommitteResponse,
-    datePresented,
-    dateToBDiscussed,
-    sponsoredBy,
-    uploadingAccount,
-    petitioners,
-    _id,
-    ...others
-  }: Petition) {
+  onApprove({ _id }: Petition) {
     this.petitionService
-      .updatePetition({
-        ...others,
-        sponsorName: sponsoredBy.sponsorName,
-        sponsorId: sponsoredBy.sponsorId,
-        concernedCommitee: concernedCommitee.name,
-        concernedCommiteeId: concernedCommitee.id,
-        petitioners: petitioners[0],
-        published: true,
-        id: _id,
+      .approvePetition({
+        _id,
       } as any)
       .subscribe(() => {
         window.location.reload();

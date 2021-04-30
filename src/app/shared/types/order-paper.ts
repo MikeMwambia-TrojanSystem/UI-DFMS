@@ -35,6 +35,7 @@ export class OrderPaper extends BasicDocument {
   adjournment: string;
   adminstrationOfOath: string[];
   approvingAccount: { account: string; approverId: string };
+  approver: string;
   assemblyNo: number;
   author: string;
   authorName: string;
@@ -53,6 +54,7 @@ export class OrderPaper extends BasicDocument {
   published: boolean;
   sessionNo: number;
   statements: string[];
+  updatedAt: string;
   _id: string;
 }
 

@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import _ from 'lodash';
 import { take } from 'rxjs/operators';
+import moment from 'moment';
+
 import { OrderPaper } from 'src/app/shared/types/order-paper';
 import { Votebook } from 'src/app/shared/types/votebook';
 
@@ -27,8 +29,11 @@ export class VotebookViewComponent implements OnInit {
     presidingPosition: [{ value: '', disabled: true }],
     presidingId: [{ value: '', disabled: true }],
   });
+
   id: string;
   authorName: string;
+  approver: string;
+  approvedAt: string;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
@@ -46,7 +51,7 @@ export class VotebookViewComponent implements OnInit {
         }) => {
           this.id = votebook._id;
 
-          const { presiding, ...others } = votebook;
+          const { presiding, approver, updatedAt, ...others } = votebook;
 
           this.form.patchValue({
             ...others,
@@ -58,6 +63,8 @@ export class VotebookViewComponent implements OnInit {
           });
 
           this.authorName = votebook.authorName;
+          this.approver = approver;
+          this.approvedAt = moment(updatedAt).format('Do MMMM YYYY');
         }
       );
   }

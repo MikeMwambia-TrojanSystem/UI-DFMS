@@ -100,4 +100,8 @@ export class MotionService {
       })
     );
   }
+
+  approveMotion(id: string) {
+    return this.apiService.approve('motion', id);
+  }
 }

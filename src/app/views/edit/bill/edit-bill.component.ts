@@ -19,7 +19,7 @@ export class EditBillComponent {
 
   content = new FormControl('', Validators.required);
   status = new FormControl('', Validators.required);
-  motionId = new FormControl('', Validators.required);
+  billId = new FormControl('', Validators.required);
 
   words = 0;
   previousPage: number;
@@ -85,21 +85,21 @@ export class EditBillComponent {
 
   onPublish() {
     this.cacheService.cache<
-      { content: string; status: string; motionId: string },
+      { content: string; status: string; billId: string },
       undefined
     >(
       'EDIT_VOTEBOOK_PREVIEW',
       {
         content: this.content.value,
         status: this.status.value,
-        motionId: this.motionId.value,
+        billId: this.billId.value,
       },
       undefined,
       (cached) => {
         this.cacheService.emit(this._cacheId, {
           content: cached.content,
           status: cached.status,
-          motionId: cached.motionId,
+          billId: cached.billId,
         });
 
         return cached;

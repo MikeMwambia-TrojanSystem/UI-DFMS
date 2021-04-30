@@ -20,6 +20,7 @@ export class Motion extends BasicDocument {
   _id: string;
   author: string;
   authorName: string;
+  approver: string;
   createdAt: string;
   datePublished: string;
   department: string;
@@ -33,6 +34,7 @@ export class Motion extends BasicDocument {
     sponsorId: string;
   };
   title: string;
+  updatedAt: string;
 }
 // export class Motion extends BasicDocument {
 //   _id: string;

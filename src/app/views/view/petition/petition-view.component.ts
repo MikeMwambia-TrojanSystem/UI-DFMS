@@ -40,6 +40,8 @@ export class PetitionViewComponent implements OnInit {
 
   petitionersName: string[] = [];
   authorName: string;
+  approver: string;
+  approvedAt: string;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
@@ -57,6 +59,8 @@ export class PetitionViewComponent implements OnInit {
           sponsoredBy,
           uploadingAccount,
           authorName,
+          approver,
+          updatedAt,
           ...others
         } = petition;
 
@@ -79,6 +83,8 @@ export class PetitionViewComponent implements OnInit {
         });
 
         this.authorName = authorName;
+        this.approver = approver;
+        this.approvedAt = moment(updatedAt).format('Do MMMM YYYY');
       });
 
     // Update petitioners name from form ids

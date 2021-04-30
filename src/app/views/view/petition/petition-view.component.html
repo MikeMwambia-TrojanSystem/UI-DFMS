@@ -62,7 +62,11 @@
           </div>
         </div>
       </form>
-      <p class="view-author" *ngIf="authorName">Author: {{ authorName }}</p>
+      <p class="view-author author" *ngIf="authorName">
+        Author: {{ authorName }}
+      </p>
+      <p class="view-author" *ngIf="approver">Approved By: {{ approver }}</p>
+      <p class="view-author" *ngIf="approver">Approved At: {{ approvedAt }}</p>
     </div>
   </app-center-card>
 </app-background>

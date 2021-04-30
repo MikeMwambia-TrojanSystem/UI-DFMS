@@ -27,10 +27,10 @@ export class VotebookBillPreviewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const { content, status, motionId } = this.cacheService.getData<{
+    const { content, status, billId } = this.cacheService.getData<{
       content: string;
       status: string;
-      motionId: string;
+      billId: string;
     }>('EDIT_VOTEBOOK_PREVIEW');
 
     this.content.setValue(content);
@@ -39,7 +39,7 @@ export class VotebookBillPreviewComponent implements OnInit {
       .getBills()
       .pipe(
         take(1),
-        map((bills) => bills.find((b) => b._id === motionId))
+        map((bills) => bills.find((b) => b._id === billId))
       )
       .subscribe((bill) => {
         this.bill = bill;

@@ -104,4 +104,8 @@ export class OrderPaperService {
       ? transformation(value)
       : value.join('&&&');
   }
+
+  approveOrderPaper(id: string) {
+    return this.apiService.approve('orderPaper', id);
+  }
 }

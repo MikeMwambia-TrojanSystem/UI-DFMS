@@ -78,28 +78,10 @@ export class ListMotionComponent implements OnInit {
     this.cacheService.emit(this._cacheId, motion);
   }
 
-  onApprove({ sponsoredBy, department, title, _id, ...others }: Motion) {
-    this.departmentService
-      .getDepartments()
-      .pipe(
-        switchMap((departments) => {
-          return this.motionService.updateMotion({
-            ...others,
-            content: title,
-            department,
-            departmentId: (
-              departments.find((d) => d.name === department) || { _id: '' }
-            )._id,
-            sponsorName: sponsoredBy.sponsorName,
-            sponsorId: sponsoredBy.sponsorId,
-            published: true,
-            id: _id,
-          } as any);
-        })
-      )
-      .subscribe(() => {
-        window.location.reload();
-      });
+  onApprove({ _id }: Motion) {
+    this.motionService.approveMotion(_id).subscribe(() => {
+      window.location.reload();
+    });
   }
 
   onSearch(query: string) {

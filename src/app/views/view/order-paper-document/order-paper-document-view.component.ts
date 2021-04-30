@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs/operators';
+import moment from 'moment';
 
 import { OrderPaper } from 'src/app/shared/types/order-paper';
 
@@ -39,6 +40,8 @@ export class OrderPaperDocumentViewComponent implements OnInit {
   });
 
   authorName: string;
+  approver: string;
+  approvedAt: string;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
@@ -59,6 +62,8 @@ export class OrderPaperDocumentViewComponent implements OnInit {
           statements,
           authorName,
           _id,
+          approver,
+          updatedAt,
           ...others
         } = orderPaper;
 
@@ -67,8 +72,11 @@ export class OrderPaperDocumentViewComponent implements OnInit {
           approvingAccount: approvingAccount.account,
           approverId: approvingAccount.approverId,
         });
+
         this.id = _id;
         this.authorName = authorName;
+        this.approver = approver;
+        this.approvedAt = moment(updatedAt).format('Do MMMM YYYY');
       });
   }
 }

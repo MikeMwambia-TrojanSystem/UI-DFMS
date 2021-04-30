@@ -52,6 +52,7 @@ export class Votebook extends BasicDocument {
   adjournment: string;
   adminstrationOfOath: string[];
   approvingAccount: { account: string; approverId: string };
+  approver: string;
   assemblyId: string;
   assemblyNo: number;
   authorName: string;

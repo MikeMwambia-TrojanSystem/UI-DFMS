@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-order-paper-item',
@@ -18,11 +19,13 @@ export class OrderPaperItemComponent implements OnInit {
   @Input() state: string;
   @Input() editUrl: string;
   @Input() viewUrl: string;
-  @Input() downloadUrl: string;
+  @Input() id: string;
   @Input() canEdit: boolean;
   @Input() canDelete: boolean;
   @Input() canApprove: boolean;
   stateExpanded: string;
+
+  constructor(private apiService: ApiService) {}
 
   ngOnInit() {
     if (this.state === 'draft') {
@@ -40,7 +43,9 @@ export class OrderPaperItemComponent implements OnInit {
     this.delete.emit();
   }
 
-  onDownload() {}
+  onDownload() {
+    this.apiService.downloadOrderPaper(this.id).subscribe();
+  }
 
   onSelect() {
     this.select.emit();

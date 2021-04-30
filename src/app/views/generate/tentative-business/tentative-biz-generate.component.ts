@@ -29,6 +29,7 @@ export class TentativeBusinessGenerateComponent implements OnInit, OnDestroy {
     dateOfContent: ['', Validators.required],
     dayOfContent: ['', Validators.required],
     time: ['', Validators.required],
+    assemblySitting: ['', Validators.required],
   });
 
   constructor(
@@ -104,5 +105,13 @@ export class TentativeBusinessGenerateComponent implements OnInit, OnDestroy {
         },
       });
     }
+  }
+
+  onNotNow() {
+    this.router.navigate(['/', 'list', 'order-paper'], {
+      queryParams: {
+        state: this.route.snapshot.queryParams.state || 'public',
+      },
+    });
   }
 }

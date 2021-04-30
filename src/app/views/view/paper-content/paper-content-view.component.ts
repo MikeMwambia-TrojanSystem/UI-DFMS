@@ -3,6 +3,7 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import _ from 'lodash';
 import { take } from 'rxjs/operators';
+import moment from 'moment';
 
 import {
   MenuItem,
@@ -89,6 +90,8 @@ export class PaperContentViewComponent implements OnInit {
 
   authorName: string;
   paperId: string;
+  approver: string;
+  approvedAt: string;
 
   constructor(
     private fb: FormBuilder,
@@ -112,6 +115,8 @@ export class PaperContentViewComponent implements OnInit {
           noticeOfMotions,
           bills,
           authorName,
+          approver,
+          updatedAt,
           ...others
         } = orderPaper;
 
@@ -141,6 +146,8 @@ export class PaperContentViewComponent implements OnInit {
 
         this.authorName = authorName;
         this.paperId = orderPaper._id;
+        this.approver = approver;
+        this.approvedAt = moment(updatedAt).format('Do MMMM YYYY');
       });
 
     this._populateNotifications();

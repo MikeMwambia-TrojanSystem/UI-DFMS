@@ -73,21 +73,10 @@ export class ListBillComponent implements OnInit {
     this.cacheService.emit(this._cacheId, bill);
   }
 
-  onApprove({ concernedCommiteeId, sponsor, title, _id, ...others }: Bill) {
-    this.billService
-      .updateBill({
-        ...others,
-        titleOfBill: title || '',
-        sponsorId: sponsor.id,
-        sponsor: sponsor.name,
-        committeeName: concernedCommiteeId.committeeName,
-        committeeNameId: concernedCommiteeId.committeeNameId,
-        published: true,
-        id: _id,
-      } as any)
-      .subscribe(() => {
-        window.location.reload();
-      });
+  onApprove({ _id }: Bill) {
+    this.billService.approveBill(_id).subscribe(() => {
+      window.location.reload();
+    });
   }
 
   onSearch(query: string) {

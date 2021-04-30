@@ -439,12 +439,13 @@ export class PaperContentGenerateComponent implements OnInit {
   }
 
   onSave(draft: boolean) {
-    const subCallback = (state: 'public' | 'private' | 'draft') => {
+    const subCallback = (state: 'public' | 'private' | 'draft', id: string) => {
       this.cacheService.clearCache('GENERATE_ORDER_PAPER');
 
-      this.router.navigate(['/list/order-paper'], {
+      this.router.navigate(['/generate/tentative-business'], {
         queryParams: {
           state,
+          'order-paper': id,
         },
       });
     };
@@ -460,11 +461,11 @@ export class PaperContentGenerateComponent implements OnInit {
 
         this.orderPaperService
           .postOrderPaper(value)
-          .subscribe(() => subCallback(state));
+          .subscribe((newOrderPaper) => subCallback(state, newOrderPaper._id));
       } else {
         this.orderPaperService
           .updateOrderPaper({ ...value, id: this.paperId })
-          .subscribe(() => subCallback(state));
+          .subscribe(() => subCallback(state, this.paperId));
       }
     };
 

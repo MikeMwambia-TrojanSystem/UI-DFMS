@@ -26,6 +26,8 @@ export class MotionViewComponent implements OnInit {
   });
 
   authorName: string;
+  approver: string;
+  approvedAt: string;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {}
 
@@ -41,6 +43,8 @@ export class MotionViewComponent implements OnInit {
         });
 
         this.authorName = motion.authorName;
+        this.approver = motion.approver;
+        this.approvedAt = motion.updatedAt;
       });
   }
 }

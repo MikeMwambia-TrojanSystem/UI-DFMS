@@ -54,6 +54,8 @@ export class ReportDocumentViewComponent {
   annexusName: string;
   annexusUrl: string;
   authorName: string;
+  approver: string;
+  approvedAt: string;
 
   constructor(
     private fb: FormBuilder,
@@ -79,6 +81,8 @@ export class ReportDocumentViewComponent {
           uploadedFileURL,
           title,
           authorName,
+          approver,
+          updatedAt,
           ...others
         } = report;
 
@@ -112,6 +116,8 @@ export class ReportDocumentViewComponent {
         this.annexusName = annexus.name;
         this.annexusUrl = annexus.uploadingUrl;
         this.authorName = authorName;
+        this.approver = approver;
+        this.approvedAt = moment(updatedAt).format('Do MMMM YYYY');
       });
 
     // Updating information when first time opening this page

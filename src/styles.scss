@@ -73,9 +73,13 @@ textarea {
 }
 
 .view-author {
-  margin-top: -20px !important;
   text-align: right;
   font-size: 14px;
+  margin: 2px 0 !important;
+
+  &.author {
+    margin-top: -20px !important;
+  }
 }
 
 // Material Overriding CSS

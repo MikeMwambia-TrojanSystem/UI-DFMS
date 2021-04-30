@@ -3,8 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import _ from 'lodash-es';
 import { switchMap, take } from 'rxjs/operators';
 import { CacheService } from 'src/app/services/cache.service';
-import { DepartmentService } from 'src/app/services/department.service';
 import { MotionService } from 'src/app/services/motion.service';
+import { NoticeOfMotionService } from 'src/app/services/notice-of-motion.service';
 
 import { Motion } from 'src/app/shared/types/motion';
 
@@ -24,7 +24,7 @@ export class ListNoticeOfMotionComponent implements OnInit {
     private cacheService: CacheService,
     private router: Router,
     private motionService: MotionService,
-    private departmentService: DepartmentService
+    private noticeOfMotionsService: NoticeOfMotionService
   ) {}
 
   ngOnInit(): void {
@@ -83,28 +83,10 @@ export class ListNoticeOfMotionComponent implements OnInit {
     });
   }
 
-  onApprove({ sponsoredBy, department, title, _id, ...others }: Motion) {
-    this.departmentService
-      .getDepartments()
-      .pipe(
-        switchMap((departments) => {
-          return this.motionService.updateMotion({
-            ...others,
-            content: title,
-            department,
-            departmentId: (
-              departments.find((d) => d.name === department) || { _id: '' }
-            )._id,
-            sponsorName: sponsoredBy.sponsorName,
-            sponsorId: sponsoredBy.sponsorId,
-            published: true,
-            id: _id,
-          } as any);
-        })
-      )
-      .subscribe(() => {
-        window.location.reload();
-      });
+  onApprove({ _id }: Motion) {
+    this.noticeOfMotionsService.approveNotice(_id).subscribe(() => {
+      window.location.reload();
+    });
   }
 
   onSearch(query: string) {

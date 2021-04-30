@@ -3,6 +3,8 @@ import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import _ from 'lodash';
 import { take } from 'rxjs/operators';
+import moment from 'moment';
+
 import {
   MenuItem,
   MenuNotification,
@@ -110,6 +112,8 @@ export class VotebookContentViewComponent implements OnInit {
   });
 
   authorName: string;
+  approver: string;
+  approvedAt: string;
 
   constructor(
     private fb: FormBuilder,
@@ -134,6 +138,8 @@ export class VotebookContentViewComponent implements OnInit {
           statements,
           approvingAccount,
           presiding,
+          approver,
+          updatedAt,
           ...others
         } = votebook;
 
@@ -165,6 +171,8 @@ export class VotebookContentViewComponent implements OnInit {
         });
 
         this.authorName = votebook.authorName;
+        this.approver = approver;
+        this.approvedAt = moment(updatedAt).format('Do MMMM YYYY');
       });
 
     this.orderPaperService

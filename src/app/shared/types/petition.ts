@@ -31,6 +31,7 @@ export class PetitionPost {
 export class Petition extends BasicDocument {
   approvingAccount: { approverId: string; account: string };
   assemblyId: string;
+  approver: string;
   authorName: string;
   concernedCommitee: { name: string; id: string };
   content: string;

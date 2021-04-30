@@ -498,4 +498,25 @@ export class ApiService {
       })
       .pipe(catchError(errorHandler));
   }
+
+  // APPROVE
+  approve(type: string, id: string) {
+    return this.http
+      .put(this._baseUrl + type + '/approve', undefined, {
+        params: { id },
+      })
+      .pipe(catchError(errorHandler));
+  }
+
+  // DOWNLOAD ORDER PAPER
+  downloadOrderPaper(id: string) {
+    return this.http
+      .get('http://3.13.186.200:5000/orderPaper', {
+        params: {
+          id,
+          download: 'true',
+        },
+      })
+      .pipe(catchError(errorHandler));
+  }
 }

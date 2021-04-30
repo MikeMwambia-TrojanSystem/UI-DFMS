@@ -1,6 +1,6 @@
 <app-background>
   <app-center-card>
-    <h1 class="title">Votes and Procedures</h1>
+    <h1 class="title">Votes and Proceedings</h1>
     <form [formGroup]="form" class="form">
       <p class="label">Order Paper No</p>
       <mat-form-field appearance="standard">
@@ -9,12 +9,12 @@
 
       <p class="label">Assembly No</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="assemblyNo" type="number" />
+        <input matInput formControlName="assemblyNo" />
       </mat-form-field>
 
       <p class="label">Session No</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="sessionNo" type="number" />
+        <input matInput formControlName="sessionNo" />
       </mat-form-field>
 
       <div class="grid">
@@ -88,6 +88,10 @@
         </button>
       </div>
     </form>
-    <p class="view-author" *ngIf="authorName">Author: {{ authorName }}</p>
+    <p class="view-author author" *ngIf="authorName">
+      Author: {{ authorName }}
+    </p>
+    <p class="view-author" *ngIf="approver">Approved By: {{ approver }}</p>
+    <p class="view-author" *ngIf="approver">Approved At: {{ approvedAt }}</p>
   </app-center-card>
 </app-background>

@@ -12,7 +12,7 @@ export class BillService {
   private _bills = new BehaviorSubject<Bill[]>([]);
   private _fetched = false;
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService) {}
 
   get bills() {
     return this._bills;
@@ -65,9 +65,7 @@ export class BillService {
       tap((bill) => {
         const billId = bill._id;
 
-        const newBills = this._bills
-          .getValue()
-          .filter((b) => b._id !== billId);
+        const newBills = this._bills.getValue().filter((b) => b._id !== billId);
 
         this._bills.next(newBills);
       })
@@ -88,9 +86,7 @@ export class BillService {
     return this.apiService.updateBill(bill).pipe(
       tap((result) => {
         const newBills = this._bills.getValue();
-        const index = newBills.findIndex(
-          (b) => b._id === result._id
-        );
+        const index = newBills.findIndex((b) => b._id === result._id);
 
         newBills[index] = {
           ...result,
@@ -99,5 +95,9 @@ export class BillService {
         this._bills.next(newBills);
       })
     );
+  }
+
+  approveBill(id: string) {
+    return this.apiService.approve('bills', id);
   }
 }
