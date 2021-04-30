@@ -509,14 +509,7 @@ export class ApiService {
   }
 
   // DOWNLOAD ORDER PAPER
-  downloadOrderPaper(id: string) {
-    return this.http
-      .get('http://3.13.186.200:5000/orderPaper', {
-        params: {
-          id,
-          download: 'true',
-        },
-      })
-      .pipe(catchError(errorHandler));
+  getDownloadOrderPaperUrl(id: string) {
+    return `http://3.13.186.200:5000/orderPaper?id=${id}&download=true`;
   }
 }

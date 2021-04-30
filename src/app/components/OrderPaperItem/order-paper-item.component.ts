@@ -24,6 +24,7 @@ export class OrderPaperItemComponent implements OnInit {
   @Input() canDelete: boolean;
   @Input() canApprove: boolean;
   stateExpanded: string;
+  downloadUrl: string;
 
   constructor(private apiService: ApiService) {}
 
@@ -37,14 +38,12 @@ export class OrderPaperItemComponent implements OnInit {
     if (this.state === 'private') {
       this.stateExpanded = 'Private';
     }
+
+    this.downloadUrl = this.apiService.getDownloadOrderPaperUrl(this.id);
   }
 
   onDelete() {
     this.delete.emit();
-  }
-
-  onDownload() {
-    this.apiService.downloadOrderPaper(this.id).subscribe();
   }
 
   onSelect() {

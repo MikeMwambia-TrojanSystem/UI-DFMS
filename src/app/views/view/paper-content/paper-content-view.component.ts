@@ -89,7 +89,7 @@ export class PaperContentViewComponent implements OnInit {
   });
 
   authorName: string;
-  paperId: string;
+  orderPaper: OrderPaper;
   approver: string;
   approvedAt: string;
 
@@ -145,7 +145,7 @@ export class PaperContentViewComponent implements OnInit {
         });
 
         this.authorName = authorName;
-        this.paperId = orderPaper._id;
+        this.orderPaper = orderPaper;
         this.approver = approver;
         this.approvedAt = moment(updatedAt).format('Do MMMM YYYY');
       });

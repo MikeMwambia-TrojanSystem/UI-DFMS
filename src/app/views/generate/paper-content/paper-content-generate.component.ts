@@ -38,6 +38,7 @@ export class PaperContentGenerateComponent implements OnInit {
   private _cacheId: string;
   private _mode: 'creating' | 'editing' = 'creating';
   paperId: string;
+  orderPaper: OrderPaper;
 
   items: MenuItem[] = [
     {
@@ -172,6 +173,8 @@ export class PaperContentGenerateComponent implements OnInit {
             motionNoticeId: this.orderPaperService.checkNone(noticeOfMotions),
             billsId: this.orderPaperService.checkNone(bills),
           });
+
+          this.orderPaper = orderPaper;
         });
     }
 
