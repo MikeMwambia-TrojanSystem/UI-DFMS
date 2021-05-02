@@ -32,15 +32,17 @@ interface ApiResponse<T> {
 }
 
 const errorHandler = (error: HttpErrorResponse) => {
-  alert('Error refresh page and try again if it persists call support');
-  return throwError(error);
+  //alert('Error refresh page and try again if it persists call support');
+  alert(error.error.errors);
+  console.log(error.error.errors);
+  return throwError(error.error.errors);
 };
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  private _baseUrl = 'https://web.jonikisecurity.com/';
+  private _baseUrl = 'http://127.0.0.1:3000/';//'https://web.jonikisecurity.com/';
   // private _baseUrl = 'https://web.jonikisecurity.com/';
   private _timeout = 60 * 1000;
 
@@ -510,6 +512,7 @@ export class ApiService {
 
   // DOWNLOAD ORDER PAPER
   getDownloadOrderPaperUrl(id: string) {
-    return `http://3.13.186.200:5000/orderPaper?id=${id}&download=true`;
+    //return `http://3.13.186.200:5000/orderPaper?id=${id}&download=true`;
+    return `http://127.0.0.1:5000/orderPaper?id=${id}&download=true`;
   }
 }

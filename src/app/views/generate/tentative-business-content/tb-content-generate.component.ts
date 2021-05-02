@@ -79,11 +79,13 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
     },
   ];
 
+
   form = this.fb.group({
     orderPaperId: ['', Validators.required],
     time: ['', Validators.required],
     dayOfContent: ['', Validators.required],
     dateOfContent: ['', Validators.required],
+    assemblySitting: ['', Validators.required],
     petitionId: ['', Validators.required],
     reportId: ['', Validators.required],
     motionNoticeId: ['', Validators.required],

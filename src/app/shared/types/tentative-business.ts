@@ -38,6 +38,7 @@ export class TentativeBusiness extends BasicDocument {
   timeOfContent: string;
   updatedAt: string;
   _id: string;
+  assemblySitting:string;
 }
 
 export class TentativeBusinessWithOrderNumber extends TentativeBusiness {

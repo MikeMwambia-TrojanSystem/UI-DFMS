@@ -60,12 +60,14 @@ export class TentativeBusinessGenerateComponent implements OnInit, OnDestroy {
               dateOfContent,
               dayOfContent,
               timeOfContent,
+              assemblySitting,
             } = tentativeBusiness;
 
             this.form.patchValue({
               orderPaperId,
               dateOfContent,
               dayOfContent,
+              assemblySitting,
               time: timeOfContent,
             });
 
