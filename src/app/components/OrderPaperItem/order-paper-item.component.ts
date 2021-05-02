@@ -19,7 +19,7 @@ export class OrderPaperItemComponent implements OnInit {
   @Input() state: string;
   @Input() editUrl: string;
   @Input() viewUrl: string;
-  @Input() id: string;
+  @Input() downloadId: string;
   @Input() canEdit: boolean;
   @Input() canDelete: boolean;
   @Input() canApprove: boolean;
@@ -39,7 +39,9 @@ export class OrderPaperItemComponent implements OnInit {
       this.stateExpanded = 'Private';
     }
 
-    this.downloadUrl = this.apiService.getDownloadOrderPaperUrl(this.id);
+    this.downloadUrl = this.downloadId
+      ? this.apiService.getDownloadOrderPaperUrl(this.downloadId)
+      : undefined;
   }
 
   onDelete() {
