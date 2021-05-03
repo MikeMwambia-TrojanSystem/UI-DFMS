@@ -439,7 +439,7 @@ export class ReportUploadComponent {
         this.reportService.postReport(value).subscribe(navigating);
       } else {
         value.id = this._reportId;
-
+        console.log(value);
         this.reportService.updateReport(value).subscribe(navigating);
       }
     };

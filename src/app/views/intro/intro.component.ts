@@ -83,11 +83,7 @@ export class IntroComponent implements OnInit {
           query: {
             state: 'public',
           },
-        },
-        {
-          label: 'Manage Reports',
-          url: '/',
-        },
+        }
       ],
     },
     {
@@ -95,25 +91,25 @@ export class IntroComponent implements OnInit {
       actions: [
         {
           label: 'Generation Notice of Motion',
-          url: '/generate/motion',
+          url: '/generate/notice-of-motion',
         },
         {
           label: 'View Notice of Motion in draft status',
-          url: '/list/motion',
+          url: '/list/notice-of-motion',
           query: {
             state: 'draft',
           },
         },
         {
           label: 'View Privately Published Notice of Motion',
-          url: '/list/motion',
+          url: '/list/notice-of-motion',
           query: {
             state: 'private',
           },
         },
         {
           label: 'View Published Notice of Motion',
-          url: '/list/motion',
+          url: '/list/notice-of-motion',
           query: {
             state: 'public',
           },
