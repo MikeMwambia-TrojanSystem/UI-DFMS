@@ -44,11 +44,39 @@
         >
         </app-custom-button>
       </div>
-      <app-custom-button
-        [title]="'Select Members'"
-        (buttonClick)="onSelectMember()"
+      <div class="buttons-container">
+        <app-custom-button
+          [title]="'Select Members'"
+          (buttonClick)="onSelectMember()"
+        >
+        </app-custom-button>
+        <app-custom-button
+          [title]="'Select Clerk Assistant'"
+          (buttonClick)="onSelectClerk()"
+          style="margin-left: 10px"
+        >
+        </app-custom-button>
+      </div>
+
+      <span class="members"
+        >{{ clerkNames.length }} clerk{{
+          clerkNames.length <= 1 ? "" : "s"
+        }}</span
       >
-      </app-custom-button>
+      <div class="member-container" *ngFor="let clerk of clerkNames">
+        <mat-icon class="member-icon">person_outline</mat-icon>
+        <span>{{ clerk }}</span>
+        <button
+          mat-button
+          color="warn"
+          class="btn-delete"
+          type="button"
+          (click)="onClerkDelete(clerk)"
+        >
+          Delete
+        </button>
+      </div>
+
       <span class="members"
         >{{ membersName.length }} member{{
           membersName.length <= 1 ? "" : "s"
@@ -67,6 +95,7 @@
           Delete
         </button>
       </div>
+
       <div class="actions">
         <button
           mat-button

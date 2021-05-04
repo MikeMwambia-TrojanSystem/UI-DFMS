@@ -30,6 +30,8 @@ export class Committee extends BasicDocument {
   commiteeSignature: string;
   committesMembers: string[];
   createdAt: string;
+  clerkAssistant: string;
+  clerkAssistantId: string;
   datePublished: string;
   departmentInExcecutive: string;
   name: string;

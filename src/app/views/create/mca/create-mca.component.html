@@ -71,6 +71,7 @@
           [title]="ward.length ? ward : 'Select Ward Represented'"
           style="margin-left: 10px"
           (buttonClick)="onWardSelect()"
+          [disabled]="form.get('positionStatus').value === 'Nominated'"
         >
         </app-custom-button>
       </div>

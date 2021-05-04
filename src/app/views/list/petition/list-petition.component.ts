@@ -77,13 +77,9 @@ export class ListPetitionComponent implements OnInit {
   }
 
   onApprove({ _id }: Petition) {
-    this.petitionService
-      .approvePetition({
-        _id,
-      } as any)
-      .subscribe(() => {
-        window.location.reload();
-      });
+    this.petitionService.approvePetition(_id).subscribe(() => {
+      window.location.reload();
+    });
   }
 
   onSearch(query: string) {

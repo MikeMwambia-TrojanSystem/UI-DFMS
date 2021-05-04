@@ -5,6 +5,7 @@ import moment from 'moment';
 import { take } from 'rxjs/operators';
 
 import { BillService } from 'src/app/services/bill.service';
+import { DepartmentService } from 'src/app/services/department.service';
 import { PersonnelService } from 'src/app/services/personnel.service';
 import { PetitionService } from 'src/app/services/petition.service';
 import { StatementService } from 'src/app/services/statement.service';
@@ -43,8 +44,20 @@ export class ReportDocumentViewComponent {
     publishState: [{ value: '', disabled: true }],
   });
 
-  originatings = ['petition', 'statement', 'bill'];
-  originatingsTitle = ['Petitions', 'Statements', 'Bills'];
+  originatings = [
+    'petition',
+    'statement',
+    'bill',
+    'departmentalReport',
+    'others',
+  ];
+  originatingsTitle = [
+    'Petitions',
+    'Statements',
+    'Bills',
+    'Departmental Report',
+    'Others',
+  ];
   editors: Personnel[] = [];
   originatingName = '';
   report: File;
@@ -63,7 +76,8 @@ export class ReportDocumentViewComponent {
     private personnelService: PersonnelService,
     private petitionService: PetitionService,
     private statementService: StatementService,
-    private billService: BillService
+    private billService: BillService,
+    private departmentService: DepartmentService
   ) {}
 
   ngOnInit(): void {
@@ -134,6 +148,10 @@ export class ReportDocumentViewComponent {
         return 'Statements';
       case 'bill':
         return 'Bills';
+      case 'departmentalReport':
+        return 'Departmental Report';
+      case 'others':
+        return 'Others';
     }
   }
 
@@ -169,7 +187,9 @@ export class ReportDocumentViewComponent {
     const type = this.form.value.originatingDocType as
       | 'petition'
       | 'bill'
-      | 'statement';
+      | 'statement'
+      | 'departmentalReport'
+      | 'others';
 
     if (id.length) {
       // Reset the originating document whenever the document type changed
@@ -201,6 +221,17 @@ export class ReportDocumentViewComponent {
               ? statement.subjectOfStatement
               : '';
           });
+      }
+      if (type === 'departmentalReport') {
+        this.departmentService
+          .getDepartment(id)
+          .pipe(take(1))
+          .subscribe((department) => {
+            this.originatingName = department ? department.name : '';
+          });
+      }
+      if (type === 'others') {
+        this.originatingName = this.form.get('originatingDocTypeId').value;
       }
     }
   }

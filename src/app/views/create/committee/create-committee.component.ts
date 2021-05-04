@@ -8,6 +8,7 @@ import { CommitteeService } from 'src/app/services/committee.service';
 import { McaEmployeeService } from 'src/app/services/mca-employee.service';
 import { Committee, CommitteePost } from 'src/app/shared/types/committee';
 import moment from 'moment';
+import { Personnel } from 'src/app/shared/types/personnel';
 
 interface CommitteeForm {
   commiteeSignature: string;
@@ -41,6 +42,8 @@ export class CreateCommitteeComponent implements OnInit {
     viceChairId: new FormControl('', Validators.required),
     committesMembers: new FormControl('', Validators.required),
     departmentInExcecutive: new FormControl('', Validators.required),
+    clerkAssistant: new FormControl('', Validators.required),
+    clerkAssistantId: new FormControl('', Validators.required),
     approverId: new FormControl(''),
     published: new FormControl(false),
     publishState: new FormControl('draft'),
@@ -117,6 +120,13 @@ export class CreateCommitteeComponent implements OnInit {
     return this.form.get('departmentInExcecutive').value;
   }
 
+  get clerkNames(): string[] {
+    const value = (this.form.get('clerkAssistant').value as string).split(
+      '&&&'
+    );
+    return value[0].length ? value : [];
+  }
+
   async updateMembersList() {
     const names: { name: string; _id: string }[] = [];
     const {
@@ -130,8 +140,6 @@ export class CreateCommitteeComponent implements OnInit {
     let members = committesMembers.split('&&&');
 
     members = members.filter((m) => m.length);
-
-    console.log(members);
 
     for (const memberId of members.filter(
       (memberId) => memberId !== chairId && memberId !== viceChairId
@@ -312,6 +320,43 @@ export class CreateCommitteeComponent implements OnInit {
     });
   }
 
+  onSelectClerk() {
+    const urlTree = this._committeeId
+      ? ['/create/committee', this._committeeId]
+      : ['/create/committee'];
+    this.cacheService.cache<FormGroup, Personnel>(
+      'CREATE_COMMITTEE',
+      this.form,
+      this.router.createUrlTree(urlTree, {
+        queryParams: {
+          id: this._cacheId,
+        },
+      }),
+      (form, { _id, name }) => {
+        let ids = (form.value.clerkAssistantId as string).split('&&&');
+        let names = (form.value.clerkAssistant as string).split('&&&');
+        ids = ids[0].length ? ids : [];
+        names = names[0].length ? names : [];
+
+        if (ids.findIndex((id) => id === _id) === -1) {
+          ids.push(_id);
+          names.push(name);
+
+          form.patchValue({
+            clerkAssistantId: ids.join('&&&'),
+            clerkAssistant: names.join('&&&'),
+          });
+        }
+
+        return form;
+      }
+    );
+
+    this.router.navigate(['/list/personnel'], {
+      queryParams: { select: true, id: 'CREATE_COMMITTEE' },
+    });
+  }
+
   /**
    * This function get called when 'Save Committee' or 'Save as Draft' buttons is clicked.
    */
@@ -377,5 +422,22 @@ export class CreateCommitteeComponent implements OnInit {
       (member) => member._id === memberId
     );
     this.membersName.splice(index, 1);
+  }
+
+  onClerkDelete(name: string) {
+    let ids = (this.form.value.clerkAssistantId as string).split('&&&');
+    let names = (this.form.value.clerkAssistant as string).split('&&&');
+
+    const index = names.findIndex((n) => n === name);
+
+    if (index !== -1) {
+      ids.splice(index, 1);
+      names.splice(index, 1);
+
+      this.form.patchValue({
+        clerkAssistantId: ids.join('&&&'),
+        clerkAssistant: names.join('&&&'),
+      });
+    }
   }
 }

@@ -27,8 +27,11 @@ export class CommitteeViewComponent implements OnInit {
     assemblyId: [{ value: '', disabled: true }],
     account: [{ value: '', disabled: true }],
     datePublished: [{ value: '', disabled: true }],
+    clerkAssistant: [{ value: '', disabled: true }],
+    clerkAssistantId: [{ value: '', disabled: true }],
   });
   membersName: { name: string; _id: string }[] = []; // Committees Memebers name.
+  clerkAssistant: string[] = [];
   authorName: string;
 
   constructor(
@@ -55,7 +58,10 @@ export class CommitteeViewComponent implements OnInit {
           committesMembers: committesMembers.join('&&&'),
         });
 
+        const clerks = (committee.clerkAssistant || '').split('&&&');
+
         this.authorName = authorName;
+        this.clerkAssistant = clerks[0].length ? clerks : [];
 
         // Update members name from form committesMembers ids
         this.updateMembersList();

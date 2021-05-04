@@ -12,6 +12,7 @@ import {
   CachedCallback,
   CacheService,
 } from 'src/app/services/cache.service';
+import { DepartmentService } from 'src/app/services/department.service';
 import { PersonnelService } from 'src/app/services/personnel.service';
 import { PetitionService } from 'src/app/services/petition.service';
 import { ReportService } from 'src/app/services/report.service';
@@ -25,6 +26,13 @@ type Cache = {
   form: FormGroup;
   report: { name: string; file: File };
   annexus: { name: string; file: File };
+};
+
+const LIST_PAGES = {
+  petition: 'petition',
+  statement: 'statement',
+  bill: 'bill',
+  departmentalReport: 'department',
 };
 
 @Component({
@@ -65,8 +73,20 @@ export class ReportUploadComponent {
     publishState: new FormControl('draft'),
   });
 
-  originatings = ['petition', 'statement', 'bill'];
-  originatingsTitle = ['Petitions', 'Statements', 'Bills'];
+  originatings = [
+    'petition',
+    'statement',
+    'bill',
+    'departmentalReport',
+    'others',
+  ];
+  originatingsTitle = [
+    'Petitions',
+    'Statements',
+    'Bills',
+    'Departmental Report',
+    'Others',
+  ];
   editors: Personnel[] = [];
   originatingName = '';
   report: File;
@@ -83,7 +103,7 @@ export class ReportUploadComponent {
     private petitionService: PetitionService,
     private statementService: StatementService,
     private billService: BillService,
-    private accountService: AccountService
+    private departmentService: DepartmentService
   ) {}
 
   ngOnInit(): void {
@@ -132,11 +152,12 @@ export class ReportUploadComponent {
             titleOfReport: title,
           });
 
-          this.reportName = uploadedFileURL.length
-            ? uploadedFileURL.substring(
-                uploadedFileURL.lastIndexOf('amazonaws.com/') + 14
-              )
-            : undefined;
+          this.reportName = 'edit';
+          // this.reportName = uploadedFileURL.length
+          //   ? uploadedFileURL.substring(
+          //       uploadedFileURL.lastIndexOf('amazonaws.com/') + 14
+          //     )
+          //   : undefined;
           this.annexusName = annexus.uploadingUrl.length
             ? annexus.uploadingUrl.substring(
                 annexus.uploadingUrl.lastIndexOf('amazonaws.com/') + 14
@@ -190,6 +211,8 @@ export class ReportUploadComponent {
         return 'Statements';
       case 'bill':
         return 'Bills';
+      case 'departmentalReport':
+        return 'Departmental Report';
     }
   }
 
@@ -224,7 +247,8 @@ export class ReportUploadComponent {
     const type = this.form.value.originatingDocType as
       | 'petition'
       | 'bill'
-      | 'statement';
+      | 'statement'
+      | 'departmentalReport';
 
     if (id.length) {
       // Reset the originating document whenever the document type changed
@@ -255,6 +279,14 @@ export class ReportUploadComponent {
             this.originatingName = statement
               ? statement.subjectOfStatement
               : '';
+          });
+      }
+      if (type === 'departmentalReport') {
+        this.departmentService
+          .getDepartment(id)
+          .pipe(take(1))
+          .subscribe((department) => {
+            this.originatingName = department ? department.name : '';
           });
       }
     }
@@ -323,7 +355,7 @@ export class ReportUploadComponent {
   // 'Add Originating ...' button handling
   onSelectOriginatingDoc() {
     this._onCache<any>(
-      { url: `/list/${this.form.value.originatingDocType}` },
+      { url: `/list/${LIST_PAGES[this.form.value.originatingDocType]}` },
       ({ form, ...others }, { _id }) => {
         form.patchValue({
           originatingDocTypeId: _id,
@@ -439,27 +471,86 @@ export class ReportUploadComponent {
         this.reportService.postReport(value).subscribe(navigating);
       } else {
         value.id = this._reportId;
-        console.log(value);
         this.reportService.updateReport(value).subscribe(navigating);
       }
     };
 
     if (content) {
-      this._onCache<'draft' | 'private' | 'public'>(
-        {
-          url: '/view/report',
-          queryParams: {
+      if (this._mode === 'editing') {
+        this.cacheService.cacheFunc({
+          id: 'UPLOAD_REPORT_FILE',
+          cacheId: this._cacheId,
+          urlParamer: this._reportId,
+          returnUrl: undefined,
+          navigateUrl: 'management/upload',
+          navigateUrlQuery: {
             select: undefined,
+            category: 'report',
           },
-        },
-        (data, status) => {
-          post(status);
+          data: {
+            form: this.form,
+            report: { name: this.reportName, file: this.report },
+            annexus: { name: this.annexusName, file: this.annexus },
+          },
+          callback: ({ form, ...others }, { result, file }) => {
+            form.patchValue({
+              uploaded: true,
+              uploadedFileURL: result.location,
+            });
 
-          return data;
-        },
-        undefined,
-        { redirect: false }
-      );
+            this._onCache<'draft' | 'private' | 'public'>(
+              {
+                url: '/view/report',
+                queryParams: {
+                  select: undefined,
+                },
+              },
+              (data, status) => {
+                post(status);
+
+                return data;
+              },
+              {
+                ...others,
+                form,
+                report: {
+                  name: result.key,
+                  file,
+                },
+              },
+              { redirect: false }
+            );
+
+            return {
+              ...others,
+              form,
+              report: {
+                name: result.key,
+                file,
+              },
+            };
+          },
+          configs: {
+            redirect: false,
+          },
+        })();
+      } else {
+        this._onCache<'draft' | 'private' | 'public'>(
+          {
+            url: '/view/report',
+            queryParams: {
+              select: undefined,
+            },
+          },
+          (data, status) => {
+            post(status);
+
+            return data;
+          },
+          undefined,
+          { redirect: false }
+        );
+      }
     } else {
       post('draft');
     }

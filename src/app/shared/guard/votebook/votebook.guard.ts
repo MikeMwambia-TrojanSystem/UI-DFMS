@@ -5,8 +5,10 @@ import {
   Router,
   UrlTree,
 } from '@angular/router';
-import { combineLatest, Observable, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
+import _ from 'lodash';
+
 import { OrderPaperService } from 'src/app/services/order-paper.service';
 import { VotebookService } from 'src/app/services/votebook.service';
 
@@ -34,7 +36,7 @@ export class CanActivateVotebook implements CanActivate {
       switchMap((votebook) =>
         votebook
           ? this.orderPaperService
-              .getOrderPaperByNo(votebook.orderPapersNo)
+              .getOrderPaperByNo(_.toNumber(votebook.orderPapersNo))
               .pipe(
                 take(1),
                 map((orderPaper) =>

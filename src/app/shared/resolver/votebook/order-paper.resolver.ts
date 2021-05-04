@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { Observable } from 'rxjs';
 import { switchMap, take } from 'rxjs/operators';
+import _ from 'lodash';
+
 import { OrderPaperService } from 'src/app/services/order-paper.service';
 import { VotebookService } from 'src/app/services/votebook.service';
 import { OrderPaper } from '../../types/order-paper';
@@ -24,7 +26,7 @@ export class VotebookOrderPaperResolver implements Resolve<OrderPaper> {
       take(1),
       switchMap((votebook) =>
         this.orderPaperService
-          .getOrderPaperByNo(votebook.orderPapersNo)
+          .getOrderPaperByNo(_.toNumber(votebook.orderPapersNo))
           .pipe(take(1))
       )
     );

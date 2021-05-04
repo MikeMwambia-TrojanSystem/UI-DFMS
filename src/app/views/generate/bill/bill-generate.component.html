@@ -15,12 +15,7 @@
       </mat-form-field>
       <p class="label">Bill No</p>
       <mat-form-field appearance="standard">
-        <input
-          matInput
-          formControlName="billNo"
-          placeholder="NO.172"
-          type="number"
-        />
+        <input matInput formControlName="billNo" placeholder="NO.172" />
         <mat-error *ngIf="form.get('billNo').hasError('required')"
           >Please enter bill number!</mat-error
         >

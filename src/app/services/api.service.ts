@@ -42,7 +42,7 @@ const errorHandler = (error: HttpErrorResponse) => {
   providedIn: 'root',
 })
 export class ApiService {
-  //private _baseUrl = 'http://127.0.0.1:3000/';//'https://web.jonikisecurity.com/';
+  // private _baseUrl = 'http://143.110.251.193:8000/';//'https://web.jonikisecurity.com/';
   private _baseUrl = 'https://web.jonikisecurity.com/';
   private _timeout = 60 * 1000;
 

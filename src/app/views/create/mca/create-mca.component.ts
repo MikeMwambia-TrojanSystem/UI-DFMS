@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators, FormArray } from '@angular/forms';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { take } from 'rxjs/operators';
+import { take, takeUntil } from 'rxjs/operators';
 import moment from 'moment';
 
 import { CachedCallback, CacheService } from 'src/app/services/cache.service';
 import { McaEmployeeService } from 'src/app/services/mca-employee.service';
 import { McaEmployee } from 'src/app/shared/types/mca-employee';
 import { phoneNumberValidator } from 'src/app/shared/validators/phone-number';
-import { ApiService } from 'src/app/services/api.service';
-import { Upload, UploadPost } from 'src/app/shared/types/upload';
+import { Upload } from 'src/app/shared/types/upload';
 import { PhoneVerification } from 'src/app/shared/types/verification';
+import { Subject } from 'rxjs';
 
 type Cache = {
   form: FormGroup;
@@ -23,11 +23,12 @@ type Cache = {
   templateUrl: './create-mca.component.html',
   styleUrls: ['./create-mca.component.scss'],
 })
-export class CreateMcaComponent implements OnInit {
+export class CreateMcaComponent implements OnInit, OnDestroy {
   private _mode: 'editing' | 'creating';
   private _mcaId: string;
   private _cacheId: string;
   private _createdUser = false;
+  private $onDestroy = new Subject<void>();
 
   form = new FormGroup({
     assemblyId: new FormControl(
@@ -62,8 +63,7 @@ export class CreateMcaComponent implements OnInit {
     private cacheService: CacheService,
     private router: Router,
     private mcaEmployeeService: McaEmployeeService,
-    private route: ActivatedRoute,
-    private apiService: ApiService
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -118,10 +118,26 @@ export class CreateMcaComponent implements OnInit {
       this.form = form;
       this.filename = filename;
     }
+
+    // On Category change
+    this.form
+      .get('positionStatus')
+      .valueChanges.pipe(takeUntil(this.$onDestroy))
+      .subscribe((value) => {
+        this.form.patchValue({
+          ward: value === 'Nominated' ? 'NONE' : '',
+          wardId: value === 'Nominated' ? 'NONE' : '',
+        });
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.$onDestroy.next();
   }
 
   get ward(): string {
-    return this.form.value.ward;
+    const value = this.form.value.ward;
+    return value && value !== 'NONE' ? value : '';
   }
 
   private _onCache<T>(

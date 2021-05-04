@@ -24,7 +24,8 @@
           noti.type === 'petionReply' ||
           noti.type === 'reportReply' ||
           noti.type === 'statementReply' ||
-          noti.type === 'adjournment'
+          noti.type === 'adjournment' ||
+          noti.type === 'noticeOfMotionsReply'
         "
       >
         <span [innerHtml]="noti.content | truncate"></span>
@@ -39,7 +40,6 @@
       <div
         class="top"
         *ngIf="
-          noti.type === 'noticeOfMotionsReply' ||
           noti.type === 'bills' ||
           noti.type === 'motions' ||
           noti.type === 'messages'

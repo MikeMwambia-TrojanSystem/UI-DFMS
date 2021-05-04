@@ -22,6 +22,17 @@
         <input matInput formControlName="viceChair" />
       </mat-form-field>
 
+      <p class="label">Clerks</p>
+      <span class="members"
+        >{{ clerkAssistant.length }} clerk{{
+          clerkAssistant.length <= 1 ? "" : "s"
+        }}</span
+      >
+      <div class="member-container" *ngFor="let clerk of clerkAssistant">
+        <mat-icon class="member-icon">person_outline</mat-icon>
+        <span>{{ clerk }}</span>
+      </div>
+
       <p class="label">Members</p>
       <span class="members"
         >{{ membersName.length }} member{{

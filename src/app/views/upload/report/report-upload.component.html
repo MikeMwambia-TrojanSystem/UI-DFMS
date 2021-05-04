@@ -43,9 +43,27 @@
             ? originatingName
             : 'Add Originating ' + originating
         "
-        *ngIf="form.get('originatingDocType').value"
+        *ngIf="
+          form.get('originatingDocType').value &&
+          form.get('originatingDocType').value !== 'others'
+        "
         (buttonClick)="onSelectOriginatingDoc()"
       ></app-custom-button>
+      <p
+        class="label"
+        *ngIf="form.get('originatingDocType').value === 'others'"
+      >
+        Document
+      </p>
+      <mat-form-field
+        appearance="standard"
+        *ngIf="form.get('originatingDocType').value === 'others'"
+      >
+        <input matInput formControlName="originatingDocTypeId" />
+        <mat-error *ngIf="form.get('originatingDocTypeId').hasError('required')"
+          >Please enter originating document!</mat-error
+        >
+      </mat-form-field>
       <div class="buttons-container">
         <app-custom-button
           [title]="'Add Editors'"
@@ -53,7 +71,9 @@
           (buttonClick)="onSelectEditor()"
         ></app-custom-button>
         <app-custom-button
-          [title]="reportName || 'Upload Report'"
+          [title]="
+            reportName && reportName !== 'edit' ? reportName : 'Upload Report'
+          "
           class="custom-btn"
           style="margin-left: 10px"
           (buttonClick)="onUploadReport()"
