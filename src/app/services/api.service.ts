@@ -41,8 +41,8 @@ const errorHandler = (error: HttpErrorResponse) => {
   providedIn: 'root',
 })
 export class ApiService {
-  private _baseUrl = 'http://127.0.0.1:3000/';
-  //private _baseUrl = 'https://web.jonikisecurity.com/';
+  //private _baseUrl = 'http://127.0.0.1:3000/';
+  private _baseUrl = 'https://web.jonikisecurity.com/';
   private _timeout = 60 * 1000;
 
   constructor(private http: HttpClient) {}
@@ -511,7 +511,7 @@ export class ApiService {
 
   // DOWNLOAD ORDER PAPER
   getDownloadOrderPaperUrl(id: string) {
-    //return `http://3.13.186.200:5000/orderPaper?id=${id}&download=true`;
-    return `http://127.0.0.1:5000/orderPaper?id=${id}&download=true`;
+    return `http://3.13.186.200:5000/orderPaper?id=${id}&download=true`;
+    //return `http://127.0.0.1:5000/orderPaper?id=${id}&download=true`;
   }
 }
