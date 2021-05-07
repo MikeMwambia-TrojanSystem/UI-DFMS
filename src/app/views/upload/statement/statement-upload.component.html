@@ -13,7 +13,7 @@
         [title]="seekerName || 'Who is Seeking the Statement'"
         (buttonClick)="onSelectSeeker()"
       ></app-custom-button>
-      <p class="label">Add Description of the Statement Seeker</p>
+      <p class="label">Add Description of the Statement Seeker e.g Chairperson , Vice-Chair , MCA etc</p>
       <mat-form-field appearance="standard">
         <textarea
           matInput
@@ -25,7 +25,7 @@
           >Please enter the description of statement seeker!
         </mat-error>
       </mat-form-field>
-      <p class="label">Subject of the Statement</p>
+      <p class="label">Summarize Subject of the Statement (Maximum 200 words)</p>
       <mat-form-field appearance="standard">
         <input
           matInput
@@ -67,7 +67,7 @@
         (buttonClick)="onSelectRequestTo()"
       ></app-custom-button>
       <p class="label">
-        Fill in the department responsible in excecutive for providing the statement
+        Fill in the department responsible in Excecutive for providing the statement
       </p>
       <mat-form-field appearance="standard">
         <input

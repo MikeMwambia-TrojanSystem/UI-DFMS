@@ -30,7 +30,7 @@ export class IntroComponent implements OnInit {
       label: 'Petition',
       actions: [
         {
-          label: 'Generation Petition',
+          label: 'Generate Petition',
           url: '/generate/petition',
         },
         {
@@ -48,7 +48,7 @@ export class IntroComponent implements OnInit {
           },
         },
         {
-          label: 'View Published Petition',
+          label: 'View Publicly Published Petition',
           url: '/list/petition',
           query: {
             state: 'public',
@@ -60,7 +60,7 @@ export class IntroComponent implements OnInit {
       label: 'Papers',
       actions: [
         {
-          label: 'Generation Reports',
+          label: 'Generate Reports',
           url: '/report-methods',
         },
         {
@@ -78,7 +78,7 @@ export class IntroComponent implements OnInit {
           },
         },
         {
-          label: 'View Published Reports',
+          label: 'View Publicly Published Reports',
           url: '/list/report',
           query: {
             state: 'public',
@@ -90,11 +90,11 @@ export class IntroComponent implements OnInit {
       label: 'Notices of Motions',
       actions: [
         {
-          label: 'Generation Notice of Motion',
+          label: 'Generate Notice of Motion',
           url: '/generate/notice-of-motion',
         },
         {
-          label: 'View Notice of Motion in draft status',
+          label: 'View Notice of Motion in Draft status',
           url: '/list/notice-of-motion',
           query: {
             state: 'draft',
@@ -108,7 +108,7 @@ export class IntroComponent implements OnInit {
           },
         },
         {
-          label: 'View Published Notice of Motion',
+          label: 'View Publicly Published Notice of Motion',
           url: '/list/notice-of-motion',
           query: {
             state: 'public',
@@ -120,11 +120,11 @@ export class IntroComponent implements OnInit {
       label: 'Statements',
       actions: [
         {
-          label: 'Generation Statements',
+          label: 'Generate Statements',
           url: '/upload/statement',
         },
         {
-          label: 'View Statements in draft status',
+          label: 'View Statements in Draft status',
           url: '/list/statement',
           query: {
             state: 'draft',
@@ -138,7 +138,7 @@ export class IntroComponent implements OnInit {
           },
         },
         {
-          label: 'View Published Statements',
+          label: 'View Publicly Published Statements',
           url: '/list/statement',
           query: {
             state: 'public',
@@ -150,11 +150,11 @@ export class IntroComponent implements OnInit {
       label: 'Motion',
       actions: [
         {
-          label: 'Generation Motion',
+          label: 'Generate Motion',
           url: '/generate/motion',
         },
         {
-          label: 'View Motion in draft status',
+          label: 'View Motion in Draft status',
           url: '/list/motion',
           query: {
             state: 'draft',
@@ -168,7 +168,7 @@ export class IntroComponent implements OnInit {
           },
         },
         {
-          label: 'View Published Motion',
+          label: 'View Publicly Published Motion',
           url: '/list/motion',
           query: {
             state: 'public',
@@ -180,11 +180,11 @@ export class IntroComponent implements OnInit {
       label: 'Bills',
       actions: [
         {
-          label: 'Generation Bills',
+          label: 'Generate Bills',
           url: '/generate/bill',
         },
         {
-          label: 'View Bills in draft status',
+          label: 'View Bills in Draft status',
           url: '/list/bill',
           query: {
             state: 'draft',
@@ -198,7 +198,7 @@ export class IntroComponent implements OnInit {
           },
         },
         {
-          label: 'View Published Bills',
+          label: 'View Publicly Published Bills',
           url: '/list/bill',
           query: {
             state: 'public',
@@ -210,11 +210,11 @@ export class IntroComponent implements OnInit {
       label: 'Acts',
       actions: [
         {
-          label: 'Generation Acts',
+          label: 'Generate Acts',
           url: '/generate/act',
         },
         {
-          label: 'View Acts in draft status',
+          label: 'View Acts in Draft status',
           url: '/list/act',
           query: {
             state: 'draft',
@@ -228,7 +228,7 @@ export class IntroComponent implements OnInit {
           },
         },
         {
-          label: 'View Published Acts',
+          label: 'View Publicly Published Acts',
           url: '/list/act',
           query: {
             state: 'public',
@@ -236,15 +236,16 @@ export class IntroComponent implements OnInit {
         },
       ],
     },
+
     {
       label: 'Order Papers',
       actions: [
         {
-          label: 'Generation Order Papers',
+          label: 'Generate Order Papers',
           url: '/generate/order-paper',
         },
         {
-          label: 'View Order Papers in draft status',
+          label: 'View Order Papers in Draft status',
           url: '/list/order-paper',
           query: {
             state: 'draft',
@@ -258,37 +259,71 @@ export class IntroComponent implements OnInit {
           },
         },
         {
-          label: 'View Published Order Papers',
+          label: 'View Publicly Published Order Papers',
           url: '/list/order-paper',
           query: {
             state: 'public',
           },
         },
       ],
-    },
+    }
+    ,
+
+    {
+      label: 'Tentative Business',
+      actions: [
+        {
+          label: 'Generate Tentative Businesses',
+          url: '/generate/',
+        },
+        {
+          label: 'View Tentative Businesses in Draft status',
+          url: '/list/',
+          query: {
+            state: 'draft',
+          },
+        },
+        {
+          label: 'View Privately Published Tentative Businesses',
+          url: '/list/',
+          query: {
+            state: 'private',
+          },
+        },
+        {
+          label: 'View Publicly Published Tentative Businesses',
+          url: '/list/',
+          query: {
+            state: 'public',
+          },
+        },
+      ],
+    }
+    ,
+
     {
       label: 'Votebook',
       actions: [
         {
-          label: 'Generation Votebook',
+          label: 'Generate Votebook',
           url: '/generate/votebook',
         },
         {
-          label: 'View Votebook in draft status',
+          label: 'View Votebooks in Draft status',
           url: '/list/votebook',
           query: {
             state: 'draft',
           },
         },
         {
-          label: 'View Privately Published Papers',
+          label: 'View Privately Published Votebooks',
           url: '/list/votebook',
           query: {
             state: 'private',
           },
         },
         {
-          label: 'View Published Papers',
+          label: 'View Publicly Published Votebooks',
           url: '/list/votebook',
           query: {
             state: 'public',

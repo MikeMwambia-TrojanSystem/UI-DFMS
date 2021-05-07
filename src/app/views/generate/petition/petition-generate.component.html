@@ -3,7 +3,7 @@
     <div class="main">
       <h1 class="title">Generate and File a Petition</h1>
       <form [formGroup]="form" class="form">
-        <p class="label">Fill in the Issues that make up this petition</p>
+        <p class="label">Summarize Issues that make up this petition (Maximum 200 words)</p>
         <mat-form-field appearance="standard">
           <textarea
             matInput
@@ -36,7 +36,7 @@
             </mat-form-field>
           </div>
           <div class="input">
-            <p class="label">Date Set for petition discussions by assembly</p>
+            <p class="label">Date Set for the petition to be discussed by the assembly</p>
             <mat-form-field appearance="standard">
               <input matInput formControlName="dateToBDiscussed" type="date" />
               <mat-error
