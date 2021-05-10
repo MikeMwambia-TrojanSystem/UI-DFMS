@@ -25,10 +25,15 @@
         <span class="info-title">File Category: </span>
         <span class="info-category">{{ category }}</span>
       </div>
+      <div class="info">
+        <span class="info-title">File Size: </span>
+        <span>{{ this.file.size | filesize }}</span>
+      </div>
+      <span class="">Maximum file size: 5 MB</span>
       <button
         mat-raised-button
         class="btn-upload"
-        [disabled]="!file || uploading"
+        [disabled]="!file || uploading || this.file.size / 1000 >= 5000"
         (click)="onUploadFileBtn()"
       >
         Upload File

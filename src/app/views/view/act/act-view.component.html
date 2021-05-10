@@ -9,7 +9,7 @@
 
       <p class="label">Acts No</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="actNo" type="number" />
+        <input matInput formControlName="actNo" />
       </mat-form-field>
 
       <p class="label">Date Published</p>
@@ -42,7 +42,9 @@
         fileName
       }}</a>
     </form>
-    <p class="view-author author" *ngIf="authorName">Author: {{ authorName }}</p>
+    <p class="view-author author" *ngIf="authorName">
+      Author: {{ authorName }}
+    </p>
     <p class="view-author" *ngIf="approver">Approved By: {{ approver }}</p>
     <p class="view-author" *ngIf="approver">Approved At: {{ approvedAt }}</p>
   </app-center-card>

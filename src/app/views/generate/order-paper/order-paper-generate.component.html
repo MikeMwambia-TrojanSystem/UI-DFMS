@@ -14,15 +14,6 @@
           >Please enter order paper no!</mat-error
         >
       </mat-form-field>
-      <!-- <p class="label">Sitting</p>
-      <mat-form-field appearance="standard">
-        <mat-select formControlName="sitting">
-          <mat-option value="Morning">Morning</mat-option>
-          <mat-option value="Afternoon">Afternoon</mat-option>
-          <mat-option value="Night">Night</mat-option>
-        </mat-select>
-        <mat-error *ngIf="form.get('sitting').hasError('required')">Please select sitting!</mat-error>
-      </mat-form-field> -->
       <p class="label">Assembly No</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="assemblyNo" />
@@ -76,7 +67,14 @@
         <div class="grid-form">
           <p class="label">Enter Exact Sitting Time</p>
           <mat-form-field appearance="standard">
-            <input matInput formControlName="assemblySittingTime" />
+            <input
+              matInput
+              formControlName="assemblySittingTime"
+              [ngxTimepicker]="picker"
+              readonly
+              [format]="24"
+            />
+            <ngx-material-timepicker #picker></ngx-material-timepicker>
             <mat-error
               *ngIf="form.get('assemblySittingTime').hasError('required')"
               >Please enter exact time!</mat-error

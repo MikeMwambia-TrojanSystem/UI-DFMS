@@ -17,7 +17,7 @@ import { Petition } from 'src/app/shared/types/petition';
 import { Upload } from 'src/app/shared/types/upload';
 import { Committee } from 'src/app/shared/types/committee';
 import { McaEmployee } from 'src/app/shared/types/mca-employee';
-import { AccountService } from 'src/app/services/account.service';
+import { wordLimitsValidator } from 'src/app/shared/validators/words-limit';
 
 @Component({
   selector: 'app-petition-generate',
@@ -31,7 +31,10 @@ export class PetitionGenerateComponent implements OnInit {
 
   form = new FormGroup({
     petitionSignature: new FormControl(''),
-    content: new FormControl('', Validators.required),
+    content: new FormControl('', [
+      Validators.required,
+      wordLimitsValidator(200),
+    ]),
     sponsorName: new FormControl('', Validators.required),
     // department: new FormControl(''),
     relatedTo: new FormControl('', Validators.required),
@@ -61,8 +64,7 @@ export class PetitionGenerateComponent implements OnInit {
     private cacheService: CacheService,
     private router: Router,
     private route: ActivatedRoute,
-    private petitionService: PetitionService,
-    private accountService: AccountService
+    private petitionService: PetitionService
   ) {}
 
   ngOnInit(): void {
@@ -155,6 +157,10 @@ export class PetitionGenerateComponent implements OnInit {
     } catch (error) {
       return undefined;
     }
+  }
+
+  get issueWordsCount(): number {
+    return (this.form.get('content').value as string).trim().split(' ').length;
   }
 
   private _onCache<T>(

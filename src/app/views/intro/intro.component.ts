@@ -83,7 +83,7 @@ export class IntroComponent implements OnInit {
           query: {
             state: 'public',
           },
-        }
+        },
       ],
     },
     {
@@ -266,41 +266,37 @@ export class IntroComponent implements OnInit {
           },
         },
       ],
-    }
-    ,
-
+    },
     {
       label: 'Tentative Business',
       actions: [
         {
           label: 'Generate Tentative Businesses',
-          url: '/generate/',
+          url: '/generate/tentative-business',
         },
         {
           label: 'View Tentative Businesses in Draft status',
-          url: '/list/',
+          url: '/list/tentative-business',
           query: {
             state: 'draft',
           },
         },
         {
           label: 'View Privately Published Tentative Businesses',
-          url: '/list/',
+          url: '/list/tentative-business',
           query: {
             state: 'private',
           },
         },
         {
           label: 'View Publicly Published Tentative Businesses',
-          url: '/list/',
+          url: '/list/tentative-business',
           query: {
             state: 'public',
           },
         },
       ],
-    }
-    ,
-
+    },
     {
       label: 'Votebook',
       actions: [
@@ -406,6 +402,134 @@ export class IntroComponent implements OnInit {
       .pipe(take(1))
       .subscribe((user) => {
         this.user = user.username;
+
+        const group = user.group;
+
+        if (group === 'mca') {
+          this.introItems = [
+            {
+              label: 'Petition',
+              actions: [
+                {
+                  label: 'View Publicly Published Petition',
+                  url: '/list/petition',
+                  query: {
+                    state: 'public',
+                  },
+                },
+              ],
+            },
+            {
+              label: 'Papers',
+              actions: [
+                {
+                  label: 'View Publicly Published Reports',
+                  url: '/list/report',
+                  query: {
+                    state: 'public',
+                  },
+                },
+              ],
+            },
+            {
+              label: 'Notices of Motions',
+              actions: [
+                {
+                  label: 'View Publicly Published Notice of Motion',
+                  url: '/list/notice-of-motion',
+                  query: {
+                    state: 'public',
+                  },
+                },
+              ],
+            },
+            {
+              label: 'Statements',
+              actions: [
+                {
+                  label: 'View Publicly Published Statements',
+                  url: '/list/statement',
+                  query: {
+                    state: 'public',
+                  },
+                },
+              ],
+            },
+            {
+              label: 'Motion',
+              actions: [
+                {
+                  label: 'View Publicly Published Motion',
+                  url: '/list/motion',
+                  query: {
+                    state: 'public',
+                  },
+                },
+              ],
+            },
+            {
+              label: 'Bills',
+              actions: [
+                {
+                  label: 'View Publicly Published Bills',
+                  url: '/list/bill',
+                  query: {
+                    state: 'public',
+                  },
+                },
+              ],
+            },
+            {
+              label: 'Acts',
+              actions: [
+                {
+                  label: 'View Publicly Published Acts',
+                  url: '/list/act',
+                  query: {
+                    state: 'public',
+                  },
+                },
+              ],
+            },
+
+            {
+              label: 'Order Papers',
+              actions: [
+                {
+                  label: 'View Publicly Published Order Papers',
+                  url: '/list/order-paper',
+                  query: {
+                    state: 'public',
+                  },
+                },
+              ],
+            },
+            {
+              label: 'Tentative Business',
+              actions: [
+                {
+                  label: 'View Publicly Published Tentative Businesses',
+                  url: '/list/tentative-business',
+                  query: {
+                    state: 'public',
+                  },
+                },
+              ],
+            },
+            {
+              label: 'Votebook',
+              actions: [
+                {
+                  label: 'View Publicly Published Votebooks',
+                  url: '/list/votebook',
+                  query: {
+                    state: 'public',
+                  },
+                },
+              ],
+            },
+          ];
+        }
       });
   }
 

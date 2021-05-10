@@ -29,6 +29,12 @@ enum SelectUrl {
   'billsId' = '/list/bill',
 }
 
+type DisableState = {
+  skip: boolean;
+  generate?: boolean;
+  select?: boolean;
+};
+
 @Component({
   selector: 'app-generate-paper-content',
   templateUrl: './paper-content-generate.component.html',
@@ -85,6 +91,45 @@ export class PaperContentGenerateComponent implements OnInit {
       key: 'billsId',
       label: 'Bills',
       select: 'billsId',
+    },
+  ];
+
+  itemStates: DisableState[] = [
+    {
+      generate: true,
+      skip: false,
+    },
+    {
+      generate: true,
+      skip: false,
+    },
+    {
+      generate: true,
+      skip: false,
+    },
+    {
+      select: true,
+      skip: false,
+    },
+    {
+      select: true,
+      skip: false,
+    },
+    {
+      select: true,
+      skip: false,
+    },
+    {
+      select: true,
+      skip: false,
+    },
+    {
+      select: true,
+      skip: false,
+    },
+    {
+      select: true,
+      skip: false,
     },
   ];
 
@@ -219,7 +264,7 @@ export class PaperContentGenerateComponent implements OnInit {
   }
 
   private _populateNotifications() {
-    for (const item of this.items) {
+    for (const [index, item] of this.items.entries()) {
       const value = this.form.get(item.key).value as string;
       let result: MenuNotification[] = [];
 
@@ -240,6 +285,10 @@ export class PaperContentGenerateComponent implements OnInit {
           }
           return result;
         }, []);
+      } else {
+        this.itemStates[index].generate = false;
+        this.itemStates[index].select = false;
+        this.itemStates[index].skip = true;
       }
 
       item.notifications = result;
@@ -457,6 +506,9 @@ export class PaperContentGenerateComponent implements OnInit {
       const value = this.form.value;
 
       value.publishState = state;
+      value.time = moment(
+        value.assemblySittingDate + ' ' + value.assemblySittingTime
+      ).unix();
 
       if (this._mode === 'creating') {
         value.datePublished = new Date().toISOString();
@@ -518,5 +570,32 @@ export class PaperContentGenerateComponent implements OnInit {
       [item.key]: value.join('&&&'),
     });
     this._populateNotifications();
+  }
+
+  onActiveState(
+    index: number,
+    type: 'select' | 'generate' | 'skip',
+    key: string
+  ) {
+    this.itemStates[index][type] = true;
+
+    if (type === 'skip') {
+      this.itemStates[index].generate = false;
+      this.itemStates[index].select = false;
+    } else {
+      this.itemStates[index].skip = false;
+      this.onUnskip(key);
+    }
+  }
+
+  onUnskip(key: string) {
+    this.form.get(key).setValue('');
+    this._populateNotifications();
+  }
+
+  checkSkipped(key: string) {
+    return (
+      this.form.get(key).value === 'none' || this.form.get(key).value === 'NONE'
+    );
   }
 }

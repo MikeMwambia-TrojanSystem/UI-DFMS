@@ -1,5 +1,5 @@
 export class AppAccount {
   username: string;
-  group: 'speaker' | 'drafter' | 'clerk';
+  group: 'speaker' | 'drafter' | 'clerk' | 'mca';
   _id: string;
 }

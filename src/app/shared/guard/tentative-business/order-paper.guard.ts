@@ -27,9 +27,13 @@ export class CanActivateTentativeBusinessOrderPaper implements CanActivate {
     | UrlTree {
     const orderPaperId = route.queryParams['order-paper'];
 
-    return this.orderPaperService.getOrderPaper(orderPaperId).pipe(
-      take(1),
-      map((paper) => (paper ? true : this.router.createUrlTree(['/intro'])))
-    );
+    if (orderPaperId) {
+      return this.orderPaperService.getOrderPaper(orderPaperId).pipe(
+        take(1),
+        map((paper) => (paper ? true : this.router.createUrlTree(['/intro'])))
+      );
+    } else {
+      return true;
+    }
   }
 }

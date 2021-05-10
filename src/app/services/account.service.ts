@@ -17,6 +17,10 @@ export class AccountService {
     return this._user.getValue();
   }
 
+  get group() {
+    return this._user.getValue().group;
+  }
+
   getUser(): Observable<AppAccount> {
     return this._user.pipe(
       map((user) => {

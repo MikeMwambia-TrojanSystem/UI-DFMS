@@ -8,6 +8,8 @@ import { QuillModule } from 'ngx-quill';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { PdfJsViewerModule } from 'ng2-pdfjs-viewer';
 import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { NgxFilesizeModule } from 'ngx-filesize';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -133,6 +135,7 @@ import { VotebookContentViewComponent } from './views/view/votebook-content/vote
 import { TentativeBusinessViewComponent } from './views/view/tentative-business/tentative-biz-view.component';
 import { TentativeBusinessContentViewComponent } from './views/view/tentative-business-content/tb-content-view.component';
 import { NoticeGenerateComponent } from './views/generate/notice-of-motion/notice-generate.component';
+import { HomeButtonComponent } from './components/HomeButton/home-button.component';
 
 const dbConfig: DBConfig = {
   name: 'MyDb',
@@ -269,6 +272,7 @@ const dbConfig: DBConfig = {
     TentativeBusinessViewComponent,
     TentativeBusinessContentViewComponent,
     NoticeGenerateComponent,
+    HomeButtonComponent,
   ],
   imports: [
     BrowserModule,
@@ -296,6 +300,8 @@ const dbConfig: DBConfig = {
     HttpClientModule,
     PdfJsViewerModule,
     NgxIndexedDBModule.forRoot(dbConfig),
+    NgxMaterialTimepickerModule,
+    NgxFilesizeModule,
   ],
   providers: [
     {

@@ -465,8 +465,6 @@ export class ReportUploadComponent {
       if (this._mode === 'creating') {
         value.reportSignature = moment().unix();
         value.datePublished = moment().toISOString();
-        // value.uploadingAccount = this.accountService.user.username;
-        // value.uploaderId = this.accountService.user._id;
 
         this.reportService.postReport(value).subscribe(navigating);
       } else {
@@ -477,63 +475,83 @@ export class ReportUploadComponent {
 
     if (content) {
       if (this._mode === 'editing') {
-        this.cacheService.cacheFunc({
-          id: 'UPLOAD_REPORT_FILE',
-          cacheId: this._cacheId,
-          urlParamer: this._reportId,
-          returnUrl: undefined,
-          navigateUrl: 'management/upload',
-          navigateUrlQuery: {
-            select: undefined,
-            category: 'report',
-          },
-          data: {
-            form: this.form,
-            report: { name: this.reportName, file: this.report },
-            annexus: { name: this.annexusName, file: this.annexus },
-          },
-          callback: ({ form, ...others }, { result, file }) => {
-            form.patchValue({
-              uploaded: true,
-              uploadedFileURL: result.location,
-            });
+        if (this.reportName === 'edit') {
+          alert('Please Re-Upload Report');
 
-            this._onCache<'draft' | 'private' | 'public'>(
-              {
-                url: '/view/report',
-                queryParams: {
-                  select: undefined,
+          this.cacheService.cacheFunc({
+            id: 'UPLOAD_REPORT_FILE',
+            cacheId: this._cacheId,
+            urlParamer: this._reportId,
+            returnUrl: undefined,
+            navigateUrl: 'management/upload',
+            navigateUrlQuery: {
+              select: undefined,
+              category: 'report',
+            },
+            data: {
+              form: this.form,
+              report: { name: this.reportName, file: this.report },
+              annexus: { name: this.annexusName, file: this.annexus },
+            },
+            callback: ({ form, ...others }, { result, file }) => {
+              form.patchValue({
+                uploaded: true,
+                uploadedFileURL: result.location,
+              });
+
+              this._onCache<'draft' | 'private' | 'public'>(
+                {
+                  url: '/view/report',
+                  queryParams: {
+                    select: undefined,
+                  },
                 },
-              },
-              (data, status) => {
-                post(status);
+                (data, status) => {
+                  post(status);
 
-                return data;
-              },
-              {
+                  return data;
+                },
+                {
+                  ...others,
+                  form,
+                  report: {
+                    name: result.key,
+                    file,
+                  },
+                },
+                { redirect: false }
+              );
+
+              return {
                 ...others,
                 form,
                 report: {
                   name: result.key,
                   file,
                 },
+              };
+            },
+            configs: {
+              redirect: false,
+            },
+          })();
+        } else {
+          this._onCache<'draft' | 'private' | 'public'>(
+            {
+              url: '/view/report',
+              queryParams: {
+                select: undefined,
               },
-              { redirect: false }
-            );
+            },
+            (data, status) => {
+              post(status);
 
-            return {
-              ...others,
-              form,
-              report: {
-                name: result.key,
-                file,
-              },
-            };
-          },
-          configs: {
-            redirect: false,
-          },
-        })();
+              return data;
+            },
+            undefined,
+            { redirect: false }
+          );
+        }
       } else {
         this._onCache<'draft' | 'private' | 'public'>(
           {

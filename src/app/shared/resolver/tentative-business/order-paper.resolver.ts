@@ -17,6 +17,10 @@ export class TentativeBusinessOrderPaperResolver
   ): Promise<OrderPaper> | Observable<OrderPaper> | OrderPaper {
     const orderPaperId = route.queryParams['order-paper'];
 
-    return this.orderPaperService.getOrderPaper(orderPaperId).pipe(take(1));
+    if (orderPaperId) {
+      return this.orderPaperService.getOrderPaper(orderPaperId).pipe(take(1));
+    }
+
+    return undefined;
   }
 }

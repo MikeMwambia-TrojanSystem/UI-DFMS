@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+import moment from 'moment';
 
 import { CacheService } from 'src/app/services/cache.service';
 import { OrderPaperService } from 'src/app/services/order-paper.service';
@@ -74,6 +75,7 @@ export class OrderPaperGenerateComponent implements OnInit {
             papers,
             petitions,
             statements,
+            assemblySittingTime,
             ...others
           } = orderPaper;
 
@@ -100,6 +102,16 @@ export class OrderPaperGenerateComponent implements OnInit {
             motionNoticeId: this.orderPaperService.checkNone(noticeOfMotions),
             billsId: this.orderPaperService.checkNone(bills),
           });
+
+          const timeFormatted = moment(assemblySittingTime).format('HH:mm');
+
+          if (timeFormatted === 'Invalid date') {
+            alert('Please re-enter exact sitting time');
+          } else {
+            this.form.patchValue({
+              assemblySittingTime: timeFormatted,
+            });
+          }
         }
       });
 

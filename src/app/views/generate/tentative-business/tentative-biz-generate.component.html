@@ -1,10 +1,19 @@
 <app-background>
   <app-center-card>
     <h1 class="title">
-      Generate Tentative Business for Order Paper No.
-      {{ orderPaper.orderPaperNo }}
+      Generate Tentative Business{{ " "
+      }}{{ orderPaperNo ? " for Order Paper No." + orderPaperNo : "" }}
     </h1>
     <form [formGroup]="form" class="form">
+      <app-custom-button
+        [title]="
+          orderPaperNo ? 'Order Paper No.' + orderPaperNo : 'Select Order Paper'
+        "
+        [disabled]="hasOrderPaperIdQuery"
+        (buttonClick)="onSelectOrderPaper()"
+      >
+      </app-custom-button>
+
       <p class="label">Choose Date</p>
       <mat-form-field appearance="standard">
         <input matInput type="date" formControlName="dateOfContent" />
@@ -15,7 +24,14 @@
 
       <p class="label">Enter Exact Sitting Time</p>
       <mat-form-field appearance="standard">
-        <input matInput formControlName="time" />
+        <input
+          matInput
+          [ngxTimepicker]="picker"
+          readonly
+          formControlName="time"
+          [format]="24"
+        />
+        <ngx-material-timepicker #picker></ngx-material-timepicker>
         <mat-error *ngIf="form.get('time').hasError('required')"
           >Please enter time!</mat-error
         >
@@ -33,9 +49,16 @@
       </mat-form-field>
 
       <div class="actions">
-        <button mat-button type="button" class="btn-draft" (click)="onNotNow()">
+        <button
+          mat-button
+          type="button"
+          class="btn-draft"
+          (click)="onNotNow()"
+          *ngIf="hasOrderPaperIdQuery"
+        >
           Not now
         </button>
+        <div *ngIf="!hasOrderPaperIdQuery"></div>
         <button
           mat-raised-button
           type="button"

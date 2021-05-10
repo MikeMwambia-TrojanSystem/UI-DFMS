@@ -22,6 +22,21 @@
 .buttons-container {
   display: flex;
   align-items: center;
+
+  .btn-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 5px;
+
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
 }
 
 .btn {
@@ -31,18 +46,17 @@
   padding: 0;
   width: 85px;
   line-height: 30px;
-  margin: 0 5px;
-
-  &:first-child {
-    margin-left: 0;
-  }
-
-  &:last-child {
-    margin-right: 0;
-  }
 
   &[disabled] {
     border-color: #ccc;
+  }
+
+  &.sub-btn {
+    width: unset;
+    margin: unset;
+    font-size: 12px;
+    border-radius: unset;
+    margin-top: 5px;
   }
 }
 

@@ -15,12 +15,7 @@
       </mat-form-field>
       <p class="label">Acts No</p>
       <mat-form-field appearance="standard">
-        <input
-          matInput
-          formControlName="actNo"
-          placeholder="172"
-          type="number"
-        />
+        <input matInput formControlName="actNo" placeholder="172" />
         <mat-error *ngIf="form.get('actNo').hasError('required')"
           >Please enter acts number!</mat-error
         >

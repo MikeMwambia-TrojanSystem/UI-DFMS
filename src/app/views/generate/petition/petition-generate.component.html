@@ -3,15 +3,22 @@
     <div class="main">
       <h1 class="title">Generate and File a Petition</h1>
       <form [formGroup]="form" class="form">
-        <p class="label">Summarize Issues that make up this petition (Maximum 200 words)</p>
+        <p class="label">
+          Summarize Issues that make up this petition (Maximum 200 words)
+        </p>
         <mat-form-field appearance="standard">
           <textarea
             matInput
             formControlName="content"
             placeholder="Petition on housing and food"
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="2"
           ></textarea>
           <mat-error *ngIf="form.get('content').hasError('required')"
             >Please fill in issues!</mat-error
+          >
+          <mat-error *ngIf="form.get('content').hasError('wordLimits')"
+            >Petition content have no more than 200 words!</mat-error
           >
         </mat-form-field>
         <p class="label">Petition concerning which sector(s)</p>
@@ -36,7 +43,9 @@
             </mat-form-field>
           </div>
           <div class="input">
-            <p class="label">Date Set for the petition to be discussed by the assembly</p>
+            <p class="label">
+              Date Set for the petition to be discussed by the assembly
+            </p>
             <mat-form-field appearance="standard">
               <input matInput formControlName="dateToBDiscussed" type="date" />
               <mat-error

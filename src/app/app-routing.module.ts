@@ -168,6 +168,7 @@ import { TentativeBusinessOrderPaperEditResolver } from './shared/resolver/tenta
 import { TentativeBusinessViewComponent } from './views/view/tentative-business/tentative-biz-view.component';
 import { TentativeBusinessContentViewComponent } from './views/view/tentative-business-content/tb-content-view.component';
 import { NoticeGenerateComponent } from './views/generate/notice-of-motion/notice-generate.component';
+import { CanActivateNotMcaGroup } from './shared/guard/account/mca.guard';
 
 const routes: Routes = [
   // Login route
@@ -207,7 +208,7 @@ const routes: Routes = [
   //Create parent route
   {
     path: 'create',
-    canActivate: [CanActivateAuth],
+    canActivate: [CanActivateAuth, CanActivateNotMcaGroup],
     children: [
       { path: 'committee', component: CreateCommitteeComponent },
       {
@@ -285,7 +286,7 @@ const routes: Routes = [
   //List parent route
   {
     path: 'list',
-    canActivate: [CanActivateAuth],
+    canActivate: [CanActivateAuth, CanActivateNotMcaGroup],
     children: [
       {
         path: 'committee',
@@ -414,7 +415,7 @@ const routes: Routes = [
   //Management parent route
   {
     path: 'management',
-    canActivate: [CanActivateAuth],
+    canActivate: [CanActivateAuth, CanActivateNotMcaGroup],
     children: [
       { path: 'accounts', component: AccountManagementComponent },
       { path: 'oath', component: AdministrationOathComponent },
@@ -430,7 +431,7 @@ const routes: Routes = [
   //Generate parent route
   {
     path: 'generate',
-    canActivate: [CanActivateAuth],
+    canActivate: [CanActivateAuth, CanActivateNotMcaGroup],
     children: [
       {
         path: 'act',
@@ -739,7 +740,7 @@ const routes: Routes = [
   //Edit parent route
   {
     path: 'edit',
-    canActivate: [CanActivateAuth],
+    canActivate: [CanActivateAuth, CanActivateNotMcaGroup],
     children: [
       {
         path: 'votebook',
@@ -797,7 +798,7 @@ const routes: Routes = [
   //Upload parent route
   {
     path: 'upload',
-    canActivate: [CanActivateAuth],
+    canActivate: [CanActivateAuth, CanActivateNotMcaGroup],
     children: [
       { path: 'statement', component: StatementUploadComponent },
       {
@@ -822,7 +823,7 @@ const routes: Routes = [
   {
     path: 'report-methods',
     component: ReportMethodsComponent,
-    canActivate: [CanActivateAuth],
+    canActivate: [CanActivateAuth, CanActivateNotMcaGroup],
   },
 
   //Intro
@@ -836,12 +837,7 @@ const routes: Routes = [
   {
     path: 'publish-status',
     component: PublishStatusComponent,
-    canActivate: [CanActivateAuth],
-  },
-  {
-    path: 'publish-status/:id',
-    component: PublishStatusComponent,
-    canActivate: [CanActivateAuth],
+    canActivate: [CanActivateAuth, CanActivateNotMcaGroup],
   },
 
   // Fallback

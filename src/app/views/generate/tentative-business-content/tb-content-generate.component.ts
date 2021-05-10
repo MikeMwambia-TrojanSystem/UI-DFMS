@@ -34,6 +34,11 @@ export interface TentativeCached {
   title?: string;
 }
 
+type DisableState = {
+  skip: boolean;
+  select: boolean;
+};
+
 const CACHE_ID = 'GENERATE_TENTATIVE_BUSINESS';
 
 @Component({
@@ -79,8 +84,35 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
     },
   ];
 
+  itemStates: DisableState[] = [
+    {
+      select: true,
+      skip: false,
+    },
+    {
+      select: true,
+      skip: false,
+    },
+    {
+      select: true,
+      skip: false,
+    },
+    {
+      select: true,
+      skip: false,
+    },
+    {
+      select: true,
+      skip: false,
+    },
+    {
+      select: true,
+      skip: false,
+    },
+  ];
 
   form = this.fb.group({
+    orderPaperNo: [],
     orderPaperId: ['', Validators.required],
     time: ['', Validators.required],
     dayOfContent: ['', Validators.required],
@@ -191,7 +223,7 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
   }
 
   private _populateNotifications() {
-    for (const item of this.items) {
+    for (const [index, item] of this.items.entries()) {
       const value = this.form.get(item.key).value as string;
       let result: MenuNotification[] = [];
 
@@ -212,6 +244,9 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
           }
           return result;
         }, []);
+      } else {
+        this.itemStates[index].select = false;
+        this.itemStates[index].skip = true;
       }
 
       item.notifications = result;
@@ -288,6 +323,7 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
       const value = this.form.value;
 
       value.publishState = state;
+      value.time = moment(value.dateOfContent + ' ' + value.time).unix();
 
       if (this._mode === 'creating') {
         value.datePublished = new Date().toISOString();
@@ -348,5 +384,29 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
       [item.key]: value.join('&&&'),
     });
     this._populateNotifications();
+  }
+
+  onActiveState(
+    index: number,
+    type: 'select' | 'generate' | 'skip',
+    key: string
+  ) {
+    this.itemStates[index][type] = true;
+
+    if (type === 'skip') {
+      this.itemStates[index].select = false;
+    } else {
+      this.itemStates[index].skip = false;
+      this.onUnskip(key);
+    }
+  }
+
+  onUnskip(key: string) {
+    this.form.get(key).setValue('');
+    this._populateNotifications();
+  }
+
+  checkSkipped(key: string) {
+    return this.form.get(key).value === 'NONE';
   }
 }

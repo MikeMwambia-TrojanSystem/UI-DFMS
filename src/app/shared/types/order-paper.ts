@@ -35,6 +35,9 @@ export class OrderPaper extends BasicDocument {
   adjournment: string;
   adminstrationOfOath: string[];
   approvingAccount: { account: string; approverId: string };
+  assemblySittingDate: string;
+  assemblySittingPeriod: 'Morning' | 'Afternoon';
+  assemblySittingTime: string;
   approver: string;
   assemblyNo: number;
   author: string;
