@@ -417,9 +417,10 @@ export class ApiService {
     //     'https://testploadsdocumentsjoniki.s3.us-east-2.amazonaws.com/1615177765-cat.jpg',
     //   uploadedToS3: true,
     // });
+    //.post<Upload>('http://3.13.186.200:9000/uploadfile', data)
 
     return this.http
-      .post<Upload>('http://3.13.186.200:9000/uploadfile', data)
+      .post<Upload>('http://localhost:9000/uploadfile', data)
       .pipe(timeout(this._timeout), catchError(errorHandler));
   }
 

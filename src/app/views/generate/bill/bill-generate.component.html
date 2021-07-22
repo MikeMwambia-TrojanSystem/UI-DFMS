@@ -20,7 +20,7 @@
           >Please enter bill number!</mat-error
         >
       </mat-form-field>
-      <p class="label">Related To (Summarize Maximum 10 words)</p>
+      <p class="label">Related To (Maximum 10 words)</p>
       <mat-form-field appearance="standard">
         <input matInput formControlName="relatedTo" />
         <mat-error *ngIf="form.get('billNo').hasError('required')"

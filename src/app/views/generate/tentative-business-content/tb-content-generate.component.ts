@@ -114,7 +114,7 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
   form = this.fb.group({
     orderPaperNo: [],
     orderPaperId: ['', Validators.required],
-    time: ['', Validators.required],
+    timeOfContent: ['', Validators.required],
     dayOfContent: ['', Validators.required],
     dateOfContent: ['', Validators.required],
     assemblySitting: ['', Validators.required],
@@ -327,7 +327,6 @@ export class TentativeBusinessContentGenerateComponent implements OnInit {
 
       if (this._mode === 'creating') {
         value.datePublished = new Date().toISOString();
-
         this.tentativeBusinessService
           .postTentativeBusiness(value)
           .subscribe(() => subCallback(state));

@@ -2,7 +2,7 @@ import { BasicDocument } from './_global';
 
 export class TentativeBusinessPost {
   date: string;
-  time: string;
+  timeOfContent: string;
   tentativeSignature: string;
   assemblyId: string;
   datePublished: string;

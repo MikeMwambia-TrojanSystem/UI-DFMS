@@ -32,7 +32,7 @@ export class TentativeBusinessGenerateComponent implements OnInit, OnDestroy {
     orderPaperId: ['', Validators.required],
     dateOfContent: ['', Validators.required],
     dayOfContent: ['', Validators.required],
-    time: ['', Validators.required],
+    timeOfContent: ['', Validators.required],
     assemblySitting: ['', Validators.required],
   });
 
@@ -66,6 +66,7 @@ export class TentativeBusinessGenerateComponent implements OnInit, OnDestroy {
             });
           }
 
+
           if (tentativeBusiness) {
             const {
               orderPaperId,
@@ -88,7 +89,7 @@ export class TentativeBusinessGenerateComponent implements OnInit, OnDestroy {
               alert('Please re-enter exact sitting time');
             } else {
               this.form.patchValue({
-                time: timeFormatted,
+                timeOfContent: timeFormatted,
               });
             }
 

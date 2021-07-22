@@ -298,7 +298,7 @@ export class IntroComponent implements OnInit {
       ],
     },
     {
-      label: 'Votebook',
+      label: 'Votes and proceedings',
       actions: [
         {
           label: 'Generate Votebook',

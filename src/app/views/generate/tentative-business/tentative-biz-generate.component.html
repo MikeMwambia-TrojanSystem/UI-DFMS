@@ -28,11 +28,11 @@
           matInput
           [ngxTimepicker]="picker"
           readonly
-          formControlName="time"
+          formControlName="timeOfContent"
           [format]="24"
         />
         <ngx-material-timepicker #picker></ngx-material-timepicker>
-        <mat-error *ngIf="form.get('time').hasError('required')"
+        <mat-error *ngIf="form.get('timeOfContent').hasError('required')"
           >Please enter time!</mat-error
         >
       </mat-form-field>

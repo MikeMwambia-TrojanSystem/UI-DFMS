@@ -49,6 +49,7 @@ export class VotebookService {
   }
 
   postVotebook(votebook: VotebookPost): Observable<any> {
+    console.log(votebook);
     return this.apiService.createVotebook(votebook).pipe(
       map(({ message }) => {
         if (this._fetched) {
