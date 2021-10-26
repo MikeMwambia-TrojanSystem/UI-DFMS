@@ -1,2 +1,2 @@
 # UI-DFMS
-Angualr based UI
+Angular based UI
